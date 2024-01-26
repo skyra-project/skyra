@@ -7,7 +7,7 @@ import type { Events } from '#lib/types';
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { TaskErrorPayload } from '#lib/types/Internals';
 import type { TwitchEventSubEvent, TwitchEventSubOnlineEvent } from '#lib/types/Twitch';
-import type { CustomFunctionGet, CustomGet } from '#lib/types/Utils';
+import type { TypedFT, TypedT } from '#lib/types/Utils';
 import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { EmojiObject } from '#utils/functions';
@@ -114,8 +114,8 @@ declare module 'i18next' {
 		lng: string;
 		ns?: string;
 
-		<K extends string, TReturn>(key: CustomGet<K, TReturn>): TReturn;
-		<K extends string, TArgs extends object, TReturn>(key: CustomFunctionGet<K, TArgs, TReturn>, options?: TArgs): TReturn;
+		<TReturn>(key: TypedT<TReturn>): TReturn;
+		<TArgs extends object, TReturn>(key: TypedFT<TArgs, TReturn>, options?: TArgs): TReturn;
 	}
 }
 

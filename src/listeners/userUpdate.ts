@@ -1,6 +1,6 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Events, type CustomGet } from '#lib/types';
+import { Events, type TypedT } from '#lib/types';
 import { filter, map } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
@@ -48,7 +48,7 @@ export class UserListener extends Listener {
 		return [t(previous, { previousName }), t(next, { nextName })].join('\n');
 	}
 
-	private buildEmbed(user: User, t: TFunction, description: string, footerKey: CustomGet<string, string>) {
+	private buildEmbed(user: User, t: TFunction, description: string, footerKey: TypedT<string>) {
 		return new EmbedBuilder()
 			.setColor(Colors.Yellow)
 			.setAuthor(getFullEmbedAuthor(user))

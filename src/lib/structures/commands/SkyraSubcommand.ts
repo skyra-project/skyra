@@ -8,10 +8,11 @@ import {
 	implementSkyraCommandPreParse,
 	type ExtendOptions
 } from '#lib/structures/commands/base/BaseSkyraCommandUtilities';
-import { PermissionLevels, type CustomGet } from '#lib/types';
+import { PermissionLevels, type TypedT } from '#lib/types';
+import { first } from '#utils/common';
 import { Command, UserError, type MessageCommand } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import type { Message } from 'discord.js';
+import type { Message, Snowflake } from 'discord.js';
 
 /**
  * The base class for all Skyra commands with subcommands.
@@ -21,8 +22,8 @@ export class SkyraSubcommand extends Subcommand<SkyraSubcommand.Args, SkyraSubco
 	public readonly guarded: boolean;
 	public readonly hidden: boolean;
 	public readonly permissionLevel: PermissionLevels;
-	public declare readonly detailedDescription: CustomGet<string, LanguageHelpDisplayOptions>;
-	public override readonly description: CustomGet<string, string>;
+	public declare readonly detailedDescription: TypedT<LanguageHelpDisplayOptions>;
+	public override readonly description: TypedT<string>;
 
 	public constructor(context: SkyraSubcommand.LoaderContext, options: SkyraSubcommand.Options) {
 		super(context, { ...SkyraCommandConstructorDefaults, ...options });
@@ -49,6 +50,18 @@ export class SkyraSubcommand extends Subcommand<SkyraSubcommand.Args, SkyraSubco
 	protected override parseConstructorPreConditions(options: SkyraSubcommand.Options): void {
 		super.parseConstructorPreConditions(options);
 		implementSkyraCommandParseConstructorPreConditionsPermissionLevel(this, options.permissionLevel);
+	}
+
+	/**
+	 * Retrieves the global command id from the application command registry.
+	 *
+	 * @remarks This method is used for slash commands, and will throw an error
+	 * if the global command ids are empty.
+	 */
+	protected getGlobalCommandId(): Snowflake {
+		const ids = this.applicationCommandRegistry.globalChatInputCommandIds;
+		if (ids.size === 0) throw new Error('The global command ids are empty.');
+		return first(ids.values())!;
 	}
 
 	public static readonly PaginatedOptions = implementSkyraCommandPaginatedOptions<SkyraSubcommand.Options>;

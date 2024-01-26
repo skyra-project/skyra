@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { isAdmin, isGuildOwner } from '#utils/functions';
-import { Identifiers, Precondition, type PreconditionOptions } from '@sapphire/framework';
+import { AllFlowsPrecondition, Identifiers, Precondition, type PreconditionOptions } from '@sapphire/framework';
 
-export abstract class PermissionsPrecondition extends Precondition {
+export abstract class PermissionsPrecondition extends AllFlowsPrecondition {
 	private readonly guildOnly: boolean;
 
 	public constructor(context: Precondition.LoaderContext, options: PermissionsPrecondition.Options = {}) {
@@ -29,6 +29,16 @@ export abstract class PermissionsPrecondition extends Precondition {
 
 		// Run the specific precondition's logic:
 		return this.handle(message, command, context);
+	}
+
+	// Handled by Discord's permissions system:
+	public override chatInputRun() {
+		return this.ok();
+	}
+
+	// Handled by Discord's permissions system:
+	public override contextMenuRun() {
+		return this.ok();
 	}
 
 	public abstract handle(message: GuildMessage, command: SkyraCommand, context: PermissionsPrecondition.Context): PermissionsPrecondition.Result;

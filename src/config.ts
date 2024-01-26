@@ -6,7 +6,7 @@ import { getHandler } from '#root/languages/index';
 import { minutes, seconds } from '#utils/common';
 import { Emojis, LanguageFormatters, rootFolder } from '#utils/constants';
 import type { ConnectionOptions } from '@influxdata/influxdb-client';
-import { LogLevel } from '@sapphire/framework';
+import { ApplicationCommandRegistries, LogLevel, RegisterBehavior } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import { i18next, type I18nextFormatter, type InternationalizationOptions } from '@sapphire/plugin-i18next';
 import { envIsDefined, envParseArray, envParseBoolean, envParseInteger, envParseString, setup } from '@skyra/env-utilities';
@@ -257,5 +257,7 @@ function parseWebhookError(): WebhookClientData | null {
 		token: WEBHOOK_ERROR_TOKEN
 	};
 }
+
+ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
 
 export const WEBHOOK_ERROR = parseWebhookError();

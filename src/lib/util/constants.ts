@@ -7,11 +7,11 @@ export const rootFolder = join(mainFolder, '..');
 export const ZeroWidthSpace = '\u200B';
 export const LongWidthSpace = '\u3000';
 
-export const enum Fonts {
-	FamilyFriends = 'Family-Friends, Roboto-Medium, NotoSans-Medium, NotoEmoji-Medium',
-	Medium = 'Roboto-Medium, NotoSans-Medium, NotoEmoji-Medium',
-	Light = 'Roboto-Light, NotoSans-Light, NotoEmoji-Light'
-}
+export const EmojiData = {
+	MessageAttachmentIcon: { id: '1006096566270033940', name: 'MessageAttachmentIcon', animated: false },
+	IntegrationIcon: { id: '1200230554440843264', name: 'IntegrationIcon', animated: false },
+	MembersIcon: { id: '1200212636441260103', name: 'MembersIcon', animated: false }
+} as const;
 
 export const enum Emojis {
 	ArrowB = '<:ArrowB:694594285269680179>',
@@ -32,6 +32,7 @@ export const enum Emojis {
 	BoostLevel8 = '<:boostlvl8:764841388462178344>',
 	BoostLevel9 = '<:boostlvl9:764841388470698014>',
 	Bot = '<:bot:764788923851079702>',
+	IntegrationIcon = '<:IntegrationIcon:1200230554440843264>',
 	Frame = '<:frame:764845055356698644>',
 	GreenTick = '<:greenTick:637706251253317669>',
 	GreenTickSerialized = 's637706251253317669',

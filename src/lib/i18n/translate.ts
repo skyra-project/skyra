@@ -4,7 +4,7 @@ import { DecoratorIdentifiers } from '@sapphire/decorators';
 import { Identifiers, container } from '@sapphire/framework';
 import type { InternationalizationContext, TFunction } from '@sapphire/plugin-i18next';
 import type { Nullish } from '@sapphire/utilities';
-import type { LocaleString } from 'discord.js';
+import type { Interaction, LocaleString } from 'discord.js';
 
 export function translate(identifier: string): string {
 	switch (identifier) {
@@ -122,6 +122,16 @@ export function resolveT(t: TResolvable): TFunction {
  */
 export function getT(locale?: LocaleString | Nullish) {
 	return container.i18n.getT(locale ?? 'en-US');
+}
+
+export function getSupportedUserLanguageName(interaction: Interaction): LocaleString {
+	if (container.i18n.languages.has(interaction.locale)) return interaction.locale;
+	if (interaction.guildLocale && container.i18n.languages.has(interaction.guildLocale)) return interaction.guildLocale;
+	return 'en-US';
+}
+
+export function getSupportedUserLanguageT(interaction: Interaction): TFunction {
+	return getT(getSupportedUserLanguageName(interaction));
 }
 
 /**

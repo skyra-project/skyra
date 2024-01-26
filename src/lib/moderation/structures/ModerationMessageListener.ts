@@ -1,7 +1,7 @@
 import { GuildEntity, GuildSettings, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
-import { Events, type CustomFunctionGet, type CustomGet, type GuildMessage } from '#lib/types';
+import { Events, type GuildMessage, type TypedFT, type TypedT } from '#lib/types';
 import { floatPromise, seconds } from '#utils/common';
 import { getModeration, getSecurity, isModerator } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
@@ -17,8 +17,8 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	private readonly ignoredChannelsPath: GuildSettingsOfType<readonly string[]>;
 	private readonly softPunishmentPath: GuildSettingsOfType<number>;
 	private readonly hardPunishmentPath: HardPunishment;
-	private readonly reasonLanguageKey: CustomGet<string, string>;
-	private readonly reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
+	private readonly reasonLanguageKey: TypedT<string>;
+	private readonly reasonLanguageKeyWithMaximum: TypedFT<{ amount: number; maximum: number }, string>;
 
 	public constructor(context: ModerationMessageListener.Context, options: ModerationMessageListener.Options) {
 		super(context, { ...options, event: Events.GuildUserMessage });
@@ -222,8 +222,8 @@ export namespace ModerationMessageListener {
 		ignoredChannelsPath: GuildSettingsOfType<readonly string[]>;
 		softPunishmentPath: GuildSettingsOfType<number>;
 		hardPunishmentPath: HardPunishment;
-		reasonLanguageKey: CustomGet<string, string>;
-		reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
+		reasonLanguageKey: TypedT<string>;
+		reasonLanguageKeyWithMaximum: TypedFT<{ amount: number; maximum: number }, string>;
 	}
 	export type JSON = Listener.JSON;
 	export type Context = Listener.Context;

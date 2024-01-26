@@ -1,5 +1,5 @@
 import type { SkyraCommand } from '#lib/structures';
-import type { CustomFunctionGet, CustomGet } from '#lib/types';
+import type { TypedFT, TypedT } from '#lib/types';
 import { floatPromise, minutes, resolveOnErrorCodes } from '#utils/common';
 import { canReact, canRemoveAllReactions } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
@@ -114,7 +114,7 @@ export async function sendLocalizedMessage(message: Message, options: LocalizedS
 	return send(message, { ...options, content });
 }
 
-type LocalizedSimpleKey = CustomGet<string, string>;
+type LocalizedSimpleKey = TypedT<string>;
 type LocalizedMessageOptions<TArgs extends object = NonNullObject> = Omit<MessageCreateOptions, 'content'> &
 	(
 		| {
@@ -122,7 +122,7 @@ type LocalizedMessageOptions<TArgs extends object = NonNullObject> = Omit<Messag
 				formatOptions?: TOptions<TArgs>;
 		  }
 		| {
-				key: CustomFunctionGet<string, TArgs, string>;
+				key: TypedFT<TArgs, string>;
 				formatOptions: TOptions<TArgs>;
 		  }
 	);

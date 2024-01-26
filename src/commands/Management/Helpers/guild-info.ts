@@ -84,7 +84,7 @@ export class UserCommand extends SkyraCommand {
 			.setThumbnail(guild.iconURL({ size: 256, extension: 'png' })!)
 			.setTitle(`${guild.name} [${guild.id}]`)
 			.addFields(
-				{ name: args.t(LanguageKeys.Commands.Tools.WhoisMemberRoles, { count: roleCount }), value: this.getSummaryRoles(args, roles) },
+				{ name: args.t(LanguageKeys.Commands.Whois.RolesTitle, { count: roleCount }), value: this.getSummaryRoles(args, roles) },
 				{ name: serverInfoTitles.MEMBERS, value: await this.getSummaryMembers(args), inline: true },
 				{ name: serverInfoTitles.CHANNELS, value: this.getSummaryChannels(args), inline: true },
 				{ name: serverInfoTitles.OTHER, value: this.getSummaryOther(args) }

@@ -10,8 +10,10 @@ import '@sapphire/plugin-editable-commands/register';
 import '@sapphire/plugin-i18next/register';
 import '@sapphire/plugin-logger/register';
 
+import { ApplicationCommandRegistries, RegisterBehavior } from '@sapphire/framework';
 import * as colorette from 'colorette';
 import { inspect } from 'node:util';
 
 inspect.defaultOptions.depth = 1;
 colorette.createColors({ useColor: true });
+ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);

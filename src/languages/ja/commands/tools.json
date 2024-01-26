@@ -32,7 +32,6 @@
 	},
 	"voteContentNeeded": "",
 	"voteReactionBlocked": "",
-	"whoisDescription": "",
 	"whoisExtended": {
 		"usages": [
 			"",
@@ -46,26 +45,5 @@
 			]
 		]
 	},
-	"whoisMemberFields": {
-		"createdAt": "",
-		"footer": "",
-		"joinedUnknown": "",
-		"joinedWithTimestamp": ""
-	},
-	"whoisMemberPermissions": "",
-	"whoisMemberPermissionsAll": "",
-	"whoisMemberRoles_one": "",
-	"whoisMemberRoles_other": "",
-	"whoisMemberRoleListAndMore": "",
-	"whoisMemberTitles": {
-		"createdAt": "",
-		"joined": ""
-	},
-	"whoisUserFields": {
-		"createdAt": "",
-		"footer": ""
-	},
-	"whoisUserTitles": {
-		"createdAt": ""
-	}
+	"whoisMemberRoleListAndMore": ""
 }

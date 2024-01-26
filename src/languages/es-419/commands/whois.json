@@ -1,0 +1,16 @@
+{
+	"description": "Proporciona información sobre un usuario de Discord",
+	"contextMenuName": "Obtener Información",
+	"userName": "usuario",
+	"userDescription": "El usuario sobre el que obtener información",
+	"joined": "Miembro Desde",
+	"created": "Usuario Desde",
+	"rolesTitle_one": "Rol [1]",
+	"rolesTitle_other": "Roles [{{count, number}}]",
+	"permissionsTitle": "Permisos Clave",
+	"permissionsAll": "Todos los permisos",
+	"embedDescription": "**Usuario Desde**: {{createdAt}}",
+	"embedMemberDescription": "**Miembro Desde**: {{joinedAt}}",
+	"buttonAvatar": "Avatar",
+	"buttonProfile": "Perfil"
+}

@@ -1,19 +1,4 @@
 {
-	"diceDescription": "Roll the dice using d20 syntax.",
-	"diceExtended": {
-		"usages": [
-			"Roll"
-		],
-		"extendedHelp": "The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once. However, you can change the amount of rolls for the dice, and this command will \"roll\" (get a random number between 1 and the amount of sides). For example, rolling a dice with 6 sides 3 times will leave a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will return 10 as output.",
-		"examples": [
-			"6",
-			"370d24",
-			"100d6",
-			"2d6+4",
-			"1d10*10",
-			"6d10+2*10"
-		]
-	},
 	"escaperopeDescription": "Use the escape rope from Pokemon.",
 	"escaperopeExtended": {
 		"extendedHelp": "**Skyra** used **Escape Rope**."
@@ -88,9 +73,6 @@
 			"me"
 		]
 	},
-	"diceOutput": "You rolled the dice! You got: **{{result}}**",
-	"diceRollsError": "Amount of rolls must be a number between 1 and 1024.",
-	"diceSidesError": "Amount of sides must be a number between 3 and 1024.",
 	"escaperopeOutput": "**{{user}}** used **Escape Rope**",
 	"loveLess45": "Try again next time...",
 	"loveLess75": "Good enough!",

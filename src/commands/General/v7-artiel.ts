@@ -7,6 +7,12 @@ import type { Message } from 'discord.js';
 
 const list = createDeprecatedList({
 	entries: [
+		{ out: '</dice:1201144153023709234>', in: ['dice', 'roll'] },
+		{ out: '</bunny:1201144152465883271>', in: ['bunny', 'bunbun', 'rabbit'] },
+		{ out: '</cat:1201144153023709235>', in: ['kitty', 'kitten', 'cat'] },
+		{ out: '</dog:1201144152465883268>', in: ['dog', 'doggo', 'puppy'] },
+		{ out: '</fox:1201144152465883269>', in: ['fox'] },
+		{ out: '</shibe:1201144152465883270>', in: ['shibe'] },
 		{
 			out: '</meme:1116785425240047720>',
 			in: [

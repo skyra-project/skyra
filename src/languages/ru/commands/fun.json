@@ -1,19 +1,4 @@
 {
-	"diceDescription": "",
-	"diceExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
-	},
 	"escaperopeDescription": "",
 	"escaperopeExtended": {
 		"extendedHelp": ""
@@ -88,9 +73,6 @@
 			"меня"
 		]
 	},
-	"diceOutput": "",
-	"diceRollsError": "Количество бросков должно быть числом от 1 до 1024.",
-	"diceSidesError": "Количество сторон должно быть числом от 3 до 1024.",
 	"escaperopeOutput": "",
 	"loveLess45": "",
 	"loveLess75": "",

@@ -1,19 +1,4 @@
 {
-	"diceDescription": "Lanza los dados usando la sintaxis d20.",
-	"diceExtended": {
-		"usages": [
-			"Tiradas"
-		],
-		"extendedHelp": "Las mecánicas de este comando son fáciles. Tienes un dado, luego lo tiras __x__ veces, pero los dados también pueden configurarse para tener __y__ lados. Por defecto, este comando tira un dado con 6 lados una vez. Sin embargo, puedes cambiar la cantidad de tiradas para los dados, y este comando \"tirará\" (obtener un número aleatorio entre 1 y la cantidad de lados). Por ejemplo, tirar un dado con 6 lados 3 veces dejará una secuencia aleatoria de tres números aleatorios entre 1 y 6, por ejemplo: 3, 1, 6; lo cual hará que este comando devuelva 10 como salida.",
-		"examples": [
-			"6",
-			"370d24",
-			"100d6",
-			"2d6+4",
-			"1d10*10",
-			"6d10+2*10"
-		]
-	},
 	"escaperopeDescription": "Usa la Cuerda Huida de Pokemon.",
 	"escaperopeExtended": {
 		"extendedHelp": "**Skyra** utilizó **Cuerda Huida**."
@@ -88,9 +73,6 @@
 			"yo"
 		]
 	},
-	"diceOutput": "¡Has tirado los dados! Has obtenido: **{{result}}**",
-	"diceRollsError": "Cantidad de lanzamientos debe ser un número entre 1 y 1024.",
-	"diceSidesError": "Cantidad de lados debe ser un número entre 3 y 1024.",
 	"escaperopeOutput": "**{{user}}** utilizó **Cuerda Huida**",
 	"loveLess45": "Inténtalo de nuevo la próxima vez...",
 	"loveLess75": "¡Suficientemente bueno!",

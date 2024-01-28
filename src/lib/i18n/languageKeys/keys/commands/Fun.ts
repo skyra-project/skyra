@@ -1,12 +1,6 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 
-export const DiceDescription = T<string>('commands/fun:diceDescription');
-export const DiceExtended = T<LanguageHelpDisplayOptions>('commands/fun:diceExtended');
-export const DiceOutput = FT<{ result: number }, string>('commands/fun:diceOutput');
-export const DiceRollsError = T<string>('commands/fun:diceRollsError');
-export const DiceSidesError = T<string>('commands/fun:diceSidesError');
-
 export const EscapeRopeDescription = T<string>('commands/fun:escaperopeDescription');
 export const EscapeRopeExtended = T<LanguageHelpDisplayOptions>('commands/fun:escaperopeExtended');
 export const EscapeRopeOutput = FT<{ user: string }, string>('commands/fun:escaperopeOutput');

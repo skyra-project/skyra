@@ -1,19 +1,4 @@
 {
-	"diceDescription": "",
-	"diceExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
-	},
 	"escaperopeDescription": "",
 	"escaperopeExtended": {
 		"extendedHelp": ""
@@ -88,9 +73,6 @@
 			""
 		]
 	},
-	"diceOutput": "",
-	"diceRollsError": "",
-	"diceSidesError": "",
 	"escaperopeOutput": "",
 	"loveLess45": "",
 	"loveLess75": "",

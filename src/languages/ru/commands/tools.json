@@ -32,7 +32,6 @@
 	},
 	"voteContentNeeded": "",
 	"voteReactionBlocked": "",
-	"whoisDescription": "Кто вы?",
 	"whoisExtended": {
 		"usages": [
 			"",
@@ -46,26 +45,5 @@
 			]
 		]
 	},
-	"whoisMemberFields": {
-		"createdAt": "",
-		"footer": "ID: {{member.id}}",
-		"joinedUnknown": "",
-		"joinedWithTimestamp": ""
-	},
-	"whoisMemberPermissions": "",
-	"whoisMemberPermissionsAll": "Все разрешения",
-	"whoisMemberRoles_one": "",
-	"whoisMemberRoles_other": "",
-	"whoisMemberRoleListAndMore": "",
-	"whoisMemberTitles": {
-		"createdAt": "",
-		"joined": ""
-	},
-	"whoisUserFields": {
-		"createdAt": "",
-		"footer": "ID: {{user.id}}"
-	},
-	"whoisUserTitles": {
-		"createdAt": ""
-	}
+	"whoisMemberRoleListAndMore": ""
 }

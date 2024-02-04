@@ -59,7 +59,7 @@ jobs:
       - name: Run unit tests
         run: yarn test --coverage
       - name: Codecov Upload
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/cobertura-coverage.xml

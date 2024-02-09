@@ -52,6 +52,12 @@ export const enum BrandingColors {
 	Secondary = 0xff9d01
 }
 
+export const enum Urls {
+	GitHubOrganization = 'https://github.com/skyra-project',
+	GitHubRepository = 'https://github.com/skyra-project/skyra',
+	Website = 'https://skyra.pw'
+}
+
 export const enum CdnUrls {
 	EscapeRopeGif = 'https://cdn.skyra.pw/skyra-assets/escape_rope.gif',
 	RevolvingHeartTwemoji = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/72x72/1f49e.png',

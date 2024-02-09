@@ -2,7 +2,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
-import { getContent, getFullEmbedAuthor, getImage } from '#utils/util';
+import { getContent, getFullEmbedAuthor, getImages, setMultipleEmbedImages } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
@@ -35,10 +35,8 @@ export class UserListener extends Listener {
 
 			const content = getContent(message);
 			if (!isNullishOrEmpty(content)) embed.setDescription(cutText(content, 1900));
-			const image = getImage(message);
-			if (!isNullish(image)) embed.setImage(image);
 
-			return embed;
+			return setMultipleEmbedImages(embed, getImages(message));
 		});
 	}
 }

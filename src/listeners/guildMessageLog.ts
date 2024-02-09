@@ -10,7 +10,7 @@ export class UserListener extends Listener {
 		guild: Guild,
 		logChannelId: string | Nullish,
 		key: GuildSettingsOfType<string | Nullish>,
-		makeMessage: () => Awaitable<EmbedBuilder | MessageCreateOptions>
+		makeMessage: () => Awaitable<EmbedBuilder | EmbedBuilder[] | MessageCreateOptions>
 	) {
 		if (isNullish(logChannelId)) return;
 
@@ -23,8 +23,7 @@ export class UserListener extends Listener {
 		// Don't post if it's not possible
 		if (!canSendEmbeds(channel)) return;
 
-		const processed = await makeMessage();
-		const options: MessageCreateOptions = processed instanceof EmbedBuilder ? { embeds: [processed] } : processed;
+		const options = this.resolveOptions(await makeMessage());
 		try {
 			await channel.send(options);
 		} catch (error) {
@@ -34,5 +33,11 @@ export class UserListener extends Listener {
 					: `Failed to send '${key}' log for guild ${guild} in channel ${channel.name}. Error: ${(error as Error).message}`
 			);
 		}
+	}
+
+	private resolveOptions(options: MessageCreateOptions | EmbedBuilder | EmbedBuilder[]): MessageCreateOptions {
+		if (Array.isArray(options)) return { embeds: options };
+		if (options instanceof EmbedBuilder) return { embeds: [options] };
+		return options;
 	}
 }

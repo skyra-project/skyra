@@ -1,45 +1,6 @@
 {
 	"snipeEmpty": "There are no sniped messages in this channel.",
 	"snipeTitle": "Sniped Message",
-	"remindmeDescription": "Manage your reminders.",
-	"remindmeExtended": {
-		"usages": [
-			"Timespan",
-			"Timespan Content",
-			"create Timespan Content",
-			"remove/delete ID",
-			"show ID",
-			"list"
-		],
-		"extendedHelp": "This command allows you to set, delete and list reminders.",
-		"explainedUsage": [
-			[
-				"create/remove/delete/show/list",
-				"Whether to:\n　- Create a new reminder.\n　- Delete an existing reminder given its ID (e.g. `1234`)\n　- Show the contents of an existing reminder given its ID (e.g. `1234`)\n　- List all your active reminders."
-			],
-			[
-				"Timespan",
-				"Only needed for `create`; the amount of time to elapse before I remind you. For example `5h` for 5 hours."
-			],
-			[
-				"ID",
-				"Only needed for `remove`, `delete`, and `show`; The ID of the reminder to remove or show."
-			]
-		],
-		"examples": [
-			"me 6h to fix this command.",
-			"2022-05-04 May the Force be with you!",
-			"list",
-			"show 1234",
-			"delete 1234"
-		]
-	},
-	"remindmeDelete": "The reminder with ID `{{ id }}` and with a remaining time of **{{remainingDuration, duration}}** has been successfully deleted.",
-	"remindmeListEmpty": "You do not have any active reminder",
-	"remindmeShowFooter": "ID: {{id}} | Ends at:",
-	"remindmeInvalidId": "I am sorry, but the ID provided does not seem to be valid.",
-	"remindmeNotfound": "I cannot find something here. The reminder either never existed or it ended.",
-	"remindmeDeprecated": "The reminder functionality has been deprecated and will be removed around <t:1708772400:d>. Please use </reminders create:1078828281949859985> from Teryl instead. You may need to invite the bot with the button below if the command doesn't work.",
 	"snipeDescription": "Retrieve the last deleted message from a channel",
 	"snipeExtended": {
 		"extendedHelp": "This just sends the last deleted message from this channel, somebody is misbehaving? This will catch them."

@@ -55,6 +55,8 @@ describe('Bits', () => {
 				'ModerateMembers',
 				'ViewCreatorMonetizationAnalytics',
 				'UseSoundboard',
+				'CreateGuildExpressions',
+				'CreateEvents',
 				'UseExternalSounds',
 				'SendVoiceMessages'
 			]);

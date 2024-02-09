@@ -2,12 +2,13 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
+import { getLogPrefix } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { FetchResultTypes, fetch } from '@sapphire/fetch';
 import { Listener } from '@sapphire/framework';
-import { isNullish, isNumber } from '@sapphire/utilities';
+import { isNullish, isNullishOrEmpty, isNullishOrZero, isNumber } from '@sapphire/utilities';
 import { AttachmentBuilder, type MessageCreateOptions, type TextChannel } from 'discord.js';
 import { extname } from 'node:path';
 
@@ -18,6 +19,8 @@ const MAXIMUM_LENGTH = 1024 * 1024;
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildUserMessage })
 export class UserListener extends Listener {
+	private readonly LogPrefix = getLogPrefix(this);
+
 	public async run(message: GuildMessage) {
 		// If there are no attachments, do not post:
 		if (message.attachments.size === 0) return;
@@ -44,14 +47,14 @@ export class UserListener extends Listener {
 
 			// Fetch the image.
 			const result = await fetch(url, FetchResultTypes.Result).catch((error) => {
-				this.container.logger.error(`ImageLogs[${error}] ${url}`);
+				this.container.logger.error(`${this.LogPrefix} ${url} ${error}`);
 				return null;
 			});
 			if (result === null) continue;
 
 			// Retrieve the content length.
 			const contentLength = result.headers.get('content-length');
-			if (contentLength === null) continue;
+			if (isNullishOrEmpty(contentLength)) continue;
 
 			// Parse the content length, validate it, and check if it's lower than the threshold.
 			const parsedContentLength = parseInt(contentLength, 10);
@@ -75,17 +78,19 @@ export class UserListener extends Listener {
 					return { embeds: [embed], files: [new AttachmentBuilder(buffer, { name: filename })] };
 				});
 			} catch (error) {
-				this.container.logger.fatal(`ImageLogs[${error}] ${url}`);
+				this.container.logger.fatal(`${this.LogPrefix} ${url} ${error}`);
 			}
 		}
 	}
 
 	private *getAttachments(message: GuildMessage) {
 		for (const attachment of message.attachments.values()) {
-			const type = attachment.contentType;
-			if (type === null) continue;
+			// Skip if the attachment doesn't have a content type:
+			if (isNullishOrEmpty(attachment.contentType)) continue;
+			// Skip if the attachment doesn't have a size:
+			if (isNullishOrZero(attachment.width) || isNullishOrZero(attachment.height)) continue;
 
-			const [kind] = type.split('/', 1);
+			const [kind] = attachment.contentType.split('/', 1);
 			if (kind !== 'image' && kind !== 'video') continue;
 
 			yield {

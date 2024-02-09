@@ -1,4 +1,5 @@
 import { FT, T } from '#lib/types';
+import type { Command } from '@sapphire/framework';
 import type { ChannelType } from 'discord.js';
 
 // Sapphire built-in:
@@ -35,9 +36,9 @@ export const GuildTextOnly = T('preconditions:guildTextOnly');
 export const ThreadOnly = T('preconditions:threadOnly');
 
 // Skyra:
-export const Administrator = T('preconditions:administrator');
-export const Moderator = T('preconditions:moderator');
+export const Administrator = FT<{ command: Command }>('preconditions:administrator');
+export const Moderator = FT<{ command: Command }>('preconditions:moderator');
 export const NewsOnly = T('preconditions:newsOnly');
 export const PermissionNodes = T('preconditions:permissionNodes');
-export const ServerOwner = T('preconditions:serverOwner');
+export const ServerOwner = FT<{ command: Command }>('preconditions:serverOwner');
 export const TextOnly = T('preconditions:textOnly');

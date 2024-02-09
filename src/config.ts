@@ -111,7 +111,6 @@ function parseInternationalizationDefaultVariables() {
 }
 
 function parseInternationalizationInterpolation(): InterpolationOptions {
-	parseInternationalizationFormatters();
 	return { escapeValue: false, defaultVariables: parseInternationalizationDefaultVariables() };
 }
 

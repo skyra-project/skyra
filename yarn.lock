@@ -1034,15 +1034,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/plugin-i18next@npm:^7.1.1":
-  version: 7.1.1
-  resolution: "@sapphire/plugin-i18next@npm:7.1.1"
+"@sapphire/plugin-i18next@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "@sapphire/plugin-i18next@npm:7.1.2"
   dependencies:
     "@sapphire/utilities": "npm:^3.15.3"
     "@skyra/i18next-backend": "npm:^2.0.5"
-    chokidar: "npm:^3.5.3"
-    i18next: "npm:^23.7.16"
-  checksum: 10/5afa2cea95d517c7a2b625d2c2e8b7b7d68afc858fbd7f54594bc85c7abce2e666f30686caf15703cdf9fe13419cd6911154cda0f87c60a896d5cb3d97d7094a
+    chokidar: "npm:^3.6.0"
+    i18next: "npm:^23.8.2"
+  checksum: 10/edcd0714b1b3146eb74df7d818f7ff0bfdb94f6b24cd07e453667b5ea2e7fd14ada1d925b73a9aab68151915773dfc97661a20e0a462a8474c45d9318bdf7979
   languageName: node
   linkType: hard
 
@@ -2369,9 +2369,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^3.5.3":
-  version: 3.5.3
-  resolution: "chokidar@npm:3.5.3"
+"chokidar@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "chokidar@npm:3.6.0"
   dependencies:
     anymatch: "npm:~3.1.2"
     braces: "npm:~3.0.2"
@@ -2384,7 +2384,7 @@ __metadata:
   dependenciesMeta:
     fsevents:
       optional: true
-  checksum: 10/863e3ff78ee7a4a24513d2a416856e84c8e4f5e60efbe03e8ab791af1a183f569b62fc6f6b8044e2804966cb81277ddbbc1dc374fba3265bd609ea8efd62f5b3
+  checksum: 10/c327fb07704443f8d15f7b4a7ce93b2f0bc0e6cea07ec28a7570aa22cd51fcf0379df589403976ea956c369f25aa82d84561947e227cd925902e1751371658df
   languageName: node
   linkType: hard
 
@@ -4461,12 +4461,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.7.16":
-  version: 23.7.19
-  resolution: "i18next@npm:23.7.19"
+"i18next@npm:^23.8.2":
+  version: 23.8.2
+  resolution: "i18next@npm:23.8.2"
   dependencies:
     "@babel/runtime": "npm:^7.23.2"
-  checksum: 10/fbfce98aae854ae5c68b784ae36becfb0833b08329a46f9c49396f8af09f25f23611d7cd78dc3666fdead45d697173cf43d97b014cdf7042513ed922054fd515
+  checksum: 10/594c4d5bafd9ac0073a5f2c0ccb40b157571857d43f7f22949a5ab6ea07e6e6f7e39058ddee6e7396369b54d5d741e76cba59c0d5c23ce0ab99e06b249c66f5e
   languageName: node
   linkType: hard
 
@@ -7227,7 +7227,7 @@ __metadata:
     "@sapphire/framework": "npm:5.0.7"
     "@sapphire/plugin-api": "npm:^6.1.1"
     "@sapphire/plugin-editable-commands": "npm:^4.0.2"
-    "@sapphire/plugin-i18next": "npm:^7.1.1"
+    "@sapphire/plugin-i18next": "npm:^7.1.2"
     "@sapphire/plugin-logger": "npm:^4.0.2"
     "@sapphire/plugin-subcommands": "npm:^6.0.3"
     "@sapphire/prettier-config": "npm:^2.0.0"

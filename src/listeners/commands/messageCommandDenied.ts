@@ -11,7 +11,7 @@ export class UserListener extends Listener<typeof Events.MessageCommandDenied> {
 		if (Reflect.get(Object(error.context), 'silent')) return;
 
 		const identifier = translate(error.identifier);
-		return this.alert(message, (await resolveKey(message, identifier, { message, command, ...(error.context as any) })) as string);
+		return this.alert(message, await resolveKey(message, identifier, { message, command, ...(error.context as object) }));
 	}
 
 	private alert(message: Message, content: string) {

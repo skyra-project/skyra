@@ -1,13 +1,14 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
-import { BrandingColors, ZeroWidthSpace } from '#lib/util/constants';
+import { BrandingColors, Urls, ZeroWidthSpace } from '#lib/util/constants';
 import { EmbedBuilder } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullishOrEmpty, tryParseURL, type Nullish } from '@sapphire/utilities';
+import { isNullishOrEmpty, isNullishOrZero, tryParseURL, type Nullish } from '@sapphire/utilities';
 import {
 	PermissionFlagsBits,
+	StickerFormatType,
 	type APIUser,
 	type EmbedAuthorData,
 	type Guild,
@@ -19,6 +20,7 @@ import {
 	type User,
 	type UserResolvable
 } from 'discord.js';
+import { first } from './common/iterators.js';
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5b1100 }],
@@ -80,44 +82,34 @@ export interface ImageAttachment {
 	width: number;
 }
 
-/**
- * Get a image attachment from a message.
- * @param message The Message instance to get the image url from
- */
-export function getAttachment(message: Message): ImageAttachment | null {
-	if (message.attachments.size) {
-		const attachment = message.attachments.find((att) => IMAGE_EXTENSION.test(att.name ?? att.url));
-		if (attachment) {
-			return {
-				url: attachment.url,
-				proxyURL: attachment.proxyURL,
-				height: attachment.height!,
-				width: attachment.width!
-			};
-		}
+export function* getImages(message: Message): IterableIterator<string> {
+	for (const attachment of message.attachments.values()) {
+		// Skip if the attachment doesn't have a content type:
+		if (isNullishOrEmpty(attachment.contentType)) continue;
+		// Skip if the attachment doesn't have a size:
+		if (isNullishOrZero(attachment.width) || isNullishOrZero(attachment.height)) continue;
+		// Skip if the attachment isn't an image:
+		if (!attachment.contentType.startsWith('image/')) continue;
+
+		yield attachment.proxyURL ?? attachment.url;
 	}
 
 	for (const embed of message.embeds) {
 		if (embed.image) {
-			return {
-				url: embed.image.url,
-				proxyURL: embed.image.proxyURL!,
-				height: embed.image.height!,
-				width: embed.image.width!
-			};
+			yield embed.image.proxyURL ?? embed.image.url;
 		}
 
 		if (embed.thumbnail) {
-			return {
-				url: embed.thumbnail.url,
-				proxyURL: embed.thumbnail.proxyURL!,
-				height: embed.thumbnail.height!,
-				width: embed.thumbnail.width!
-			};
+			yield embed.thumbnail.proxyURL ?? embed.thumbnail.url;
 		}
 	}
 
-	return null;
+	for (const sticker of message.stickers.values()) {
+		// Skip if the sticker is a lottie sticker:
+		if (sticker.format === StickerFormatType.Lottie) continue;
+
+		yield sticker.url;
+	}
 }
 
 /**
@@ -125,12 +117,26 @@ export function getAttachment(message: Message): ImageAttachment | null {
  * @param message The Message instance to get the image url from
  */
 export function getImage(message: Message): string | null {
-	const attachment = getAttachment(message);
-	if (attachment) return attachment.proxyURL || attachment.url;
+	return first(getImages(message)) ?? null;
+}
 
-	const sticker = message.stickers.first();
-	if (sticker) return sticker.url;
-	return null;
+export function setMultipleEmbedImages(embed: EmbedBuilder, urls: IterableIterator<string>) {
+	const embeds = [embed];
+	let count = 0;
+	for (const url of urls) {
+		if (count === 0) {
+			embed.setURL(Urls.Website).setImage(url);
+		} else {
+			embeds.push(new EmbedBuilder().setURL(Urls.Website).setImage(url));
+
+			// We only want to send 4 embeds at most
+			if (count === 3) break;
+		}
+
+		count++;
+	}
+
+	return embeds;
 }
 
 /**

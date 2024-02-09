@@ -7,7 +7,7 @@ import { days, floatPromise, seconds } from '#utils/common';
 import { andMix, type BooleanFn } from '#utils/common/comparators';
 import { formatMessage } from '#utils/formatters';
 import { sendTemporaryMessage } from '#utils/functions';
-import { TypeCodes, metadata } from '#utils/moderationConstants';
+import { TypeVariation, getMetadata } from '#utils/moderationConstants';
 import { getFullEmbedAuthor, getImageUrl } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -196,7 +196,7 @@ export class UserCommand extends SkyraCommand {
 		return Args.ok(position);
 	});
 
-	private static readonly kColor = metadata.get(TypeCodes.Prune)!.color;
+	private static readonly kColor = getMetadata(TypeVariation.Prune).color;
 	private static readonly kInviteRegExp = /(?:discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?:[\w-]{2,})/i;
 	private static readonly kLinkRegExp = urlRegex({ requireProtocol: true, tlds: true });
 	private static readonly kCommandPrunePositions: Record<string, Position> = {

@@ -4,7 +4,7 @@ import { SkyraCommand, SkyraPaginatedMessage, SkyraSubcommand } from '#lib/struc
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
-import { TypeCodes } from '#utils/moderationConstants';
+import { TypeVariation } from '#utils/moderationConstants';
 import { getColor, sendLoadingMessage } from '#utils/util';
 import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -150,13 +150,13 @@ export class UserPaginatedMessageCommand extends SkyraSubcommand {
 			case Type.Mute:
 				return target
 					? (entry: ModerationEntity) =>
-							entry.isType(TypeCodes.Mute) && !entry.invalidated && !entry.appealType && entry.userId === target.id
-					: (entry: ModerationEntity) => entry.isType(TypeCodes.Mute) && !entry.invalidated && !entry.appealType;
+							entry.type === TypeVariation.Mute && !entry.invalidated && !entry.appealType && entry.userId === target.id
+					: (entry: ModerationEntity) => entry.type === TypeVariation.Mute && !entry.invalidated && !entry.appealType;
 			case Type.Warning:
 				return target
 					? (entry: ModerationEntity) =>
-							entry.isType(TypeCodes.Warning) && !entry.invalidated && !entry.appealType && entry.userId === target.id
-					: (entry: ModerationEntity) => entry.isType(TypeCodes.Warning) && !entry.invalidated && !entry.appealType;
+							entry.type === TypeVariation.Warning && !entry.invalidated && !entry.appealType && entry.userId === target.id
+					: (entry: ModerationEntity) => entry.type === TypeVariation.Warning && !entry.invalidated && !entry.appealType;
 			case Type.All:
 				return target
 					? (entry: ModerationEntity) => entry.duration !== null && !entry.invalidated && !entry.appealType && entry.userId === target.id

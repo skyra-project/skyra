@@ -1,6 +1,6 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { getModeration } from '#utils/functions';
-import { TypeCodes } from '#utils/moderationConstants';
+import { TypeMetadata, TypeVariation } from '#utils/moderationConstants';
 import { Listener } from '@sapphire/framework';
 import type { GuildBan } from 'discord.js';
 
@@ -14,7 +14,8 @@ export class UserListener extends Listener {
 			.create({
 				userId: user.id,
 				moderatorId: process.env.CLIENT_ID,
-				type: TypeCodes.UnBan
+				type: TypeVariation.Ban,
+				metadata: TypeMetadata.Appeal
 			})
 			.create();
 	}

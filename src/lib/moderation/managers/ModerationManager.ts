@@ -219,5 +219,5 @@ interface MaxQuery {
 
 export type ModerationManagerUpdateData = Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'moderatorId' | 'reason' | 'imageURL'>>;
 export type ModerationManagerCreateData = Omit<ModerationManagerInsertData, 'guildId'>;
-export type ModerationManagerInsertData = StrictRequired<Pick<ModerationEntity, 'moderatorId' | 'userId' | 'type'>> &
+export type ModerationManagerInsertData = StrictRequired<Pick<ModerationEntity, 'moderatorId' | 'userId' | 'type' | 'metadata'>> &
 	Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'reason' | 'imageURL' | 'createdAt' | 'caseId'>>;

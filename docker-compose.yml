@@ -59,7 +59,6 @@ services:
     build: ./
     container_name: skyra
     depends_on:
-      - hasteserver
       - influx
       - postgres
     env_file:

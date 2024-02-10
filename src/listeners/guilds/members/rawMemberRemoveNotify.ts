@@ -3,7 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { Colors } from '#utils/constants';
 import { getModeration } from '#utils/functions';
-import { TypeCodes } from '#utils/moderationConstants';
+import { TypeVariation } from '#utils/moderationConstants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -64,9 +64,9 @@ export class UserListener extends Listener {
 		}
 
 		return {
-			kicked: latestLogForUser.isType(TypeCodes.Kick),
-			banned: latestLogForUser.isType(TypeCodes.Ban),
-			softbanned: latestLogForUser.isType(TypeCodes.SoftBan)
+			kicked: latestLogForUser.type === TypeVariation.Kick,
+			banned: latestLogForUser.type === TypeVariation.Ban,
+			softbanned: latestLogForUser.type === TypeVariation.SoftBan
 		};
 	}
 

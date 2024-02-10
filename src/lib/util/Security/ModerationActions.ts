@@ -6,7 +6,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManagerCreateData } from '#lib/moderation';
 import { resolveOnErrorCodes } from '#utils/common';
 import { getModeration, getStickyRoles, promptConfirmation } from '#utils/functions';
-import { TypeCodes } from '#utils/moderationConstants';
+import { TypeMetadata, TypeVariation } from '#utils/moderationConstants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
@@ -232,7 +232,7 @@ export class ModerationActions {
 	}
 
 	public async warning(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.Warning);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.Warning);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
@@ -240,11 +240,11 @@ export class ModerationActions {
 
 	public async unWarning(rawOptions: ModerationActionOptions, caseId: number, sendOptions?: ModerationActionsSendOptions) {
 		const oldModerationLog = await getModeration(this.guild).fetch(caseId);
-		if (oldModerationLog === null || !oldModerationLog.isType(TypeCodes.Warning))
+		if (oldModerationLog === null || oldModerationLog.type !== TypeVariation.Warning)
 			throw await resolveKey(this.guild, LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 
 		await oldModerationLog.invalidate();
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnWarn);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.Warning, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
@@ -252,7 +252,7 @@ export class ModerationActions {
 
 	public async setNickname(rawOptions: ModerationActionOptions, nickname: string, sendOptions?: ModerationActionsSendOptions) {
 		const oldName = this.guild.members.cache.get(rawOptions.userId)?.nickname || '';
-		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { oldName } }, TypeCodes.SetNickname);
+		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { oldName } }, TypeVariation.SetNickname);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
@@ -270,79 +270,99 @@ export class ModerationActions {
 				));
 		await api().guilds.editMember(this.guild.id, rawOptions.userId, { nick: nickname }, { reason });
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.SetNickname);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.SetNickname, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async unSetNickname(rawOptions: ModerationActionOptions, nickname: string, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnSetNickname);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.SetNickname, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api().guilds.editMember(this.guild.id, rawOptions.userId, { nick: nickname }, { reason: rawOptions.reason ?? undefined });
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.SetNickname);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.SetNickname, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async addRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { role: role.id } }, TypeCodes.AddRole);
+		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { role: role.id } }, TypeVariation.AddRole);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api().guilds.addRoleToMember(this.guild.id, rawOptions.userId, role.id, {
 			reason: await this.getReason('addRole', moderationLog.reason)
 		});
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.AddRole, (log) => (log.extraData as { role?: string })?.role === role.id);
+		await this.cancelLastLogTaskFromUser(
+			options.userId,
+			TypeVariation.AddRole,
+			TypeMetadata.None,
+			(log) => (log.extraData as { role?: string })?.role === role.id
+		);
 		return (await moderationLog.create())!;
 	}
 
 	public async unAddRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnAddRole);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.AddRole, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api().guilds.removeRoleFromMember(this.guild.id, rawOptions.userId, role.id, { reason: rawOptions.reason! });
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.AddRole, (log) => (log.extraData as { role?: string })?.role === role.id);
+		await this.cancelLastLogTaskFromUser(
+			options.userId,
+			TypeVariation.AddRole,
+			TypeMetadata.None,
+			(log) => (log.extraData as { role?: string })?.role === role.id
+		);
 		return (await moderationLog.create())!;
 	}
 
 	public async removeRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { role: role.id } }, TypeCodes.RemoveRole);
+		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { role: role.id } }, TypeVariation.RemoveRole);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api().guilds.removeRoleFromMember(this.guild.id, rawOptions.userId, role.id, {
 			reason: await this.getReason('removeRole', moderationLog.reason)
 		});
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RemoveRole, (log) => (log.extraData as { role?: string })?.role === role.id);
+		await this.cancelLastLogTaskFromUser(
+			options.userId,
+			TypeVariation.RemoveRole,
+			TypeMetadata.None,
+			(log) => (log.extraData as { role?: string })?.role === role.id
+		);
 		return (await moderationLog.create())!;
 	}
 
 	public async unRemoveRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnRemoveRole);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RemoveRole, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api().guilds.addRoleToMember(this.guild.id, rawOptions.userId, role.id, { reason: rawOptions.reason ?? undefined });
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RemoveRole, (log) => (log.extraData as { role?: string })?.role === role.id);
+		await this.cancelLastLogTaskFromUser(
+			options.userId,
+			TypeVariation.RemoveRole,
+			TypeMetadata.None,
+			(log) => (log.extraData as { role?: string })?.role === role.id
+		);
 		return (await moderationLog.create())!;
 	}
 
 	public async mute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyMute(rawOptions.userId);
 		const extraData = await this.muteUser(rawOptions);
-		const options = ModerationActions.fillOptions({ ...rawOptions, extraData }, TypeCodes.Mute);
+		const options = ModerationActions.fillOptions({ ...rawOptions, extraData }, TypeVariation.Mute);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.Mute);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.Mute, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async unMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnMute);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.Mute, TypeMetadata.Appeal);
 		await this.removeStickyMute(options.userId);
-		const oldModerationLog = await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.Mute);
+		const oldModerationLog = await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.Mute, TypeMetadata.None);
 		if (typeof oldModerationLog === 'undefined') {
 			throw await resolveKey(this.guild, LanguageKeys.Commands.Moderation.MuteNotExists);
 		}
@@ -360,7 +380,7 @@ export class ModerationActions {
 	}
 
 	public async kick(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.Kick);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.Kick);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api().guilds.removeMember(this.guild.id, options.userId, { reason: await this.getReason('kick', moderationLog.reason) });
@@ -368,7 +388,7 @@ export class ModerationActions {
 	}
 
 	public async softBan(rawOptions: ModerationActionOptions, seconds?: number, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.SoftBan);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.SoftBan);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
@@ -392,7 +412,7 @@ export class ModerationActions {
 	}
 
 	public async ban(rawOptions: ModerationActionOptions, seconds?: number, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.Ban);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.Ban);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api().guilds.banUser(
@@ -401,32 +421,32 @@ export class ModerationActions {
 			{ delete_message_seconds: seconds ?? 0 },
 			{ reason: await this.getReason('ban', moderationLog.reason) }
 		);
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.Ban);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.Ban, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async unBan(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnBan);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.Ban, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await api().guilds.unbanUser(this.guild.id, options.userId, { reason: await this.getReason('ban', moderationLog.reason, true) });
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.Ban);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.Ban, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async voiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.VoiceMute);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.VoiceMute);
 		const moderationLog = getModeration(this.guild).create(options);
 		await api().guilds.editMember(this.guild.id, options.userId, { mute: true }, { reason: await this.getReason('vmute', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.VoiceMute);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.VoiceMute, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async unVoiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnVoiceMute);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.VoiceMute, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await api().guilds.editMember(
 			this.guild.id,
@@ -436,12 +456,12 @@ export class ModerationActions {
 		);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.VoiceMute);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.VoiceMute, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async voiceKick(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.VoiceKick);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.VoiceKick);
 		const moderationLog = getModeration(this.guild).create(options);
 		await api().guilds.editMember(
 			this.guild.id,
@@ -456,110 +476,110 @@ export class ModerationActions {
 	public async restrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedAttachment);
 		await this.addRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedAttachment);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.RestrictionAttachment);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedAttachment);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionAttachment);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedAttachment, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async unRestrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.removeStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedAttachment);
 		await this.removeRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedAttachment);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnRestrictionAttachment);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedAttachment, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionAttachment);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedAttachment, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async restrictReaction(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedReaction);
 		await this.addRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedReaction);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.RestrictionReaction);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedReaction);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionReaction);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedReaction, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async unRestrictReaction(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.removeStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedReaction);
 		await this.removeRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedReaction);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnRestrictionReaction);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedReaction, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionReaction);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedReaction, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async restrictEmbed(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedEmbed);
 		await this.addRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedEmbed);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.RestrictionEmbed);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedEmbed);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionEmbed);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedEmbed, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async unRestrictEmbed(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.removeStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedEmbed);
 		await this.removeRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedEmbed);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnRestrictionEmbed);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedEmbed, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionEmbed);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedEmbed, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async restrictEmoji(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedEmoji);
 		await this.addRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedEmoji);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.RestrictionEmoji);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedEmoji);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionEmoji);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedEmoji, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async unRestrictEmoji(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.removeStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedEmoji);
 		await this.removeRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedEmoji);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnRestrictionEmoji);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedEmoji, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionEmoji);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedEmoji, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async restrictVoice(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedVoice);
 		await this.addRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedVoice);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.RestrictionVoice);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedVoice);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionVoice);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedVoice, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
 	public async unRestrictVoice(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.removeStickyRestriction(rawOptions.userId, GuildSettings.Roles.RestrictedVoice);
 		await this.removeRestrictionRole(rawOptions.userId, GuildSettings.Roles.RestrictedVoice);
-		const options = ModerationActions.fillOptions(rawOptions, TypeCodes.UnRestrictionVoice);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.RestrictedVoice, TypeMetadata.Appeal);
 		const moderationLog = getModeration(this.guild).create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userId, TypeCodes.RestrictionVoice);
+		await this.cancelLastLogTaskFromUser(options.userId, TypeVariation.RestrictedVoice, TypeMetadata.None);
 		return (await moderationLog.create())!;
 	}
 
@@ -861,8 +881,8 @@ export class ModerationActions {
 	 * @param userId The user ID to use when fetching
 	 * @param type The type to retrieve for the invalidation
 	 */
-	private async cancelLastLogTaskFromUser(userId: string, type: TypeCodes, extra?: (log: ModerationEntity) => boolean) {
-		const log = await this.retrieveLastLogFromUser(userId, type, extra);
+	private async cancelLastLogTaskFromUser(userId: string, type: TypeVariation, metadata: TypeMetadata, extra?: (log: ModerationEntity) => boolean) {
+		const log = await this.retrieveLastLogFromUser(userId, type, metadata, extra);
 		if (!log) return null;
 
 		const { task } = log;
@@ -882,12 +902,17 @@ export class ModerationActions {
 			: t(LanguageKeys.Commands.Moderation.ActionApplyReason, { action: actions[action], reason });
 	}
 
-	private async retrieveLastLogFromUser(userId: string, type: TypeCodes, extra: (log: ModerationEntity) => boolean = () => true) {
+	private async retrieveLastLogFromUser(
+		userId: string,
+		type: TypeVariation,
+		metadata: TypeMetadata,
+		extra: (log: ModerationEntity) => boolean = () => true
+	) {
 		// Retrieve all moderation logs regarding a user.
 		const logs = await getModeration(this.guild).fetch(userId);
 
 		// Filter all logs by valid and by type of mute (isType will include temporary and invisible).
-		return logs.filter((log) => !log.invalidated && log.isType(type) && extra(log)).last();
+		return logs.filter((log) => !log.invalidated && log.type === type && log.metadata === metadata && extra(log)).last();
 	}
 
 	private static getRoleDataKeyFromSchemaKey(key: ModerationSetupRestriction): RoleDataKey {
@@ -907,8 +932,8 @@ export class ModerationActions {
 		}
 	}
 
-	private static fillOptions(rawOptions: ModerationActionOptions, type: TypeCodes) {
-		const options = { reason: null, ...rawOptions, type };
+	private static fillOptions(rawOptions: ModerationActionOptions, type: TypeVariation, metadata: TypeMetadata = 0) {
+		const options = { reason: null, ...rawOptions, type, metadata };
 		if (isNullishOrEmpty(options.reason)) options.reason = null;
 		if (isNullishOrEmpty(options.moderatorId)) options.moderatorId = process.env.CLIENT_ID;
 		if (isNullishOrZero(options.duration)) options.duration = null;
@@ -966,4 +991,4 @@ interface RolePermissionOverwriteOptionField {
 	permissions: bigint;
 }
 
-export type ModerationActionOptions = Omit<ModerationManagerCreateData, 'type'>;
+export type ModerationActionOptions = Omit<ModerationManagerCreateData, 'type' | 'metadata'>;

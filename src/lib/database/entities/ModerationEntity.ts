@@ -6,12 +6,12 @@ import type { ModerationManager, ModerationManagerUpdateData } from '#lib/modera
 import { Events } from '#lib/types';
 import { minutes, years } from '#utils/common';
 import {
-	TypeBits,
-	TypeCodes,
 	TypeMetadata,
 	TypeVariation,
 	TypeVariationAppealNames,
-	metadata,
+	combineTypeData,
+	getMetadata,
+	hasMetadata,
 	type ModerationTypeAssets
 } from '#utils/moderationConstants';
 import { getDisplayAvatar, getFullEmbedAuthor, getTag } from '#utils/util';
@@ -52,7 +52,10 @@ export class ModerationEntity extends BaseEntity {
 	public userId: string | null = null;
 
 	@Column('smallint')
-	public type?: number | null;
+	public type!: TypeVariation;
+
+	@Column('smallint')
+	public metadata!: TypeMetadata;
 
 	#manager: ModerationManager = null!;
 	#moderator: User | null = null;
@@ -64,7 +67,7 @@ export class ModerationEntity extends BaseEntity {
 
 		if (data) {
 			Object.assign(this, data);
-			this.type = ModerationEntity.getTypeFlagsFromDuration(this.type!, this.duration);
+			this.metadata = ModerationEntity.getTypeFlagsFromDuration(this.metadata, this.duration);
 		}
 	}
 
@@ -81,6 +84,7 @@ export class ModerationEntity extends BaseEntity {
 	public equals(other: ModerationEntity) {
 		return (
 			this.type === other.type &&
+			this.metadata === other.metadata &&
 			this.duration === other.duration &&
 			this.extraData === other.extraData &&
 			this.reason === other.reason &&
@@ -101,9 +105,11 @@ export class ModerationEntity extends BaseEntity {
 	/**
 	 * Retrieve the metadata (title and color) for this entry.
 	 */
-	public get metadata(): ModerationTypeAssets {
-		const data = metadata.get(this.type! & ~TypeMetadata.Invalidated);
-		if (typeof data === 'undefined') throw new Error(`Inexistent metadata for '0b${this.type!.toString(2).padStart(8, '0')}'.`);
+	public get meta(): ModerationTypeAssets {
+		const data = getMetadata(this.type, this.metadata);
+		if (typeof data === 'undefined') {
+			throw new Error(`Inexistent metadata for '0b${combineTypeData(this.type, this.metadata).toString(2).padStart(8, '0')}'.`);
+		}
 		return data;
 	}
 
@@ -111,14 +117,14 @@ export class ModerationEntity extends BaseEntity {
 	 * Retrieve the title for this entry's embed.
 	 */
 	public get title(): string {
-		return this.metadata.title;
+		return this.meta.title;
 	}
 
 	/**
 	 * Retrieve the color for this entry's embed.
 	 */
 	public get color(): number {
-		return this.metadata.color;
+		return this.meta.color;
 	}
 
 	/**
@@ -128,54 +134,28 @@ export class ModerationEntity extends BaseEntity {
 		return this.createdAt?.getTime() ?? Date.now();
 	}
 
-	/**
-	 * Get the variation type for this entry.
-	 */
-	public get typeVariation() {
-		/**
-		 * Variation is assigned to the first 4 bits of the entire type, therefore:
-		 * 0b00001111 &
-		 * 0bXXXX0100 =
-		 * 0b00000100
-		 */
-		return (this.type! & TypeBits.Variation) as TypeVariation;
-	}
-
-	/**
-	 * Get the metadata type for this entry.
-	 */
-	public get typeMetadata() {
-		/**
-		 * Metadata is assigned to the last 4 bits of the entire type, therefore:
-		 * 0b11110000 &
-		 * 0b0010XXXX =
-		 * 0b00100000
-		 */
-		return (this.type! & TypeBits.Metadata) as TypeMetadata;
-	}
-
 	public get appealType() {
-		return (this.type! & TypeMetadata.Appeal) === TypeMetadata.Appeal;
+		return (this.metadata & TypeMetadata.Appeal) === TypeMetadata.Appeal;
 	}
 
 	public get temporaryType() {
-		return (this.type! & TypeMetadata.Temporary) === TypeMetadata.Temporary;
+		return (this.metadata & TypeMetadata.Temporary) === TypeMetadata.Temporary;
 	}
 
 	public get temporaryFastType() {
-		return (this.type! & TypeMetadata.Fast) === TypeMetadata.Fast;
+		return (this.metadata & TypeMetadata.Fast) === TypeMetadata.Fast;
 	}
 
 	public get invalidated() {
-		return (this.type! & TypeMetadata.Invalidated) === TypeMetadata.Invalidated;
+		return (this.metadata & TypeMetadata.Invalidated) === TypeMetadata.Invalidated;
 	}
 
 	public get appealable() {
-		return !this.appealType && metadata.has(this.typeVariation | TypeMetadata.Appeal);
+		return !this.appealType && hasMetadata(this.type, TypeMetadata.Appeal);
 	}
 
 	public get temporable() {
-		return metadata.has(this.type! | TypeMetadata.Temporary);
+		return hasMetadata(this.type, TypeMetadata.Temporary);
 	}
 
 	public get cacheExpired() {
@@ -188,7 +168,7 @@ export class ModerationEntity extends BaseEntity {
 
 	public get appealTaskName() {
 		if (!this.appealable) return null;
-		switch (this.typeVariation) {
+		switch (this.type) {
 			case TypeVariation.Warning:
 				return TypeVariationAppealNames.Warning;
 			case TypeVariation.Mute:
@@ -223,17 +203,17 @@ export class ModerationEntity extends BaseEntity {
 		if (this.moderatorId !== process.env.CLIENT_ID) return true;
 
 		const before = Date.now() - Time.Minute;
-		const type = this.typeVariation;
+		const { type } = this;
 		const checkSoftBan = type === TypeVariation.Ban;
 		for (const entry of this.#manager.values()) {
 			// If it's not the same user target or if it's at least 1 minute old, skip
 			if (this.userId !== entry.userId || before > entry.createdTimestamp) continue;
 
 			// If there was a log with the same type in the last minute, do not duplicate
-			if (type === entry.typeVariation) return false;
+			if (type === entry.type) return false;
 
 			// If this log is a ban or an unban, but the user was softbanned recently, abort
-			if (checkSoftBan && entry.type === TypeCodes.SoftBan) return false;
+			if (checkSoftBan && entry.type === TypeVariation.SoftBan) return false;
 		}
 
 		// For all other cases, it should send
@@ -270,14 +250,8 @@ export class ModerationEntity extends BaseEntity {
 		return moderator;
 	}
 
-	public isType(type: TypeCodes) {
-		return (
-			this.type === type || this.type === (type | TypeMetadata.Temporary) || this.type === (type | TypeMetadata.Temporary | TypeMetadata.Fast)
-		);
-	}
-
 	public async edit(data: ModerationManagerUpdateData = {}) {
-		const dataWithType = { ...data, type: ModerationEntity.getTypeFlagsFromDuration(this.type!, data.duration ?? this.duration) };
+		const dataWithType = { ...data, metadata: ModerationEntity.getTypeFlagsFromDuration(this.metadata, data.duration ?? this.duration) };
 		const clone = this.clone();
 		try {
 			Object.assign(this, dataWithType);
@@ -295,10 +269,10 @@ export class ModerationEntity extends BaseEntity {
 		if (this.invalidated) return this;
 		const clone = this.clone();
 		try {
-			this.type! |= TypeMetadata.Invalidated;
+			this.metadata |= TypeMetadata.Invalidated;
 			await this.save();
 		} catch (error) {
-			this.type = clone.type;
+			this.metadata = clone.metadata;
 			throw error;
 		}
 
@@ -366,7 +340,7 @@ export class ModerationEntity extends BaseEntity {
 			this.duration = null;
 		}
 
-		this.type = ModerationEntity.getTypeFlagsFromDuration(this.type!, this.duration);
+		this.metadata = ModerationEntity.getTypeFlagsFromDuration(this.metadata, this.duration);
 		return this;
 	}
 
@@ -403,11 +377,6 @@ export class ModerationEntity extends BaseEntity {
 		return this;
 	}
 
-	public setType(value: TypeCodes) {
-		this.type = value;
-		return this;
-	}
-
 	public setUser(value: User | string) {
 		if (value instanceof User) {
 			this.#user = value;
@@ -433,9 +402,9 @@ export class ModerationEntity extends BaseEntity {
 		return this;
 	}
 
-	private static getTypeFlagsFromDuration(type: TypeCodes, duration: number | null) {
-		if (duration === null) return type & ~(TypeMetadata.Temporary | TypeMetadata.Fast);
-		if (duration < Time.Minute) return type | TypeMetadata.Temporary | TypeMetadata.Fast;
-		return type | TypeMetadata.Temporary;
+	private static getTypeFlagsFromDuration(metadata: TypeMetadata, duration: number | null) {
+		if (duration === null) return metadata & ~(TypeMetadata.Temporary | TypeMetadata.Fast);
+		if (duration < Time.Minute) return metadata | TypeMetadata.Temporary | TypeMetadata.Fast;
+		return metadata | TypeMetadata.Temporary;
 	}
 }

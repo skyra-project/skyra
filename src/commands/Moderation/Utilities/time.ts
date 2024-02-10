@@ -4,7 +4,7 @@ import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { seconds, years } from '#utils/common';
 import { getModeration, getSecurity } from '#utils/functions';
-import { SchemaKeys, TypeCodes } from '#utils/moderationConstants';
+import { SchemaKeys, TypeVariation } from '#utils/moderationConstants';
 import { getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -71,39 +71,21 @@ export class UserCommand extends SkyraCommand {
 		return send(message, content);
 	}
 
-	private async validateAction(message: GuildMessage, modlog: ModerationEntity, user: User) {
-		switch (modlog.type) {
-			case TypeCodes.FastTemporaryBan:
-			case TypeCodes.TemporaryBan:
-			case TypeCodes.Ban:
+	private async validateAction(message: GuildMessage, entry: ModerationEntity, user: User) {
+		switch (entry.type) {
+			case TypeVariation.Ban:
 				return this.checkBan(message, user);
-			case TypeCodes.FastTemporaryMute:
-			case TypeCodes.TemporaryMute:
-			case TypeCodes.Mute:
+			case TypeVariation.Mute:
 				return this.checkMute(message, user);
-			case TypeCodes.FastTemporaryVoiceMute:
-			case TypeCodes.TemporaryVoiceMute:
-			case TypeCodes.VoiceMute:
+			case TypeVariation.VoiceMute:
 				return this.checkVMute(message, user);
-			case TypeCodes.Warning:
-			case TypeCodes.FastTemporaryWarning:
-			case TypeCodes.TemporaryWarning:
+			case TypeVariation.Warning:
 			// TODO(kyranet): Add checks for restrictions
-			case TypeCodes.RestrictionAttachment:
-			case TypeCodes.FastTemporaryRestrictionAttachment:
-			case TypeCodes.TemporaryRestrictionAttachment:
-			case TypeCodes.RestrictionEmbed:
-			case TypeCodes.FastTemporaryRestrictionEmbed:
-			case TypeCodes.TemporaryRestrictionEmbed:
-			case TypeCodes.RestrictionEmoji:
-			case TypeCodes.FastTemporaryRestrictionEmoji:
-			case TypeCodes.TemporaryRestrictionEmoji:
-			case TypeCodes.RestrictionReaction:
-			case TypeCodes.FastTemporaryRestrictionReaction:
-			case TypeCodes.TemporaryRestrictionReaction:
-			case TypeCodes.RestrictionVoice:
-			case TypeCodes.FastTemporaryRestrictionVoice:
-			case TypeCodes.TemporaryRestrictionVoice:
+			case TypeVariation.RestrictedAttachment:
+			case TypeVariation.RestrictedEmbed:
+			case TypeVariation.RestrictedEmoji:
+			case TypeVariation.RestrictedReaction:
+			case TypeVariation.RestrictedVoice:
 				return;
 			default:
 				this.error(LanguageKeys.Commands.Moderation.TimeUnsupportedType);

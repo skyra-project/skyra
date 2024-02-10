@@ -4,7 +4,7 @@ import { ModerationCommand, type HandledCommandContext } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { floatPromise } from '#utils/common';
 import { deleteMessage, getModeration, getSecurity } from '#utils/functions';
-import { TypeCodes } from '#utils/moderationConstants';
+import { TypeVariation } from '#utils/moderationConstants';
 import { getImage, getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -25,13 +25,13 @@ export class UserModerationCommand extends ModerationCommand {
 			GuildSettings.Messages.ModerationReasonDisplay
 		]);
 
-		const modlog = await getModeration(message.guild).fetch(caseId);
-		if (!modlog || !modlog.isType(TypeCodes.Warning)) {
+		const entry = await getModeration(message.guild).fetch(caseId);
+		if (!entry || entry.type !== TypeVariation.Warning) {
 			this.error(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 		}
 
-		const user = await modlog.fetchUser();
-		const unwarnLog = await this.handle(message, { args, target: user, reason, modlog, duration: null, preHandled: null });
+		const user = await entry.fetchUser();
+		const unwarnLog = await this.handle(message, { args, target: user, reason, modlog: entry, duration: null, preHandled: null });
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
 		if (autoDelete) {

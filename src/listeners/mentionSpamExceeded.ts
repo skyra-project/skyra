@@ -2,7 +2,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
 import { getModeration } from '#utils/functions';
-import { TypeCodes } from '#utils/moderationConstants';
+import { TypeMetadata, TypeVariation } from '#utils/moderationConstants';
 import { getTag } from '#utils/util';
 import { Listener } from '@sapphire/framework';
 
@@ -30,7 +30,8 @@ export class UserListener extends Listener {
 				.create({
 					userId: message.author.id,
 					moderatorId: process.env.CLIENT_ID,
-					type: TypeCodes.Ban,
+					type: TypeVariation.Ban,
+					metadata: TypeMetadata.None,
 					reason
 				})
 				.create();

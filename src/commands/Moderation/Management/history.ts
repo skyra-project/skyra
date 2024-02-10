@@ -43,7 +43,7 @@ export class UserCommand extends SkyraSubcommand {
 
 		for (const log of logs.values()) {
 			if (log.invalidated || log.appealType) continue;
-			switch (log.typeVariation) {
+			switch (log.type) {
 				case TypeVariation.Ban:
 				case TypeVariation.SoftBan:
 					++bans;

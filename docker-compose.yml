@@ -1,24 +1,5 @@
 version: '2.4'
 services:
-  hasteserver:
-    container_name: hasteserver
-    depends_on:
-      - redis
-    environment:
-      PORT: 8290
-      STORAGE_DB: 2
-      STORAGE_EXPIRE_SECONDS: 21600
-      STORAGE_HOST: redis
-      STORAGE_PASSWORD: redis
-      STORAGE_PORT: 8287
-      STORAGE_TYPE: redis
-    image: 'skyrabot/haste-server:latest'
-    networks:
-      - skyra
-    ports:
-      - '8290:8290'
-    restart: always
-
   influx:
     command: 'influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt'
     container_name: influxdb
@@ -30,6 +11,10 @@ services:
     restart: always
     volumes:
       - 'influx-data:/var/lib/influxdb2'
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '3'
 
   postgres:
     container_name: postgres
@@ -45,6 +30,16 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=skyra
+    logging:
+      options:
+        max-size: '20m'
+        max-file: '3'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready']
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
 
   redis:
     command: 'redis-server --port 8287 --requirepass redis'
@@ -55,32 +50,36 @@ services:
     ports:
       - '8287:8287'
     restart: always
+    logging:
+      options:
+        max-size: '20m'
+        max-file: '3'
 
   skyra:
-    build:
-      context: ../
+    build: ./
     container_name: skyra
     depends_on:
       - hasteserver
       - influx
       - postgres
     env_file:
-      - ../src/.env.development
-      - ../src/.env.development.local
-    image: 'skyrabot/skyra:latest'
+      - src/.env.development
+      - src/.env.development.local
+    image: ghcr.io/skyra-project/skyra:latest
     networks:
       - skyra
     ports:
       - '8282:8282'
-      - '7282:7282'
     restart: always
     tty: true
+    logging:
+      options:
+        max-size: '1g'
+        max-file: '3'
 
 volumes:
   postgres-data:
-    external: true
   influx-data:
-    external: true
 
 networks:
   skyra:

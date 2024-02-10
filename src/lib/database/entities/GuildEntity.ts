@@ -172,6 +172,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('boolean', { name: 'events.ban-remove', default: false })
 	public eventsBanRemove = false;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.EventsUnknownMessages })
+	@Column('boolean', { name: 'events.unknown-messages', default: false })
+	public eventsUnknownMessages = true;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsTwemojiReactions })
 	@Column('boolean', { name: 'events.twemoji-reactions', default: false })
 	public eventsTwemojiReactions = false;

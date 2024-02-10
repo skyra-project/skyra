@@ -184,6 +184,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'messages.ignore-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public messagesIgnoreChannels: string[] = [];
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesIgnoreBots })
+	@Column('boolean', { name: 'messages.ignore-bots', default: true })
+	public messagesIgnoreBots = true;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesModerationDM })
 	@Column('boolean', { name: 'messages.moderation-dm', default: false })
 	public messagesModerationDm = false;

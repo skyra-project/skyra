@@ -263,7 +263,6 @@ export const TLDs = [
 	'college',
 	'cologne',
 	'com',
-	'comcast',
 	'commbank',
 	'community',
 	'company',
@@ -1277,7 +1276,6 @@ export const TLDs = [
 	'wtf',
 	'xbox',
 	'xerox',
-	'xfinity',
 	'xihuan',
 	'xin',
 	'कॉम', // xn--11b4c3d

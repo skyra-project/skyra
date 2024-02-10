@@ -1,0 +1,92 @@
+import { GuildSettings, readSettings } from '#lib/database';
+import { SkyraEmbed } from '#lib/discord';
+import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { type GuildMessage } from '#lib/types';
+import { escapeMarkdown } from '#utils/External/escapeMarkdown';
+import { Colors } from '#utils/constants';
+import { getLogger } from '#utils/functions';
+import { getFullEmbedAuthor } from '#utils/util';
+import { ApplyOptions } from '@sapphire/decorators';
+import { isNsfwChannel } from '@sapphire/discord.js-utilities';
+import { Listener } from '@sapphire/framework';
+import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
+import { diffWordsWithSpace } from 'diff';
+import {
+	GatewayDispatchEvents,
+	bold,
+	messageLink,
+	strikethrough,
+	type GatewayMessageUpdateDispatchData,
+	type GuildTextBasedChannel
+} from 'discord.js';
+
+@ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageUpdate, emitter: 'ws' })
+export class UserListener extends Listener {
+	public async run(data: GatewayMessageUpdateDispatchData) {
+		if (!data.guild_id) return;
+
+		const guild = this.container.client.guilds.cache.get(data.guild_id);
+		if (!guild) return;
+
+		const channel = guild.channels.cache.get(data.channel_id) as GuildTextBasedChannel;
+		if (!channel) return;
+
+		const old = channel.messages.cache.get(data.id) as GuildMessage | undefined;
+		const oldContent = old?.content;
+		const currentContent = data.content ?? '';
+		if ((old && old.content === currentContent) || data.webhook_id || !data.author) return;
+
+		const key = GuildSettings.Channels.Logs[isNsfwChannel(channel) ? 'MessageUpdateNsfw' : 'MessageUpdate'];
+		const [allowUnknownMessages, ignoredChannels, logChannelId, ignoredEdits, ignoredAll, t] = await readSettings(guild, (settings) => [
+			settings[GuildSettings.Events.UnknownMessages],
+			settings[GuildSettings.Messages.IgnoreChannels],
+			settings[key],
+			settings[GuildSettings.Channels.Ignore.MessageEdit],
+			settings[GuildSettings.Channels.Ignore.All],
+			settings.getLanguage()
+		]);
+
+		await getLogger(guild).send({
+			key,
+			channelId: logChannelId,
+			condition: () =>
+				!(!allowUnknownMessages && isNullish(old)) ||
+				!ignoredChannels.includes(channel.id) ||
+				!ignoredEdits.some((id) => id === channel.id || channel.parentId === id) ||
+				!ignoredAll.some((id) => id === channel.id || channel.parentId === id),
+			makeMessage: () => {
+				const embed = new SkyraEmbed()
+					.setColor(Colors.Amber)
+					.setAuthor(getFullEmbedAuthor(data.author!, messageLink(data.channel_id, data.id)))
+					.setTimestamp();
+
+				if (isNullish(old)) {
+					embed //
+						.splitFields(currentContent)
+						.setFooter({ text: t(LanguageKeys.Events.Messages.MessageUpdateUnknown, { channel: `#${channel.name}` }) });
+				} else {
+					embed
+						.splitFields(this.getMessageDifference(oldContent!, currentContent))
+						.setFooter({ text: t(LanguageKeys.Events.Messages.MessageUpdate, { channel: `#${channel.name}` }) });
+				}
+				return embed;
+			}
+		});
+	}
+
+	private getMessageDifference(old: string, current: string) {
+		const oldEmpty = isNullishOrEmpty(old);
+		const currentEmpty = isNullishOrEmpty(current);
+
+		// If both are empty, return an empty string
+		if (oldEmpty && currentEmpty) return '';
+		// If it went from empty to not empty, return the current bolded
+		if (oldEmpty && !currentEmpty) return bold(current);
+		// If it went from not empty to empty, return the old strikethrough
+		if (!oldEmpty && currentEmpty) return strikethrough(old);
+		// If both are not empty, return the difference
+		return diffWordsWithSpace(escapeMarkdown(old), escapeMarkdown(current))
+			.map((result) => (result.added ? bold(result.value) : result.removed ? strikethrough(result.value) : result.value))
+			.join(' ');
+	}
+}

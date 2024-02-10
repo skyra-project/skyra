@@ -33,8 +33,6 @@ export const enum Events {
 	RawMemberAdd = 'rawMemberAdd',
 	RawMemberRemove = 'rawMemberRemove',
 	RawMessageCreate = 'rawMessageCreate',
-	RawMessageDelete = 'rawMessageDelete',
-	RawMessageDeleteBulk = 'rawMessageDeleteBulk',
 	RawReactionAdd = 'rawReactionAdd',
 	RawReactionRemove = 'rawReactionRemove',
 	ReactionBlocked = 'reactionBlocked',

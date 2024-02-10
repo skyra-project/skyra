@@ -1,9 +1,10 @@
-import { ModerationManager, StickyRoleManager } from '#lib/moderation/managers';
+import { LoggerManager, ModerationManager, StickyRoleManager } from '#lib/moderation/managers';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import { container } from '@sapphire/framework';
 import type { Guild, GuildResolvable } from 'discord.js';
 
 interface GuildUtilities {
+	readonly logger: LoggerManager;
 	readonly moderation: ModerationManager;
 	readonly security: GuildSecurity;
 	readonly stickyRoles: StickyRoleManager;
@@ -17,6 +18,7 @@ export function getGuildUtilities(resolvable: GuildResolvable): GuildUtilities {
 	if (previous !== undefined) return previous;
 
 	const entry: GuildUtilities = {
+		logger: new LoggerManager(guild),
 		moderation: new ModerationManager(guild),
 		security: new GuildSecurity(guild),
 		stickyRoles: new StickyRoleManager(guild)
@@ -26,6 +28,7 @@ export function getGuildUtilities(resolvable: GuildResolvable): GuildUtilities {
 	return entry;
 }
 
+export const getLogger = getProperty('logger');
 export const getModeration = getProperty('moderation');
 export const getSecurity = getProperty('security');
 export const getStickyRoles = getProperty('stickyRoles');

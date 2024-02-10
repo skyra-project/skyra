@@ -20,7 +20,7 @@ function formatHeader(t: TFunction, message: GuildMessage): string {
  * This **cannot** make use of Discord's timestamp formatting as the result
  * of this function is placed inside of a codeblock.
  */
-function formatTimestamp(t: TFunction, timestamp: number): string {
+export function formatTimestamp(t: TFunction, timestamp: number): string {
 	return `[${t(LanguageKeys.Globals.HumanDateTimeValue, { value: timestamp })}]`;
 }
 

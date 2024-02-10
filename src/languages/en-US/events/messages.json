@@ -1,4 +1,13 @@
 {
 	"messageDelete": "Message Deleted • {{channel}}",
-	"messageUpdate": "Message Edited • {{channel}}"
+	"messageDeleteUnknown": "Unknown Message Deleted • {{channel}}",
+	"messageUpdate": "Message Edited • {{channel}}",
+	"messageUpdateUnknown": "Unknown Message Edited • {{channel}}",
+	"messageNotFound": "Unknown Message",
+	"messageDeleteBulk_one": "{{count}} message deleted in {{channel}} by {{author}}",
+	"messageDeleteBulk_other": "{{count}} messages deleted in {{channel}} by {{author}}",
+	"messageDeleteBulkUnknown_one": "{{count}} message deleted in {{channel}}",
+	"messageDeleteBulkUnknown_other": "{{count}} messages deleted in {{channel}}",
+	"messageDeleteBulkFooter": "Multiple Messages Deleted",
+	"jumpToContext": "Jump to Context"
 }

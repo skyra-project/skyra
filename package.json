@@ -41,9 +41,10 @@
 		"scripts:tlds": "node scripts/tlds.mjs",
 		"scripts:migration": "node scripts/migrations.mjs",
 		"dockerps": "pwsh -NoLogo ./.docker/control.ps1",
+		"typeorm:schema:sync": "yarn build && yarn typeorm schema:sync -d ormconfig.js",
+		"typeorm:schema:resync": "docker container rm -f postgres && docker compose up -d postgres && sleep 3 && yarn typeorm:schema:sync",
 		"typeorm:migration:up": "yarn build && yarn typeorm migration:run -d ormconfig.js",
 		"typeorm:migration:down": "yarn build && yarn typeorm migration:revert -d ormconfig.js",
-		"typeorm:schema:resync": "docker container rm -f postgres && docker volume rm postgres-data && docker volume create postgres-data && docker-compose -f ./.docker/docker-compose.yml up -d postgres && sleep 3 && yarn typeorm schema:sync",
 		"update": "yarn upgrade-interactive"
 	},
 	"dependencies": {

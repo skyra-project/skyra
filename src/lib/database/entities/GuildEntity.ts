@@ -174,7 +174,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsUnknownMessages })
 	@Column('boolean', { name: 'events.unknown-messages', default: false })
-	public eventsUnknownMessages = true;
+	public eventsUnknownMessages = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsTwemojiReactions })
 	@Column('boolean', { name: 'events.twemoji-reactions', default: false })

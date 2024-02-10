@@ -50,7 +50,7 @@ export class LoggerManager {
 
 		const messageOptions = this.#resolveMessageOptions(await options.makeMessage());
 
-		let requiredPermissions = PermissionFlagsBits.SendMessages;
+		let requiredPermissions = PermissionFlagsBits.SendMessages | PermissionFlagsBits.ViewChannel;
 		if (!isNullishOrEmpty(messageOptions.embeds)) requiredPermissions |= PermissionFlagsBits.EmbedLinks;
 		if (!isNullishOrEmpty(messageOptions.files)) requiredPermissions |= PermissionFlagsBits.AttachFiles;
 

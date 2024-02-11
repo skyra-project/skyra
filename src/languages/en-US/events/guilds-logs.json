@@ -139,5 +139,8 @@
 	"serverUpdateWidgetChannelRemoved": "• **Widget Channel**: {{value}} → Not Set",
 	"serverUpdateWidgetChannel": "• **Widget Channel**: {{previous}} → {{next}}",
 	"serverUpdateWidgetEnabled": "• **Widget Enabled**",
-	"serverUpdateWidgetDisabled": "• **Widget Disabled**"
+	"serverUpdateWidgetDisabled": "• **Widget Disabled**",
+	"voiceChannelJoin": "Joined {{channel}}",
+	"voiceChannelLeave": "Left {{channel}}",
+	"voiceChannelMove": "Moved from {{oldChannel}} to {{newChannel}}"
 }

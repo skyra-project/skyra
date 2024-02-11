@@ -9,4 +9,5 @@ export const MessageNotFound = T('events/messages:messageNotFound');
 export const MessageDeleteBulk = FT<{ author: UserMention; channel: ChannelMention; count: number }>('events/messages:messageDeleteBulk');
 export const MessageDeleteBulkUnknown = FT<{ channel: ChannelMention; count: number }>('events/messages:messageDeleteBulkUnknown');
 export const MessageDeleteBulkFooter = T('events/messages:messageDeleteBulkFooter');
+export const VoiceActivityFooter = T('events/messages:voiceActivityFooter');
 export const JumpToContext = T('events/messages:jumpToContext');

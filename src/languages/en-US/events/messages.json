@@ -9,5 +9,6 @@
 	"messageDeleteBulkUnknown_one": "{{count}} message deleted in {{channel}}",
 	"messageDeleteBulkUnknown_other": "{{count}} messages deleted in {{channel}}",
 	"messageDeleteBulkFooter": "Multiple Messages Deleted",
+	"voiceActivityFooter": "Voice Activity",
 	"jumpToContext": "Jump to Context"
 }

@@ -36,7 +36,7 @@ export class UserListener extends Listener<typeof Events.VoiceStateUpdate> {
 					.setAuthor(getFullEmbedAuthor(user))
 					.setColor(color)
 					.setDescription(description)
-					.setFooter({ text: t(LanguageKeys.Events.Messages.VoiceChannelFooter) })
+					.setFooter({ text: t(LanguageKeys.Events.Messages.VoiceActivityFooter) })
 					.setTimestamp();
 			}
 		});

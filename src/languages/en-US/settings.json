@@ -4,7 +4,7 @@
 	"channelsIgnoreMessageDelete": "Channels I should ignore when checking for deleted messages to log.",
 	"channelsIgnoreMessageEdit": "Channels I should ignore when checking for edited messages to log.",
 	"channelsIgnoreReactionAdd": "Channels I should ignore when checking for added reactions.",
-	"channelsIgnoreVoiceChannel": "The channels I should ignore when reporting changes in its members.",
+	"channelsIgnoreVoiceActivity": "The channels I should ignore when reporting activity changes.",
 	"channelsLogsChannelCreate": "The channel for channel creation logs, if set, I will send a message when another channel is created.",
 	"channelsLogsChannelDelete": "The channel for channel deletion logs, if set, I will send a message to this channel when another channel is deleted.",
 	"channelsLogsChannelUpdate": "The channel for channel update logs, if set, I will send a message to this channel when any channel (including this one) gets updated in any way. This message will contain the changes made to the channel.",

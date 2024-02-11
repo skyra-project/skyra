@@ -1,5 +1,5 @@
 import { FT, T, type Difference, type Value, type Values } from '#lib/types';
-import type { GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildVerificationLevel } from 'discord.js';
+import type { ChannelMention, GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildVerificationLevel } from 'discord.js';
 
 type Notifications = GuildDefaultMessageNotifications;
 
@@ -128,3 +128,6 @@ export const ServerUpdateWidgetChannelRemoved = FT<Value>('events/guilds-logs:se
 export const ServerUpdateWidgetChannel = FT<Difference>('events/guilds-logs:serverUpdateWidgetChannel');
 export const ServerUpdateWidgetEnabled = T('events/guilds-logs:serverUpdateWidgetEnabled');
 export const ServerUpdateWidgetDisabled = T('events/guilds-logs:serverUpdateWidgetDisabled');
+export const VoiceChannelJoin = FT<{ channel: ChannelMention }>('events/guilds-logs:voiceChannelJoin');
+export const VoiceChannelLeave = FT<{ channel: ChannelMention }>('events/guilds-logs:voiceChannelLeave');
+export const VoiceChannelMove = FT<{ oldChannel: ChannelMention; newChannel: ChannelMention }>('events/guilds-logs:voiceChannelMove');

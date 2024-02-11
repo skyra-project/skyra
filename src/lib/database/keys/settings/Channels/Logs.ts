@@ -22,3 +22,4 @@ export const RoleCreate = 'channelsLogsRoleCreate';
 export const RoleDelete = 'channelsLogsRoleDelete';
 export const RoleUpdate = 'channelsLogsRoleUpdate';
 export const ServerUpdate = 'channelsLogsServerUpdate';
+export const VoiceChannel = 'channelsLogsVoiceChannel';

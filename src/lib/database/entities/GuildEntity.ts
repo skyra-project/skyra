@@ -138,6 +138,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'channels.logs.server-update', nullable: true, length: 19 })
 	public channelsLogsServerUpdate?: string | null;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Logs.VoiceChannel, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.logs.voice-channel', nullable: true, length: 19 })
+	public channelsLogsVoiceChannel?: string | null;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.All, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.ignore.all', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreAll: string[] = [];
@@ -153,6 +157,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.ReactionAdd, type: 'textchannel' })
 	@Column('varchar', { name: 'channels.ignore.reaction-add', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreReactionAdds: string[] = [];
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.ReactionAdd, type: 'textchannel' })
+	@Column('varchar', { name: 'channels.ignore.voice-channel', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public channelsIgnoreVoiceChannels: string[] = [];
 
 	@Column('jsonb', { name: 'command-auto-delete', default: () => "'[]'::JSONB" })
 	public commandAutoDelete: CommandAutoDelete[] = [];

@@ -1,6 +1,7 @@
 {
-	"reaction": "Reaction Added",
+	"reactionDescription": "Reacted with {{emoji}} on {{message}}",
+	"reactionFooter": "First Reaction Added",
 	"filterFooter": "Filtered Reaction",
 	"filter": "{{REDCROSS}} Hey {{user}}, please do not add that reaction!",
-    "selfRoleHierarchy": "{{REDCROSS}} My role needs to be higher than all self-assignable roles, otherwise I can't grant them to people!"
+	"selfRoleHierarchy": "{{REDCROSS}} My role needs to be higher than all self-assignable roles, otherwise I can't grant them to people!"
 }

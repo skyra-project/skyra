@@ -158,7 +158,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('varchar', { name: 'channels.ignore.reaction-add', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreReactionAdds: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.VoiceActivity, type: 'textchannel' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.Channels.Ignore.VoiceActivity, type: 'voicechannel' })
 	@Column('varchar', { name: 'channels.ignore.voice-activity', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreVoiceActivities: string[] = [];
 

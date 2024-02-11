@@ -7,7 +7,7 @@ import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { VoiceState, type Snowflake, type VoiceBasedChannel } from 'discord.js';
+import type { Snowflake, User, VoiceBasedChannel, VoiceState } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.VoiceStateUpdate })
 export class UserListener extends Listener<typeof Events.VoiceStateUpdate> {
@@ -17,20 +17,21 @@ export class UserListener extends Listener<typeof Events.VoiceStateUpdate> {
 
 		const oldChannel = old.channel;
 		const nextChannel = next.channel;
+		const user = await this.container.client.users.fetch(next.id);
 
 		const [t, targetChannelId, ...settings] = await readSettings(next.guild, (settings) => [
 			settings.getLanguage(),
 			settings[GuildSettings.Channels.Logs.VoiceChannel],
-			settings[GuildSettings.Channels.Ignore.VoiceChannel],
+			settings[GuildSettings.Events.IncludeBots],
+			settings[GuildSettings.Channels.Ignore.VoiceActivity],
 			settings[GuildSettings.Channels.Ignore.All]
 		]);
 
 		await getLogger(next.guild).send({
 			key: GuildSettings.Channels.Logs.VoiceChannel,
 			channelId: targetChannelId,
-			condition: () => this.onCondition(oldChannel, nextChannel, ...settings),
+			condition: () => this.onCondition(oldChannel, nextChannel, user, ...settings),
 			makeMessage: () => {
-				const user = this.container.client.users.cache.get(next.id)!;
 				const { description, color } = this.render(t, oldChannel, nextChannel);
 				return new EmbedBuilder() //
 					.setAuthor(getFullEmbedAuthor(user))
@@ -45,9 +46,13 @@ export class UserListener extends Listener<typeof Events.VoiceStateUpdate> {
 	private onCondition(
 		old: VoiceBasedChannel | null,
 		next: VoiceBasedChannel | null,
+		user: User,
+		includeBots: boolean,
 		ignoredChannels: readonly Snowflake[],
 		ignoredAll: readonly Snowflake[]
 	) {
+		// If includeBots is false, and the user is a bot, return false
+		if (!includeBots && user.bot) return false;
 		// Assume in all conditions that old !== next, as checked earlier.
 		// If the old channel is null, the user joined a channel, check if `next` is ignored:
 		if (old === null) return this.onConditionSingleChannel(next!, ignoredChannels, ignoredAll);

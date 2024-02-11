@@ -1,6 +1,7 @@
 import { FT, T } from '#lib/types';
 
-export const Reaction = T<string>('events/reactions:reaction');
-export const Filter = FT<{ user: string }, string>('events/reactions:filter');
-export const FilterFooter = T<string>('events/reactions:filterFooter');
-export const SelfRoleHierarchy = T<string>('events/reactions:selfRoleHierarchy');
+export const ReactionDescription = FT<{ emoji: string; message: string }>('events/reactions:reactionDescription');
+export const ReactionFooter = T('events/reactions:reactionFooter');
+export const Filter = FT<{ user: string }>('events/reactions:filter');
+export const FilterFooter = T('events/reactions:filterFooter');
+export const SelfRoleHierarchy = T('events/reactions:selfRoleHierarchy');

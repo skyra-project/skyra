@@ -37,7 +37,7 @@
 	"eventsTwemojiReactions": "Whether or not twemoji reactions are posted in the reaction logs channel.",
 	"language": "The language I will use for your server. It may not be available in the language you want.",
 	"messagesIgnoreChannels": "The channels configured to not increase the point counter for users.",
-	"messagesIgnoreBots": "Whether or not I should ignore bots in message logs.",
+	"eventsIncludeBots": "Whether or not I should ignore bots in message logs.",
 	"messagesModerationAutoDelete": "Whether or not moderation commands should be auto-deleted or not.",
 	"messagesModerationDm": "Whether or not I should send a direct message to the target user on moderation actions.",
 	"messagesModerationMessageDisplay": "Whether or not a response should be sent for moderation commands.",

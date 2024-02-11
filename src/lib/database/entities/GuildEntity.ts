@@ -180,13 +180,13 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('boolean', { name: 'events.twemoji-reactions', default: false })
 	public eventsTwemojiReactions = false;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.EventsIncludeBots })
+	@Column('boolean', { name: 'events.include-bots', default: false })
+	public eventsIncludeBots = false;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesIgnoreChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'messages.ignore-channels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public messagesIgnoreChannels: string[] = [];
-
-	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesIgnoreBots })
-	@Column('boolean', { name: 'messages.ignore-bots', default: true })
-	public messagesIgnoreBots = true;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.MessagesModerationDM })
 	@Column('boolean', { name: 'messages.moderation-dm', default: false })

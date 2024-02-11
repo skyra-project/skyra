@@ -29,7 +29,7 @@ export class UserListener extends Listener {
 			(settings) => [
 				settings[GuildSettings.Selfmod.Reactions.Allowed],
 				settings[key],
-				settings[GuildSettings.Events.Twemoji],
+				settings[GuildSettings.Events.IncludeTwemoji],
 				settings[GuildSettings.Messages.IgnoreChannels],
 				settings[GuildSettings.Channels.Ignore.ReactionAdd],
 				settings[GuildSettings.Channels.Ignore.All],

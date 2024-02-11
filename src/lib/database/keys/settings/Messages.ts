@@ -1,5 +1,4 @@
 export const IgnoreChannels = 'messagesIgnoreChannels';
-export const IgnoreBots = 'messagesIgnoreBots';
 export const ModerationDM = 'messagesModerationDm';
 export const ModerationReasonDisplay = 'messagesModerationReasonDisplay';
 export const ModerationMessageDisplay = 'messagesModerationMessageDisplay';

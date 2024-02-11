@@ -16,10 +16,10 @@ import {
 	bold,
 	messageLink,
 	strikethrough,
+	type APIUser,
 	type GatewayMessageUpdateDispatchData,
 	type GuildTextBasedChannel,
-	type Snowflake,
-	type APIUser
+	type Snowflake
 } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageUpdate, emitter: 'ws' })
@@ -43,7 +43,7 @@ export class UserListener extends Listener {
 			settings.getLanguage(),
 			settings[key],
 			settings[GuildSettings.Events.UnknownMessages],
-			settings[GuildSettings.Messages.IgnoreBots],
+			settings[GuildSettings.Events.IncludeBots],
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[GuildSettings.Channels.Ignore.MessageEdit],
 			settings[GuildSettings.Channels.Ignore.All]
@@ -78,13 +78,13 @@ export class UserListener extends Listener {
 		channel: GuildTextBasedChannel,
 		author: APIUser,
 		allowUnknownMessages: boolean,
-		ignoreBots: boolean,
+		includeBots: boolean,
 		ignoredChannels: readonly Snowflake[],
 		ignoredEdits: readonly Snowflake[],
 		ignoredAll: readonly Snowflake[]
 	) {
-		// If ignoreBots is true, and the message author is a bot, return false
-		if (ignoreBots && author.bot) return false;
+		// If includeBots is false, and the message author is a bot, return false
+		if (!includeBots && author.bot) return false;
 		// If allowUnknownMessages is false, and the message is nullish, return false
 		if (!allowUnknownMessages && isNullish(cachedMessage)) return false;
 		// If the channel is in the ignoredChannels array, return false

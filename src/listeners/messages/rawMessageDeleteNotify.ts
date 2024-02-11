@@ -38,7 +38,7 @@ export class UserListener extends Listener {
 			settings.getLanguage(),
 			settings[key],
 			settings[GuildSettings.Events.UnknownMessages],
-			settings[GuildSettings.Messages.IgnoreBots],
+			settings[GuildSettings.Events.IncludeBots],
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[GuildSettings.Channels.Ignore.MessageDelete],
 			settings[GuildSettings.Channels.Ignore.All]
@@ -74,13 +74,13 @@ export class UserListener extends Listener {
 		message: GuildMessage | undefined,
 		channel: GuildTextBasedChannel,
 		allowUnknownMessages: boolean,
-		ignoreBots: boolean,
+		includeBots: boolean,
 		ignoredChannels: readonly Snowflake[],
 		ignoredDeletes: readonly Snowflake[],
 		ignoredAll: readonly Snowflake[]
 	) {
-		// If ignoreBots is true, and the message author is a bot, return false
-		if (ignoreBots && message?.author.bot) return false;
+		// If includeBots is false, and the message author is a bot, return false
+		if (!includeBots && message?.author.bot) return false;
 		// If allowUnknownMessages is false, and the message is nullish, return false
 		if (!allowUnknownMessages && isNullish(message)) return false;
 		// If the channel is in the ignoredChannels array, return false

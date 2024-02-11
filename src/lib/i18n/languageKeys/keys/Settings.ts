@@ -10,6 +10,7 @@ export const EventsBanRemove = T('settings:eventsBanRemove');
 export const EventsUnknownMessages = T('settings:eventsUnknownMessages');
 export const EventsTwemojiReactions = T('settings:eventsTwemojiReactions');
 export const MessagesIgnoreChannels = T('settings:messagesIgnoreChannels');
+export const EventsIncludeBots = T('settings:eventsIncludeBots');
 export const MessagesModerationAutoDelete = T('settings:messagesModerationAutoDelete');
 export const MessagesModerationDM = T('settings:messagesModerationDm');
 export const MessagesModerationMessageDisplay = T('settings:messagesModerationMessageDisplay');

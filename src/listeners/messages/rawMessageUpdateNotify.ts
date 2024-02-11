@@ -16,8 +16,10 @@ import {
 	bold,
 	messageLink,
 	strikethrough,
+	type APIUser,
 	type GatewayMessageUpdateDispatchData,
-	type GuildTextBasedChannel
+	type GuildTextBasedChannel,
+	type Snowflake
 } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageUpdate, emitter: 'ws' })
@@ -31,36 +33,33 @@ export class UserListener extends Listener {
 		const channel = guild.channels.cache.get(data.channel_id) as GuildTextBasedChannel;
 		if (!channel) return;
 
-		const old = channel.messages.cache.get(data.id) as GuildMessage | undefined;
-		const oldContent = old?.content;
+		const cachedMessage = channel.messages.cache.get(data.id) as GuildMessage | undefined;
+		const oldContent = cachedMessage?.content;
 		const currentContent = data.content ?? '';
-		if ((old && old.content === currentContent) || data.webhook_id || !data.author) return;
+		if ((cachedMessage && cachedMessage.content === currentContent) || data.webhook_id || !data.author) return;
 
 		const key = GuildSettings.Channels.Logs[isNsfwChannel(channel) ? 'MessageUpdateNsfw' : 'MessageUpdate'];
-		const [allowUnknownMessages, ignoredChannels, logChannelId, ignoredEdits, ignoredAll, t] = await readSettings(guild, (settings) => [
-			settings[GuildSettings.Events.UnknownMessages],
-			settings[GuildSettings.Messages.IgnoreChannels],
+		const [t, logChannelId, ...settings] = await readSettings(guild, (settings) => [
+			settings.getLanguage(),
 			settings[key],
+			settings[GuildSettings.Events.UnknownMessages],
+			settings[GuildSettings.Events.IncludeBots],
+			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[GuildSettings.Channels.Ignore.MessageEdit],
-			settings[GuildSettings.Channels.Ignore.All],
-			settings.getLanguage()
+			settings[GuildSettings.Channels.Ignore.All]
 		]);
 
 		await getLogger(guild).send({
 			key,
 			channelId: logChannelId,
-			condition: () =>
-				!(!allowUnknownMessages && isNullish(old)) ||
-				!ignoredChannels.includes(channel.id) ||
-				!ignoredEdits.some((id) => id === channel.id || channel.parentId === id) ||
-				!ignoredAll.some((id) => id === channel.id || channel.parentId === id),
+			condition: () => this.onCondition(cachedMessage, channel, data.author!, ...settings),
 			makeMessage: () => {
 				const embed = new SkyraEmbed()
 					.setColor(Colors.Amber)
 					.setAuthor(getFullEmbedAuthor(data.author!, messageLink(data.channel_id, data.id)))
 					.setTimestamp();
 
-				if (isNullish(old)) {
+				if (isNullish(cachedMessage)) {
 					embed //
 						.splitFields(currentContent)
 						.setFooter({ text: t(LanguageKeys.Events.Messages.MessageUpdateUnknown, { channel: `#${channel.name}` }) });
@@ -72,6 +71,30 @@ export class UserListener extends Listener {
 				return embed;
 			}
 		});
+	}
+
+	private onCondition(
+		cachedMessage: GuildMessage | undefined,
+		channel: GuildTextBasedChannel,
+		author: APIUser,
+		allowUnknownMessages: boolean,
+		includeBots: boolean,
+		ignoredChannels: readonly Snowflake[],
+		ignoredEdits: readonly Snowflake[],
+		ignoredAll: readonly Snowflake[]
+	) {
+		// If includeBots is false, and the message author is a bot, return false
+		if (!includeBots && author.bot) return false;
+		// If allowUnknownMessages is false, and the message is nullish, return false
+		if (!allowUnknownMessages && isNullish(cachedMessage)) return false;
+		// If the channel is in the ignoredChannels array, return false
+		if (ignoredChannels.includes(channel.id)) return false;
+		// If the channel or its parent is in the ignoredEdits array, return false
+		if (ignoredEdits.some((id) => id === channel.id || channel.parentId === id)) return false;
+		// If the channel or its parent is in the ignoredAll array, return false
+		if (ignoredAll.some((id) => id === channel.id || channel.parentId === id)) return false;
+		// All checks passed, return true
+		return true;
 	}
 
 	private getMessageDifference(old: string, current: string) {

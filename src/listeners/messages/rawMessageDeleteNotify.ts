@@ -1,5 +1,6 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
 import { makeRow } from '#utils/deprecate';
 import { getLogger } from '#utils/functions';
@@ -10,7 +11,14 @@ import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { cutText, isNullish, isNullishOrEmpty } from '@sapphire/utilities';
-import { ButtonStyle, GatewayDispatchEvents, messageLink, type GatewayMessageDeleteDispatchData, type GuildTextBasedChannel } from 'discord.js';
+import {
+	ButtonStyle,
+	GatewayDispatchEvents,
+	messageLink,
+	type GatewayMessageDeleteDispatchData,
+	type GuildTextBasedChannel,
+	type Snowflake
+} from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageDelete, emitter: 'ws' })
 export class UserListener extends Listener {
@@ -23,26 +31,23 @@ export class UserListener extends Listener {
 		const channel = guild.channels.cache.get(data.channel_id) as GuildTextBasedChannel;
 		if (!channel) return;
 
-		const message = channel.messages.cache.get(data.id);
+		const message = channel.messages.cache.get(data.id) as GuildMessage | undefined;
 
 		const key = GuildSettings.Channels.Logs[isNsfwChannel(channel) ? 'MessageDeleteNsfw' : 'MessageDelete'];
-		const [allowUnknownMessages, ignoredChannels, logChannelId, ignoredDeletes, ignoredAll, t] = await readSettings(guild, (settings) => [
-			settings[GuildSettings.Events.UnknownMessages],
-			settings[GuildSettings.Messages.IgnoreChannels],
+		const [t, targetChannelId, ...settings] = await readSettings(guild, (settings) => [
+			settings.getLanguage(),
 			settings[key],
+			settings[GuildSettings.Events.UnknownMessages],
+			settings[GuildSettings.Events.IncludeBots],
+			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[GuildSettings.Channels.Ignore.MessageDelete],
-			settings[GuildSettings.Channels.Ignore.All],
-			settings.getLanguage()
+			settings[GuildSettings.Channels.Ignore.All]
 		]);
 
 		await getLogger(guild).send({
 			key,
-			channelId: logChannelId,
-			condition: () =>
-				!(!allowUnknownMessages && isNullish(message)) ||
-				!ignoredChannels.includes(channel.id) ||
-				!ignoredDeletes.some((id) => id === channel.id || channel.parentId === id) ||
-				!ignoredAll.some((id) => id === channel.id || channel.parentId === id),
+			channelId: targetChannelId,
+			condition: () => this.onCondition(message, channel, ...settings),
 			makeMessage: () => {
 				const embed = new EmbedBuilder().setColor(Colors.Red).setTimestamp();
 
@@ -63,6 +68,29 @@ export class UserListener extends Listener {
 				return setMultipleEmbedImages(embed, getImages(message));
 			}
 		});
+	}
+
+	private onCondition(
+		message: GuildMessage | undefined,
+		channel: GuildTextBasedChannel,
+		allowUnknownMessages: boolean,
+		includeBots: boolean,
+		ignoredChannels: readonly Snowflake[],
+		ignoredDeletes: readonly Snowflake[],
+		ignoredAll: readonly Snowflake[]
+	) {
+		// If includeBots is false, and the message author is a bot, return false
+		if (!includeBots && message?.author.bot) return false;
+		// If allowUnknownMessages is false, and the message is nullish, return false
+		if (!allowUnknownMessages && isNullish(message)) return false;
+		// If the channel is in the ignoredChannels array, return false
+		if (ignoredChannels.includes(channel.id)) return false;
+		// If the channel or its parent is in the ignoredDeletes array, return false
+		if (ignoredDeletes.some((id) => id === channel.id || channel.parentId === id)) return false;
+		// If the channel or its parent is in the ignoredAll array, return false
+		if (ignoredAll.some((id) => id === channel.id || channel.parentId === id)) return false;
+		// All checks passed, return true
+		return true;
 	}
 
 	private getJumpButton(t: TFunction, channelId: string, messageId: string) {

@@ -1,7 +1,7 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
-import { floatPromise, seconds, toErrorCodeResult } from '#utils/common';
+import { seconds, toErrorCodeResult } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getLogPrefix, getLogger, getStickyRoles, getUserMentionWithFlagsString } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
@@ -39,7 +39,7 @@ export class UserListener extends Listener {
 			return true;
 		}
 
-		floatPromise(member.roles.add(stickyRoles));
+		void this.#handleStickyRolesAddRoles(member, stickyRoles);
 
 		return false;
 	}
@@ -87,5 +87,20 @@ export class UserListener extends Listener {
 					.setTimestamp();
 			}
 		});
+	}
+
+	async #handleStickyRolesAddRoles(member: GuildMember, stickyRoles: readonly Snowflake[]) {
+		const guildRoles = member.guild.roles;
+		const roles = stickyRoles.filter((role) => guildRoles.cache.has(role));
+		const result = await toErrorCodeResult(member.roles.add(roles));
+		await result.inspectErrAsync((code) => this.#handleStickyRolesAddRolesErr(code));
+	}
+
+	#handleStickyRolesAddRolesErr(code: RESTJSONErrorCodes) {
+		// The member left the guild before we could add the roles, ignore:
+		if (code === RESTJSONErrorCodes.UnknownMember) return;
+
+		// Otherwise, log the error:
+		this.container.logger.error(`${getLogPrefix(this)} Failed to add the muted role to a member.`);
 	}
 }

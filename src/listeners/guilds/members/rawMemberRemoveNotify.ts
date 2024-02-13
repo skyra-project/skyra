@@ -1,55 +1,58 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
+import { seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
-import { getModeration } from '#utils/functions';
+import { getLogger, getModeration, getUserMentionWithFlagsString } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
 import { getFullEmbedAuthor } from '#utils/util';
-import { EmbedBuilder } from '@discordjs/builders';
+import { EmbedBuilder, TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import type { GatewayGuildMemberRemoveDispatch, Guild, GuildMember } from 'discord.js';
+import type { GatewayGuildMemberRemoveDispatchData, Guild, GuildMember } from 'discord.js';
+
+const Root = LanguageKeys.Events.Guilds.Members;
+const ChannelSettingsKey = GuildSettings.Channels.Logs.MemberRemove;
 
 @ApplyOptions<Listener.Options>({ event: Events.RawMemberRemove })
 export class UserListener extends Listener {
-	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatch['d']) {
-		const key = GuildSettings.Channels.Logs.MemberRemove;
-		const [logChannelId, t] = await readSettings(guild, (settings) => [settings[key], settings.getLanguage()]);
-		if (isNullish(logChannelId)) return;
+	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatchData) {
+		const [t, targetChannelId] = await readSettings(guild, (settings) => [settings.getLanguage(), settings[ChannelSettingsKey]]);
+		if (isNullish(targetChannelId)) return;
 
 		const isModerationAction = await this.isModerationAction(guild, user);
 
 		const footer = isModerationAction.kicked
-			? t(LanguageKeys.Events.Guilds.Members.GuildMemberKicked)
+			? t(Root.GuildMemberKicked)
 			: isModerationAction.banned
-				? t(LanguageKeys.Events.Guilds.Members.GuildMemberBanned)
+				? t(Root.GuildMemberBanned)
 				: isModerationAction.softbanned
-					? t(LanguageKeys.Events.Guilds.Members.GuildMemberSoftBanned)
-					: t(LanguageKeys.Events.Guilds.Members.GuildMemberRemove);
+					? t(Root.GuildMemberSoftBanned)
+					: t(Root.GuildMemberRemove);
 
-		const time = this.processJoinedTimestamp(member);
-		this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, key, () =>
-			new EmbedBuilder()
-				.setColor(Colors.Red)
-				.setAuthor(getFullEmbedAuthor(user))
-				.setDescription(
-					t(
-						time === -1
-							? LanguageKeys.Events.Guilds.Members.GuildMemberRemoveDescription
-							: LanguageKeys.Events.Guilds.Members.GuildMemberRemoveDescriptionWithJoinedAt,
-						{
-							mention: `<@${user.id}>`,
-							time
-						}
-					)
-				)
-				.setFooter({ text: footer })
-				.setTimestamp()
-		);
+		const joinedTimestamp = this.processJoinedTimestamp(member);
+		await getLogger(guild).send({
+			key: ChannelSettingsKey,
+			channelId: targetChannelId,
+			makeMessage: () => {
+				const key = joinedTimestamp === -1 ? Root.GuildMemberRemoveDescription : Root.GuildMemberRemoveDescriptionWithJoinedAt;
+				const description = t(key, {
+					user: getUserMentionWithFlagsString(user.flags ?? 0, user.id),
+					relativeTime: time(seconds.fromMilliseconds(joinedTimestamp), TimestampStyles.RelativeTime)
+				});
+
+				return new EmbedBuilder()
+					.setColor(Colors.Red)
+					.setAuthor(getFullEmbedAuthor(user))
+					.setDescription(description)
+					.setFooter({ text: footer })
+					.setTimestamp();
+			}
+		});
 	}
 
-	private async isModerationAction(guild: Guild, user: GatewayGuildMemberRemoveDispatch['d']['user']): Promise<IsModerationAction> {
+	private async isModerationAction(guild: Guild, user: GatewayGuildMemberRemoveDispatchData['user']): Promise<IsModerationAction> {
 		const moderation = getModeration(guild);
 		await moderation.waitLock();
 
@@ -73,7 +76,7 @@ export class UserListener extends Listener {
 	private processJoinedTimestamp(member: GuildMember | null) {
 		if (member === null) return -1;
 		if (member.joinedTimestamp === null) return -1;
-		return Date.now() - member.joinedTimestamp;
+		return member.joinedTimestamp;
 	}
 }
 

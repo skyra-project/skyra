@@ -38,13 +38,8 @@ export const enum Emojis {
 	GreenTickSerialized = 's637706251253317669',
 	Loading = '<a:sloading:656988867403972629>',
 	RedCross = '<:redCross:637706251257511973>',
-	Star = '<:Star:736337719982030910>',
-	StarEmpty = '<:StarEmpty:736337232738254849>',
-	StarHalf = '<:StarHalf:736337529900499034>',
-	/** This is the default Twemoji, uploaded as a custom emoji because iOS and Android do not render the emoji properly */
-	MaleSignEmoji = '<:2642:845772713770614874>',
-	/** This is the default Twemoji, uploaded as a custom emoji because iOS and Android do not render the emoji properly */
-	FemaleSignEmoji = '<:2640:845772713729720320>'
+	SpammerIcon = '<:spammer:1206893298292232245>',
+	QuarantinedIcon = '<:quarantined:1206899526447923210>'
 }
 
 export const enum BrandingColors {

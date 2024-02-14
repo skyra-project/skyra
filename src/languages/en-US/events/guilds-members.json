@@ -1,6 +1,6 @@
 {
 	"guildMemberAdd": "User Joined",
-	"guildMemberAddDescription": "{{mention}} | **Joined Discord**: {{time, duration}} ago.",
+	"guildMemberAddDescription": "{{user}} joined Discord {{relativeTime}}",
 	"guildMemberAddedRoles_other": "**Added roles**: {{addedRoles, list(conjunction)}}",
 	"guildMemberAddedRoles_one": "**Added role**: {{addedRoles}}",
 	"guildMemberAddMute": "Muted User joined",
@@ -8,8 +8,8 @@
 	"guildMemberKicked": "User Kicked",
 	"guildMemberNoUpdate": "No update detected",
 	"guildMemberRemove": "User Left",
-	"guildMemberRemoveDescription": "{{mention}} | **Joined Server**: Unknown.",
-	"guildMemberRemoveDescriptionWithJoinedAt": "{{mention}} | **Joined Server**: {{time, duration}} ago.",
+	"guildMemberRemoveDescription": "{{user}} joined this server *an unknown time ago*",
+	"guildMemberRemoveDescriptionWithJoinedAt": "{{user}} joined this server {{relativeTime}}",
 	"guildMemberRemovedRoles_other": "**Removed roles**: {{removedRoles, list(conjunction)}}",
 	"guildMemberRemovedRoles_one": "**Removed role**: {{removedRoles}}",
 	"guildMemberSoftBanned": "User Softbanned",

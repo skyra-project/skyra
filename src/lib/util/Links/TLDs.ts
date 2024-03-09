@@ -513,7 +513,6 @@ export const TLDs = [
 	'gs',
 	'gt',
 	'gu',
-	'guardian',
 	'gucci',
 	'guge',
 	'guide',

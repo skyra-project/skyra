@@ -21,6 +21,5 @@
 		"{{LOADING}} Tuning in to the right frequencies...",
 		"{{LOADING}} Reticulating splines..."
 	],
-	"prefixReminder": "The prefix in this server is set to: `{{prefix}}`",
-	"reminderHeader": "⏲ Hey there! You asked to be reminded at {{timestamp}} about:"
+	"prefixReminder": "The prefix in this server is set to: `{{prefix}}`"
 }

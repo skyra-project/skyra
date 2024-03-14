@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types';
+import { T } from '#lib/types';
 
 export const FetchBansFail = T('system:fetchBansFail');
 export const Loading = T<readonly string[]>('system:loading');
@@ -12,4 +12,3 @@ export const HelpTitles = T<{
 	examples: string;
 	reminders: string;
 }>('system:helpTitles');
-export const ReminderHeader = FT<{ timestamp: string }>('system:reminderHeader');

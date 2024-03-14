@@ -21,6 +21,5 @@
 		"{{LOADING}} Ajustando a las frecuencias correctas...",
 		"{{LOADING}} Reticulando curvas..."
 	],
-	"prefixReminder": "El prefijo de este servidor es: `{{prefix}}`",
-	"reminderHeader": "⏲ ¡Hola! Veo que has solicitado ser recordado en {{timestamp}} sobre:"
+	"prefixReminder": "El prefijo de este servidor es: `{{prefix}}`"
 }

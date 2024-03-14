@@ -7,6 +7,7 @@ export const DisableNaturalPrefix = T('settings:disableNaturalPrefix');
 export const DisabledChannels = T('settings:disabledChannels');
 export const EventsBanAdd = T('settings:eventsBanAdd');
 export const EventsBanRemove = T('settings:eventsBanRemove');
+export const EventsTimeout = T('settings:eventsTimeout');
 export const EventsUnknownMessages = T('settings:eventsUnknownMessages');
 export const EventsTwemojiReactions = T('settings:eventsTwemojiReactions');
 export const MessagesIgnoreChannels = T('settings:messagesIgnoreChannels');

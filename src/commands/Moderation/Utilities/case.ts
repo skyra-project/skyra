@@ -35,7 +35,7 @@ const OverviewColors = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe53
 
 @ApplyOptions<SkyraSubcommand.Options>({
 	description: Root.Description,
-	detailedDescription: LanguageKeys.Commands.Shared.SlashDetailed,
+	detailedDescription: LanguageKeys.Commands.Shared.SlashOnlyDetailedDescription,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],

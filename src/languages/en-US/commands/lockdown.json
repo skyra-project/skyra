@@ -1,0 +1,16 @@
+{
+	"name": "lockdown",
+	"description": "Manage the server's lockdown status",
+	"actionName": "action",
+	"actionDescription": "The action to perform",
+	"channelName": "channel",
+	"channelDescription": "The channel to lock down",
+	"durationName": "duration",
+	"durationDescription": "How long the lockdown should last",
+	"roleName": "role",
+	"roleDescription": "The role to use for the lockdown",
+	"globalName": "global",
+	"globalDescription": "⚠️ Whether or not to apply the lockdown to the entire server",
+	"actionLock": "Lock",
+	"actionUnlock": "Unlock"
+}

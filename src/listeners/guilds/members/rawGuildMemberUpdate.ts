@@ -3,24 +3,27 @@ import { api } from '#lib/discord/Api';
 import { floatPromise } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
+import { isNullish } from '@sapphire/utilities';
 import {
 	AuditLogEvent,
 	GatewayDispatchEvents,
 	PermissionFlagsBits,
-	type GatewayGuildMemberUpdateDispatch,
+	type GatewayGuildMemberUpdateDispatchData,
 	type Guild,
 	type RESTGetAPIAuditLogResult
 } from 'discord.js';
+
+type GatewayData = Readonly<GatewayGuildMemberUpdateDispatchData>;
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.GuildMemberUpdate, emitter: 'ws' })
 export class UserListener extends Listener {
 	private readonly requiredPermissions = PermissionFlagsBits.ViewAuditLog;
 
-	public run(data: GatewayGuildMemberUpdateDispatch['d']) {
+	public run(data: GatewayData) {
 		const guild = this.container.client.guilds.cache.get(data.guild_id);
 
 		// If the guild does not exist for some reason, skip:
-		if (typeof guild === 'undefined') return;
+		if (isNullish(guild)) return;
 
 		// If the bot doesn't have the required permissions, skip:
 		if (!guild.members.me?.permissions.has(this.requiredPermissions)) return;
@@ -28,7 +31,7 @@ export class UserListener extends Listener {
 		floatPromise(this.handleRoleSets(guild, data));
 	}
 
-	private async handleRoleSets(guild: Guild, data: Readonly<GatewayGuildMemberUpdateDispatch['d']>) {
+	private async handleRoleSets(guild: Guild, data: GatewayData) {
 		// Handle unique role sets
 		let hasMultipleRolesInOneSet = false;
 		const allRoleSets = await readSettings(guild, GuildSettings.Roles.UniqueRoleSets);

@@ -218,6 +218,7 @@ export interface ModerationAction {
 	restrictedVoice: string;
 	setNickname: string;
 	removeRole: string;
+	timeout: string;
 }
 
 export class ModerationActions {
@@ -377,6 +378,23 @@ export class ModerationActions {
 		await this.sendDM(moderationLog, sendOptions);
 
 		return (await moderationLog.create())!;
+	}
+
+	public async timeout(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await api().guilds.editMember(
+			this.guild.id,
+			rawOptions.userId,
+			{ communication_disabled_until: isNullishOrZero(rawOptions.duration) ? null : new Date(Date.now() + rawOptions.duration).toISOString() },
+			{ reason: rawOptions.reason ?? undefined }
+		);
+		const options = ModerationActions.fillOptions(rawOptions, TypeVariation.Timeout, TypeMetadata.Temporary);
+		const moderationLog = getModeration(this.guild).create(options);
+		await this.sendDM(moderationLog, sendOptions);
+		return (await moderationLog.create())!;
+	}
+
+	public async timeoutEnd(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		
 	}
 
 	public async kick(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {

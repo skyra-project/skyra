@@ -37,6 +37,15 @@ export class LoggerTypeManager<Entry extends LoggerTypeContext = LoggerTypeConte
 	}
 
 	/**
+	 * Returns whether or not the context data is set, which will always be true
+	 * when an action was taken by Skyra.
+	 * @param id The ID of the context data to check.
+	 */
+	public isSet(id: Snowflake) {
+		return this.#context.has(id);
+	}
+
+	/**
 	 * Wait for the context data to be set.
 	 * @param id The ID of the context data to wait for.
 	 */
@@ -104,4 +113,5 @@ export class LoggerTypeManager<Entry extends LoggerTypeContext = LoggerTypeConte
 
 export interface LoggerTypeContext {
 	userId: Snowflake;
+	reason?: string;
 }

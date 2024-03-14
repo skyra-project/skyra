@@ -17,7 +17,8 @@ export const enum TypeVariation {
 	SetNickname,
 	AddRole,
 	RemoveRole,
-	RestrictedEmoji
+	RestrictedEmoji,
+	Timeout
 }
 
 export const enum TypeMetadata {
@@ -25,7 +26,8 @@ export const enum TypeMetadata {
 	Appeal = 1 << 0,
 	Temporary = 1 << 1,
 	Fast = 1 << 2,
-	Invalidated = 1 << 3
+	Invalidated = 1 << 3,
+	Completed = 1 << 4
 }
 
 const TypeCodes = {
@@ -53,6 +55,7 @@ const TypeCodes = {
 	UnSetNickname: combineTypeData(TypeVariation.SetNickname, TypeMetadata.Appeal),
 	UnAddRole: combineTypeData(TypeVariation.AddRole, TypeMetadata.Appeal),
 	UnRemoveRole: combineTypeData(TypeVariation.RemoveRole, TypeMetadata.Appeal),
+	UnTimeout: combineTypeData(TypeVariation.Timeout, TypeMetadata.Appeal),
 	TemporaryWarning: combineTypeData(TypeVariation.Warning, TypeMetadata.Temporary),
 	TemporaryMute: combineTypeData(TypeVariation.Mute, TypeMetadata.Temporary),
 	TemporaryBan: combineTypeData(TypeVariation.Ban, TypeMetadata.Temporary),
@@ -65,6 +68,7 @@ const TypeCodes = {
 	TemporarySetNickname: combineTypeData(TypeVariation.SetNickname, TypeMetadata.Temporary),
 	TemporaryAddRole: combineTypeData(TypeVariation.AddRole, TypeMetadata.Temporary),
 	TemporaryRemoveRole: combineTypeData(TypeVariation.RemoveRole, TypeMetadata.Temporary),
+	TemporaryTimeout: combineTypeData(TypeVariation.Timeout, TypeMetadata.Temporary),
 	FastTemporaryWarning: combineTypeData(TypeVariation.Warning, TypeMetadata.Temporary | TypeMetadata.Fast),
 	FastTemporaryMute: combineTypeData(TypeVariation.Mute, TypeMetadata.Temporary | TypeMetadata.Fast),
 	FastTemporaryBan: combineTypeData(TypeVariation.Ban, TypeMetadata.Temporary | TypeMetadata.Fast),
@@ -77,6 +81,7 @@ const TypeCodes = {
 	FastTemporarySetNickname: combineTypeData(TypeVariation.SetNickname, TypeMetadata.Temporary | TypeMetadata.Fast),
 	FastTemporaryAddRole: combineTypeData(TypeVariation.AddRole, TypeMetadata.Temporary | TypeMetadata.Fast),
 	FastTemporaryRemoveRole: combineTypeData(TypeVariation.RemoveRole, TypeMetadata.Temporary | TypeMetadata.Fast),
+	FastTemporaryTimeout: combineTypeData(TypeVariation.Timeout, TypeMetadata.Temporary | TypeMetadata.Fast),
 	Prune: combineTypeData(TypeVariation.Prune),
 	SetNickname: combineTypeData(TypeVariation.SetNickname),
 	AddRole: combineTypeData(TypeVariation.AddRole),
@@ -123,6 +128,7 @@ const Metadata = new Map<TypeCodes, ModerationTypeAssets>([
 	[TypeCodes.UnSetNickname, { color: Colors.LightBlue, title: 'Reverted Set Nickname' }],
 	[TypeCodes.UnAddRole, { color: Colors.LightBlue, title: 'Reverted Add Role' }],
 	[TypeCodes.UnRemoveRole, { color: Colors.LightBlue, title: 'Reverted Remove Role' }],
+	[TypeCodes.UnTimeout, { color: Colors.LightBlue, title: 'Reverted Timeout' }],
 	[TypeCodes.TemporaryWarning, { color: Colors.Yellow300, title: 'Temporary Warning' }],
 	[TypeCodes.TemporaryMute, { color: Colors.Amber300, title: 'Temporary Mute' }],
 	[TypeCodes.TemporaryBan, { color: Colors.Red300, title: 'Temporary Ban' }],
@@ -135,6 +141,7 @@ const Metadata = new Map<TypeCodes, ModerationTypeAssets>([
 	[TypeCodes.TemporarySetNickname, { color: Colors.Lime300, title: 'Temporary Set Nickname' }],
 	[TypeCodes.TemporaryAddRole, { color: Colors.Lime300, title: 'Temporarily Added Role' }],
 	[TypeCodes.TemporaryRemoveRole, { color: Colors.Lime300, title: 'Temporarily Removed Role' }],
+	[TypeCodes.TemporaryTimeout, { color: Colors.Amber300, title: 'Temporarily Timed Out' }],
 	[TypeCodes.FastTemporaryWarning, { color: Colors.Yellow300, title: 'Temporary Warning' }],
 	[TypeCodes.FastTemporaryMute, { color: Colors.Amber300, title: 'Temporary Mute' }],
 	[TypeCodes.FastTemporaryBan, { color: Colors.Red300, title: 'Temporary Ban' }],
@@ -147,6 +154,7 @@ const Metadata = new Map<TypeCodes, ModerationTypeAssets>([
 	[TypeCodes.FastTemporarySetNickname, { color: Colors.Lime300, title: 'Temporary Set Nickname' }],
 	[TypeCodes.FastTemporaryAddRole, { color: Colors.Lime300, title: 'Temporarily Added Role' }],
 	[TypeCodes.FastTemporaryRemoveRole, { color: Colors.Lime300, title: 'Temporarily Removed Role' }],
+	[TypeCodes.FastTemporaryTimeout, { color: Colors.Amber300, title: 'Temporarily Timed Out' }],
 	[TypeCodes.Prune, { color: Colors.Brown, title: 'Prune' }],
 	[TypeCodes.SetNickname, { color: Colors.Lime, title: 'Set Nickname' }],
 	[TypeCodes.AddRole, { color: Colors.Lime, title: 'Added Role' }],
@@ -165,7 +173,8 @@ export const enum TypeVariationAppealNames {
 	RestrictedVoice = 'moderationEndRestrictionVoice',
 	SetNickname = 'moderationEndSetNickname',
 	AddRole = 'moderationEndAddRole',
-	RemoveRole = 'moderationEndRemoveRole'
+	RemoveRole = 'moderationEndRemoveRole',
+	Timeout = 'moderationEndTimeout'
 }
 
 export const enum SchemaKeys {

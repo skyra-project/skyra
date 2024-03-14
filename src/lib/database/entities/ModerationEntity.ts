@@ -193,6 +193,8 @@ export class ModerationEntity extends BaseEntity {
 				return TypeVariationAppealNames.AddRole;
 			case TypeVariation.RemoveRole:
 				return TypeVariationAppealNames.RemoveRole;
+			case TypeVariation.Timeout:
+				return TypeVariationAppealNames.Timeout;
 			default:
 				return null;
 		}

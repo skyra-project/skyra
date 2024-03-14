@@ -1,5 +1,5 @@
 import { writeSettings, type GuildSettingsOfType } from '#lib/database';
-import { LoggerTypeManager } from '#lib/moderation/managers/LoggerTypeManager';
+import { LoggerTypeManager, type LoggerTypeContext } from '#lib/moderation/managers/LoggerTypeManager';
 import { toErrorCodeResult } from '#utils/common';
 import { getCodeStyle, getLogPrefix } from '#utils/functions/pieces';
 import { EmbedBuilder } from '@discordjs/builders';
@@ -8,6 +8,7 @@ import { isFunction, isNullish, isNullishOrEmpty, type Awaitable, type Nullish }
 import { PermissionFlagsBits, RESTJSONErrorCodes, type Guild, type GuildBasedChannel, type MessageCreateOptions, type Snowflake } from 'discord.js';
 
 export class LoggerManager {
+	public readonly timeout = new LoggerTypeManager<TimeoutLoggerTypeContext>(this);
 	public readonly prune = new LoggerTypeManager(this);
 
 	#guild: Guild;
@@ -121,3 +122,8 @@ export interface LoggerManagerSendOptions {
 export type LoggerManagerSendMessageOptions = MessageCreateOptions | EmbedBuilder | EmbedBuilder[];
 
 const LogPrefix = getLogPrefix('LoggerManager');
+
+export interface TimeoutLoggerTypeContext extends LoggerTypeContext {
+	oldValue: number | null;
+	newValue: number | null;
+}

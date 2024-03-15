@@ -1,6 +1,6 @@
 import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions } from '#lib/moderation';
+import { ModerationActions, type RoleModerationActionKey } from '#lib/moderation';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { seconds, years } from '#utils/common';
@@ -77,16 +77,20 @@ export class UserCommand extends SkyraCommand {
 			case TypeVariation.Ban:
 				return this.checkBan(message.guild, user);
 			case TypeVariation.Mute:
-				return this.checkMute(message.guild, user);
+				return this.checkRoleRestriction(message.guild, user, 'mute');
 			case TypeVariation.VoiceMute:
 				return this.checkVMute(message.guild, user);
-			case TypeVariation.Warning:
-			// TODO(kyranet): Add checks for restrictions
 			case TypeVariation.RestrictedAttachment:
+				return this.checkRoleRestriction(message.guild, user, 'restrictedAttachment');
 			case TypeVariation.RestrictedEmbed:
+				return this.checkRoleRestriction(message.guild, user, 'restrictedEmbed');
 			case TypeVariation.RestrictedEmoji:
+				return this.checkRoleRestriction(message.guild, user, 'restrictedEmoji');
 			case TypeVariation.RestrictedReaction:
+				return this.checkRoleRestriction(message.guild, user, 'restrictedReaction');
 			case TypeVariation.RestrictedVoice:
+				return this.checkRoleRestriction(message.guild, user, 'restrictedVoice');
+			case TypeVariation.Warning:
 				return;
 			default:
 				this.error(LanguageKeys.Commands.Moderation.TimeUnsupportedType);
@@ -103,12 +107,12 @@ export class UserCommand extends SkyraCommand {
 		}
 	}
 
-	private async checkMute(guild: Guild, user: User) {
+	private async checkRoleRestriction(guild: Guild, user: User, key: RoleModerationActionKey) {
 		if (!guild.members.me!.permissions.has(PermissionFlagsBits.ManageRoles)) {
 			this.error(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
 		}
 
-		if (!(await ModerationActions.mute.isActive(guild, user.id))) {
+		if (!(await ModerationActions[key].isActive(guild, user.id))) {
 			this.error(LanguageKeys.Commands.Moderation.MuteUserNotMuted);
 		}
 	}

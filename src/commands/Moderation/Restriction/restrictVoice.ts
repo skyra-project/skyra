@@ -1,12 +1,8 @@
-import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SetUpModerationCommand } from '#lib/moderation';
-import { getSecurity } from '#utils/functions';
-import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
+import { ModerationActions, SetUpModerationCommand } from '#lib/moderation';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord.js';
 
 @ApplyOptions<SetUpModerationCommand.Options>({
 	aliases: ['restricted-voice', 'rv'],
@@ -14,13 +10,12 @@ import { PermissionFlagsBits } from 'discord.js';
 	detailedDescription: LanguageKeys.Commands.Moderation.RestrictVoiceExtended,
 	optionalDuration: true,
 	requiredMember: true,
-	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
-	roleKey: GuildSettings.Roles.RestrictedVoice,
-	setUpKey: ModerationSetupRestriction.Voice
+	actionKey: 'restrictedVoice'
 })
 export class UserSetUpModerationCommand extends SetUpModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
-		return getSecurity(message.guild).actions.restrictVoice(
+		return ModerationActions.restrictedVoice.apply(
+			message.guild,
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,
@@ -28,7 +23,7 @@ export class UserSetUpModerationCommand extends SetUpModerationCommand {
 				imageURL: getImage(message),
 				duration: context.duration
 			},
-			await this.getTargetDM(message, context.args, context.target)
+			await this.getActionData(message, context.args, context.target)
 		);
 	}
 }

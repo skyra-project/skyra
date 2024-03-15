@@ -1,9 +1,9 @@
 import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand, type HandledCommandContext } from '#lib/moderation';
+import { ModerationActions, ModerationCommand, type HandledCommandContext } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { floatPromise } from '#utils/common';
-import { deleteMessage, getModeration, getSecurity } from '#utils/functions';
+import { deleteMessage, getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
 import { getImage, getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -52,15 +52,10 @@ export class UserModerationCommand extends ModerationCommand {
 	}
 
 	public async handle(message: GuildMessage, context: HandledCommandContext<null> & { modlog: ModerationEntity }) {
-		return getSecurity(message.guild).actions.unWarning(
-			{
-				userId: context.target.id,
-				moderatorId: message.author.id,
-				reason: context.reason,
-				imageURL: getImage(message)
-			},
-			context.modlog.caseId,
-			await this.getTargetDM(message, context.args, context.target)
+		return ModerationActions.warning.undo(
+			message.guild,
+			{ userId: context.target.id, moderatorId: message.author.id, reason: context.reason, imageURL: getImage(message) },
+			await this.getActionData(message, context.args, context.target, context.modlog.caseId)
 		);
 	}
 }

@@ -1,10 +1,11 @@
 import { GuildSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { ModerationActions } from '#lib/moderation';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { minutes } from '#utils/common';
 import { Emojis } from '#utils/constants';
-import { getEmojiReactionFormat, getSecurity, promptConfirmation, promptForMessage, type SerializedEmoji } from '#utils/functions';
+import { getEmojiReactionFormat, promptConfirmation, promptForMessage, type SerializedEmoji } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { canReact } from '@sapphire/discord.js-utilities';
 import { Argument, CommandOptionsRunTypeEnum, Result, UserError } from '@sapphire/framework';
@@ -41,7 +42,7 @@ export class UserCommand extends SkyraCommand {
 				return send(message, content);
 			}
 		} else if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
-			await getSecurity(message.guild).actions.muteSetup(message);
+			await ModerationActions.mute.setup(message);
 
 			const content = t(LanguageKeys.Commands.Moderation.Success);
 			await send(message, content);

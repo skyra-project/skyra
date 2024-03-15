@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationTask, type ModerationData } from '#lib/moderation';
-import { getSecurity } from '#utils/functions';
+import { ModerationActions, ModerationTask, type ModerationData } from '#lib/moderation';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { PermissionFlagsBits, type Guild } from 'discord.js';
 
@@ -10,15 +9,9 @@ export class UserModerationTask extends ModerationTask {
 		if (!me.permissions.has(PermissionFlagsBits.ManageNicknames)) return null;
 
 		const t = await fetchT(guild);
-		await getSecurity(guild).actions.unSetNickname(
-			{
-				moderatorId: process.env.CLIENT_ID,
-				userId: data.userID,
-				reason: `[MODERATION] Nickname reverted after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`
-			},
-			data.extraData.oldName,
-			await this.getTargetDM(guild, await this.container.client.users.fetch(data.userID))
-		);
+		const reason = `[MODERATION] Nickname reverted after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`;
+		const actionData = await this.getActionData(guild, data.userID, data.extraData.oldName);
+		await ModerationActions.setNickname.undo(guild, { userId: data.userID, reason }, actionData);
 		return null;
 	}
 }

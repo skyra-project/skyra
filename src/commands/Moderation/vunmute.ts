@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand } from '#lib/moderation';
-import { getSecurity } from '#utils/functions';
+import { ModerationActions, ModerationCommand } from '#lib/moderation';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { ArgumentTypes } from '@sapphire/utilities';
@@ -15,14 +14,10 @@ import { PermissionFlagsBits } from 'discord.js';
 })
 export class UserModerationCommand extends ModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return getSecurity(message.guild).actions.unVoiceMute(
-			{
-				userId: context.target.id,
-				moderatorId: message.author.id,
-				reason: context.reason,
-				imageURL: getImage(message)
-			},
-			await this.getTargetDM(message, context.args, context.target)
+		return ModerationActions.voiceMute.undo(
+			message.guild,
+			{ userId: context.target.id, moderatorId: message.author.id, reason: context.reason, imageURL: getImage(message) },
+			await this.getActionData(message, context.args, context.target)
 		);
 	}
 

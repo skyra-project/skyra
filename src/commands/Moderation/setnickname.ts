@@ -1,8 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand, type HandledCommandContext } from '#lib/moderation';
+import { ModerationActions, ModerationCommand, type HandledCommandContext } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
 import { years } from '#utils/common';
-import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { PermissionFlagsBits } from 'discord.js';
@@ -26,7 +25,8 @@ export class UserModerationCommand extends ModerationCommand {
 	}
 
 	protected async handle(message: GuildMessage, context: HandledCommandContext & { nickname: string }) {
-		return getSecurity(message.guild).actions.setNickname(
+		return ModerationActions.setNickname.apply(
+			message.guild,
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,
@@ -34,8 +34,7 @@ export class UserModerationCommand extends ModerationCommand {
 				imageURL: getImage(message),
 				duration: context.duration
 			},
-			context.nickname,
-			await this.getTargetDM(message, context.args, context.target)
+			await this.getActionData(message, context.args, context.target, context.nickname)
 		);
 	}
 }

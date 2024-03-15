@@ -1,19 +1,25 @@
 {
 	"actions": {
-		"addRole": "Added Role",
+		"addRole": "Role Add",
 		"ban": "Ban",
 		"kick": "Kick",
 		"mute": "Mute",
-		"removeRole": "Remove Role",
+		"removeRole": "Role Remove",
 		"restrictedAttachment": "Attachment Restriction",
 		"restrictedEmbed": "Embed Restriction",
+		"restrictedEmoji": "Emoji Restriction",
 		"restrictedReact": "Reaction Restriction",
 		"restrictedVoice": "Voice Restriction",
 		"setNickname": "Set Nickname",
 		"softban": "Softban",
 		"vkick": "Voice Kick",
-		"vmute": "Voice Mute"
+		"vmute": "Voice Mute",
+		"warning": "Warning"
 	},
+	"actionCannotManageRoles": "I cannot give or remove roles in this server.",
+	"actionRoleNotConfigured": "The role for this action is not configured.",
+	"actionRoleHigherPosition": "I cannot give or remove the role for this action because it has higher or equal hierarchy position than me.",
+	"actionRoleManaged": "I cannot give or remove the role for this action because it is managed by an integration.",
 	"applyNoReason": "[Action] Applied {{action}}",
 	"applyReason": "[Action] Applied {{action}} | Reason: {{reason}}",
 	"requiredMember": "The user does not exist or is not in this server.",

@@ -1,7 +1,7 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand } from '#lib/moderation';
-import { getModeration, getSecurity } from '#utils/functions';
+import { ModerationActions, ModerationCommand } from '#lib/moderation';
+import { getModeration } from '#utils/functions';
 import { TimeOptions, getSeconds } from '#utils/moderation-utilities';
 import type { Unlock } from '#utils/moderationConstants';
 import { getImage } from '#utils/util';
@@ -24,7 +24,8 @@ export class UserModerationCommand extends ModerationCommand {
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return getSecurity(message.guild).actions.ban(
+		return ModerationActions.ban.apply(
+			message.guild,
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,
@@ -32,8 +33,7 @@ export class UserModerationCommand extends ModerationCommand {
 				imageURL: getImage(message),
 				reason: context.reason
 			},
-			getSeconds(context.args),
-			await this.getTargetDM(message, context.args, context.target)
+			await this.getActionData(message, context.args, context.target, getSeconds(context.args))
 		);
 	}
 

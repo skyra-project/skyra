@@ -1,22 +1,19 @@
-import { readSettings, writeSettings, type GuildSettingsOfType } from '#lib/database';
+import { readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { ModerationActions, type RoleModerationActionKey } from '#lib/moderation/actions/index';
 import { ModerationCommand } from '#lib/moderation/structures/ModerationCommand';
 import type { GuildMessage } from '#lib/types';
-import type { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
-import { getSecurity, isAdmin, promptConfirmation, promptForMessage } from '#utils/functions';
+import { isAdmin, promptConfirmation, promptForMessage } from '#utils/functions';
 import type { Argument } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import type { Nullish } from '@sapphire/utilities';
-import type { Role } from 'discord.js';
+import { PermissionFlagsBits, type Role } from 'discord.js';
 
 export abstract class SetUpModerationCommand extends ModerationCommand {
-	public readonly roleKey: GuildSettingsOfType<string | undefined | null>;
-	public readonly setUpKey: ModerationSetupRestriction;
+	public readonly action: (typeof ModerationActions)[RoleModerationActionKey];
 
 	public constructor(context: ModerationCommand.Context, options: SetUpModerationCommand.Options) {
-		super(context, options);
-		this.roleKey = options.roleKey;
-		this.setUpKey = options.setUpKey;
+		super(context, { requiredClientPermissions: [PermissionFlagsBits.ManageRoles], ...options });
+		this.action = ModerationActions[options.actionKey];
 	}
 
 	private get role() {
@@ -34,10 +31,10 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 
 	public async inhibit(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.RunContext) {
 		// If the command messageRun is not this one (potentially help command) or the guild is null, return with no error.
-		const [id, t] = await readSettings(message.guild, (settings) => [settings[this.roleKey], settings.getLanguage()]);
+		const [roleId, t] = await readSettings(message.guild, (settings) => [settings[this.action.roleKey], settings.getLanguage()]);
 
 		// Verify for role existence.
-		const role = (id && message.guild.roles.cache.get(id)) ?? null;
+		const role = (roleId && message.guild.roles.cache.get(roleId)) ?? null;
 		if (role) return undefined;
 
 		// If there
@@ -47,9 +44,9 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 
 		if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const role = (await this.askForRole(message, args, context)).unwrapRaw();
-			await writeSettings(message.guild, [[this.roleKey, role.id]]);
+			await writeSettings(message.guild, [[this.action.roleKey, role.id]]);
 		} else if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
-			await getSecurity(message.guild).actions.restrictionSetup(message, this.setUpKey);
+			await this.action.setup(message);
 
 			const content = t(LanguageKeys.Commands.Moderation.Success);
 			await send(message, content);
@@ -74,8 +71,7 @@ export namespace SetUpModerationCommand {
 	 * The ModerationCommand Options
 	 */
 	export interface Options extends ModerationCommand.Options {
-		roleKey: GuildSettingsOfType<string | Nullish>;
-		setUpKey: ModerationSetupRestriction;
+		actionKey: RoleModerationActionKey;
 	}
 
 	export type Args = ModerationCommand.Args;

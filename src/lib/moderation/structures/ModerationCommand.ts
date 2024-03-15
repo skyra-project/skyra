@@ -4,11 +4,11 @@ import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { floatPromise, seconds, years } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
-import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { cast, getTag } from '#utils/util';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { free, send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
+import type { ModerationAction } from '../actions/base/ModerationAction.js';
 
 export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	/**
@@ -154,7 +154,12 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return member;
 	}
 
-	protected async getTargetDM(message: GuildMessage, args: Args, target: User): Promise<ModerationActionsSendOptions> {
+	protected async getActionData<ContextType = never>(
+		message: GuildMessage,
+		args: Args,
+		target: User,
+		context?: ContextType
+	): Promise<ModerationAction.Data<ContextType>> {
 		const [nameDisplay, enabledDM] = await readSettings(message.guild, [
 			GuildSettings.Messages.ModeratorNameDisplay,
 			GuildSettings.Messages.ModerationDM
@@ -162,13 +167,14 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		return {
 			moderator: args.getFlags('no-author') ? null : args.getFlags('authored') || nameDisplay ? message.author : null,
-			send:
+			sendDirectMessage:
 				// --no-dm disables
 				!args.getFlags('no-dm') &&
 				// --dm and enabledDM enable
 				(args.getFlags('dm') || enabledDM) &&
 				// user settings
-				(await this.container.db.fetchModerationDirectMessageEnabled(target.id))
+				(await this.container.db.fetchModerationDirectMessageEnabled(target.id)),
+			context
 		};
 	}
 

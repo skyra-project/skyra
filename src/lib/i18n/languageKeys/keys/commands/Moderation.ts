@@ -4,18 +4,20 @@ import type { ModerationManagerDescriptionData } from '#utils/moderationConstant
 
 export interface ModerationAction {
 	addRole: string;
-	mute: string;
 	ban: string;
 	kick: string;
+	mute: string;
+	removeRole: string;
+	restrictedAttachment: string;
+	restrictedEmbed: string;
+	restrictedEmoji: string;
+	restrictedReact: string;
+	restrictedVoice: string;
+	setNickname: string;
 	softban: string;
 	vkick: string;
 	vmute: string;
-	restrictedReact: string;
-	restrictedEmbed: string;
-	restrictedAttachment: string;
-	restrictedVoice: string;
-	setNickname: string;
-	removeRole: string;
+	warning: string;
 }
 
 export const HistoryDescription = T('commands/moderation:historyDescription');
@@ -261,6 +263,10 @@ export const ActionSharedRoleSetupNew = T('moderationActions:sharedRoleSetupNew'
 export const ActionSharedRoleSetupAsk = FT<{ role: string; channels: number; permissions: string }, string>('moderationActions:sharedRoleSetupAsk');
 export const ActionSharedRoleSetupNoMessage = T('moderationActions:sharedRoleSetupNoMessage');
 export const ActionRequiredMember = T('moderationActions:requiredMember');
+export const ActionCannotManageRoles = T('moderationActions:actionCannotManageRoles');
+export const ActionRoleNotConfigured = T('moderationActions:actionRoleNotConfigured');
+export const ActionRoleHigherPosition = T('moderationActions:actionRoleHigherPosition');
+export const ActionRoleManaged = T('moderationActions:actionRoleManaged');
 export const RoleHigher = T('moderation:roleHigher');
 export const RoleHigherSkyra = T('moderation:roleHigherSkyra');
 export const Success = T('moderation:success');

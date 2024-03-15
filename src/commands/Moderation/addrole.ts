@@ -1,8 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationCommand, type HandledCommandContext } from '#lib/moderation';
+import { ModerationActions, ModerationCommand, type HandledCommandContext } from '#lib/moderation';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { years } from '#utils/common';
-import { getSecurity } from '#utils/functions';
 import { getImage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { PermissionFlagsBits, type Role } from 'discord.js';
@@ -27,7 +26,8 @@ export class UserModerationCommand extends ModerationCommand {
 	}
 
 	protected async handle(message: GuildMessage, context: HandledCommandContext & { role: Role }) {
-		return getSecurity(message.guild).actions.addRole(
+		return ModerationActions.roleAdd.apply(
+			message.guild,
 			{
 				userId: context.target.id,
 				moderatorId: message.author.id,
@@ -35,8 +35,7 @@ export class UserModerationCommand extends ModerationCommand {
 				imageURL: getImage(message),
 				duration: context.duration
 			},
-			context.role,
-			await this.getTargetDM(message, context.args, context.target)
+			await this.getActionData(message, context.args, context.target, context.role)
 		);
 	}
 }

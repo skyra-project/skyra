@@ -1,15 +1,16 @@
 import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { ModerationActions } from '#lib/moderation';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { seconds, years } from '#utils/common';
-import { getModeration, getSecurity } from '#utils/functions';
+import { getModeration } from '#utils/functions';
 import { SchemaKeys, TypeVariation } from '#utils/moderationConstants';
 import { getTag } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { PermissionFlagsBits, type User } from 'discord.js';
+import { Guild, PermissionFlagsBits, type User } from 'discord.js';
 
 @ApplyOptions<SkyraCommand.Options>({
 	description: LanguageKeys.Commands.Moderation.TimeDescription,
@@ -74,11 +75,11 @@ export class UserCommand extends SkyraCommand {
 	private async validateAction(message: GuildMessage, entry: ModerationEntity, user: User) {
 		switch (entry.type) {
 			case TypeVariation.Ban:
-				return this.checkBan(message, user);
+				return this.checkBan(message.guild, user);
 			case TypeVariation.Mute:
-				return this.checkMute(message, user);
+				return this.checkMute(message.guild, user);
 			case TypeVariation.VoiceMute:
-				return this.checkVMute(message, user);
+				return this.checkVMute(message.guild, user);
 			case TypeVariation.Warning:
 			// TODO(kyranet): Add checks for restrictions
 			case TypeVariation.RestrictedAttachment:
@@ -92,32 +93,32 @@ export class UserCommand extends SkyraCommand {
 		}
 	}
 
-	private async checkBan(message: GuildMessage, user: User) {
-		if (!message.guild.members.me!.permissions.has(PermissionFlagsBits.BanMembers)) {
+	private async checkBan(guild: Guild, user: User) {
+		if (!guild.members.me!.permissions.has(PermissionFlagsBits.BanMembers)) {
 			this.error(LanguageKeys.Commands.Moderation.UnbanMissingPermission);
 		}
 
-		if (!(await getSecurity(message.guild).actions.userIsBanned(user))) {
+		if (!(await ModerationActions.ban.isActive(guild, user.id))) {
 			this.error(LanguageKeys.Commands.Moderation.GuildBansNotFound);
 		}
 	}
 
-	private async checkMute(message: GuildMessage, user: User) {
-		if (!message.guild.members.me!.permissions.has(PermissionFlagsBits.ManageRoles)) {
+	private async checkMute(guild: Guild, user: User) {
+		if (!guild.members.me!.permissions.has(PermissionFlagsBits.ManageRoles)) {
 			this.error(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
 		}
 
-		if (!(await getSecurity(message.guild).actions.userIsMuted(user))) {
+		if (!(await ModerationActions.mute.isActive(guild, user.id))) {
 			this.error(LanguageKeys.Commands.Moderation.MuteUserNotMuted);
 		}
 	}
 
-	private async checkVMute(message: GuildMessage, user: User) {
-		if (!message.guild.members.me!.permissions.has(PermissionFlagsBits.MuteMembers)) {
+	private async checkVMute(guild: Guild, user: User) {
+		if (!guild.members.me!.permissions.has(PermissionFlagsBits.MuteMembers)) {
 			this.error(LanguageKeys.Commands.Moderation.VmuteMissingPermission);
 		}
 
-		if (!(await getSecurity(message.guild).actions.userIsVoiceMuted(user))) {
+		if (!(await ModerationActions.voiceMute.isActive(guild, user.id))) {
 			this.error(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
 		}
 	}

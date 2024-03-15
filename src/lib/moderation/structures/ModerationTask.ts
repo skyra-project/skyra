@@ -1,7 +1,7 @@
-import { GuildSettings, readSettings, ResponseType, Task, type PartialResponseValue } from '#lib/database';
+import { GuildSettings, ResponseType, Task, readSettings, type PartialResponseValue } from '#lib/database';
+import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
 import type { SchemaKeys } from '#utils/moderationConstants';
-import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
-import type { Guild, User } from 'discord.js';
+import type { Guild, Snowflake } from 'discord.js';
 
 export abstract class ModerationTask<T = unknown> extends Task {
 	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
@@ -23,12 +23,17 @@ export abstract class ModerationTask<T = unknown> extends Task {
 		return { type: ResponseType.Finished };
 	}
 
-	protected async getTargetDM(guild: Guild, target: User): Promise<ModerationActionsSendOptions> {
+	protected async getActionData<ContextType = never>(
+		guild: Guild,
+		targetId: Snowflake,
+		context?: ContextType
+	): Promise<ModerationAction.Data<ContextType>> {
 		return {
 			moderator: null,
-			send:
+			sendDirectMessage:
 				(await readSettings(guild, GuildSettings.Messages.ModerationDM)) &&
-				(await this.container.db.fetchModerationDirectMessageEnabled(target.id))
+				(await this.container.db.fetchModerationDirectMessageEnabled(targetId)),
+			context
 		};
 	}
 

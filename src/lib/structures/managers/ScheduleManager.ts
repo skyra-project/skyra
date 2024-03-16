@@ -35,6 +35,21 @@ export class ScheduleManager {
 		return entry;
 	}
 
+	public async reschedule(entityOrId: ScheduleEntity | number, time: Date | number) {
+		if (typeof entityOrId === 'number') {
+			entityOrId = this.queue.find((entity) => entity.id === entityOrId)!;
+			if (!entityOrId) return false;
+		}
+
+		entityOrId.pause();
+		entityOrId.time = new Date(time);
+		await entityOrId.save();
+
+		this._remove(entityOrId);
+		this._insert(entityOrId);
+		return true;
+	}
+
 	public async remove(entityOrId: ScheduleEntity | number) {
 		if (typeof entityOrId === 'number') {
 			entityOrId = this.queue.find((entity) => entity.id === entityOrId)!;

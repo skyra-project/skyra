@@ -5,8 +5,7 @@ export const enum TypeVariation {
 	Ban,
 	Kick,
 	Mute,
-	Prune,
-	SoftBan,
+	Softban,
 	VoiceKick,
 	VoiceMute,
 	Warning,
@@ -22,17 +21,17 @@ export const enum TypeVariation {
 
 export const enum TypeMetadata {
 	None = 0,
-	Appeal = 1 << 0,
+	Undo = 1 << 0,
 	Temporary = 1 << 1,
 	Fast = 1 << 2,
-	Invalidated = 1 << 3
+	Archived = 1 << 3
 }
 
 const TypeCodes = {
 	Warning: combineTypeData(TypeVariation.Warning),
 	Mute: combineTypeData(TypeVariation.Mute),
 	Kick: combineTypeData(TypeVariation.Kick),
-	SoftBan: combineTypeData(TypeVariation.SoftBan),
+	SoftBan: combineTypeData(TypeVariation.Softban),
 	Ban: combineTypeData(TypeVariation.Ban),
 	VoiceMute: combineTypeData(TypeVariation.VoiceMute),
 	VoiceKick: combineTypeData(TypeVariation.VoiceKick),
@@ -41,18 +40,18 @@ const TypeCodes = {
 	RestrictedEmbed: combineTypeData(TypeVariation.RestrictedEmbed),
 	RestrictedEmoji: combineTypeData(TypeVariation.RestrictedEmoji),
 	RestrictedVoice: combineTypeData(TypeVariation.RestrictedVoice),
-	UnWarn: combineTypeData(TypeVariation.Warning, TypeMetadata.Appeal),
-	UnMute: combineTypeData(TypeVariation.Mute, TypeMetadata.Appeal),
-	UnBan: combineTypeData(TypeVariation.Ban, TypeMetadata.Appeal),
-	UnVoiceMute: combineTypeData(TypeVariation.VoiceMute, TypeMetadata.Appeal),
-	UnRestrictedReaction: combineTypeData(TypeVariation.RestrictedReaction, TypeMetadata.Appeal),
-	UnRestrictedEmbed: combineTypeData(TypeVariation.RestrictedEmbed, TypeMetadata.Appeal),
-	UnRestrictedEmoji: combineTypeData(TypeVariation.RestrictedEmoji, TypeMetadata.Appeal),
-	UnRestrictedAttachment: combineTypeData(TypeVariation.RestrictedAttachment, TypeMetadata.Appeal),
-	UnRestrictedVoice: combineTypeData(TypeVariation.RestrictedVoice, TypeMetadata.Appeal),
-	UnSetNickname: combineTypeData(TypeVariation.SetNickname, TypeMetadata.Appeal),
-	UnAddRole: combineTypeData(TypeVariation.AddRole, TypeMetadata.Appeal),
-	UnRemoveRole: combineTypeData(TypeVariation.RemoveRole, TypeMetadata.Appeal),
+	UnWarn: combineTypeData(TypeVariation.Warning, TypeMetadata.Undo),
+	UnMute: combineTypeData(TypeVariation.Mute, TypeMetadata.Undo),
+	UnBan: combineTypeData(TypeVariation.Ban, TypeMetadata.Undo),
+	UnVoiceMute: combineTypeData(TypeVariation.VoiceMute, TypeMetadata.Undo),
+	UnRestrictedReaction: combineTypeData(TypeVariation.RestrictedReaction, TypeMetadata.Undo),
+	UnRestrictedEmbed: combineTypeData(TypeVariation.RestrictedEmbed, TypeMetadata.Undo),
+	UnRestrictedEmoji: combineTypeData(TypeVariation.RestrictedEmoji, TypeMetadata.Undo),
+	UnRestrictedAttachment: combineTypeData(TypeVariation.RestrictedAttachment, TypeMetadata.Undo),
+	UnRestrictedVoice: combineTypeData(TypeVariation.RestrictedVoice, TypeMetadata.Undo),
+	UnSetNickname: combineTypeData(TypeVariation.SetNickname, TypeMetadata.Undo),
+	UnAddRole: combineTypeData(TypeVariation.AddRole, TypeMetadata.Undo),
+	UnRemoveRole: combineTypeData(TypeVariation.RemoveRole, TypeMetadata.Undo),
 	TemporaryWarning: combineTypeData(TypeVariation.Warning, TypeMetadata.Temporary),
 	TemporaryMute: combineTypeData(TypeVariation.Mute, TypeMetadata.Temporary),
 	TemporaryBan: combineTypeData(TypeVariation.Ban, TypeMetadata.Temporary),
@@ -77,7 +76,6 @@ const TypeCodes = {
 	FastTemporarySetNickname: combineTypeData(TypeVariation.SetNickname, TypeMetadata.Temporary | TypeMetadata.Fast),
 	FastTemporaryAddRole: combineTypeData(TypeVariation.AddRole, TypeMetadata.Temporary | TypeMetadata.Fast),
 	FastTemporaryRemoveRole: combineTypeData(TypeVariation.RemoveRole, TypeMetadata.Temporary | TypeMetadata.Fast),
-	Prune: combineTypeData(TypeVariation.Prune),
 	SetNickname: combineTypeData(TypeVariation.SetNickname),
 	AddRole: combineTypeData(TypeVariation.AddRole),
 	RemoveRole: combineTypeData(TypeVariation.RemoveRole)
@@ -87,7 +85,7 @@ export type TypeCodes = number & { __TYPE__: 'TypeCodes' };
 
 export function combineTypeData(type: TypeVariation, metadata?: TypeMetadata): TypeCodes {
 	if (isNullishOrZero(metadata)) return type as TypeCodes;
-	return (((metadata & ~TypeMetadata.Invalidated) << 4) | type) as TypeCodes;
+	return (((metadata & ~TypeMetadata.Archived) << 4) | type) as TypeCodes;
 }
 
 export function hasMetadata(type: TypeVariation, metadata?: TypeMetadata): boolean {
@@ -147,7 +145,6 @@ const Metadata = new Map<TypeCodes, ModerationTypeAssets>([
 	[TypeCodes.FastTemporarySetNickname, { color: Colors.Lime300, title: 'Temporary Set Nickname' }],
 	[TypeCodes.FastTemporaryAddRole, { color: Colors.Lime300, title: 'Temporarily Added Role' }],
 	[TypeCodes.FastTemporaryRemoveRole, { color: Colors.Lime300, title: 'Temporarily Removed Role' }],
-	[TypeCodes.Prune, { color: Colors.Brown, title: 'Prune' }],
 	[TypeCodes.SetNickname, { color: Colors.Lime, title: 'Set Nickname' }],
 	[TypeCodes.AddRole, { color: Colors.Lime, title: 'Added Role' }],
 	[TypeCodes.RemoveRole, { color: Colors.Lime, title: 'Removed Role' }]

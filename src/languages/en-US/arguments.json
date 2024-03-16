@@ -26,6 +26,7 @@
 		"1",
 		"+"
 	],
+	"caseNoEntries": "I could not resolve `{{parameter}}` to a case, as there are no moderation cases in this server!",
 	"caseLatestOptions": [
 		"last",
 		"latest"

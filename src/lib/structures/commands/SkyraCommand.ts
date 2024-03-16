@@ -11,7 +11,7 @@ import {
 import { PermissionLevels, type TypedT } from '#lib/types';
 import { first } from '#utils/common';
 import { Command, UserError, type Awaitable, type MessageCommand } from '@sapphire/framework';
-import { type Message, type Snowflake } from 'discord.js';
+import { ChatInputCommandInteraction, type Message, type Snowflake } from 'discord.js';
 
 /**
  * The base class for all Skyra commands.
@@ -72,4 +72,6 @@ export namespace SkyraCommand {
 	export type Args = SkyraArgs;
 	export type LoaderContext = Command.LoaderContext;
 	export type RunContext = MessageCommand.RunContext;
+
+	export type Interaction = ChatInputCommandInteraction<'cached'>;
 }

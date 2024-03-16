@@ -15,7 +15,7 @@ export class UserListener extends Listener {
 				userId: user.id,
 				moderatorId: process.env.CLIENT_ID,
 				type: TypeVariation.Ban,
-				metadata: TypeMetadata.Appeal
+				metadata: TypeMetadata.Undo
 			})
 			.create();
 	}

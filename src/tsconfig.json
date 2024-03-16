@@ -6,6 +6,10 @@
 		"rootDir": ".",
 		"baseUrl": ".",
 		"paths": {
+			"#utils/common": ["lib/util/common/index.js"],
+			"#utils/functions": ["lib/util/functions/index.js"],
+			"#utils/resolvers": ["lib/util/resolvers/index.js"],
+			"#utils/*": ["lib/util/*"],
 			"#lib/database": ["lib/database/index.js"],
 			"#lib/database/entities": ["lib/database/entities/index.js"],
 			"#lib/database/keys": ["lib/database/keys/index.js"],
@@ -21,9 +25,6 @@
 			"#lib/i18n/languageKeys": ["lib/i18n/languageKeys/index.js"],
 			"#lib/*": ["lib/*"],
 			"#languages": ["languages/index.js"],
-			"#utils/common": ["lib/util/common/index.js"],
-			"#utils/functions": ["lib/util/functions/index.js"],
-			"#utils/*": ["lib/util/*"],
 			"#root/*": ["*"]
 		}
 	},

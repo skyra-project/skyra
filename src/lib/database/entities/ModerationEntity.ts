@@ -17,6 +17,7 @@ import {
 import { getDisplayAvatar, getFullEmbedAuthor, getTag } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { UserError, container } from '@sapphire/framework';
+import type { TFunction } from '@sapphire/plugin-i18next';
 import { Duration, Time } from '@sapphire/time-utilities';
 import { isNullishOrZero, isNumber, tryParseURL, type NonNullObject } from '@sapphire/utilities';
 import { User } from 'discord.js';
@@ -135,7 +136,7 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public get appealType() {
-		return (this.metadata & TypeMetadata.Appeal) === TypeMetadata.Appeal;
+		return (this.metadata & TypeMetadata.Undo) === TypeMetadata.Undo;
 	}
 
 	public get temporaryType() {
@@ -146,12 +147,12 @@ export class ModerationEntity extends BaseEntity {
 		return (this.metadata & TypeMetadata.Fast) === TypeMetadata.Fast;
 	}
 
-	public get invalidated() {
-		return (this.metadata & TypeMetadata.Invalidated) === TypeMetadata.Invalidated;
+	public get archived() {
+		return (this.metadata & TypeMetadata.Archived) === TypeMetadata.Archived;
 	}
 
 	public get appealable() {
-		return !this.appealType && hasMetadata(this.type, TypeMetadata.Appeal);
+		return !this.appealType && hasMetadata(this.type, TypeMetadata.Undo);
 	}
 
 	public get temporable() {
@@ -213,7 +214,7 @@ export class ModerationEntity extends BaseEntity {
 			if (type === entry.type) return false;
 
 			// If this log is a ban or an unban, but the user was softbanned recently, abort
-			if (checkSoftBan && entry.type === TypeVariation.SoftBan) return false;
+			if (checkSoftBan && entry.type === TypeVariation.Softban) return false;
 		}
 
 		// For all other cases, it should send
@@ -265,11 +266,11 @@ export class ModerationEntity extends BaseEntity {
 		return this;
 	}
 
-	public async invalidate() {
-		if (this.invalidated) return this;
+	public async archive() {
+		if (this.archived) return this;
 		const clone = this.clone();
 		try {
-			this.metadata |= TypeMetadata.Invalidated;
+			this.metadata |= TypeMetadata.Archived;
 			await this.save();
 		} catch (error) {
 			this.metadata = clone.metadata;
@@ -280,13 +281,14 @@ export class ModerationEntity extends BaseEntity {
 		return this;
 	}
 
-	public async prepareEmbed() {
+	public async prepareEmbed(t?: TFunction) {
 		if (!this.userId) throw new Error('A user has not been set.');
 		const manager = this.#manager;
 
 		const [user, moderator] = await Promise.all([this.fetchUser(), this.fetchModerator()]);
+		const [prefix, guildT] = await readSettings(manager.guild, (settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
+		t ??= guildT;
 
-		const [prefix, t] = await readSettings(manager.guild, (settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
 		const formattedDuration = this.duration ? t(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration }) : '';
 
 		const body = t(LanguageKeys.Commands.Moderation.ModerationLogDescriptionTypeAndUser, {

@@ -1,12 +1,13 @@
 export * as Arguments from '#lib/i18n/languageKeys/keys/Arguments';
 export * as Assertions from '#lib/i18n/languageKeys/keys/Assertions';
 export * as Commands from '#lib/i18n/languageKeys/keys/Commands';
-export * as Events from '#lib/i18n/languageKeys/keys/events/All';
 export * as FuzzySearch from '#lib/i18n/languageKeys/keys/FuzzySearch';
 export * as Globals from '#lib/i18n/languageKeys/keys/Globals';
 export * as Guilds from '#lib/i18n/languageKeys/keys/Guilds';
 export * as Misc from '#lib/i18n/languageKeys/keys/Misc';
+export * as Moderation from '#lib/i18n/languageKeys/keys/Moderation';
 export * as Preconditions from '#lib/i18n/languageKeys/keys/Preconditions';
 export * as Serializers from '#lib/i18n/languageKeys/keys/Serializers';
 export * as Settings from '#lib/i18n/languageKeys/keys/Settings';
 export * as System from '#lib/i18n/languageKeys/keys/System';
+export * as Events from '#lib/i18n/languageKeys/keys/events/All';

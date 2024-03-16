@@ -7,6 +7,10 @@
 	"main": "./dist/Skyra.js",
 	"type": "module",
 	"imports": {
+		"#utils/common": "./dist/lib/util/common/index.js",
+		"#utils/functions": "./dist/lib/util/functions/index.js",
+		"#utils/resolvers": "./dist/lib/util/resolvers/index.js",
+		"#utils/*": "./dist/lib/util/*.js",
 		"#lib/database": "./dist/lib/database/index.js",
 		"#lib/database/entities": "./dist/lib/database/entities/index.js",
 		"#lib/database/keys": "./dist/lib/database/keys/index.js",
@@ -22,9 +26,6 @@
 		"#lib/i18n/languageKeys": "./dist/lib/i18n/languageKeys/index.js",
 		"#lib/*": "./dist/lib/*.js",
 		"#languages": "./dist/languages/index.js",
-		"#utils/common": "./dist/lib/util/common/index.js",
-		"#utils/functions": "./dist/lib/util/functions/index.js",
-		"#utils/*": "./dist/lib/util/*.js",
 		"#root/*": "./dist/*.js"
 	},
 	"scripts": {

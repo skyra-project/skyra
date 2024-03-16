@@ -6,7 +6,7 @@ export function T<TCustom = string>(k: string): TypedT<TCustom> {
 	return k as TypedT<TCustom>;
 }
 
-export type TypedFT<TArgs, TReturn> = string & { __args__: TArgs; __return__: TReturn };
+export type TypedFT<TArgs, TReturn = string> = string & { __args__: TArgs; __return__: TReturn };
 export type GetTypedFTArgs<T extends TypedFT<unknown, unknown>> = T extends TypedFT<infer U, unknown> ? U : never;
 export type GetTypedFTReturn<T extends TypedFT<unknown, unknown>> = T extends TypedFT<unknown, infer U> ? U : never;
 
@@ -26,4 +26,8 @@ export interface Values<T = string> {
 export interface Difference<T = string> {
 	previous: T;
 	next: T;
+}
+
+export interface Parameter {
+	parameter: string;
 }

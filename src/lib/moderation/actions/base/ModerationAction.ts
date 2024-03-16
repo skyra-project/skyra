@@ -2,7 +2,7 @@ import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { ModerationManagerCreateData } from '#lib/moderation/managers/ModerationManager';
 import type { GetTypedT } from '#lib/types';
-import { TypeMetadata, type TypeVariation } from '#lib/util/moderationConstants';
+import { TypeMetadata, hasMetadata, type TypeVariation } from '#lib/util/moderationConstants';
 import { getCodeStyle, getLogPrefix, getModeration } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
@@ -20,6 +20,16 @@ export abstract class ModerationAction<ContextType = never> {
 	public readonly type: TypeVariation;
 
 	/**
+	 * Whether or not the action allows undoing.
+	 */
+	public readonly allowUndo: boolean;
+
+	/**
+	 * Whether or not the action allows scheduling.
+	 */
+	public readonly allowSchedule: boolean;
+
+	/**
 	 * The prefix used for logging moderation actions.
 	 */
 	protected readonly logPrefix: string;
@@ -33,6 +43,8 @@ export abstract class ModerationAction<ContextType = never> {
 		this.type = options.type;
 		this.logPrefix = getLogPrefix(options.logPrefix);
 		this.actionKey = options.actionKey;
+		this.allowUndo = hasMetadata(this.type, TypeMetadata.Undo);
+		this.allowSchedule = hasMetadata(this.type, TypeMetadata.Temporary);
 	}
 
 	/**
@@ -149,7 +161,7 @@ export abstract class ModerationAction<ContextType = never> {
 	 * @param options - The original options for the moderation action.
 	 */
 	protected async resolveAppealOptions(guild: Guild, options: ModerationAction.PartialOptions, data: ModerationAction.Data<ContextType>) {
-		return this.resolveOptions(guild, options, data, TypeMetadata.Appeal);
+		return this.resolveOptions(guild, options, data, TypeMetadata.Undo);
 	}
 
 	/**
@@ -220,7 +232,7 @@ export abstract class ModerationAction<ContextType = never> {
 		let lastEntry: ModerationEntity | null = null;
 		for (const entry of entries.values()) {
 			// If the entry has been invalidated, skip it:
-			if (entry.invalidated) continue;
+			if (entry.archived) continue;
 			// If the entry is not of the same type, skip it:
 			if (entry.type !== type) continue;
 			// If the entry is not of the same metadata, skip it:

@@ -12,12 +12,12 @@ export class UserListener extends Listener {
 
 	private async cancelTask(old: ModerationEntity, entry: ModerationEntity) {
 		// If the task was invalidated or had its duration set to null, delete any pending task
-		if ((!old.invalidated && entry.invalidated) || (old.duration !== null && entry.duration === null)) await entry.task?.delete();
+		if ((!old.archived && entry.archived) || (old.duration !== null && entry.duration === null)) await entry.task?.delete();
 	}
 
 	private async sendMessage(old: ModerationEntity, entry: ModerationEntity) {
 		// Handle invalidation
-		if (!old.invalidated && entry.invalidated) return;
+		if (!old.archived && entry.archived) return;
 
 		// If both logs are equals, skip
 		if (entry.equals(old)) return;

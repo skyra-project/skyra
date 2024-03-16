@@ -12,7 +12,7 @@ import { PermissionLevels, type TypedT } from '#lib/types';
 import { first } from '#utils/common';
 import { Command, UserError, type MessageCommand } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import type { Message, Snowflake } from 'discord.js';
+import type { ChatInputCommandInteraction, Message, Snowflake } from 'discord.js';
 
 /**
  * The base class for all Skyra commands with subcommands.
@@ -72,4 +72,6 @@ export namespace SkyraSubcommand {
 	export type Args = SkyraArgs;
 	export type LoaderContext = Command.LoaderContext;
 	export type RunContext = MessageCommand.RunContext;
+
+	export type Interaction = ChatInputCommandInteraction<'cached'>;
 }

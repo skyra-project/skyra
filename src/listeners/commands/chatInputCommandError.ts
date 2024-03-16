@@ -1,7 +1,8 @@
 import { Events, Listener, type ChatInputCommandErrorPayload } from '@sapphire/framework';
+import { handleCommandError } from './_chat-input-shared.js';
 
 export class UserListener extends Listener<typeof Events.ChatInputCommandError> {
-	public run(error: Error, payload: ChatInputCommandErrorPayload) {
-		this.container.logger.fatal(`[COMMAND] ${payload.command.location.full}\n${error.stack || error.message}`);
+	public run(error: unknown, payload: ChatInputCommandErrorPayload) {
+		return handleCommandError(error, payload);
 	}
 }

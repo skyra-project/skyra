@@ -1,6 +1,7 @@
 export * as Arguments from '#lib/i18n/languageKeys/keys/Arguments';
 export * as Assertions from '#lib/i18n/languageKeys/keys/Assertions';
 export * as Commands from '#lib/i18n/languageKeys/keys/Commands';
+export * as Errors from '#lib/i18n/languageKeys/keys/Errors';
 export * as FuzzySearch from '#lib/i18n/languageKeys/keys/FuzzySearch';
 export * as Globals from '#lib/i18n/languageKeys/keys/Globals';
 export * as Guilds from '#lib/i18n/languageKeys/keys/Guilds';

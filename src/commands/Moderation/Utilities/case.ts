@@ -165,18 +165,22 @@ export class UserCommand extends SkyraSubcommand {
 
 	public async chatInputRunArchive(interaction: SkyraSubcommand.Interaction) {
 		const entry = await this.#getCase(interaction, true);
+		const { caseId } = entry;
 		await entry.archive();
 
-		const content = getSupportedUserLanguageT(interaction)(Root.ArchiveSuccess, { caseId: entry.caseId });
+		const content = getSupportedUserLanguageT(interaction)(Root.ArchiveSuccess, { caseId });
 		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 	}
 
 	public async chatInputRunDelete(interaction: SkyraSubcommand.Interaction) {
 		const entry = await this.#getCase(interaction, true);
+		const { caseId, task } = entry;
+
+		if (task) await task.delete();
 		await entry.remove();
 		getModeration(interaction.guild).delete(entry.caseId);
 
-		const content = getSupportedUserLanguageT(interaction)(Root.DeleteSuccess, { caseId: entry.caseId });
+		const content = getSupportedUserLanguageT(interaction)(Root.DeleteSuccess, { caseId });
 		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 	}
 
@@ -311,8 +315,6 @@ export class UserCommand extends SkyraSubcommand {
 
 		const parameter = caseId.toString();
 		const t = getSupportedUserLanguageT(interaction);
-		return (await resolveCase(parameter, t, interaction.guild)) //
-			.mapErr((key) => t(key, { parameter }))
-			.unwrap();
+		return (await resolveCase(parameter, t, interaction.guild)).unwrap();
 	}
 }

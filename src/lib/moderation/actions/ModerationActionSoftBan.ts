@@ -12,7 +12,6 @@ export class ModerationActionSoftban extends ModerationAction<number> {
 	public constructor() {
 		super({
 			type: TypeVariation.Softban,
-			actionKey: 'softban',
 			logPrefix: 'Moderation => Softban'
 		});
 	}

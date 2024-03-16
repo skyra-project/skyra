@@ -9,7 +9,6 @@ export class ModerationActionBan extends ModerationAction<number> {
 	public constructor() {
 		super({
 			type: TypeVariation.Ban,
-			actionKey: 'ban',
 			logPrefix: 'Moderation => Ban'
 		});
 	}

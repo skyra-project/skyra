@@ -7,7 +7,6 @@ export class ModerationActionRoleRemove extends ModerationAction<Role> {
 	public constructor() {
 		super({
 			type: TypeVariation.RemoveRole,
-			actionKey: 'removeRole',
 			logPrefix: 'Moderation => RoleRemove'
 		});
 	}

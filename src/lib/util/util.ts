@@ -16,6 +16,7 @@ import {
 	type ImageURLOptions,
 	type Message,
 	type MessageMentionTypes,
+	type Snowflake,
 	type ThreadChannel,
 	type User,
 	type UserResolvable
@@ -365,6 +366,15 @@ export const sendLoadingMessage = <T extends GuildMessage | Message>(message: T,
 
 export function getColor(message: Message) {
 	return message.member?.displayColor ?? BrandingColors.Primary;
+}
+
+/**
+ * Checks if the provided user ID is the same as the client's ID.
+ *
+ * @param userId - The user ID to check.
+ */
+export function isUserSelf(userId: Snowflake) {
+	return userId === process.env.CLIENT_ID;
 }
 
 export interface UtilOneToTenEntry {

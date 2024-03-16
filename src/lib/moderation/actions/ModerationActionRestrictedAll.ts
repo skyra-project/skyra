@@ -6,7 +6,6 @@ export class ModerationActionRestrictedAll extends RoleModerationAction {
 	public constructor() {
 		super({
 			type: TypeVariation.Mute,
-			actionKey: 'mute',
 			logPrefix: 'Moderation => Mute',
 			roleKey: RoleModerationAction.RoleKey.All,
 			roleData: { name: 'Muted', permissions: [], hoist: false, mentionable: false },

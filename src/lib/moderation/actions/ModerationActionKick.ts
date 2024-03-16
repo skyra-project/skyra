@@ -7,7 +7,6 @@ export class ModerationActionKick extends ModerationAction {
 	public constructor() {
 		super({
 			type: TypeVariation.Kick,
-			actionKey: 'kick',
 			logPrefix: 'Moderation => Kick'
 		});
 	}

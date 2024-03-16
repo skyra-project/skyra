@@ -6,7 +6,6 @@ export class ModerationActionRestrictedAttachment extends RoleModerationAction {
 	public constructor() {
 		super({
 			type: TypeVariation.RestrictedAttachment,
-			actionKey: 'restrictedAttachment',
 			logPrefix: 'Moderation => RestrictedAttachment',
 			roleKey: RoleModerationAction.RoleKey.Attachment,
 			roleData: { name: 'Attachment Restricted', permissions: [], hoist: false, mentionable: false },

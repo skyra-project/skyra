@@ -1,7 +1,8 @@
 import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getTranslationKey } from '#lib/moderation/common';
 import type { ModerationManagerCreateData } from '#lib/moderation/managers/ModerationManager';
-import type { GetTypedT } from '#lib/types';
+import type { TypedT } from '#lib/types';
 import { TypeMetadata, hasMetadata, type TypeVariation } from '#lib/util/moderationConstants';
 import { getCodeStyle, getLogPrefix, getModeration } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
@@ -37,12 +38,12 @@ export abstract class ModerationAction<ContextType = never> {
 	/**
 	 * The key of the moderation action.
 	 */
-	protected readonly actionKey: keyof GetTypedT<typeof Root.Actions>;
+	protected readonly actionKey: TypedT;
 
 	public constructor(options: ModerationAction.ConstructorOptions) {
 		this.type = options.type;
+		this.actionKey = getTranslationKey(this.type);
 		this.logPrefix = getLogPrefix(options.logPrefix);
-		this.actionKey = options.actionKey;
 		this.allowUndo = hasMetadata(this.type, TypeMetadata.Undo);
 		this.allowSchedule = hasMetadata(this.type, TypeMetadata.Temporary);
 	}
@@ -193,8 +194,7 @@ export abstract class ModerationAction<ContextType = never> {
 	 */
 	protected async getReason(guild: Guild, reason: string | null | undefined, undo = false) {
 		const t = await fetchT(guild);
-		const actions = t(Root.Actions);
-		const action = actions[this.actionKey];
+		const action = t(this.actionKey);
 		return isNullishOrEmpty(reason)
 			? t(undo ? Root.ActionRevokeNoReason : Root.ActionApplyNoReason, { action })
 			: t(undo ? Root.ActionRevokeReason : Root.ActionApplyReason, { action, reason });
@@ -293,7 +293,6 @@ export namespace ModerationAction {
 	export interface ConstructorOptions {
 		type: TypeVariation;
 		logPrefix: string;
-		actionKey: keyof GetTypedT<typeof Root.Actions>;
 	}
 
 	export type Options = ModerationManagerCreateData;

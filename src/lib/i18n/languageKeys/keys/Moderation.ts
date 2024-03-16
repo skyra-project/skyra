@@ -4,6 +4,7 @@ export const TypeAddRole = T('moderation:typeAddRole');
 export const TypeBan = T('moderation:typeBan');
 export const TypeKick = T('moderation:typeKick');
 export const TypeMute = T('moderation:typeMute');
+export const TypeTimeout = T('moderation:typeTimeout');
 export const TypeRemoveRole = T('moderation:typeRemoveRole');
 export const TypeRestrictedAttachment = T('moderation:typeRestrictedAttachment');
 export const TypeRestrictedEmbed = T('moderation:typeRestrictedEmbed');

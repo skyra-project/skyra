@@ -5,7 +5,6 @@ export class ModerationActionWarning extends ModerationAction<number> {
 	public constructor() {
 		super({
 			type: TypeVariation.Warning,
-			actionKey: 'warning',
 			logPrefix: 'Moderation => Warning'
 		});
 	}

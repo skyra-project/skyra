@@ -41,7 +41,7 @@ export class UserCommand extends SkyraCommand {
 			case 'warnings':
 				return 'list';
 			default:
-				return 'show';
+				return 'view';
 		}
 	}
 }

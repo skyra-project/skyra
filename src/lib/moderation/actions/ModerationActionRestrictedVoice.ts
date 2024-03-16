@@ -6,7 +6,6 @@ export class ModerationActionRestrictedVoice extends RoleModerationAction {
 	public constructor() {
 		super({
 			type: TypeVariation.RestrictedVoice,
-			actionKey: 'restrictedVoice',
 			logPrefix: 'Moderation => RestrictedVoice',
 			roleKey: RoleModerationAction.RoleKey.Voice,
 			roleData: { name: 'Voice Restricted', permissions: [], hoist: false, mentionable: false },

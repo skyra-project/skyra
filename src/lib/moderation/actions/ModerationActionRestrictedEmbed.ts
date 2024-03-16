@@ -6,7 +6,6 @@ export class ModerationActionRestrictedEmbed extends RoleModerationAction {
 	public constructor() {
 		super({
 			type: TypeVariation.RestrictedEmbed,
-			actionKey: 'restrictedEmbed',
 			logPrefix: 'Moderation => RestrictedEmbed',
 			roleKey: RoleModerationAction.RoleKey.Embed,
 			roleData: { name: 'Embed Restricted', permissions: [], hoist: false, mentionable: false },

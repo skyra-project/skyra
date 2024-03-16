@@ -16,7 +16,8 @@ export const enum TypeVariation {
 	SetNickname,
 	AddRole,
 	RemoveRole,
-	RestrictedEmoji
+	RestrictedEmoji,
+	Timeout
 }
 
 export const enum TypeMetadata {
@@ -30,6 +31,7 @@ export const enum TypeMetadata {
 const TypeCodes = {
 	Warning: combineTypeData(TypeVariation.Warning),
 	Mute: combineTypeData(TypeVariation.Mute),
+	Timeout: combineTypeData(TypeVariation.Timeout),
 	Kick: combineTypeData(TypeVariation.Kick),
 	SoftBan: combineTypeData(TypeVariation.Softban),
 	Ban: combineTypeData(TypeVariation.Ban),
@@ -42,6 +44,7 @@ const TypeCodes = {
 	RestrictedVoice: combineTypeData(TypeVariation.RestrictedVoice),
 	UnWarn: combineTypeData(TypeVariation.Warning, TypeMetadata.Undo),
 	UnMute: combineTypeData(TypeVariation.Mute, TypeMetadata.Undo),
+	UnTimeout: combineTypeData(TypeVariation.Timeout, TypeMetadata.Undo),
 	UnBan: combineTypeData(TypeVariation.Ban, TypeMetadata.Undo),
 	UnVoiceMute: combineTypeData(TypeVariation.VoiceMute, TypeMetadata.Undo),
 	UnRestrictedReaction: combineTypeData(TypeVariation.RestrictedReaction, TypeMetadata.Undo),
@@ -85,7 +88,7 @@ export type TypeCodes = number & { __TYPE__: 'TypeCodes' };
 
 export function combineTypeData(type: TypeVariation, metadata?: TypeMetadata): TypeCodes {
 	if (isNullishOrZero(metadata)) return type as TypeCodes;
-	return (((metadata & ~TypeMetadata.Archived) << 4) | type) as TypeCodes;
+	return (((metadata & ~TypeMetadata.Archived) << 5) | type) as TypeCodes;
 }
 
 export function hasMetadata(type: TypeVariation, metadata?: TypeMetadata): boolean {

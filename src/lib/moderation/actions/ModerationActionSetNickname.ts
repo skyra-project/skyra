@@ -11,7 +11,6 @@ export class ModerationActionSetNickname extends ModerationAction<string> {
 	public constructor() {
 		super({
 			type: TypeVariation.SetNickname,
-			actionKey: 'setNickname',
 			logPrefix: 'Moderation => SetNickname'
 		});
 	}

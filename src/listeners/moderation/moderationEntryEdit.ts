@@ -3,6 +3,7 @@ import { resolveOnErrorCodes } from '#utils/common';
 import { SchemaKeys } from '#utils/moderationConstants';
 import { canSendEmbeds, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
+import { isNullish, isNumber } from '@sapphire/utilities';
 import { RESTJSONErrorCodes, type Embed, type Message } from 'discord.js';
 
 export class UserListener extends Listener {
@@ -79,7 +80,7 @@ export class UserListener extends Listener {
 	}
 
 	private validateModerationLogMessageEmbedColor(color: Embed['color']) {
-		return typeof color === 'number';
+		return isNumber(color);
 	}
 
 	private validateModerationLogMessageEmbedFooter(footer: Embed['footer']) {
@@ -87,32 +88,40 @@ export class UserListener extends Listener {
 	}
 
 	private validateModerationLogMessageEmbedTimestamp(timestamp: Embed['timestamp']) {
-		return typeof timestamp === 'number';
+		return isNumber(timestamp);
 	}
 
 	private async scheduleDuration(old: ModerationEntity, entry: ModerationEntity) {
 		if (old.duration === entry.duration) return;
 
-		const previous = this.retrievePreviousSchedule(entry);
-		if (previous !== null) await previous.delete();
-
-		const taskName = entry.duration === null ? null : entry.appealTaskName;
-		if (taskName !== null) {
-			await this.container.schedule
-				.add(taskName, entry.duration! + Date.now(), {
-					catchUp: true,
-					data: {
-						[SchemaKeys.Case]: entry.caseId,
-						[SchemaKeys.User]: entry.userId,
-						[SchemaKeys.Guild]: entry.guildId,
-						[SchemaKeys.Duration]: entry.duration
-					}
-				})
-				.catch((error) => this.container.logger.fatal(error));
+		const task = this.#retrievePreviousTask(entry);
+		if (isNullish(task)) {
+			if (entry.duration !== null) await this.#createNewTask(entry);
+		} else if (entry.duration === null) {
+			// If the new duration is null, delete the previous task:
+			await task.delete();
+		} else {
+			// If the new duration is not null, reschedule the previous task:
+			await task.reschedule(entry.duration! + entry.createdTimestamp);
 		}
 	}
 
-	private retrievePreviousSchedule(entry: ModerationEntity) {
+	async #createNewTask(entry: ModerationEntity) {
+		const taskName = entry.appealTaskName;
+		if (isNullish(taskName)) return;
+
+		await this.container.schedule.add(taskName, entry.duration! + entry.createdTimestamp, {
+			catchUp: true,
+			data: {
+				[SchemaKeys.Case]: entry.caseId,
+				[SchemaKeys.User]: entry.userId,
+				[SchemaKeys.Guild]: entry.guildId,
+				[SchemaKeys.Duration]: entry.duration
+			}
+		});
+	}
+
+	#retrievePreviousTask(entry: ModerationEntity) {
 		return (
 			this.container.schedule.queue.find(
 				(task) =>

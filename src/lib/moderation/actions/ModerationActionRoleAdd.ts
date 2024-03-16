@@ -7,7 +7,6 @@ export class ModerationActionRoleAdd extends ModerationAction<Role> {
 	public constructor() {
 		super({
 			type: TypeVariation.AddRole,
-			actionKey: 'addRole',
 			logPrefix: 'Moderation => RoleAdd'
 		});
 	}

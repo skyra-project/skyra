@@ -7,7 +7,6 @@ export class ModerationActionVoiceKick extends ModerationAction {
 	public constructor() {
 		super({
 			type: TypeVariation.VoiceKick,
-			actionKey: 'vkick',
 			logPrefix: 'Moderation => VoiceKick'
 		});
 	}

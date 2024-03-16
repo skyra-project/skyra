@@ -1,14 +1,16 @@
-import { getAction, getTranslationKey, type ModerationEntity } from '#lib/database';
+import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedLanguageT, getSupportedUserLanguageT } from '#lib/i18n/translate';
+import { getAction } from '#lib/moderation';
+import { getTranslationKey } from '#lib/moderation/common';
 import { SkyraCommand, SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
-import { minutes, seconds, years } from '#utils/common';
-import { BrandingColors } from '#utils/constants';
+import { desc, minutes, seconds, years } from '#utils/common';
+import { BrandingColors, Emojis } from '#utils/constants';
 import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
 import { resolveCase, resolveTimeSpan } from '#utils/resolvers';
-import { getFullEmbedAuthor } from '#utils/util';
+import { getFullEmbedAuthor, isUserSelf } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
 import { PaginatedMessageEmbedFields } from '@sapphire/discord.js-utilities';
 import { ApplicationCommandRegistry, CommandOptionsRunTypeEnum } from '@sapphire/framework';
@@ -16,15 +18,16 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
 import { cutText, isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
 import {
-	chatInputApplicationCommandMention,
-	Collection,
 	EmbedBuilder,
-	inlineCode,
 	MessageFlags,
 	PermissionFlagsBits,
-	time,
 	TimestampStyles,
 	User,
+	blockQuote,
+	chatInputApplicationCommandMention,
+	inlineCode,
+	time,
+	userMention,
 	type EmbedField
 } from 'discord.js';
 
@@ -33,13 +36,14 @@ const RootModeration = LanguageKeys.Moderation;
 const OverviewColors = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
 
 @ApplyOptions<SkyraSubcommand.Options>({
-	description: LanguageKeys.Commands.Moderation.CaseDescription,
-	detailedDescription: LanguageKeys.Commands.Moderation.CaseExtended,
+	description: Root.Description,
+	detailedDescription: LanguageKeys.Commands.Shared.SlashDetailed,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks],
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
+	hidden: true,
 	subcommands: [
-		{ name: 'show', chatInputRun: 'chatInputRunShow', messageRun: 'showMessageRun', default: true },
+		{ name: 'view', chatInputRun: 'chatInputRunView', messageRun: 'viewMessageRun', default: true },
 		{ name: 'list', chatInputRun: 'chatInputRunList' },
 		{ name: 'edit', chatInputRun: 'chatInputRunEdit' },
 		{ name: 'archive', chatInputRun: 'chatInputRunArchive' },
@@ -53,7 +57,7 @@ export class UserCommand extends SkyraSubcommand {
 				.setDMPermission(false)
 				.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 				.addSubcommand((subcommand) =>
-					applyLocalizedBuilder(subcommand, Root.Show) //
+					applyLocalizedBuilder(subcommand, Root.View) //
 						.addIntegerOption((option) => applyLocalizedBuilder(option, Root.OptionsCase).setMinValue(1).setRequired(true))
 						.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsShow))
 				)
@@ -100,7 +104,7 @@ export class UserCommand extends SkyraSubcommand {
 		);
 	}
 
-	public async chatInputRunShow(interaction: SkyraSubcommand.Interaction) {
+	public async chatInputRunView(interaction: SkyraSubcommand.Interaction) {
 		const entry = await this.#getCase(interaction, true);
 		const show = interaction.options.getBoolean('show') ?? false;
 		const t = show ? getSupportedLanguageT(interaction) : getSupportedUserLanguageT(interaction);
@@ -114,13 +118,13 @@ export class UserCommand extends SkyraSubcommand {
 		const type = interaction.options.getInteger('type') as TypeVariation | null;
 
 		const moderation = getModeration(interaction.guild);
-		let entries = await (user ? moderation.fetch(user.id) : moderation.fetch());
+		let entries = [...(await (user ? moderation.fetch(user.id) : moderation.fetch())).values()];
 		if (!isNullish(type)) entries = entries.filter((entry) => entry.type === type);
 
 		const t = show ? getSupportedLanguageT(interaction) : getSupportedUserLanguageT(interaction);
 		return interaction.options.getBoolean('overview') //
 			? this.#listOverview(interaction, t, entries, user, show)
-			: this.#listDetails(interaction, t, entries, show);
+			: this.#listDetails(interaction, t, this.#sortEntries(entries), isNullish(user), show);
 	}
 
 	public async chatInputRunEdit(interaction: SkyraSubcommand.Interaction) {
@@ -134,7 +138,7 @@ export class UserCommand extends SkyraSubcommand {
 			const action = getAction(entry.type);
 			if (!action.allowSchedule) {
 				const content = t(Root.TimeNotAllowed, { type: t(getTranslationKey(entry.type)) });
-				return interaction.reply(content);
+				return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 			}
 
 			if (duration !== 0) {
@@ -144,7 +148,7 @@ export class UserCommand extends SkyraSubcommand {
 						start: time(seconds.fromMilliseconds(entry.createdTimestamp), TimestampStyles.LongDateTime),
 						time: time(seconds.fromMilliseconds(next), TimestampStyles.RelativeTime)
 					});
-					return interaction.reply(content);
+					return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 				}
 			}
 		}
@@ -176,7 +180,7 @@ export class UserCommand extends SkyraSubcommand {
 		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 	}
 
-	public async showMessageRun(message: GuildMessage, args: SkyraSubcommand.Args) {
+	public async viewMessageRun(message: GuildMessage, args: SkyraSubcommand.Args) {
 		return send(message, {
 			content: args.t(LanguageKeys.Commands.Shared.DeprecatedMessage, {
 				command: chatInputApplicationCommandMention(this.name, 'show', this.getGlobalCommandId())
@@ -192,57 +196,60 @@ export class UserCommand extends SkyraSubcommand {
 		});
 	}
 
-	async #listDetails(interaction: SkyraSubcommand.Interaction, t: TFunction, entries: Collection<number, ModerationEntity>, show: boolean) {
+	async #listDetails(interaction: SkyraSubcommand.Interaction, t: TFunction, entries: ModerationEntity[], displayUser: boolean, show: boolean) {
+		if (entries.length === 0) {
+			const content = getSupportedUserLanguageT(interaction)(Root.ListEmpty);
+			return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+		}
+
 		await interaction.deferReply({ ephemeral: !show });
 
-		const usernames = await this.#fetchModeratorsNames(entries);
 		const now = Date.now();
-
-		const display = new PaginatedMessageEmbedFields({
-			template: new EmbedBuilder() //
-				.setTitle(t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
-				.setColor(interaction.member?.displayColor ?? BrandingColors.Primary)
-		});
-		display.setIdle(minutes(5));
-		display.setItemsPerPage(10);
-		display.setItems(entries.map((entry) => this.#listDetailsEntry(entry, usernames, now)));
-		await display.run(interaction, interaction.user);
+		const title = t(Root.ListDetailsTitle, { count: entries.length });
+		const color = interaction.member?.displayColor ?? BrandingColors.Primary;
+		return new PaginatedMessageEmbedFields()
+			.setTemplate(new EmbedBuilder().setTitle(title).setColor(color))
+			.setIdle(minutes(5))
+			.setItemsPerPage(5)
+			.setItems(entries.map((entry) => this.#listDetailsEntry(t, entry, now, displayUser)))
+			.make()
+			.run(interaction, interaction.user);
 	}
 
-	#listDetailsEntry(entry: ModerationEntity, usernames: Collection<string, string>, now: number): EmbedField {
+	#listDetailsEntry(t: TFunction, entry: ModerationEntity, now: number, displayUser: boolean): EmbedField {
+		const moderatorEmoji = isUserSelf(entry.moderatorId) ? Emojis.AutoModerator : Emojis.Moderator;
+		const lines = [
+			`${Emojis.Calendar} ${time(seconds.fromMilliseconds(entry.createdTimestamp), TimestampStyles.ShortDateTime)}`,
+			t(Root.ListDetailsModerator, { emoji: moderatorEmoji, mention: userMention(entry.moderatorId), userId: entry.moderatorId })
+		];
+		if (displayUser && entry.userId) {
+			lines.push(t(Root.ListDetailsUser, { emoji: Emojis.ShieldMember, mention: userMention(entry.userId), userId: entry.userId }));
+		}
+
 		const remainingTime = this.#listDetailsEntryRemainingTime(entry, now);
-		const expiredTime = remainingTime === 0;
-		const formattedModerator = usernames.get(entry.moderatorId);
-		const formattedReason = isNullishOrEmpty(entry.reason) ? '-' : cutText(entry.reason, 150);
-		const formattedDuration = this.#listDetailsEntryRemainingDuration(remainingTime, now);
-		const formatter = expiredTime ? '~~' : '';
+		if (!isNullishOrZero(remainingTime)) {
+			const timestamp = time(seconds.fromMilliseconds(entry.createdTimestamp + entry.duration!), TimestampStyles.RelativeTime);
+			lines.push(t(Root.ListDetailsExpires, { emoji: Emojis.SandsOfTime, time: timestamp }));
+		}
+
+		if (!isNullishOrEmpty(entry.reason)) lines.push(blockQuote(cutText(entry.reason, 150)));
 
 		return {
 			name: `${inlineCode(entry.caseId.toString())} → ${entry.title}`,
-			value: `${formatter}Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}${formatter}`,
+			value: lines.join('\n'),
 			inline: false
 		};
 	}
 
 	#listDetailsEntryRemainingTime(entry: ModerationEntity, now: number) {
 		return entry.archived || isNullishOrZero(entry.duration) || isNullish(entry.createdAt)
-			? 0
-			: Math.max(0, entry.createdTimestamp + entry.duration! - now);
+			? null
+			: Math.max(0, entry.createdTimestamp + entry.duration - now);
 	}
 
-	#listDetailsEntryRemainingDuration(remainingTime: number, now: number) {
-		return remainingTime === 0 ? '' : `\nExpires: ${time(seconds.fromMilliseconds(now + remainingTime), TimestampStyles.RelativeTime)}`;
-	}
-
-	async #listOverview(
-		interaction: SkyraSubcommand.Interaction,
-		t: TFunction,
-		entries: Collection<number, ModerationEntity>,
-		user: User | null,
-		show: boolean
-	) {
-		let [warnings, mutes, kicks, bans] = [0, 0, 0, 0];
-		for (const entry of entries.values()) {
+	async #listOverview(interaction: SkyraSubcommand.Interaction, t: TFunction, entries: ModerationEntity[], user: User | null, show: boolean) {
+		let [warnings, mutes, timeouts, kicks, bans] = [0, 0, 0, 0, 0];
+		for (const entry of entries) {
 			if (entry.archived || entry.appealType) continue;
 			switch (entry.type) {
 				case TypeVariation.Ban:
@@ -251,6 +258,9 @@ export class UserCommand extends SkyraSubcommand {
 					break;
 				case TypeVariation.Mute:
 					++mutes;
+					break;
+				case TypeVariation.Timeout:
+					++timeouts;
 					break;
 				case TypeVariation.Kick:
 					++kicks;
@@ -263,15 +273,12 @@ export class UserCommand extends SkyraSubcommand {
 			}
 		}
 
-		const footer = t(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
-			warnings,
-			mutes,
-			kicks,
-			bans,
-			warningsText: t(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings }),
-			mutesText: t(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes }),
-			kicksText: t(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks }),
-			bansText: t(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
+		const footer = t(user ? Root.ListOverviewFooterUser : Root.ListOverviewFooter, {
+			warnings: t(Root.ListOverviewFooterWarning, { count: warnings }),
+			mutes: t(Root.ListOverviewFooterMutes, { count: mutes }),
+			timeouts: t(Root.ListOverviewFooterTimeouts, { count: timeouts }),
+			kicks: t(Root.ListOverviewFooterKicks, { count: kicks }),
+			bans: t(Root.ListOverviewFooterBans, { count: bans })
 		});
 
 		const embed = new EmbedBuilder()
@@ -281,19 +288,8 @@ export class UserCommand extends SkyraSubcommand {
 		await interaction.reply({ embeds: [embed], flags: show ? undefined : MessageFlags.Ephemeral });
 	}
 
-	async #fetchModeratorsNames(entries: Collection<number, ModerationEntity>) {
-		const moderators = new Collection<string, string>();
-		const promises = new Collection<string, Promise<unknown>>();
-
-		for (const entry of entries.values()) {
-			if (moderators.has(entry.moderatorId)) continue;
-			promises.set(
-				entry.moderatorId,
-				entry.fetchModerator().then((user) => moderators.set(entry.moderatorId, user.username))
-			);
-		}
-		await Promise.all(promises);
-		return moderators;
+	#sortEntries(entries: ModerationEntity[]) {
+		return entries.sort((a, b) => desc(a.caseId, b.caseId));
 	}
 
 	#getDuration(interaction: SkyraSubcommand.Interaction, required: true): number;

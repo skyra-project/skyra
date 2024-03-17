@@ -2,12 +2,14 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { TranslationMappings, UndoTaskNameMappings, getColor } from '#lib/moderation/common/constants';
 import type { ModerationManager } from '#lib/moderation/managers/ModerationManager';
 import type { SkyraCommand } from '#lib/structures';
+import { seconds } from '#utils/common';
 import { TypeVariation } from '#utils/moderationConstants';
 import { getDisplayAvatar, getFullEmbedAuthor, getTag } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { chatInputApplicationCommandMention, type Snowflake } from 'discord.js';
+import { isNullishOrZero } from '@sapphire/utilities';
+import { TimestampStyles, chatInputApplicationCommandMention, time, type Snowflake } from 'discord.js';
 
 export function getTranslationKey<const Type extends TypeVariation>(type: Type): (typeof TranslationMappings)[Type] {
 	return TranslationMappings[type];
@@ -48,13 +50,17 @@ export async function getEmbed(t: TFunction, entry: ModerationManager.Entry) {
 }
 
 async function getEmbedDescription(t: TFunction, entry: ModerationManager.Entry) {
-	const user = await entry.fetchUser();
 	const reason = entry.reason ?? t(Root.EmbedReasonNotSet, { command: getCaseEditMention(), caseId: entry.id });
-	return t(Root.EmbedDescription, {
-		type: getTitle(t, entry),
-		user: t(Root.EmbedUser, { tag: getTag(user), id: user.id }),
-		reason
-	});
+
+	const type = getTitle(t, entry);
+	const user = t(Root.EmbedUser, { tag: getTag(await entry.fetchUser()), id: entry.userId });
+	return isNullishOrZero(entry.duration)
+		? t(Root.EmbedDescription, { type, user, reason })
+		: t(Root.EmbedDescriptionTemporary, { type, user, time: getEmbedDescriptionTime(entry.expiresTimestamp!), reason });
+}
+
+function getEmbedDescriptionTime(timestamp: number) {
+	return time(seconds.fromMilliseconds(timestamp), TimestampStyles.RelativeTime);
 }
 
 let caseCommandId: Snowflake | null = null;

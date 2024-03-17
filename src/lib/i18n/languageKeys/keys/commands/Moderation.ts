@@ -1,6 +1,5 @@
 import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
-import type { ModerationManagerDescriptionData } from '#utils/moderationConstants';
 
 export const MuteDescription = T('commands/moderation:muteDescription');
 export const MuteExtended = T<LanguageHelpDisplayOptions>('commands/moderation:muteExtended');
@@ -82,18 +81,9 @@ export const ModerationOutput = FT<{ count: number; range: string | number; user
 export const ModerationOutputWithReason = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
 	'commands/moderation:moderationOutputWithReason'
 );
-export const ModerationLogDescriptionTypeAndUser = FT<{ type: string; userId: string; userTag: string }, string>(
-	'moderation:logDescriptionTypeAndUser'
-);
-export const ModerationLogDescriptionWithReason = FT<Pick<ModerationManagerDescriptionData, 'reason' | 'formattedDuration'>, string>(
-	'moderation:logDescriptionWithReason'
-);
-export const ModerationLogDescriptionWithoutReason = FT<ModerationManagerDescriptionData, string>('moderation:logDescriptionWithoutReason');
 export const GuildBansEmpty = T('errors:guildBansEmpty');
 export const GuildBansNotFound = T('errors:guildBansNotFound');
 export const GuildMemberNotVoicechannel = T('errors:guildMemberNotVoicechannel');
-export const ModerationLogExpiresIn = FT<{ duration: number }, string>('moderation:logExpiresIn');
-export const ModerationLogFooter = FT<{ caseId: number }, string>('moderation:logFooter');
 export const ModerationFailed = FT<{ users: string; count: number }, string>('commands/moderation:moderationFailed');
 export const ModerationDmFooter = T('commands/moderation:moderationDmFooter');
 export const ModerationDmDescription = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string>(

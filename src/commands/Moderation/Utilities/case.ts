@@ -228,7 +228,7 @@ export class UserCommand extends SkyraSubcommand {
 			lines.push(t(Root.ListDetailsUser, { emoji: Emojis.ShieldMember, mention: userMention(entry.userId), userId: entry.userId }));
 		}
 
-		if (!isNullishOrZero(entry.expired)) {
+		if (!isNullishOrZero(entry.duration) && !entry.expired) {
 			const timestamp = time(seconds.fromMilliseconds(entry.expiresTimestamp!), TimestampStyles.RelativeTime);
 			lines.push(t(Root.ListDetailsExpires, { emoji: Emojis.SandsOfTime, time: timestamp }));
 		}

@@ -44,13 +44,6 @@ export interface ModerationTypeAssets {
 	title: string;
 }
 
-export interface ModerationManagerDescriptionData {
-	reason: string | null;
-	prefix: string;
-	caseId: number;
-	formattedDuration: string;
-}
-
 export interface Unlock {
 	unlock(): void;
 }

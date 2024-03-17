@@ -8,8 +8,8 @@ export const TypeRestrictedEmbed = T('moderation:typeRestrictedEmbed');
 export const TypeRestrictedEmoji = T('moderation:typeRestrictedEmoji');
 export const TypeRestrictedReaction = T('moderation:typeRestrictedReaction');
 export const TypeRestrictedVoice = T('moderation:typeRestrictedVoice');
-export const TypeRoleAdd = T('moderation:typeAddRole');
-export const TypeRoleRemove = T('moderation:typeRemoveRole');
+export const TypeRoleAdd = T('moderation:typeRoleAdd');
+export const TypeRoleRemove = T('moderation:typeRoleRemove');
 export const TypeSetNickname = T('moderation:typeSetNickname');
 export const TypeSoftban = T('moderation:typeSoftban');
 export const TypeTimeout = T('moderation:typeTimeout');
@@ -22,5 +22,6 @@ export const MetadataTemporary = FT<{ name: string }>('moderation:metadataTempor
 
 export const EmbedUser = FT<{ tag: string; id: string }>('moderation:embedUser');
 export const EmbedDescription = FT<{ type: string; user: string; reason: string }>('moderation:embedDescription');
+export const EmbedDescriptionTemporary = FT<{ type: string; user: string; time: string; reason: string }>('moderation:embedDescriptionTemporary');
 export const EmbedReasonNotSet = FT<{ command: string; caseId: number }>('moderation:embedReasonNotSet');
 export const EmbedFooter = FT<{ caseId: number }>('moderation:embedFooter');

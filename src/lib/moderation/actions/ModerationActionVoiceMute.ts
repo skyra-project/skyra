@@ -8,6 +8,7 @@ export class ModerationActionVoiceMute extends ModerationAction {
 	public constructor() {
 		super({
 			type: TypeVariation.VoiceMute,
+			isUndoActionAvailable: true,
 			logPrefix: 'Moderation => VoiceMute'
 		});
 	}
@@ -24,17 +25,17 @@ export class ModerationActionVoiceMute extends ModerationAction {
 		return member?.voice.serverMute ?? false;
 	}
 
-	protected override async handleApplyPre(guild: Guild, options: ModerationAction.Options) {
-		const reason = await this.getReason(guild, options.reason);
-		await api().guilds.editMember(guild.id, options.userId, { mute: true }, { reason });
+	protected override async handleApplyPre(guild: Guild, entry: ModerationAction.Entry) {
+		const reason = await this.getReason(guild, entry.reason);
+		await api().guilds.editMember(guild.id, entry.userId, { mute: true }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: options.userId });
+		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
 	}
 
-	protected override async handleUndoPre(guild: Guild, options: ModerationAction.Options) {
-		const reason = await this.getReason(guild, options.reason, true);
-		await api().guilds.editMember(guild.id, options.userId, { mute: false }, { reason });
+	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry) {
+		const reason = await this.getReason(guild, entry.reason, true);
+		await api().guilds.editMember(guild.id, entry.userId, { mute: false }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: options.userId });
+		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
 	}
 }

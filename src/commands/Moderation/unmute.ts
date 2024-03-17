@@ -14,7 +14,7 @@ export class UserSetUpModerationCommand extends SetUpModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return ModerationActions.mute.undo(
 			message.guild,
-			{ userId: context.target.id, moderatorId: message.author.id, reason: context.reason, imageURL: getImage(message) },
+			{ user: context.target, moderator: message.author, reason: context.reason, imageURL: getImage(message) },
 			await this.getActionData(message, context.args, context.target)
 		);
 	}

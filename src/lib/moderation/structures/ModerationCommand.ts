@@ -1,14 +1,15 @@
-import { GuildSettings, ModerationEntity, readSettings } from '#lib/database';
+import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
+import type { ModerationManager } from '#lib/moderation/managers/ModerationManager';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
-import { floatPromise, seconds, years } from '#utils/common';
+import { asc, floatPromise, seconds, years } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
 import { cast, getTag } from '#utils/util';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { free, send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
-import type { ModerationAction } from '../actions/base/ModerationAction.js';
 
 export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	/**
@@ -45,7 +46,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	public override async messageRun(message: GuildMessage, args: ModerationCommand.Args) {
 		const resolved = await this.resolveOverloads(args);
 		const preHandled = await this.prehandle(message, resolved);
-		const processed = [] as Array<{ log: ModerationEntity; target: User }>;
+		const processed = [] as Array<{ log: ModerationManager.Entry; target: User }>;
 		const errored = [] as Array<{ error: Error | string; target: User }>;
 
 		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason] = await readSettings(message.guild, [
@@ -81,8 +82,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			const output: string[] = [];
 			if (processed.length) {
 				const logReason = shouldDisplayReason ? processed[0].log.reason! : null;
-				const sorted = processed.sort((a, b) => a.log.caseId - b.log.caseId);
-				const cases = sorted.map(({ log }) => log.caseId);
+				const sorted = processed.sort((a, b) => asc(a.log.id, b.log.id));
+				const cases = sorted.map(({ log }) => log.id);
 				const users = sorted.map(({ target }) => `\`${getTag(target)}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 				const langKey = logReason
@@ -186,7 +187,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		};
 	}
 
-	protected abstract handle(message: GuildMessage, context: HandledCommandContext<T>): Promise<ModerationEntity> | ModerationEntity;
+	protected abstract handle(message: GuildMessage, context: HandledCommandContext<T>): Promise<ModerationManager.Entry> | ModerationManager.Entry;
 
 	private async resolveDurationArgument(args: ModerationCommand.Args) {
 		if (args.finished) return null;

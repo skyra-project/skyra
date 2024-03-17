@@ -106,30 +106,19 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 	protected async onWarning(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			ModerationActions.warning.apply(message.guild, {
-				userId: message.author.id,
-				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-				duration
-			})
+			ModerationActions.warning.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 
 	protected async onKick(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
-			ModerationActions.kick.apply(message.guild, {
-				userId: message.author.id,
-				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
-			})
+			ModerationActions.kick.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum) })
 		);
 	}
 
 	protected async onMute(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			ModerationActions.mute.apply(message.guild, {
-				userId: message.author.id,
-				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-				duration
-			})
+			ModerationActions.mute.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 
@@ -137,10 +126,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		await this.createActionAndSend(message, () =>
 			ModerationActions.softban.apply(
 				message.guild,
-				{
-					userId: message.author.id,
-					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
-				},
+				{ user: message.author, reason: this.#getReason(t, points, maximum) },
 				{ context: seconds.fromMinutes(5) }
 			)
 		);
@@ -148,11 +134,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 	protected async onBan(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			ModerationActions.ban.apply(message.guild, {
-				userId: message.author.id,
-				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-				duration
-			})
+			ModerationActions.ban.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 
@@ -203,6 +185,10 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 		const { roles } = member;
 		return !ignoredRoles.some((id) => roles.cache.has(id));
+	}
+
+	#getReason(t: TFunction, points: number, maximum: number) {
+		return maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum });
 	}
 }
 

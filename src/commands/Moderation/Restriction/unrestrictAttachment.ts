@@ -13,7 +13,7 @@ export class UserSetUpModerationCommand extends SetUpModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
 		return ModerationActions.restrictedAttachment.undo(
 			message.guild,
-			{ userId: context.target.id, moderatorId: message.author.id, reason: context.reason },
+			{ user: context.target, moderator: message.author, reason: context.reason },
 			await this.getActionData(message, context.args, context.target)
 		);
 	}

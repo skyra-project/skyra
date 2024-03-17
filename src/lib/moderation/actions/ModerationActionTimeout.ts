@@ -9,6 +9,7 @@ export class ModerationActionTimeout extends ModerationAction<number | null> {
 	public constructor() {
 		super({
 			type: TypeVariation.Timeout,
+			isUndoActionAvailable: true,
 			logPrefix: 'Moderation => Timeout'
 		});
 	}
@@ -25,20 +26,20 @@ export class ModerationActionTimeout extends ModerationAction<number | null> {
 		return !isNullish(member) && member.isCommunicationDisabled();
 	}
 
-	protected override async handleApplyPre(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<number>) {
-		const reason = await this.getReason(guild, options.reason);
+	protected override async handleApplyPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<number>) {
+		const reason = await this.getReason(guild, entry.reason);
 		const time = this.#getCommunicationDisabledUntil(data);
-		await api().guilds.editMember(guild.id, options.userId, { communication_disabled_until: time }, { reason });
+		await api().guilds.editMember(guild.id, entry.userId, { communication_disabled_until: time }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: options.userId });
+		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
 	}
 
-	protected override async handleUndoPre(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<number>) {
-		const reason = await this.getReason(guild, options.reason, true);
+	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<number>) {
+		const reason = await this.getReason(guild, entry.reason, true);
 		const time = this.#getCommunicationDisabledUntil(data);
-		await api().guilds.editMember(guild.id, options.userId, { communication_disabled_until: time }, { reason });
+		await api().guilds.editMember(guild.id, entry.userId, { communication_disabled_until: time }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: options.userId });
+		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
 	}
 
 	#getCommunicationDisabledUntil(data: ModerationAction.Data<number>) {

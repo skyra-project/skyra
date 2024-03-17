@@ -7,6 +7,7 @@ export const BooleanFalseOptions = T<readonly string[]>('arguments:booleanFalseO
 export const BooleanTrueOptions = T<readonly string[]>('arguments:booleanTrueOptions');
 export const CaseNoEntries = FT<{ parameter: string }>('arguments:caseNoEntries');
 export const CaseUnknownEntry = FT<{ parameter: string }>('arguments:caseUnknownEntry');
+export const CaseNotInThisGuild = FT<{ parameter: string }>('arguments:caseNotInThisGuild');
 export const CaseLatestOptions = T<readonly string[]>('arguments:caseLatestOptions');
 export const CategoryChannelError = FT<{ parameter: string }>('arguments:categoryChannelError');
 export const ChannelError = FT<{ parameter: string }>('arguments:channelError');

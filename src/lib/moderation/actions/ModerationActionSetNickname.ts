@@ -7,33 +7,34 @@ import type { Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.Moderation;
 
-export class ModerationActionSetNickname extends ModerationAction<string> {
+export class ModerationActionSetNickname extends ModerationAction<string, TypeVariation.SetNickname> {
 	public constructor() {
 		super({
 			type: TypeVariation.SetNickname,
+			isUndoActionAvailable: true,
 			logPrefix: 'Moderation => SetNickname'
 		});
 	}
 
-	protected override async handleApplyPre(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<string>) {
+	protected override async handleApplyPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<string>) {
 		const nickname = data.context as string;
-		const reason = await (options.reason
-			? resolveKey(guild, nickname ? Root.ActionSetNicknameSet : Root.ActionSetNicknameRemoved, { reason: options.reason })
+		const reason = await (entry.reason
+			? resolveKey(guild, nickname ? Root.ActionSetNicknameSet : Root.ActionSetNicknameRemoved, { reason: entry.reason })
 			: resolveKey(guild, nickname ? Root.ActionSetNicknameNoReasonSet : Root.ActionSetNicknameNoReasonRemoved));
-		await api().guilds.editMember(guild.id, options.userId, { nick: nickname }, { reason });
+		await api().guilds.editMember(guild.id, entry.userId, { nick: nickname }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: options.userId });
+		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
 	}
 
-	protected override async handleUndoPre(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<string>) {
+	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<string>) {
 		const nickname = (data.context as string) || null;
-		await api().guilds.editMember(guild.id, options.userId, { nick: nickname }, { reason: options.reason || undefined });
+		await api().guilds.editMember(guild.id, entry.userId, { nick: nickname }, { reason: entry.reason || undefined });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: options.userId });
+		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
 	}
 
 	protected override async resolveOptionsExtraData(guild: Guild, options: ModerationAction.PartialOptions) {
-		const member = await guild.members.fetch(options.userId);
+		const member = await guild.members.fetch(options.user);
 		return { oldName: member.nickname };
 	}
 }

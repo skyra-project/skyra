@@ -10,6 +10,9 @@ export async function handleCommandError(error: unknown, payload: ChatInputComma
 	const resolved = flattenError(payload.command, error);
 	const content = resolved ? resolveError(t, resolved) : generateUnexpectedErrorMessage(interaction.user.id, payload.command, t, error);
 
-	if (interaction.replied) await interaction.followUp({ content, flags: MessageFlags.Ephemeral });
-	else await interaction.reply({ content, flags: MessageFlags.Ephemeral });
+	try {
+		if (interaction.replied) await interaction.followUp({ content, flags: MessageFlags.Ephemeral });
+		else if (interaction.deferred) await interaction.editReply({ content });
+		else await interaction.reply({ content, flags: MessageFlags.Ephemeral });
+	} catch {}
 }

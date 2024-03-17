@@ -1,35 +1,52 @@
-import { GuildSettings, ModerationEntity, writeSettings } from '#lib/database';
+import { GuildSettings, writeSettings } from '#lib/database';
+import type { ModerationManager } from '#lib/moderation';
+import { getEmbed, getUndoTaskName } from '#lib/moderation/common';
 import { resolveOnErrorCodes } from '#utils/common';
+import { getModeration } from '#utils/functions';
 import { SchemaKeys } from '#utils/moderationConstants';
 import { canSendEmbeds, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { isNullish, isNumber } from '@sapphire/utilities';
 import { RESTJSONErrorCodes, type Embed, type Message } from 'discord.js';
 
 export class UserListener extends Listener {
-	public run(old: ModerationEntity, entry: ModerationEntity) {
-		return Promise.all([this.cancelTask(old, entry), this.sendMessage(old, entry), this.scheduleDuration(old, entry)]);
+	public run(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
+		return Promise.all([this.scheduleDuration(old, entry), this.sendMessage(old, entry)]);
 	}
 
-	private async cancelTask(old: ModerationEntity, entry: ModerationEntity) {
-		// If the task was invalidated or had its duration set to null, delete any pending task
-		if ((!old.archived && entry.archived) || (old.duration !== null && entry.duration === null)) await entry.task?.delete();
+	private async scheduleDuration(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
+		// If the entry has been archived in this update, delete the task:
+		if (entry.isArchived()) {
+			await entry.task?.delete();
+			return;
+		}
+
+		if (old.duration === entry.duration) return;
+
+		const { task } = entry;
+		if (isNullish(task)) {
+			if (entry.duration !== null) await this.#createNewTask(entry);
+		} else if (entry.duration === null) {
+			// If the new duration is null, delete the previous task:
+			await task.delete();
+		} else {
+			// If the new duration is not null, reschedule the previous task:
+			await task.reschedule(entry.expiresTimestamp!);
+		}
 	}
 
-	private async sendMessage(old: ModerationEntity, entry: ModerationEntity) {
+	private async sendMessage(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
 		// Handle invalidation
-		if (!old.archived && entry.archived) return;
+		if (this.#isArchiveUpdate(old, entry)) return;
 
-		// If both logs are equals, skip
-		if (entry.equals(old)) return;
-
-		const channel = await entry.fetchChannel();
+		const moderation = getModeration(entry.guild);
+		const channel = await moderation.fetchChannel();
 		if (channel === null || !canSendEmbeds(channel)) return;
 
-		const messageEmbed = await entry.prepareEmbed();
+		const t = await fetchT(entry.guild);
 		const previous = this.fetchModerationLogMessage(entry, channel);
-
-		const options = { embeds: [messageEmbed] };
+		const options = { embeds: [await getEmbed(t, entry)] };
 		try {
 			await resolveOnErrorCodes(
 				previous === null ? channel.send(options) : previous.edit(options),
@@ -41,11 +58,9 @@ export class UserListener extends Listener {
 		}
 	}
 
-	private fetchModerationLogMessage(entry: ModerationEntity, channel: GuildTextBasedChannelTypes) {
-		if (entry.caseId === -1) throw new TypeError('UNREACHABLE.');
-
+	private fetchModerationLogMessage(entry: ModerationManager.Entry, channel: GuildTextBasedChannelTypes) {
 		for (const message of channel.messages.cache.values()) {
-			if (this.validateModerationLogMessage(message, entry.caseId)) return message;
+			if (this.validateModerationLogMessage(message, entry.id)) return message;
 		}
 
 		return null;
@@ -91,45 +106,23 @@ export class UserListener extends Listener {
 		return isNumber(timestamp);
 	}
 
-	private async scheduleDuration(old: ModerationEntity, entry: ModerationEntity) {
-		if (old.duration === entry.duration) return;
-
-		const task = this.#retrievePreviousTask(entry);
-		if (isNullish(task)) {
-			if (entry.duration !== null) await this.#createNewTask(entry);
-		} else if (entry.duration === null) {
-			// If the new duration is null, delete the previous task:
-			await task.delete();
-		} else {
-			// If the new duration is not null, reschedule the previous task:
-			await task.reschedule(entry.duration! + entry.createdTimestamp);
-		}
+	#isArchiveUpdate(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
+		return !old.isArchived() && entry.isArchived();
 	}
 
-	async #createNewTask(entry: ModerationEntity) {
-		const taskName = entry.appealTaskName;
+	async #createNewTask(entry: ModerationManager.Entry) {
+		const taskName = getUndoTaskName(entry.type);
 		if (isNullish(taskName)) return;
 
-		await this.container.schedule.add(taskName, entry.duration! + entry.createdTimestamp, {
+		await this.container.schedule.add(taskName, entry.expiresTimestamp!, {
 			catchUp: true,
 			data: {
-				[SchemaKeys.Case]: entry.caseId,
+				[SchemaKeys.Case]: entry.id,
 				[SchemaKeys.User]: entry.userId,
-				[SchemaKeys.Guild]: entry.guildId,
-				[SchemaKeys.Duration]: entry.duration
+				[SchemaKeys.Guild]: entry.guild.id,
+				[SchemaKeys.Duration]: entry.duration,
+				[SchemaKeys.ExtraData]: entry.extraData
 			}
 		});
-	}
-
-	#retrievePreviousTask(entry: ModerationEntity) {
-		return (
-			this.container.schedule.queue.find(
-				(task) =>
-					typeof task.data === 'object' &&
-					task.data !== null &&
-					task.data[SchemaKeys.Case] === entry.caseId &&
-					task.data[SchemaKeys.Guild] === entry.guild.id
-			) || null
-		);
 	}
 }

@@ -12,17 +12,18 @@ export class ModerationActionSoftban extends ModerationAction<number> {
 	public constructor() {
 		super({
 			type: TypeVariation.Softban,
+			isUndoActionAvailable: false,
 			logPrefix: 'Moderation => Softban'
 		});
 	}
 
-	protected override async handleApplyPost(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<number>) {
+	protected override async handleApplyPost(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<number>) {
 		const t = await fetchT(guild);
 
-		await api().guilds.banUser(guild.id, options.userId, { delete_message_seconds: data.context ?? 0 }, this.#getBanReason(t, options.reason));
-		await api().guilds.unbanUser(guild.id, options.userId, this.#getUnbanReason(t, options.reason));
+		await api().guilds.banUser(guild.id, entry.userId, { delete_message_seconds: data.context ?? 0 }, this.#getBanReason(t, entry.reason));
+		await api().guilds.unbanUser(guild.id, entry.userId, this.#getUnbanReason(t, entry.reason));
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: options.userId, type: TypeVariation.Ban });
+		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId, type: TypeVariation.Ban });
 	}
 
 	#getBanReason(t: TFunction, reason: string | null | undefined) {

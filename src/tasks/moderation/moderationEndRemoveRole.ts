@@ -11,7 +11,7 @@ export class UserModerationTask extends ModerationTask {
 		const t = await fetchT(guild);
 		const reason = `[MODERATION] Role re-added after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`;
 		const actionData = await this.getActionData(guild, data.userID, data.extraData.role);
-		await ModerationActions.roleRemove.undo(guild, { userId: data.userID, reason }, actionData);
+		await ModerationActions.roleRemove.undo(guild, { user: data.userID, reason }, actionData);
 		return null;
 	}
 }

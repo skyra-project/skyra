@@ -11,7 +11,7 @@ export class UserModerationTask extends ModerationTask {
 		const t = await fetchT(guild);
 		const reason = `[MODERATION] Embed Restricted released after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`;
 		const actionData = await this.getActionData(guild, data.userID);
-		await ModerationActions.restrictedEmbed.undo(guild, { userId: data.userID, reason }, actionData);
+		await ModerationActions.restrictedEmbed.undo(guild, { user: data.userID, reason }, actionData);
 		return null;
 	}
 }

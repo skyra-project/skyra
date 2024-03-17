@@ -42,31 +42,20 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	protected async onWarning(guild: Guild, userId: string) {
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 		await this.createActionAndSend(guild, () =>
-			ModerationActions.warning.apply(guild, {
-				userId,
-				reason: '[Auto-Moderation] Threshold Reached.',
-				duration
-			})
+			ModerationActions.warning.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.', duration })
 		);
 	}
 
 	protected async onKick(guild: Guild, userId: string) {
 		await this.createActionAndSend(guild, () =>
-			ModerationActions.kick.apply(guild, {
-				userId,
-				reason: '[Auto-Moderation] Threshold Reached.'
-			})
+			ModerationActions.kick.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.' })
 		);
 	}
 
 	protected async onMute(guild: Guild, userId: string) {
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 		await this.createActionAndSend(guild, () =>
-			ModerationActions.mute.apply(guild, {
-				userId,
-				reason: '[Auto-Moderation] Threshold Reached.',
-				duration
-			})
+			ModerationActions.mute.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.', duration })
 		);
 	}
 
@@ -74,10 +63,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 		await this.createActionAndSend(guild, () =>
 			ModerationActions.softban.apply(
 				guild,
-				{
-					userId,
-					reason: '[Auto-Moderation] Threshold Reached.'
-				},
+				{ user: userId, reason: '[Auto-Moderation] Threshold Reached.' },
 				{ context: seconds.fromMinutes(5) }
 			)
 		);
@@ -87,11 +73,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 
 		await this.createActionAndSend(guild, () =>
-			ModerationActions.ban.apply(guild, {
-				userId,
-				reason: '[Auto-Moderation] Threshold Reached.',
-				duration
-			})
+			ModerationActions.ban.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.', duration })
 		);
 	}
 

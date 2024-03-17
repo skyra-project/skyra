@@ -5,10 +5,11 @@ import { TypeVariation } from '#utils/moderationConstants';
 import { isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes, type Guild, type Snowflake } from 'discord.js';
 
-export class ModerationActionBan extends ModerationAction<number> {
+export class ModerationActionBan extends ModerationAction<number, TypeVariation.Ban> {
 	public constructor() {
 		super({
 			type: TypeVariation.Ban,
+			isUndoActionAvailable: true,
 			logPrefix: 'Moderation => Ban'
 		});
 	}
@@ -25,17 +26,17 @@ export class ModerationActionBan extends ModerationAction<number> {
 		return !isNullish(ban);
 	}
 
-	protected override async handleApplyPost(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<number>) {
-		const reason = await this.getReason(guild, options.reason);
-		await api().guilds.banUser(guild.id, options.userId, { delete_message_seconds: data.context ?? 0 }, { reason });
+	protected override async handleApplyPost(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<number>) {
+		const reason = await this.getReason(guild, entry.reason);
+		await api().guilds.banUser(guild.id, entry.userId, { delete_message_seconds: data.context ?? 0 }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: options.userId });
+		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
 	}
 
-	protected override async handleUndoPre(guild: Guild, options: ModerationAction.Options) {
-		const reason = await this.getReason(guild, options.reason, true);
-		await api().guilds.unbanUser(guild.id, options.userId, { reason });
+	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry) {
+		const reason = await this.getReason(guild, entry.reason, true);
+		await api().guilds.unbanUser(guild.id, entry.userId, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: options.userId });
+		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
 	}
 }

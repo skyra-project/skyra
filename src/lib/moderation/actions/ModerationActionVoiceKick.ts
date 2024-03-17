@@ -7,12 +7,13 @@ export class ModerationActionVoiceKick extends ModerationAction {
 	public constructor() {
 		super({
 			type: TypeVariation.VoiceKick,
+			isUndoActionAvailable: false,
 			logPrefix: 'Moderation => VoiceKick'
 		});
 	}
 
-	protected override async handleApplyPost(guild: Guild, options: ModerationAction.Options) {
-		const reason = await this.getReason(guild, options.reason);
-		await api().guilds.editMember(guild.id, options.userId, { channel_id: null }, { reason });
+	protected override async handleApplyPost(guild: Guild, entry: ModerationAction.Entry) {
+		const reason = await this.getReason(guild, entry.reason);
+		await api().guilds.editMember(guild.id, entry.userId, { channel_id: null }, { reason });
 	}
 }

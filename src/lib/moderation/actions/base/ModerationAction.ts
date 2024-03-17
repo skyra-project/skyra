@@ -1,9 +1,8 @@
-import type { ModerationEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { getTranslationKey } from '#lib/moderation/common';
-import type { ModerationManagerCreateData } from '#lib/moderation/managers/ModerationManager';
+import { getTitle, getTranslationKey } from '#lib/moderation/common';
+import type { ModerationManager } from '#lib/moderation/managers/ModerationManager';
 import type { TypedT } from '#lib/types';
-import { TypeMetadata, hasMetadata, type TypeVariation } from '#lib/util/moderationConstants';
+import { TypeMetadata, type TypeVariation } from '#lib/util/moderationConstants';
 import { getCodeStyle, getLogPrefix, getModeration } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
@@ -14,21 +13,16 @@ import { DiscordAPIError, HTTPError, RESTJSONErrorCodes, type Guild, type Snowfl
 
 const Root = LanguageKeys.Commands.Moderation;
 
-export abstract class ModerationAction<ContextType = never> {
+export abstract class ModerationAction<ContextType = never, Type extends TypeVariation = TypeVariation> {
 	/**
 	 * Represents the type of moderation action.
 	 */
-	public readonly type: TypeVariation;
+	public readonly type: Type;
 
 	/**
 	 * Whether or not the action allows undoing.
 	 */
-	public readonly allowUndo: boolean;
-
-	/**
-	 * Whether or not the action allows scheduling.
-	 */
-	public readonly allowSchedule: boolean;
+	public readonly isUndoActionAvailable: boolean;
 
 	/**
 	 * The prefix used for logging moderation actions.
@@ -40,12 +34,11 @@ export abstract class ModerationAction<ContextType = never> {
 	 */
 	protected readonly actionKey: TypedT;
 
-	public constructor(options: ModerationAction.ConstructorOptions) {
+	public constructor(options: ModerationAction.ConstructorOptions<Type>) {
 		this.type = options.type;
 		this.actionKey = getTranslationKey(this.type);
 		this.logPrefix = getLogPrefix(options.logPrefix);
-		this.allowUndo = hasMetadata(this.type, TypeMetadata.Undo);
-		this.allowSchedule = hasMetadata(this.type, TypeMetadata.Temporary);
+		this.isUndoActionAvailable = options.isUndoActionAvailable;
 	}
 
 	/**
@@ -56,13 +49,13 @@ export abstract class ModerationAction<ContextType = never> {
 	 * @param data - The options for sending the direct message.
 	 * @returns A Promise that resolves to the created moderation entry.
 	 */
-	public async apply(guild: Guild, options: ModerationAction.PartialOptions, data: ModerationAction.Data<ContextType> = {}) {
-		const resolvedOptions = await this.resolveOptions(guild, options, data);
-		await this.handleApplyPre(guild, resolvedOptions, data);
-		const entry = getModeration(guild).create(resolvedOptions);
+	public async apply(guild: Guild, options: ModerationAction.PartialOptions<Type>, data: ModerationAction.Data<ContextType> = {}) {
+		const moderation = getModeration(guild);
+		const entry = moderation.create(await this.resolveOptions(guild, options, data));
+		await this.handleApplyPre(guild, entry, data);
 		await this.sendDirectMessage(guild, entry, data);
-		await this.handleApplyPost(guild, resolvedOptions, data);
-		return (await entry.create())!;
+		await this.handleApplyPost(guild, entry, data);
+		return moderation.insert(entry);
 	}
 
 	/**
@@ -73,13 +66,13 @@ export abstract class ModerationAction<ContextType = never> {
 	 * @param data - The options for sending the direct message.
 	 * @returns A promise that resolves to the created entry.
 	 */
-	public async undo(guild: Guild, options: ModerationAction.PartialOptions, data: ModerationAction.Data<ContextType> = {}) {
-		const resolvedOptions = await this.resolveAppealOptions(guild, options, data);
-		await this.handleUndoPre(guild, resolvedOptions, data);
-		const entry = getModeration(guild).create(resolvedOptions);
+	public async undo(guild: Guild, options: ModerationAction.PartialOptions<Type>, data: ModerationAction.Data<ContextType> = {}) {
+		const moderation = getModeration(guild);
+		const entry = moderation.create(await this.resolveAppealOptions(guild, options, data));
+		await this.handleUndoPre(guild, entry, data);
 		await this.sendDirectMessage(guild, entry, data);
-		await this.handleUndoPost(guild, resolvedOptions, data);
-		return (await entry.create())!;
+		await this.handleUndoPost(guild, entry, data);
+		return moderation.insert(entry);
 	}
 
 	/**
@@ -87,9 +80,9 @@ export abstract class ModerationAction<ContextType = never> {
 	 * been notified.
 	 *
 	 * @param guild - The guild to apply the moderation action at.
-	 * @param options - The options for the moderation action.
+	 * @param entry - The draft moderation action.
 	 */
-	protected handleApplyPre(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
+	protected handleApplyPre(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleApplyPre() {}
 
 	/**
@@ -97,9 +90,9 @@ export abstract class ModerationAction<ContextType = never> {
 	 * been notified.
 	 *
 	 * @param guild - The guild to apply the moderation action at.
-	 * @param options - The options for the moderation action.
+	 * @param entry - The draft moderation action.
 	 */
-	protected handleApplyPost(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
+	protected handleApplyPost(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleApplyPost() {}
 
 	/**
@@ -107,9 +100,9 @@ export abstract class ModerationAction<ContextType = never> {
 	 * been notified.
 	 *
 	 * @param guild - The guild to undo a moderation action at.
-	 * @param options - The options for the moderation action.
+	 * @param entry - The draft moderation action.
 	 */
-	protected handleUndoPre(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
+	protected handleUndoPre(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleUndoPre() {}
 
 	/**
@@ -117,26 +110,24 @@ export abstract class ModerationAction<ContextType = never> {
 	 * been notified.
 	 *
 	 * @param guild - The guild to undo a moderation action at.
-	 * @param options - The options for the moderation action.
+	 * @param entry - The draft moderation action.
 	 */
-	protected handleUndoPost(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
+	protected handleUndoPost(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleUndoPost() {}
 
 	protected async resolveOptions(
 		guild: Guild,
-		options: ModerationAction.PartialOptions,
+		options: ModerationAction.PartialOptions<Type>,
 		data: ModerationAction.Data<ContextType>,
 		metadata: TypeMetadata = 0
 	) {
 		return {
 			...options,
-			reason: options.reason || null,
-			moderatorId: options.moderatorId || process.env.CLIENT_ID,
 			duration: options.duration || null,
 			type: this.type,
 			metadata,
 			extraData: options.extraData || (await this.resolveOptionsExtraData(guild, options, data))
-		} satisfies ModerationAction.Options;
+		} satisfies ModerationManager.CreateData<Type>;
 	}
 
 	/**
@@ -150,10 +141,10 @@ export abstract class ModerationAction<ContextType = never> {
 		guild: Guild,
 		options: ModerationAction.PartialOptions,
 		data: ModerationAction.Data<ContextType>
-	): Awaitable<ModerationAction.OptionsExtraData>;
+	): Awaitable<ModerationManager.ExtraData<Type>>;
 
 	protected resolveOptionsExtraData() {
-		return null;
+		return null as ModerationManager.ExtraData<Type>;
 	}
 
 	/**
@@ -161,7 +152,7 @@ export abstract class ModerationAction<ContextType = never> {
 	 *
 	 * @param options - The original options for the moderation action.
 	 */
-	protected async resolveAppealOptions(guild: Guild, options: ModerationAction.PartialOptions, data: ModerationAction.Data<ContextType>) {
+	protected async resolveAppealOptions(guild: Guild, options: ModerationAction.PartialOptions<Type>, data: ModerationAction.Data<ContextType>) {
 		return this.resolveOptions(guild, options, data, TypeMetadata.Undo);
 	}
 
@@ -172,7 +163,7 @@ export abstract class ModerationAction<ContextType = never> {
 	 * @param entry - The moderation entry.
 	 * @param data - The options for sending the message.
 	 */
-	protected async sendDirectMessage(guild: Guild, entry: ModerationEntity, data: ModerationAction.Data<ContextType>) {
+	protected async sendDirectMessage(guild: Guild, entry: ModerationManager.Entry, data: ModerationAction.Data<ContextType>) {
 		if (!data.sendDirectMessage) return;
 
 		try {
@@ -206,7 +197,7 @@ export abstract class ModerationAction<ContextType = never> {
 	 * @param options - The options to fetch the moderation entry.
 	 * @returns The canceled moderation entry, or `null` if no entry was found.
 	 */
-	protected async cancelLastModerationEntryTaskFromUser(options: ModerationAction.ModerationEntryFetchOptions) {
+	protected async cancelLastModerationEntryTaskFromUser(options: ModerationAction.ModerationEntryFetchOptions<Type>) {
 		const entry = await this.retrieveLastModerationEntryFromUser({ metadata: TypeMetadata.Temporary, ...options });
 		if (isNullish(entry)) return null;
 
@@ -221,24 +212,24 @@ export abstract class ModerationAction<ContextType = never> {
 	 * @param options - The options for fetching the moderation entry.
 	 * @returns The last moderation entry from the user, or `null` if no entry is found.
 	 */
-	protected async retrieveLastModerationEntryFromUser(options: ModerationAction.ModerationEntryFetchOptions) {
+	protected async retrieveLastModerationEntryFromUser(options: ModerationAction.ModerationEntryFetchOptions<Type>) {
 		// Retrieve all the entries
-		const entries = await getModeration(options.guild).fetch(options.userId);
+		const entries = await getModeration(options.guild).fetch({ userId: options.userId });
 
 		const type = options.type ?? this.type;
 		const metadata = options.metadata ?? null;
 		const extra = options.filter ?? (() => true);
 
-		let lastEntry: ModerationEntity | null = null;
+		let lastEntry: ModerationManager.Entry | null = null;
 		for (const entry of entries.values()) {
 			// If the entry has been invalidated, skip it:
-			if (entry.archived) continue;
+			if (entry.isArchived()) continue;
 			// If the entry is not of the same type, skip it:
 			if (entry.type !== type) continue;
 			// If the entry is not of the same metadata, skip it:
 			if (metadata !== null && entry.metadata !== metadata) continue;
 			// If the extra check fails, skip it:
-			if (!extra(entry)) continue;
+			if (!extra(entry as ModerationManager.Entry<Type>)) continue;
 
 			lastEntry = entry;
 		}
@@ -246,7 +237,7 @@ export abstract class ModerationAction<ContextType = never> {
 		return lastEntry;
 	}
 
-	async #buildEmbed(guild: Guild, entry: ModerationEntity, data: ModerationAction.Data<ContextType>) {
+	async #buildEmbed(guild: Guild, entry: ModerationManager.Entry, data: ModerationAction.Data<ContextType>) {
 		const descriptionKey = entry.reason
 			? entry.duration
 				? Root.ModerationDmDescriptionWithReasonWithDuration
@@ -258,7 +249,7 @@ export abstract class ModerationAction<ContextType = never> {
 		const t = await fetchT(guild);
 		const description = t(descriptionKey, {
 			guild: guild.name,
-			title: entry.title,
+			title: getTitle(t, entry),
 			reason: entry.reason,
 			duration: entry.duration
 		});
@@ -290,15 +281,16 @@ export abstract class ModerationAction<ContextType = never> {
 }
 
 export namespace ModerationAction {
-	export interface ConstructorOptions {
-		type: TypeVariation;
+	export interface ConstructorOptions<Type extends TypeVariation = TypeVariation> {
+		type: Type;
 		logPrefix: string;
+		isUndoActionAvailable: boolean;
 	}
 
-	export type Options = ModerationManagerCreateData;
-	export type OptionsExtraData = ModerationManagerCreateData['extraData'];
-	export type PartialOptions = Omit<ModerationManagerCreateData, 'type' | 'metadata' | 'moderatorId'> &
-		Partial<Pick<ModerationManagerCreateData, 'moderatorId'>>;
+	export type Options<Type extends TypeVariation = TypeVariation> = ModerationManager.CreateData<Type>;
+	export type PartialOptions<Type extends TypeVariation = TypeVariation> = Omit<Options<Type>, 'type' | 'metadata'>;
+
+	export type Entry<Type extends TypeVariation = TypeVariation> = ModerationManager.Entry<Type>;
 
 	export interface Data<ContextType = never> {
 		context?: ContextType;
@@ -306,11 +298,11 @@ export namespace ModerationAction {
 		moderator?: User | null;
 	}
 
-	export interface ModerationEntryFetchOptions {
+	export interface ModerationEntryFetchOptions<Type extends TypeVariation = TypeVariation> {
 		guild: Guild;
 		userId: Snowflake;
-		type?: TypeVariation;
+		type?: Type;
 		metadata?: TypeMetadata | null;
-		filter?: (entry: ModerationEntity) => boolean;
+		filter?: (entry: ModerationManager.Entry<Type>) => boolean;
 	}
 }

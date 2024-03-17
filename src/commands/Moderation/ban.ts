@@ -26,13 +26,7 @@ export class UserModerationCommand extends ModerationCommand {
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return ModerationActions.ban.apply(
 			message.guild,
-			{
-				userId: context.target.id,
-				moderatorId: message.author.id,
-				duration: context.duration,
-				imageURL: getImage(message),
-				reason: context.reason
-			},
+			{ user: context.target, moderator: message.author, duration: context.duration, imageURL: getImage(message), reason: context.reason },
 			await this.getActionData(message, context.args, context.target, getSeconds(context.args))
 		);
 	}

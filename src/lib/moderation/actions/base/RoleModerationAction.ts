@@ -4,6 +4,7 @@ import { ModerationAction } from '#lib/moderation/actions/base/ModerationAction'
 import type { GuildMessage } from '#lib/types';
 import { PermissionsBits } from '#utils/bits';
 import { getCodeStyle, getStickyRoles, promptConfirmation } from '#utils/functions';
+import type { TypeVariation } from '#utils/moderationConstants';
 import { GuildLimits, isCategoryChannel, isTextBasedChannel, isThreadChannel, isVoiceBasedChannel } from '@sapphire/discord.js-utilities';
 import { UserError, container, type Awaitable } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
@@ -30,7 +31,10 @@ interface Overrides {
 	options: PermissionOverwriteOptions;
 }
 
-export abstract class RoleModerationAction<ContextType = never> extends ModerationAction<ContextType> {
+export abstract class RoleModerationAction<ContextType = never, Type extends TypeVariation = TypeVariation> extends ModerationAction<
+	ContextType,
+	Type
+> {
 	/**
 	 * Represents the key of a role used in a moderation action.
 	 */
@@ -59,8 +63,8 @@ export abstract class RoleModerationAction<ContextType = never> extends Moderati
 	 */
 	protected readonly roleOverridesMerged: Overrides;
 
-	public constructor(options: RoleModerationAction.ConstructorOptions) {
-		super(options);
+	public constructor(options: RoleModerationAction.ConstructorOptions<Type>) {
+		super({ isUndoActionAvailable: true, ...options });
 		this.replace = options.replace ?? false;
 
 		this.roleKey = options.roleKey;
@@ -156,10 +160,14 @@ export abstract class RoleModerationAction<ContextType = never> extends Moderati
 		return true;
 	}
 
-	protected override handleApplyPre(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
+	protected override handleApplyPre(
+		guild: Guild,
+		entry: ModerationAction.Entry<Type>,
+		data: ModerationAction.Data<ContextType>
+	): Awaitable<unknown>;
 
-	protected override async handleApplyPre(guild: Guild, options: ModerationAction.Options) {
-		const member = await this.#fetchMember(guild, options);
+	protected override async handleApplyPre(guild: Guild, entry: ModerationAction.Entry<Type>) {
+		const member = await this.#fetchMember(guild, entry);
 		const role = await this.#fetchRole(guild);
 
 		const me = await guild.members.fetchMe();
@@ -172,18 +180,19 @@ export abstract class RoleModerationAction<ContextType = never> extends Moderati
 			throw new UserError({ identifier: Root.ActionRoleHigherPosition });
 		}
 
-		await getStickyRoles(guild).add(options.userId, role.id);
+		await getStickyRoles(guild).add(entry.userId, role.id);
 
-		const reason = await this.getReason(guild, options.reason);
-		options.extraData = this.replace
+		const reason = await this.getReason(guild, entry.reason);
+		const data = this.replace
 			? await this.#handleApplyPreRolesReplace(member, role, reason, position)
 			: await this.#handleApplyPreRolesAdd(member, role, reason);
+		Reflect.set(entry, 'extraData' satisfies keyof typeof entry, data);
 	}
 
-	protected override handleUndoPre(guild: Guild, options: ModerationAction.Options, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
+	protected override handleUndoPre(guild: Guild, entry: ModerationAction.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 
-	protected override async handleUndoPre(guild: Guild, options: ModerationAction.Options) {
-		const member = await this.#fetchMember(guild, options);
+	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry<Type>) {
+		const member = await this.#fetchMember(guild, entry);
 		const role = await this.#fetchRole(guild);
 
 		const me = await guild.members.fetchMe();
@@ -196,9 +205,9 @@ export abstract class RoleModerationAction<ContextType = never> extends Moderati
 			throw new UserError({ identifier: Root.ActionRoleHigherPosition });
 		}
 
-		await getStickyRoles(guild).remove(options.userId, role.id);
+		await getStickyRoles(guild).remove(entry.userId, role.id);
 
-		const reason = await this.getReason(guild, options.reason, true);
+		const reason = await this.getReason(guild, entry.reason, true);
 		if (this.replace) {
 			await this.#handleUndoPreRolesReplace(member, role, reason, position);
 		} else {
@@ -321,12 +330,12 @@ export abstract class RoleModerationAction<ContextType = never> extends Moderati
 	 * Otherwise, the error is re-thrown.
 	 *
 	 * @param guild The guild to fetch the member from.
-	 * @param options The options containing the user ID.
+	 * @param entry The entry containing the user ID.
 	 * @returns A Promise that resolves to the fetched member.
 	 */
-	async #fetchMember(guild: Guild, options: ModerationAction.Options) {
+	async #fetchMember(guild: Guild, entry: ModerationAction.Entry<Type>) {
 		try {
-			return await guild.members.fetch(options.userId);
+			return await guild.members.fetch(entry.userId);
 		} catch (error) {
 			this.#handleFetchMemberError(error as Error);
 		}
@@ -395,7 +404,8 @@ export abstract class RoleModerationAction<ContextType = never> extends Moderati
 }
 
 export namespace RoleModerationAction {
-	export interface ConstructorOptions extends ModerationAction.ConstructorOptions {
+	export interface ConstructorOptions<Type extends TypeVariation = TypeVariation>
+		extends Omit<ModerationAction.ConstructorOptions<Type>, 'isUndoActionAvailable'> {
 		replace?: boolean;
 		roleKey: RoleKey;
 		roleData: RoleData;
@@ -403,9 +413,8 @@ export namespace RoleModerationAction {
 		roleOverridesVoice: bigint | null;
 	}
 
-	export type Options = ModerationAction.Options;
-	export type OptionsExtraData = ModerationAction.OptionsExtraData;
-	export type PartialOptions = ModerationAction.PartialOptions;
+	export type Options<Type extends TypeVariation = TypeVariation> = ModerationAction.Options<Type>;
+	export type PartialOptions<Type extends TypeVariation = TypeVariation> = ModerationAction.PartialOptions<Type>;
 
 	export type Data = ModerationAction.Data;
 

@@ -41,12 +41,12 @@ export function getAction<const Type extends TypeVariation>(type: Type): (typeof
 }
 
 const ActionMappings = {
-	[TypeVariation.AddRole]: 'roleAdd',
+	[TypeVariation.RoleAdd]: 'roleAdd',
 	[TypeVariation.Ban]: 'ban',
 	[TypeVariation.Kick]: 'kick',
 	[TypeVariation.Mute]: 'mute',
 	[TypeVariation.Timeout]: 'timeout',
-	[TypeVariation.RemoveRole]: 'roleRemove',
+	[TypeVariation.RoleRemove]: 'roleRemove',
 	[TypeVariation.RestrictedAttachment]: 'restrictedAttachment',
 	[TypeVariation.RestrictedEmbed]: 'restrictedEmbed',
 	[TypeVariation.RestrictedEmoji]: 'restrictedEmoji',
@@ -61,5 +61,5 @@ const ActionMappings = {
 
 export type ModerationActionKey = keyof typeof ModerationActions;
 export type RoleModerationActionKey = {
-	[K in ModerationActionKey]: (typeof ModerationActions)[K] extends RoleModerationAction ? K : never;
+	[K in ModerationActionKey]: (typeof ModerationActions)[K] extends RoleModerationAction<infer _, infer _> ? K : never;
 }[ModerationActionKey];

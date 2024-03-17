@@ -27,6 +27,8 @@
 		"+"
 	],
 	"caseNoEntries": "I could not resolve `{{parameter}}` to a case, as there are no moderation cases in this server!",
+	"caseUnknownEntry": "I could not resolve `{{parameter}}` to a case, make sure you typed its number correctly!",
+	"caseNotInThisGuild": "I somehow resolved `{{parameter}}` to a case, but it is not from this server!",
 	"caseLatestOptions": [
 		"last",
 		"latest"

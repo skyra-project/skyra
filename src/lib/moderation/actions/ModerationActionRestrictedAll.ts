@@ -2,7 +2,7 @@ import { RoleModerationAction } from '#lib/moderation/actions/base/RoleModeratio
 import { TypeVariation } from '#utils/moderationConstants';
 import { PermissionFlagsBits } from 'discord.js';
 
-export class ModerationActionRestrictedAll extends RoleModerationAction {
+export class ModerationActionRestrictedAll extends RoleModerationAction<never, TypeVariation.Mute> {
 	public constructor() {
 		super({
 			type: TypeVariation.Mute,

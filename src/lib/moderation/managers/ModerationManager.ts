@@ -2,14 +2,15 @@ import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationManagerEntry } from '#lib/moderation/managers/ModerationManagerEntry';
+import { SortedCollection } from '#lib/structures/data';
 import { Events } from '#lib/types';
-import { createReferPromise, floatPromise, minutes, orMix, seconds, type BooleanFn, type ReferredPromise } from '#utils/common';
+import { createReferPromise, desc, floatPromise, minutes, orMix, seconds, type BooleanFn, type ReferredPromise } from '#utils/common';
 import { TypeMetadata, TypeVariation } from '#utils/moderationConstants';
 import { AsyncQueue } from '@sapphire/async-queue';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { UserError, container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { Collection, DiscordAPIError, type Guild, type Snowflake } from 'discord.js';
+import { DiscordAPIError, type Guild, type Snowflake } from 'discord.js';
 
 enum CacheActions {
 	None,
@@ -27,7 +28,7 @@ export class ModerationManager {
 	 * The cache of the moderation entries, sorted by their case ID in
 	 * descending order.
 	 */
-	readonly #cache = new Collection<number, ModerationManagerEntry>();
+	readonly #cache = new SortedCollection<number, ModerationManagerEntry>(undefined, desc);
 
 	/**
 	 * A queue for save tasks, prevents case_id duplication
@@ -87,19 +88,13 @@ export class ModerationManager {
 
 	public getLatestLogForUser(userId: string) {
 		const minimumTime = Date.now() - seconds(15);
-		return this.#cache.reduce<ModerationManagerEntry | null>(
-			(prev, curr) =>
-				curr.userId === userId
-					? prev === null
-						? curr.createdAt >= minimumTime
-							? curr
-							: prev
-						: curr.createdAt > prev.createdAt
-							? curr
-							: prev
-					: prev,
-			null
-		);
+		for (const entry of this.#cache.values()) {
+			if (entry.userId !== userId) continue;
+			if (entry.createdAt < minimumTime) break;
+			return entry;
+		}
+
+		return null;
 	}
 
 	public create<Type extends TypeVariation = TypeVariation>(data: ModerationManager.CreateData<Type>): ModerationManager.Entry<Type> {
@@ -173,11 +168,28 @@ export class ModerationManager {
 		return entry;
 	}
 
+	/**
+	 * Fetches a moderation entry from the cache or the database.
+	 *
+	 * @remarks
+	 *
+	 * If the entry is not found, it returns null.
+	 *
+	 * @param id - The ID of the moderation entry to fetch.
+	 * @returns The fetched moderation entry, or `null` if it was not found.
+	 */
 	public async fetch(id: number): Promise<ModerationManager.Entry | null>;
-	public async fetch(id?: ModerationManager.FetchOptions): Promise<Collection<number, ModerationManager.Entry>>;
+	/**
+	 * Fetches multiple moderation entries from the cache or the database.
+	 *
+	 * @param options - The options to fetch the moderation entries.
+	 * @returns The fetched moderation entries, sorted by
+	 * {@link ModerationManagerEntry.id} in descending order.
+	 */
+	public async fetch(options?: ModerationManager.FetchOptions): Promise<SortedCollection<number, ModerationManager.Entry>>;
 	public async fetch(
 		options: number | ModerationManager.FetchOptions = {}
-	): Promise<ModerationManager.Entry | Collection<number, ModerationManager.Entry> | null> {
+	): Promise<ModerationManager.Entry | SortedCollection<number, ModerationManager.Entry> | null> {
 		// Case number
 		if (typeof options === 'number') {
 			return this.#getSingle(options) ?? this._cache(await this.#fetchSingle(options), CacheActions.None);
@@ -269,11 +281,11 @@ export class ModerationManager {
 	}
 
 	private _cache(entry: ModerationManagerEntry | null, type: CacheActions): ModerationManagerEntry;
-	private _cache(entries: ModerationManagerEntry[], type: CacheActions): Collection<number, ModerationManagerEntry>;
+	private _cache(entries: ModerationManagerEntry[], type: CacheActions): SortedCollection<number, ModerationManagerEntry>;
 	private _cache(
 		entries: ModerationManagerEntry | ModerationManagerEntry[] | null,
 		type: CacheActions
-	): Collection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
+	): SortedCollection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
 		if (!entries) return null;
 
 		const parsedEntries = Array.isArray(entries) ? entries : [entries];
@@ -294,7 +306,7 @@ export class ModerationManager {
 			}, seconds(30));
 		}
 
-		return Array.isArray(entries) ? new Collection(entries.map((entry) => [entry.id, entry])) : entries;
+		return Array.isArray(entries) ? new SortedCollection(entries.map((entry) => [entry.id, entry])) : entries;
 	}
 
 	async #resolveEntry(entryOrId: ModerationManager.EntryResolvable) {
@@ -323,7 +335,7 @@ export class ModerationManager {
 		return entity && ModerationManagerEntry.from(this.guild, entity);
 	}
 
-	#getMany(options: ModerationManager.FetchOptions): Collection<number, ModerationManagerEntry> {
+	#getMany(options: ModerationManager.FetchOptions): SortedCollection<number, ModerationManagerEntry> {
 		const fns: BooleanFn<[ModerationManagerEntry]>[] = [];
 		if (options.userId) fns.push((entry) => entry.userId === options.userId);
 		if (options.moderatorId) fns.push((entry) => entry.moderatorId === options.moderatorId);

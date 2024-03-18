@@ -1,7 +1,7 @@
 import type { ModerationEntity, ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes } from '#utils/common';
-import { TypeMetadata, type TypeVariation } from '#utils/moderationConstants';
+import { SchemaKeys, TypeMetadata, type TypeVariation } from '#utils/moderationConstants';
 import { UserError, container } from '@sapphire/framework';
 import { isNullishOrZero } from '@sapphire/utilities';
 import type { Guild, Snowflake, User } from 'discord.js';
@@ -27,7 +27,7 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 	 *
 	 * The value can be updated to add or remove the duration.
 	 */
-	public duration: number | null;
+	public duration!: number | null;
 
 	/**
 	 * The extra data of the moderation entry.
@@ -99,13 +99,14 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 	public constructor(data: ModerationManagerEntry.Data<Type>) {
 		this.id = data.id;
 		this.createdAt = data.createdAt;
-		this.duration = data.duration;
 		this.extraData = data.extraData;
 		this.guild = data.guild;
 		this.reason = data.reason;
 		this.imageURL = data.imageURL;
 		this.type = data.type;
 		this.metadata = data.metadata;
+
+		this.#setDuration(data.duration);
 
 		if (typeof data.moderator === 'string') {
 			this.#moderator = null;
@@ -142,7 +143,7 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 	 * @param data - The data to update the entry.
 	 */
 	public patch(data: ModerationManagerEntry.UpdateData) {
-		if (data.duration !== undefined) this.duration = data.duration;
+		if (data.duration !== undefined) this.#setDuration(data.duration);
 		if (data.reason !== undefined) this.reason = data.reason;
 		if (data.imageURL !== undefined) this.imageURL = data.imageURL;
 		if (data.metadata !== undefined) this.metadata = data.metadata;
@@ -265,7 +266,22 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 	}
 
 	#isMatchingTask(task: ScheduleEntity) {
-		return typeof task.data === 'object' && task.data.caseID === this.id && task.data.guildID === this.guild.id;
+		return (
+			typeof task.data === 'object' &&
+			task.data !== null &&
+			task.data[SchemaKeys.Case] === this.id &&
+			task.data[SchemaKeys.Guild] === this.guild.id
+		);
+	}
+
+	#setDuration(duration: number | null) {
+		if (isNullishOrZero(duration)) {
+			this.duration = null;
+			this.metadata &= ~TypeMetadata.Temporary;
+		} else {
+			this.duration = duration;
+			this.metadata |= TypeMetadata.Temporary;
+		}
 	}
 
 	public static from(guild: Guild, entity: ModerationEntity) {

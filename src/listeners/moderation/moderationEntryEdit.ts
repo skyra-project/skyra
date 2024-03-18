@@ -120,6 +120,7 @@ export class UserListener extends Listener {
 				[SchemaKeys.Case]: entry.id,
 				[SchemaKeys.User]: entry.userId,
 				[SchemaKeys.Guild]: entry.guild.id,
+				[SchemaKeys.Type]: entry.type,
 				[SchemaKeys.Duration]: entry.duration,
 				[SchemaKeys.ExtraData]: entry.extraData
 			}

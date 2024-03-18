@@ -20,6 +20,7 @@
 		"#lib/moderation/managers": "./dist/lib/moderation/managers/index.js",
 		"#lib/moderation/workers": "./dist/lib/moderation/workers/index.js",
 		"#lib/moderation": "./dist/lib/moderation/index.js",
+		"#lib/structures/data": "./dist/lib/structures/data/index.js",
 		"#lib/structures/managers": "./dist/lib/structures/managers/index.js",
 		"#lib/structures": "./dist/lib/structures/index.js",
 		"#lib/setup": "./dist/lib/setup/index.js",

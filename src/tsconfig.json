@@ -19,6 +19,7 @@
 			"#lib/moderation/managers": ["lib/moderation/managers/index.js"],
 			"#lib/moderation/workers": ["lib/moderation/workers/index.js"],
 			"#lib/moderation": ["lib/moderation/index.js"],
+			"#lib/structures/data": ["lib/structures/data/index.js"],
 			"#lib/structures/managers": ["lib/structures/managers/index.js"],
 			"#lib/structures": ["lib/structures/index.js"],
 			"#lib/setup": ["lib/setup/index.js"],

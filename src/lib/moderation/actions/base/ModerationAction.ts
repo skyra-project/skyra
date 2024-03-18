@@ -198,7 +198,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 * @returns The canceled moderation entry, or `null` if no entry was found.
 	 */
 	protected async cancelLastModerationEntryTaskFromUser(options: ModerationAction.ModerationEntryFetchOptions<Type>) {
-		const entry = await this.retrieveLastModerationEntryFromUser({ metadata: TypeMetadata.Temporary, ...options });
+		const entry = await this.retrieveLastModerationEntryFromUser(options);
 		if (isNullish(entry)) return null;
 
 		const { task } = entry;
@@ -220,7 +220,6 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		const metadata = options.metadata ?? null;
 		const extra = options.filter ?? (() => true);
 
-		let lastEntry: ModerationManager.Entry | null = null;
 		for (const entry of entries.values()) {
 			// If the entry has been invalidated, skip it:
 			if (entry.isArchived()) continue;
@@ -231,10 +230,10 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 			// If the extra check fails, skip it:
 			if (!extra(entry as ModerationManager.Entry<Type>)) continue;
 
-			lastEntry = entry;
+			return entry;
 		}
 
-		return lastEntry;
+		return null;
 	}
 
 	async #buildEmbed(guild: Guild, entry: ModerationManager.Entry, data: ModerationAction.Data<ContextType>) {

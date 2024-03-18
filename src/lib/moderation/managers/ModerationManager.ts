@@ -10,7 +10,7 @@ import { AsyncQueue } from '@sapphire/async-queue';
 import type { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { UserError, container } from '@sapphire/framework';
 import { isNullish } from '@sapphire/utilities';
-import { DiscordAPIError, type Guild, type Snowflake } from 'discord.js';
+import type { Guild, Snowflake } from 'discord.js';
 
 enum CacheActions {
 	None,
@@ -22,7 +22,7 @@ export class ModerationManager {
 	/**
 	 * The Guild instance that manages this manager
 	 */
-	public guild: Guild;
+	public readonly guild: Guild;
 
 	/**
 	 * The cache of the moderation entries, sorted by their case ID in
@@ -33,7 +33,7 @@ export class ModerationManager {
 	/**
 	 * A queue for save tasks, prevents case_id duplication
 	 */
-	#saveQueue = new AsyncQueue();
+	readonly #saveQueue = new AsyncQueue();
 
 	/**
 	 * The latest moderation case ID.
@@ -73,21 +73,13 @@ export class ModerationManager {
 	}
 
 	/**
-	 * Fetch 100 messages from the modlogs channel
+	 * Retrieves the latest recent cached entry for a given user created in the last 30 seconds.
+	 *
+	 * @param userId - The ID of the user.
+	 * @returns The latest recent cached entry for the user, or `null` if no entry is found.
 	 */
-	public async fetchChannelMessages(remainingRetries = 5): Promise<void> {
-		const channel = await this.fetchChannel();
-		if (channel === null) return;
-		try {
-			await channel.messages.fetch({ limit: 100 });
-		} catch (error) {
-			if (error instanceof DiscordAPIError) throw error;
-			return this.fetchChannelMessages(--remainingRetries);
-		}
-	}
-
-	public getLatestLogForUser(userId: string) {
-		const minimumTime = Date.now() - seconds(15);
+	public getLatestRecentCachedEntryForUser(userId: string) {
+		const minimumTime = Date.now() - seconds(30);
 		for (const entry of this.#cache.values()) {
 			if (entry.userId !== userId) continue;
 			if (entry.createdAt < minimumTime) break;
@@ -119,7 +111,7 @@ export class ModerationManager {
 			const id = (await this.getCurrentId()) + 1;
 			const entry = new ModerationManagerEntry({ ...data.toData(), id, createdAt: Date.now() });
 			await this.#performInsert(entry);
-			return this._cache(entry, CacheActions.Insert);
+			return this.#addToCache(entry, CacheActions.Insert);
 		} finally {
 			this.#saveQueue.shift();
 		}
@@ -192,17 +184,17 @@ export class ModerationManager {
 	): Promise<ModerationManager.Entry | SortedCollection<number, ModerationManager.Entry> | null> {
 		// Case number
 		if (typeof options === 'number') {
-			return this.#getSingle(options) ?? this._cache(await this.#fetchSingle(options), CacheActions.None);
+			return this.#getSingle(options) ?? this.#addToCache(await this.#fetchSingle(options), CacheActions.None);
 		}
 
 		if (options.moderatorId || options.userId) {
 			return this.#count === this.#cache.size //
 				? this.#getMany(options)
-				: this._cache(await this.#fetchMany(options), CacheActions.None);
+				: this.#addToCache(await this.#fetchMany(options), CacheActions.None);
 		}
 
 		if (this.#count !== this.#cache.size) {
-			this._cache(await this.#fetchAll(), CacheActions.Fetch);
+			this.#addToCache(await this.#fetchAll(), CacheActions.Fetch);
 		}
 
 		return this.#cache;
@@ -280,9 +272,9 @@ export class ModerationManager {
 		return false;
 	}
 
-	private _cache(entry: ModerationManagerEntry | null, type: CacheActions): ModerationManagerEntry;
-	private _cache(entries: ModerationManagerEntry[], type: CacheActions): SortedCollection<number, ModerationManagerEntry>;
-	private _cache(
+	#addToCache(entry: ModerationManagerEntry | null, type: CacheActions): ModerationManagerEntry;
+	#addToCache(entries: ModerationManagerEntry[], type: CacheActions): SortedCollection<number, ModerationManagerEntry>;
+	#addToCache(
 		entries: ModerationManagerEntry | ModerationManagerEntry[] | null,
 		type: CacheActions
 	): SortedCollection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
@@ -306,7 +298,12 @@ export class ModerationManager {
 			}, seconds(30));
 		}
 
-		return Array.isArray(entries) ? new SortedCollection(entries.map((entry) => [entry.id, entry])) : entries;
+		return Array.isArray(entries)
+			? new SortedCollection(
+					entries.map((entry) => [entry.id, entry]),
+					desc
+				)
+			: entries;
 	}
 
 	async #resolveEntry(entryOrId: ModerationManager.EntryResolvable) {

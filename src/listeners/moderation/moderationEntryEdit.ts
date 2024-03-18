@@ -1,14 +1,16 @@
 import { GuildSettings, writeSettings } from '#lib/database';
 import type { ModerationManager } from '#lib/moderation';
 import { getEmbed, getUndoTaskName } from '#lib/moderation/common';
+import type { GuildMessage } from '#lib/types';
 import { resolveOnErrorCodes } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import { SchemaKeys } from '#utils/moderationConstants';
+import { isUserSelf } from '#utils/util';
 import { canSendEmbeds, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { isNullish, isNumber } from '@sapphire/utilities';
-import { RESTJSONErrorCodes, type Embed, type Message } from 'discord.js';
+import { DiscordAPIError, RESTJSONErrorCodes, type Collection, type Embed, type Message, type Snowflake } from 'discord.js';
 
 export class UserListener extends Listener {
 	public run(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
@@ -45,7 +47,7 @@ export class UserListener extends Listener {
 		if (channel === null || !canSendEmbeds(channel)) return;
 
 		const t = await fetchT(entry.guild);
-		const previous = this.fetchModerationLogMessage(entry, channel);
+		const previous = await this.fetchModerationLogMessage(entry, channel);
 		const options = { embeds: [await getEmbed(t, entry)] };
 		try {
 			await resolveOnErrorCodes(
@@ -58,21 +60,34 @@ export class UserListener extends Listener {
 		}
 	}
 
-	private fetchModerationLogMessage(entry: ModerationManager.Entry, channel: GuildTextBasedChannelTypes) {
-		for (const message of channel.messages.cache.values()) {
+	private async fetchModerationLogMessage(entry: ModerationManager.Entry, channel: GuildTextBasedChannelTypes) {
+		const messages = await this.fetchChannelMessages(channel);
+		for (const message of messages.values()) {
 			if (this.validateModerationLogMessage(message, entry.id)) return message;
 		}
 
 		return null;
 	}
 
+	/**
+	 * Fetch 100 messages from the modlogs channel
+	 */
+	private async fetchChannelMessages(channel: GuildTextBasedChannelTypes, remainingRetries = 5): Promise<Collection<Snowflake, GuildMessage>> {
+		try {
+			return (await channel.messages.fetch({ limit: 100 })) as Collection<Snowflake, GuildMessage>;
+		} catch (error) {
+			if (error instanceof DiscordAPIError) throw error;
+			return this.fetchChannelMessages(channel, --remainingRetries);
+		}
+	}
+
 	private validateModerationLogMessage(message: Message, caseId: number) {
 		return (
-			message.author.id === process.env.CLIENT_ID &&
+			isUserSelf(message.author.id) &&
 			message.attachments.size === 0 &&
 			message.embeds.length === 1 &&
 			this.validateModerationLogMessageEmbed(message.embeds[0]) &&
-			message.embeds[0].footer!.text === `Case ${caseId}`
+			message.embeds[0].footer!.text.includes(caseId.toString())
 		);
 	}
 

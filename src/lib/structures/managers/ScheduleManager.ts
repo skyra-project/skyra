@@ -89,7 +89,7 @@ export class ScheduleManager {
 	}
 
 	private _remove(entity: ScheduleEntity) {
-		const index = this.queue.findIndex((entry) => entry === entity);
+		const index = this.queue.indexOf(entity);
 		if (index !== -1) this.queue.splice(index, 1);
 	}
 

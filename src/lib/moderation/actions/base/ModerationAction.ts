@@ -197,7 +197,9 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 * @param options - The options to fetch the moderation entry.
 	 * @returns The canceled moderation entry, or `null` if no entry was found.
 	 */
-	protected async cancelLastModerationEntryTaskFromUser(options: ModerationAction.ModerationEntryFetchOptions<Type>) {
+	protected async cancelLastModerationEntryTaskFromUser(
+		options: ModerationAction.ModerationEntryFetchOptions<Type>
+	): Promise<ModerationManager.Entry<Type> | null> {
 		const entry = await this.retrieveLastModerationEntryFromUser(options);
 		if (isNullish(entry)) return null;
 
@@ -212,7 +214,9 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 * @param options - The options for fetching the moderation entry.
 	 * @returns The last moderation entry from the user, or `null` if no entry is found.
 	 */
-	protected async retrieveLastModerationEntryFromUser(options: ModerationAction.ModerationEntryFetchOptions<Type>) {
+	protected async retrieveLastModerationEntryFromUser(
+		options: ModerationAction.ModerationEntryFetchOptions<Type>
+	): Promise<ModerationManager.Entry<Type> | null> {
 		// Retrieve all the entries
 		const entries = await getModeration(options.guild).fetch({ userId: options.userId });
 
@@ -230,7 +234,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 			// If the extra check fails, skip it:
 			if (!extra(entry as ModerationManager.Entry<Type>)) continue;
 
-			return entry;
+			return entry as ModerationManager.Entry<Type>;
 		}
 
 		return null;

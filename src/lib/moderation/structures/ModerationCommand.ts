@@ -270,8 +270,8 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 	 *
 	 * @param args - The arguments for the moderation command.
 	 */
-	protected async resolveParametersReason(args: ModerationCommand.Args): Promise<string | null> {
-		return args.finished ? null : args.rest('string');
+	protected resolveParametersReason(args: ModerationCommand.Args): Promise<string | null> {
+		return args.finished ? Promise.resolve(null) : args.rest('string');
 	}
 }
 

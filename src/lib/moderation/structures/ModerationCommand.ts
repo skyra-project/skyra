@@ -13,6 +13,8 @@ import { Args, CommandOptionsRunTypeEnum, type Awaitable } from '@sapphire/frame
 import { free, send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
 
+const Root = LanguageKeys.Moderation;
+
 export abstract class ModerationCommand<Type extends TypeVariation, ValueType> extends SkyraCommand {
 	/**
 	 * The moderation action this command applies.
@@ -138,19 +140,31 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 	): Promise<ModerationManager.Entry> | ModerationManager.Entry;
 
 	protected async handle(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
+		const dataContext = this.getHandleDataContext(message, context);
+		const isActive = await this.isActionActive(message, context, dataContext);
+		if (isActive) {
+			throw context.args.t(Root.ActionIsActive);
+		}
+
 		return this.action[this.isUndoAction ? 'undo' : 'apply'](
 			message.guild,
 			// @ts-expect-error not correctly inferring the type
 			this.resolveOptions(message, context),
-			await this.getHandleData(message, context)
+			await this.getActionData(message, context.args, context.target, dataContext)
 		);
 	}
 
-	protected getHandleData(
+	protected isActionActive(
 		message: GuildMessage,
-		context: ModerationCommand.HandlerParameters<ValueType>
-	): Promise<ModerationAction.Data<GetContextType<Type>>> {
-		return this.getActionData(message, context.args, context.target);
+		context: ModerationCommand.HandlerParameters<ValueType>,
+		dataContext: GetContextType<Type>
+	): Awaitable<boolean> {
+		return this.action.isActive(message.guild, context.target.id, dataContext as never);
+	}
+
+	protected getHandleDataContext(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>): GetContextType<Type>;
+	protected getHandleDataContext(): GetContextType<Type> {
+		return null as GetContextType<Type>;
 	}
 
 	protected postHandle(message: GuildMessage, context: ModerationCommand.PostHandleParameters<ValueType>): unknown;

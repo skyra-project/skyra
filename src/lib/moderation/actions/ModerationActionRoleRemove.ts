@@ -1,7 +1,9 @@
 import { api } from '#lib/discord/Api';
 import { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
+import { resolveOnErrorCodes } from '#utils/common';
 import { TypeVariation } from '#utils/moderationConstants';
-import type { Guild, Role } from 'discord.js';
+import { isNullish } from '@sapphire/utilities';
+import { RESTJSONErrorCodes, type Guild, type Role } from 'discord.js';
 
 export class ModerationActionRoleRemove extends ModerationAction<Role, TypeVariation.RoleRemove> {
 	public constructor() {
@@ -10,6 +12,11 @@ export class ModerationActionRoleRemove extends ModerationAction<Role, TypeVaria
 			isUndoActionAvailable: true,
 			logPrefix: 'Moderation => RoleRemove'
 		});
+	}
+
+	public override async isActive(guild: Guild, userId: string, context: Role) {
+		const member = await resolveOnErrorCodes(guild.members.fetch(userId), RESTJSONErrorCodes.UnknownMember);
+		return !isNullish(member) && member.roles.cache.has(context.id);
 	}
 
 	protected override async handleApplyPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<Role>) {

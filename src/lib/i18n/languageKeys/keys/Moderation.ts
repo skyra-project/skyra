@@ -25,3 +25,5 @@ export const EmbedDescription = FT<{ type: string; user: string; reason: string 
 export const EmbedDescriptionTemporary = FT<{ type: string; user: string; time: string; reason: string }>('moderation:embedDescriptionTemporary');
 export const EmbedReasonNotSet = FT<{ command: string; caseId: number }>('moderation:embedReasonNotSet');
 export const EmbedFooter = FT<{ caseId: number }>('moderation:embedFooter');
+
+export const ActionIsActive = T('moderation:actionIsActive');

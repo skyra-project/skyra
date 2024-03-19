@@ -27,8 +27,8 @@ export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
 		};
 	}
 
-	protected override getHandleData(message: GuildMessage, context: HandlerParameters) {
-		return this.getActionData(message, context.args, context.target, context.role);
+	protected override getHandleDataContext(_message: GuildMessage, context: HandlerParameters) {
+		return context.role;
 	}
 }
 

@@ -87,7 +87,7 @@ const TypeCodes = {
 
 export type TypeCodes = number & { __TYPE__: 'TypeCodes' };
 
-const AllowedMetadataTypes = TypeMetadata.Undo | TypeMetadata.Temporary | TypeMetadata.Completed;
+const AllowedMetadataTypes = TypeMetadata.Undo | TypeMetadata.Temporary;
 export function combineTypeData(type: TypeVariation, metadata?: TypeMetadata): TypeCodes {
 	if (isNullishOrZero(metadata)) return type as TypeCodes;
 	return (((metadata & AllowedMetadataTypes) << 5) | type) as TypeCodes;

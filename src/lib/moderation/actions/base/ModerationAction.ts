@@ -46,9 +46,10 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to check.
 	 * @param userId - The ID of the user.
+	 * @param context - The context for the action.
 	 * @returns A boolean indicating whether the action is active.
 	 */
-	public isActive(guild: Guild, userId: Snowflake): Awaitable<boolean>;
+	public isActive(guild: Guild, userId: Snowflake, context: ContextType): Awaitable<boolean>;
 	public isActive() {
 		return false;
 	}

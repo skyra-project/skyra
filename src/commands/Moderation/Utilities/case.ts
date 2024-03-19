@@ -140,6 +140,11 @@ export class UserCommand extends SkyraSubcommand {
 				return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 			}
 
+			if (entry.isCompleted()) {
+				const content = t(Root.TimeNotAllowedInCompletedEntries, { caseId: entry.id });
+				return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+			}
+
 			if (duration !== 0) {
 				const next = entry.createdAt + duration;
 				if (next <= Date.now()) {

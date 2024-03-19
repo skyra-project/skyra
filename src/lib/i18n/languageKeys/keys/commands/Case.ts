@@ -19,6 +19,7 @@ export const OptionsType = 'commands/case:optionsType';
 export const OptionsShow = 'commands/case:optionsShow';
 
 export const TimeNotAllowed = FT<{ type: string }>('commands/case:timeNotAllowed');
+export const TimeNotAllowedInCompletedEntries = FT<{ caseId: number }>('commands/case:timeNotAllowedInCompletedEntries');
 export const TimeTooEarly = FT<{ time: string }>('commands/case:timeTooEarly');
 export const ListEmpty = T('commands/case:listEmpty');
 export const ListDetailsTitle = FT<{ count: number }>('commands/case:listDetailsTitle');

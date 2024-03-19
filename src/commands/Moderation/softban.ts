@@ -26,8 +26,8 @@ export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
 		return banAdd || banRemove ? { unlock: getModeration(message.guild).createLock() } : null;
 	}
 
-	public override getHandleData(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
-		return this.getActionData(message, context.args, context.target, getSeconds(context.args));
+	public override getHandleDataContext(_message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
+		return getSeconds(context.args);
 	}
 
 	public override postHandle(_message: GuildMessage, { preHandled }: ModerationCommand.PostHandleParameters<ValueType>) {

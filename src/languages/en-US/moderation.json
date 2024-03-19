@@ -24,6 +24,7 @@
 	"embedDescriptionTemporary": "❯ **Type:** {{type}}\n❯ **User:** {{user}}\n❯ **Expires {{time}}**\n❯ **Reason:** {{reason}}",
 	"embedReasonNotSet": "*Please use {{command}} to set a reason.*",
 	"embedFooter": "Case {{caseId}}",
+	"actionIsActive": "This moderation action is still active for this user.",
 	"restrictionNotConfigured": "The restriction role must be configured for this action to happen",
 	"roleHigher": "The selected member has a role position that is higher than or equal to yours.",
 	"roleHigherSkyra": "The selected member has a role position that is higher than or equal to mine.",

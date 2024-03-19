@@ -34,8 +34,8 @@ export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
 		preHandled?.unlock();
 	}
 
-	public override async checkModeratable(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
-		const member = await super.checkModeratable(message, context);
+	public override async checkTargetCanBeModerated(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
+		const member = await super.checkTargetCanBeModerated(message, context);
 		if (member && !member.bannable) throw context.args.t(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;
 	}

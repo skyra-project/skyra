@@ -80,7 +80,7 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		for (const target of new Set(targets)) {
 			try {
 				const handled = { ...handledRaw, args, target, preHandled };
-				await this.checkModeratable(message, handled);
+				await this.checkTargetCanBeModerated(message, handled);
 				const log = await this.handle(message, handled);
 				processed.push({ log, target });
 			} catch (error) {
@@ -236,7 +236,7 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		return null;
 	}
 
-	protected async checkModeratable(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
+	protected async checkTargetCanBeModerated(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
 		if (context.target.id === message.author.id) {
 			throw context.args.t(Root.ActionTargetSelf);
 		}

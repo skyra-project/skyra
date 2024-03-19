@@ -29,8 +29,8 @@ export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
 		preHandled?.unlock();
 	}
 
-	protected override async checkModeratable(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
-		const member = await super.checkModeratable(message, context);
+	protected override async checkTargetCanBeModerated(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
+		const member = await super.checkTargetCanBeModerated(message, context);
 		if (member && !member.kickable) throw context.args.t(LanguageKeys.Commands.Moderation.KickNotKickable);
 		return member;
 	}

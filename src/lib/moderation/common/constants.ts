@@ -82,26 +82,15 @@ const TypeCodes = {
 	TemporaryRoleRemove: combineTypeData(TypeVariation.RoleRemove, TypeMetadata.Temporary),
 	TemporarySetNickname: combineTypeData(TypeVariation.SetNickname, TypeMetadata.Temporary),
 	TemporaryVoiceMute: combineTypeData(TypeVariation.VoiceMute, TypeMetadata.Temporary),
-	TemporaryWarning: combineTypeData(TypeVariation.Warning, TypeMetadata.Temporary),
-	FastTemporaryBan: combineTypeData(TypeVariation.Ban, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryMute: combineTypeData(TypeVariation.Mute, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryRestrictedAttachment: combineTypeData(TypeVariation.RestrictedAttachment, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryRestrictedEmbed: combineTypeData(TypeVariation.RestrictedEmbed, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryRestrictedEmoji: combineTypeData(TypeVariation.RestrictedEmoji, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryRestrictedReaction: combineTypeData(TypeVariation.RestrictedReaction, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryRestrictedVoice: combineTypeData(TypeVariation.RestrictedVoice, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryRoleAdd: combineTypeData(TypeVariation.RoleAdd, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryRoleRemove: combineTypeData(TypeVariation.RoleRemove, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporarySetNickname: combineTypeData(TypeVariation.SetNickname, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryVoiceMute: combineTypeData(TypeVariation.VoiceMute, TypeMetadata.Temporary | TypeMetadata.Fast),
-	FastTemporaryWarning: combineTypeData(TypeVariation.Warning, TypeMetadata.Temporary | TypeMetadata.Fast)
+	TemporaryWarning: combineTypeData(TypeVariation.Warning, TypeMetadata.Temporary)
 } as const;
 
 export type TypeCodes = number & { __TYPE__: 'TypeCodes' };
 
+const AllowedMetadataTypes = TypeMetadata.Undo | TypeMetadata.Temporary | TypeMetadata.Completed;
 export function combineTypeData(type: TypeVariation, metadata?: TypeMetadata): TypeCodes {
 	if (isNullishOrZero(metadata)) return type as TypeCodes;
-	return (((metadata & ~TypeMetadata.Archived) << 5) | type) as TypeCodes;
+	return (((metadata & AllowedMetadataTypes) << 5) | type) as TypeCodes;
 }
 
 export function isValidType(type: TypeVariation, metadata?: TypeMetadata): boolean {
@@ -153,17 +142,5 @@ const Metadata = new Map<TypeCodes, Colors>([
 	[TypeCodes.TemporaryRoleRemove, Colors.Lime300],
 	[TypeCodes.TemporarySetNickname, Colors.Lime300],
 	[TypeCodes.TemporaryVoiceMute, Colors.Amber300],
-	[TypeCodes.TemporaryWarning, Colors.Yellow300],
-	[TypeCodes.FastTemporaryBan, Colors.Red300],
-	[TypeCodes.FastTemporaryMute, Colors.Amber300],
-	[TypeCodes.FastTemporaryRestrictedAttachment, Colors.Lime300],
-	[TypeCodes.FastTemporaryRestrictedEmbed, Colors.Lime300],
-	[TypeCodes.FastTemporaryRestrictedEmoji, Colors.Lime300],
-	[TypeCodes.FastTemporaryRestrictedReaction, Colors.Lime300],
-	[TypeCodes.FastTemporaryRestrictedVoice, Colors.Lime300],
-	[TypeCodes.FastTemporaryRoleAdd, Colors.Lime300],
-	[TypeCodes.FastTemporaryRoleRemove, Colors.Lime300],
-	[TypeCodes.FastTemporarySetNickname, Colors.Lime300],
-	[TypeCodes.FastTemporaryVoiceMute, Colors.Amber300],
-	[TypeCodes.FastTemporaryWarning, Colors.Yellow300]
+	[TypeCodes.TemporaryWarning, Colors.Yellow300]
 ]) as ReadonlyMap<TypeCodes, Colors>;

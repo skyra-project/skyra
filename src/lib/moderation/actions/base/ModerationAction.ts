@@ -8,7 +8,7 @@ import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { isNullish, isNullishOrEmpty, type Awaitable } from '@sapphire/utilities';
+import { isNullish, isNullishOrEmpty, type Awaitable, isNullishOrZero } from '@sapphire/utilities';
 import { DiscordAPIError, HTTPError, RESTJSONErrorCodes, type Guild, type Snowflake, type User } from 'discord.js';
 
 const Root = LanguageKeys.Commands.Moderation;
@@ -215,8 +215,9 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		const entry = await this.retrieveLastModerationEntryFromUser(options);
 		if (isNullish(entry)) return null;
 
-		const { task } = entry;
-		if (!isNullish(task) && !task.running) await task.delete();
+		if (!isNullishOrZero(entry.duration)) {
+			await getModeration(options.guild).complete(entry);
+		}
 		return entry;
 	}
 
@@ -237,8 +238,8 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		const extra = options.filter ?? (() => true);
 
 		for (const entry of entries.values()) {
-			// If the entry has been invalidated, skip it:
-			if (entry.isArchived()) continue;
+			// If the entry has been archived or has completed, skip it:
+			if (entry.isArchived() || entry.isCompleted()) continue;
 			// If the entry is not of the same type, skip it:
 			if (entry.type !== type) continue;
 			// If the entry is not of the same metadata, skip it:

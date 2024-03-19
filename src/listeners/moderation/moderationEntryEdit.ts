@@ -1,4 +1,4 @@
-import { GuildSettings, writeSettings } from '#lib/database';
+import { GuildSettings, ScheduleEntity, writeSettings } from '#lib/database';
 import type { ModerationManager } from '#lib/moderation';
 import { getEmbed, getUndoTaskName } from '#lib/moderation/common';
 import type { GuildMessage } from '#lib/types';
@@ -19,8 +19,8 @@ export class UserListener extends Listener {
 
 	private async scheduleDuration(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
 		// If the entry has been archived in this update, delete the task:
-		if (entry.isArchived()) {
-			await entry.task?.delete();
+		if (entry.isArchived() || entry.isCompleted()) {
+			await this.#tryDeleteTask(entry.task);
 			return;
 		}
 
@@ -31,7 +31,7 @@ export class UserListener extends Listener {
 			if (entry.duration !== null) await this.#createNewTask(entry);
 		} else if (entry.duration === null) {
 			// If the new duration is null, delete the previous task:
-			await task.delete();
+			await this.#tryDeleteTask(task);
 		} else {
 			// If the new duration is not null, reschedule the previous task:
 			await task.reschedule(entry.expiresTimestamp!);
@@ -63,7 +63,7 @@ export class UserListener extends Listener {
 	private async fetchModerationLogMessage(entry: ModerationManager.Entry, channel: GuildTextBasedChannelTypes) {
 		const messages = await this.fetchChannelMessages(channel);
 		for (const message of messages.values()) {
-			if (this.validateModerationLogMessage(message, entry.id)) return message;
+			if (this.#validateModerationLogMessage(message, entry.id)) return message;
 		}
 
 		return null;
@@ -81,43 +81,47 @@ export class UserListener extends Listener {
 		}
 	}
 
-	private validateModerationLogMessage(message: Message, caseId: number) {
+	async #tryDeleteTask(task: ScheduleEntity | null) {
+		if (!isNullish(task) && !task.running) await task.delete();
+	}
+
+	#validateModerationLogMessage(message: Message, caseId: number) {
 		return (
 			isUserSelf(message.author.id) &&
 			message.attachments.size === 0 &&
 			message.embeds.length === 1 &&
-			this.validateModerationLogMessageEmbed(message.embeds[0]) &&
+			this.#validateModerationLogMessageEmbed(message.embeds[0]) &&
 			message.embeds[0].footer!.text.includes(caseId.toString())
 		);
 	}
 
-	private validateModerationLogMessageEmbed(embed: Embed) {
+	#validateModerationLogMessageEmbed(embed: Embed) {
 		return (
-			this.validateModerationLogMessageEmbedAuthor(embed.author) &&
-			this.validateModerationLogMessageEmbedDescription(embed.description) &&
-			this.validateModerationLogMessageEmbedColor(embed.color) &&
-			this.validateModerationLogMessageEmbedFooter(embed.footer) &&
-			this.validateModerationLogMessageEmbedTimestamp(embed.timestamp)
+			this.#validateModerationLogMessageEmbedAuthor(embed.author) &&
+			this.#validateModerationLogMessageEmbedDescription(embed.description) &&
+			this.#validateModerationLogMessageEmbedColor(embed.color) &&
+			this.#validateModerationLogMessageEmbedFooter(embed.footer) &&
+			this.#validateModerationLogMessageEmbedTimestamp(embed.timestamp)
 		);
 	}
 
-	private validateModerationLogMessageEmbedAuthor(author: Embed['author']) {
+	#validateModerationLogMessageEmbedAuthor(author: Embed['author']) {
 		return author !== null && typeof author.name === 'string' && /\(\d{17,19}\)^/.test(author.name) && typeof author.iconURL === 'string';
 	}
 
-	private validateModerationLogMessageEmbedDescription(description: Embed['description']) {
+	#validateModerationLogMessageEmbedDescription(description: Embed['description']) {
 		return typeof description === 'string' && description.split('\n').length >= 3;
 	}
 
-	private validateModerationLogMessageEmbedColor(color: Embed['color']) {
+	#validateModerationLogMessageEmbedColor(color: Embed['color']) {
 		return isNumber(color);
 	}
 
-	private validateModerationLogMessageEmbedFooter(footer: Embed['footer']) {
+	#validateModerationLogMessageEmbedFooter(footer: Embed['footer']) {
 		return footer !== null && typeof footer.text === 'string' && typeof footer.iconURL === 'string';
 	}
 
-	private validateModerationLogMessageEmbedTimestamp(timestamp: Embed['timestamp']) {
+	#validateModerationLogMessageEmbedTimestamp(timestamp: Embed['timestamp']) {
 		return isNumber(timestamp);
 	}
 

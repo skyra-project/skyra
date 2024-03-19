@@ -130,7 +130,8 @@ export class ModerationManager {
 	}
 
 	/**
-	 * Edits the {@linkcode ModerationManagerEntry.metadata} field from a moderation entry.
+	 * Edits the {@linkcode ModerationManagerEntry.metadata} field from a moderation entry to set
+	 * {@linkcode TypeMetadata.Archived}.
 	 *
 	 * @param entryOrId - The moderation entry or its ID.
 	 * @returns The updated moderation entry.
@@ -138,6 +139,18 @@ export class ModerationManager {
 	public async archive(entryOrId: ModerationManager.EntryResolvable) {
 		const entry = await this.#resolveEntry(entryOrId);
 		return this.#performUpdate(entry, { metadata: entry.metadata | TypeMetadata.Archived });
+	}
+
+	/**
+	 * Edits the {@linkcode ModerationManagerEntry.metadata} field from a moderation entry to set
+	 * {@linkcode TypeMetadata.Completed}.
+	 *
+	 * @param entryOrId - The moderation entry or its ID.
+	 * @returns The updated moderation entry.
+	 */
+	public async complete(entryOrId: ModerationManager.EntryResolvable) {
+		const entry = await this.#resolveEntry(entryOrId);
+		return this.#performUpdate(entry, { metadata: entry.metadata | TypeMetadata.Completed });
 	}
 
 	/**

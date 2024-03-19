@@ -1,13 +1,15 @@
 import { GuildSettings, ResponseType, Task, readSettings, type PartialResponseValue } from '#lib/database';
 import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
+import { getModeration } from '#utils/functions';
 import type { SchemaKeys } from '#utils/moderationConstants';
+import { isNullish } from '@sapphire/utilities';
 import type { Guild, Snowflake } from 'discord.js';
 
 export abstract class ModerationTask<T = unknown> extends Task {
 	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
 		const guild = this.container.client.guilds.cache.get(data.guildID);
 		// If the guild is not available, cancel the task.
-		if (typeof guild === 'undefined') return { type: ResponseType.Ignore };
+		if (isNullish(guild)) return { type: ResponseType.Ignore };
 
 		// If the guild is not available, re-schedule the task by creating
 		// another with the same data but happening 20 seconds later.
@@ -19,6 +21,9 @@ export abstract class ModerationTask<T = unknown> extends Task {
 		} catch {
 			/* noop */
 		}
+
+		// Mark the moderation entry as complete.
+		await getModeration(guild).complete(data.caseID);
 
 		return { type: ResponseType.Finished };
 	}

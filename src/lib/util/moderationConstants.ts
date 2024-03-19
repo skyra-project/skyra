@@ -23,7 +23,8 @@ export const enum TypeMetadata {
 	Temporary = 1 << 1,
 	/** @deprecated Use Temporary instead */
 	Fast = 1 << 2,
-	Archived = 1 << 3
+	Archived = 1 << 3,
+	Completed = 1 << 4
 }
 
 export const enum SchemaKeys {

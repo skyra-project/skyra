@@ -41,6 +41,12 @@ export const UndoTaskNameMappings = {
 	[TypeVariation.RoleRemove]: 'moderationEndRemoveRole'
 } as const;
 
+const AllowedMetadataTypes = TypeMetadata.Undo | TypeMetadata.Temporary;
+export function combineTypeData(type: TypeVariation, metadata?: TypeMetadata): TypeCodes {
+	if (isNullishOrZero(metadata)) return type as TypeCodes;
+	return (((metadata & AllowedMetadataTypes) << 5) | type) as TypeCodes;
+}
+
 const TypeCodes = {
 	Ban: combineTypeData(TypeVariation.Ban),
 	Kick: combineTypeData(TypeVariation.Kick),
@@ -86,12 +92,6 @@ const TypeCodes = {
 } as const;
 
 export type TypeCodes = number & { __TYPE__: 'TypeCodes' };
-
-const AllowedMetadataTypes = TypeMetadata.Undo | TypeMetadata.Temporary;
-export function combineTypeData(type: TypeVariation, metadata?: TypeMetadata): TypeCodes {
-	if (isNullishOrZero(metadata)) return type as TypeCodes;
-	return (((metadata & AllowedMetadataTypes) << 5) | type) as TypeCodes;
-}
 
 export function isValidType(type: TypeVariation, metadata?: TypeMetadata): boolean {
 	return Metadata.has(combineTypeData(type, metadata));

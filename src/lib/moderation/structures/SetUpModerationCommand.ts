@@ -10,7 +10,14 @@ import { PermissionFlagsBits, type Role } from 'discord.js';
 
 export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, ValueType> extends ModerationCommand<Type, ValueType> {
 	public constructor(context: ModerationCommand.Context, options: SetUpModerationCommand.Options<Type>) {
-		super(context, { requiredClientPermissions: [PermissionFlagsBits.ManageRoles], requiredMember: true, ...options });
+		super(context, {
+			requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
+			requiredMember: true,
+			actionStatusKey: options.isUndoAction
+				? LanguageKeys.Moderation.ActionIsNotActiveRestrictionRole
+				: LanguageKeys.Moderation.ActionIsActiveRestrictionRole,
+			...options
+		});
 	}
 
 	private get role() {

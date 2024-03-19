@@ -16,6 +16,7 @@ export const OptionsDuration = 'commands/case:optionsDuration';
 export const OptionsUser = 'commands/case:optionsUser';
 export const OptionsOverview = 'commands/case:optionsOverview';
 export const OptionsType = 'commands/case:optionsType';
+export const OptionsPendingOnly = 'commands/case:optionsPendingOnly';
 export const OptionsShow = 'commands/case:optionsShow';
 
 export const TimeNotAllowed = FT<{ type: string }>('commands/case:timeNotAllowed');

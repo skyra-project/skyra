@@ -85,6 +85,7 @@ export class UserCommand extends SkyraSubcommand {
 									createLocalizedChoice(RootModeration.TypeWarning, { value: TypeVariation.Warning })
 								)
 						)
+						.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsPendingOnly))
 				)
 				.addSubcommand((subcommand) =>
 					applyLocalizedBuilder(subcommand, Root.Edit) //
@@ -115,10 +116,12 @@ export class UserCommand extends SkyraSubcommand {
 		const user = interaction.options.getUser('user');
 		const show = interaction.options.getBoolean('show') ?? false;
 		const type = interaction.options.getInteger('type') as TypeVariation | null;
+		const pendingOnly = interaction.options.getBoolean('pending-only') ?? false;
 
 		const moderation = getModeration(interaction.guild);
 		let entries = [...(await moderation.fetch({ userId: user?.id })).values()];
 		if (!isNullish(type)) entries = entries.filter((entry) => entry.type === type);
+		if (pendingOnly) entries = entries.filter((entry) => !isNullishOrZero(entry.duration) && !entry.isCompleted());
 
 		const t = show ? getSupportedLanguageT(interaction) : getSupportedUserLanguageT(interaction);
 		return interaction.options.getBoolean('overview') //

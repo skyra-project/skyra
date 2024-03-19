@@ -26,4 +26,19 @@ export const EmbedDescriptionTemporary = FT<{ type: string; user: string; time: 
 export const EmbedReasonNotSet = FT<{ command: string; caseId: number }>('moderation:embedReasonNotSet');
 export const EmbedFooter = FT<{ caseId: number }>('moderation:embedFooter');
 
+// Action status
 export const ActionIsActive = T('moderation:actionIsActive');
+export const ActionIsNotActive = T('moderation:actionIsNotActive');
+
+// Action status overrides
+export const ActionIsActiveRole = T('moderation:actionIsActiveRole');
+export const ActionIsNotActiveRole = T('moderation:actionIsNotActiveRole');
+export const ActionIsActiveRestrictionRole = T('moderation:actionIsActiveRestrictionRole');
+export const ActionIsNotActiveRestrictionRole = T('moderation:actionIsNotActiveRestrictionRole');
+export const ActionIsActiveNickname = T('moderation:actionIsActiveNickname');
+export const ActionIsNotActiveNickname = T('moderation:actionIsNotActiveNickname');
+
+export const ActionTargetSelf = T('moderation:actionTargetSelf');
+export const ActionTargetSkyra = T('moderation:actionTargetSkyra');
+export const ActionTargetHigherHierarchySkyra = T('moderation:actionTargetHigherHierarchySkyra');
+export const ActionTargetHigherHierarchyAuthor = T('moderation:actionTargetHigherHierarchyAuthor');

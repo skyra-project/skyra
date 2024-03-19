@@ -4,11 +4,11 @@ import { getAction, type ActionByType, type GetContextType } from '#lib/moderati
 import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
 import type { ModerationManager } from '#lib/moderation/managers/ModerationManager';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
-import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { PermissionLevels, type GuildMessage, type TypedT } from '#lib/types';
 import { asc, floatPromise, seconds, years } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { TypeVariation } from '#utils/moderationConstants';
-import { cast, getImage, getTag, isUserSelf } from '#utils/util';
+import { getImage, getTag, isUserSelf } from '#utils/util';
 import { Args, CommandOptionsRunTypeEnum, type Awaitable } from '@sapphire/framework';
 import { free, send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
@@ -19,22 +19,27 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 	/**
 	 * The moderation action this command applies.
 	 */
-	public readonly action: ActionByType<Type>;
+	protected readonly action: ActionByType<Type>;
 
 	/**
 	 * Whether this command executes an undo action.
 	 */
-	public readonly isUndoAction: boolean;
+	protected readonly isUndoAction: boolean;
+
+	/**
+	 * The key for the action is active language key.
+	 */
+	protected readonly actionStatusKey: TypedT;
 
 	/**
 	 * Whether this command supports schedules.
 	 */
-	public readonly supportsSchedule: boolean;
+	protected readonly supportsSchedule: boolean;
 
 	/**
 	 * Whether a member is required or not.
 	 */
-	public readonly requiredMember: boolean;
+	protected readonly requiredMember: boolean;
 
 	protected constructor(context: ModerationCommand.Context, options: ModerationCommand.Options<Type>) {
 		super(context, {
@@ -48,6 +53,7 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 
 		this.action = getAction(options.type);
 		this.isUndoAction = options.isUndoAction ?? false;
+		this.actionStatusKey = options.actionStatusKey ?? (this.isUndoAction ? Root.ActionIsNotActive : Root.ActionIsActive);
 		this.supportsSchedule = this.action.isUndoActionAvailable && !this.isUndoAction;
 		this.requiredMember = options.requiredMember ?? false;
 	}
@@ -96,15 +102,15 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		if (shouldDisplayMessage) {
 			const output: string[] = [];
 			if (processed.length) {
-				const logReason = shouldDisplayReason ? processed[0].log.reason! : null;
+				const reason = shouldDisplayReason ? processed[0].log.reason! : null;
 				const sorted = processed.sort((a, b) => asc(a.log.id, b.log.id));
 				const cases = sorted.map(({ log }) => log.id);
 				const users = sorted.map(({ target }) => `\`${getTag(target)}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
-				const langKey = logReason
+				const key = reason //
 					? LanguageKeys.Commands.Moderation.ModerationOutputWithReason
 					: LanguageKeys.Commands.Moderation.ModerationOutput;
-				output.push(args.t(langKey, { count: cases.length, range, users, reason: logReason }));
+				output.push(args.t(key, { count: cases.length, range, users, reason }));
 			}
 
 			if (errored.length) {
@@ -129,11 +135,24 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		return null;
 	}
 
+	/**
+	 * Handles an action before taking the moderation action.
+	 *
+	 * @param message - The message that triggered the command.
+	 * @param context - The context for the moderation command, shared for all targets.
+	 * @returns The value that will be set in {@linkcode ModerationCommand.HandlerParameters.preHandled}.
+	 */
 	protected preHandle(message: GuildMessage, context: ModerationCommand.Parameters): Awaitable<ValueType>;
 	protected preHandle() {
-		return cast<ValueType>(null);
+		return null as ValueType;
 	}
 
+	/**
+	 * Handles the moderation action.
+	 *
+	 * @param message - The message that triggered the command.
+	 * @param context - The context for the moderation command, for a single target.
+	 */
 	protected handle(
 		message: GuildMessage,
 		context: ModerationCommand.HandlerParameters<ValueType>
@@ -141,19 +160,49 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 
 	protected async handle(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
 		const dataContext = this.getHandleDataContext(message, context);
+
+		const options = this.resolveOptions(message, context);
+		const data = await this.getActionData(message, context.args, context.target, dataContext);
 		const isActive = await this.isActionActive(message, context, dataContext);
-		if (isActive) {
-			throw context.args.t(Root.ActionIsActive);
+
+		if (this.isUndoAction) {
+			// If this command is an undo action, and the action is not active, throw an error.
+			if (!isActive) {
+				throw context.args.t(this.getActionStatusKey(context));
+			}
+
+			// @ts-expect-error mismatching types due to unions
+			return this.action.undo(message.guild, options, data);
 		}
 
-		return this.action[this.isUndoAction ? 'undo' : 'apply'](
-			message.guild,
-			// @ts-expect-error not correctly inferring the type
-			this.resolveOptions(message, context),
-			await this.getActionData(message, context.args, context.target, dataContext)
-		);
+		// If this command is not an undo action, and the action is active, throw an error.
+		if (isActive) {
+			throw context.args.t(this.getActionStatusKey(context));
+		}
+
+		// @ts-expect-error mismatching types due to unions
+		return this.action.apply(message.guild, options, data);
 	}
 
+	/**
+	 * Gets the data context required for some actions, if any.
+	 *
+	 * @param message - The message that triggered the command.
+	 * @param context - The context for the moderation command, for a single target.
+	 */
+	protected getHandleDataContext(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>): GetContextType<Type>;
+	protected getHandleDataContext(): GetContextType<Type> {
+		return null as GetContextType<Type>;
+	}
+
+	/**
+	 * Checks if the action is active.
+	 *
+	 * @param message - The message that triggered the command.
+	 * @param context - The context for the moderation command, for a single target.
+	 * @param dataContext - The data context required for some actions, if any.
+	 * @returns
+	 */
 	protected isActionActive(
 		message: GuildMessage,
 		context: ModerationCommand.HandlerParameters<ValueType>,
@@ -162,11 +211,26 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		return this.action.isActive(message.guild, context.target.id, dataContext as never);
 	}
 
-	protected getHandleDataContext(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>): GetContextType<Type>;
-	protected getHandleDataContext(): GetContextType<Type> {
-		return null as GetContextType<Type>;
+	/**
+	 * Gets the key for the action status language key.
+	 *
+	 * @remarks
+	 *
+	 * Unless overridden, this method just returns the value of {@linkcode ModerationCommand.actionStatusKey}.
+	 *
+	 * @param context - The context for the moderation command, for a single target.
+	 */
+	protected getActionStatusKey(context: ModerationCommand.HandlerParameters<ValueType>): TypedT;
+	protected getActionStatusKey(): TypedT {
+		return this.actionStatusKey;
 	}
 
+	/**
+	 * Handles an action after taking the moderation action.
+	 *
+	 * @param message - The message that triggered the command.
+	 * @param context - The context for the moderation command, shared for all targets.
+	 */
 	protected postHandle(message: GuildMessage, context: ModerationCommand.PostHandleParameters<ValueType>): unknown;
 	protected postHandle() {
 		return null;
@@ -174,11 +238,11 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 
 	protected async checkModeratable(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
 		if (context.target.id === message.author.id) {
-			throw context.args.t(LanguageKeys.Commands.Moderation.UserSelf);
+			throw context.args.t(Root.ActionTargetSelf);
 		}
 
 		if (isUserSelf(context.target.id)) {
-			throw context.args.t(LanguageKeys.Commands.Moderation.ToSkyra);
+			throw context.args.t(Root.ActionTargetSkyra);
 		}
 
 		const member = await message.guild.members.fetch(context.target.id).catch(() => {
@@ -191,12 +255,12 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 
 			// Skyra cannot moderate members with higher role position than her:
 			if (targetHighestRolePosition >= message.guild.members.me!.roles.highest.position) {
-				throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigherSkyra);
+				throw context.args.t(Root.ActionTargetHigherHierarchySkyra);
 			}
 
 			// A member who isn't a server owner is not allowed to moderate somebody with higher role than them:
 			if (!isGuildOwner(message.member) && targetHighestRolePosition >= message.member.roles.highest.position) {
-				throw context.args.t(LanguageKeys.Commands.Moderation.RoleHigher);
+				throw context.args.t(Root.ActionTargetHigherHierarchyAuthor);
 			}
 		}
 
@@ -296,6 +360,7 @@ export namespace ModerationCommand {
 	export interface Options<Type extends TypeVariation> extends SkyraCommand.Options {
 		type: Type;
 		isUndoAction?: boolean;
+		actionStatusKey?: TypedT;
 		requiredMember?: boolean;
 	}
 

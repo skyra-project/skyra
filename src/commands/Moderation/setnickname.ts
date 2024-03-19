@@ -29,8 +29,12 @@ export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
 	protected override getHandleDataContext(_message: GuildMessage, context: HandlerParameters) {
 		return context.nickname;
 	}
+
+	protected override getActionStatusKey(context: HandlerParameters) {
+		return context.nickname === null ? LanguageKeys.Moderation.ActionIsNotActiveNickname : LanguageKeys.Moderation.ActionIsActiveNickname;
+	}
 }
 
 interface HandlerParameters extends ModerationCommand.HandlerParameters<ValueType> {
-	nickname: string;
+	nickname: string | null;
 }

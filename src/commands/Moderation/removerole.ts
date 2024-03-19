@@ -15,7 +15,8 @@ type ValueType = null;
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 	requiredMember: true,
-	type: TypeVariation.RoleRemove
+	type: TypeVariation.RoleRemove,
+	actionStatusKey: LanguageKeys.Moderation.ActionIsNotActiveRole
 })
 export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
 	protected override async resolveParameters(args: ModerationCommand.Args) {

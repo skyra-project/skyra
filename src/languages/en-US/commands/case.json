@@ -23,6 +23,8 @@
 	"optionsOverviewDescription": "Whether or not to show the overview of the moderation cases.",
 	"optionsTypeName": "type",
 	"optionsTypeDescription": "The type to filter the moderation cases by.",
+	"optionsPendingOnlyName": "pending-only",
+	"optionsPendingOnlyDescription": "Whether or not to show only the pending moderation cases.",
 	"optionsShowName": "show",
 	"optionsShowDescription": "Whether or not to show the response publicly.",
 	"timeNotAllowed": "The type of the moderation case (**{{type}}**) does not allow for a duration.",

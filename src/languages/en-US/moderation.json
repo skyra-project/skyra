@@ -25,10 +25,17 @@
 	"embedReasonNotSet": "*Please use {{command}} to set a reason.*",
 	"embedFooter": "Case {{caseId}}",
 	"actionIsActive": "This moderation action is still active for this user.",
+	"actionIsNotActive": "This moderation action is not active for this user.",
+	"actionIsActiveRole": "This user already has the selected role.",
+	"actionIsNotActiveRole": "This user does not have the selected role.",
+	"actionIsActiveRestrictionRole": "This user already has the configured restriction role.",
+	"actionIsNotActiveRestrictionRole": "This user does not have the configured restriction role.",
+	"actionIsActiveNickname": "This user already has the selected nickname.",
+	"actionIsNotActiveNickname": "This user does not have the selected nickname.",
+	"actionTargetSelf": "You cannot perform this action on yourself. Why would you do that anyways?",
+	"actionTargetSkyra": "I... I cannot do that to myself! You broke my heart. 💔",
+	"actionTargetHigherHierarchySkyra": "This action cannot be performed on a member with a role position that is higher than or equal to mine.",
+	"actionTargetHigherHierarchyAuthor": "This action cannot be performed on a member with a role position that is higher than or equal to yours.",
 	"restrictionNotConfigured": "The restriction role must be configured for this action to happen",
-	"roleHigher": "The selected member has a role position that is higher than or equal to yours.",
-	"roleHigherSkyra": "The selected member has a role position that is higher than or equal to mine.",
-	"success": "Successfully executed the command.",
-	"toSkyra": "Why... I thought you loved me! 💔",
-	"userSelf": "Why would you do that to yourself?"
+	"success": "Successfully executed the command."
 }

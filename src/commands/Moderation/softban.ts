@@ -1,41 +1,40 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions, ModerationCommand } from '#lib/moderation';
+import { ModerationCommand } from '#lib/moderation';
+import type { GuildMessage } from '#lib/types';
 import { getModeration } from '#utils/functions';
 import { TimeOptions, getSeconds } from '#utils/moderation-utilities';
-import type { Unlock } from '#utils/moderationConstants';
-import { getImage } from '#utils/util';
+import { TypeVariation, type Unlock } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ArgumentTypes } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord.js';
 
-@ApplyOptions<ModerationCommand.Options>({
+type Type = TypeVariation.Softban;
+type ValueType = Unlock | null;
+
+@ApplyOptions<ModerationCommand.Options<Type>>({
 	aliases: ['sb'],
 	description: LanguageKeys.Commands.Moderation.SoftBanDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.SoftBanExtended,
 	options: TimeOptions,
 	requiredClientPermissions: [PermissionFlagsBits.BanMembers],
-	requiredMember: false
+	requiredMember: false,
+	type: TypeVariation.Softban
 })
-export class UserModerationCommand extends ModerationCommand {
-	public override async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
+export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
+	public override async preHandle(message: GuildMessage) {
 		const [banAdd, banRemove] = await readSettings(message.guild, [GuildSettings.Events.BanAdd, GuildSettings.Events.BanRemove]);
 		return banAdd || banRemove ? { unlock: getModeration(message.guild).createLock() } : null;
 	}
 
-	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return ModerationActions.softban.apply(
-			message.guild,
-			{ user: context.target, moderator: message.author, duration: context.duration, reason: context.reason, imageURL: getImage(message) },
-			await this.getActionData(message, context.args, context.target, getSeconds(context.args))
-		);
+	public override getHandleData(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
+		return this.getActionData(message, context.args, context.target, getSeconds(context.args));
 	}
 
-	public override posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Unlock>['posthandle']>) {
-		if (preHandled) preHandled.unlock();
+	public override postHandle(_message: GuildMessage, { preHandled }: ModerationCommand.PostHandleParameters<ValueType>) {
+		preHandled?.unlock();
 	}
 
-	public override async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+	public override async checkModeratable(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
 		const member = await super.checkModeratable(message, context);
 		if (member && !member.bannable) throw context.args.t(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;

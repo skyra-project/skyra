@@ -47,3 +47,7 @@ export interface ModerationTypeAssets {
 export interface Unlock {
 	unlock(): void;
 }
+
+export interface MaybeUnlock {
+	unlock: (() => void) | null;
+}

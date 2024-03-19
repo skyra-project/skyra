@@ -21,7 +21,7 @@ export class ModerationActionRoleRemove extends ModerationAction<Role, TypeVaria
 		await this.cancelLastModerationEntryTaskFromUser({
 			guild,
 			userId: entry.userId,
-			filter: (log) => (log.extraData as { role?: string })?.role === role.id
+			filter: (log) => log.extraData?.role === role.id
 		});
 	}
 

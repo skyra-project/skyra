@@ -1,20 +1,16 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions, SetUpModerationCommand } from '#lib/moderation';
+import { SetUpModerationCommand } from '#lib/moderation';
+import { TypeVariation } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ArgumentTypes } from '@sapphire/utilities';
 
-@ApplyOptions<SetUpModerationCommand.Options>({
+type Type = TypeVariation.RestrictedEmoji;
+type ValueType = null;
+
+@ApplyOptions<SetUpModerationCommand.Options<Type>>({
 	aliases: ['un-restrict-external-emoji', 'unrestricted-emoji', 'unrestricted-external-emoji', 'uree', 'unrestrict-emojis'],
 	description: LanguageKeys.Commands.Moderation.UnrestrictEmojiDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.UnrestrictEmojiExtended,
-	actionKey: 'restrictedEmoji'
+	type: TypeVariation.RestrictedEmoji,
+	isUndoAction: true
 })
-export class UserSetUpModerationCommand extends SetUpModerationCommand {
-	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
-		return ModerationActions.restrictedEmoji.undo(
-			message.guild,
-			{ user: context.target, moderator: message.author, reason: context.reason },
-			await this.getActionData(message, context.args, context.target)
-		);
-	}
-}
+export class UserSetUpModerationCommand extends SetUpModerationCommand<Type, ValueType> {}

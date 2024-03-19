@@ -2,7 +2,7 @@ import { RoleModerationAction } from '#lib/moderation/actions/base/RoleModeratio
 import { TypeVariation } from '#utils/moderationConstants';
 import { PermissionFlagsBits } from 'discord.js';
 
-export class ModerationActionRestrictedEmoji extends RoleModerationAction {
+export class ModerationActionRestrictedEmoji extends RoleModerationAction<never, TypeVariation.RestrictedEmoji> {
 	public constructor() {
 		super({
 			type: TypeVariation.RestrictedEmoji,

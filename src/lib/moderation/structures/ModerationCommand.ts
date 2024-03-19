@@ -1,40 +1,53 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { getAction, type ActionByType, type GetContextType } from '#lib/moderation/actions';
 import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
 import type { ModerationManager } from '#lib/moderation/managers/ModerationManager';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { asc, floatPromise, seconds, years } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
-import { cast, getTag } from '#utils/util';
-import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import type { TypeVariation } from '#utils/moderationConstants';
+import { cast, getImage, getTag, isUserSelf } from '#utils/util';
+import { Args, CommandOptionsRunTypeEnum, type Awaitable } from '@sapphire/framework';
 import { free, send } from '@sapphire/plugin-editable-commands';
 import type { User } from 'discord.js';
 
-export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
+export abstract class ModerationCommand<Type extends TypeVariation, ValueType> extends SkyraCommand {
+	/**
+	 * The moderation action this command applies.
+	 */
+	public readonly action: ActionByType<Type>;
+
+	/**
+	 * Whether this command executes an undo action.
+	 */
+	public readonly isUndoAction: boolean;
+
+	/**
+	 * Whether this command supports schedules.
+	 */
+	public readonly supportsSchedule: boolean;
+
 	/**
 	 * Whether a member is required or not.
 	 */
-	public requiredMember: boolean;
+	public readonly requiredMember: boolean;
 
-	/**
-	 * Whether or not this moderation command can create temporary actions.
-	 */
-	public optionalDuration: boolean;
-
-	protected constructor(context: ModerationCommand.Context, options: ModerationCommand.Options) {
+	protected constructor(context: ModerationCommand.Context, options: ModerationCommand.Options<Type>) {
 		super(context, {
 			cooldownDelay: seconds(5),
 			flags: ['no-author', 'authored', 'no-dm', 'dm'],
-			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
 			runIn: [CommandOptionsRunTypeEnum.GuildAny],
 			...options
 		});
 
-		this.requiredMember = options.requiredMember!;
-		this.optionalDuration = options.optionalDuration!;
+		this.action = getAction(options.type);
+		this.isUndoAction = options.isUndoAction ?? false;
+		this.supportsSchedule = this.action.isUndoActionAvailable && !this.isUndoAction;
+		this.requiredMember = options.requiredMember ?? false;
 	}
 
 	public override messageRun(
@@ -44,8 +57,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	): Promise<GuildMessage | null>;
 
 	public override async messageRun(message: GuildMessage, args: ModerationCommand.Args) {
-		const resolved = await this.resolveOverloads(args);
-		const preHandled = await this.prehandle(message, resolved);
+		const resolved = await this.resolveParameters(args);
+		const preHandled = await this.preHandle(message, resolved);
 		const processed = [] as Array<{ log: ModerationManager.Entry; target: User }>;
 		const errored = [] as Array<{ error: Error | string; target: User }>;
 
@@ -68,7 +81,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		}
 
 		try {
-			await this.posthandle(message, { ...resolved, preHandled });
+			await this.postHandle(message, { ...resolved, preHandled });
 		} catch {
 			// noop
 		}
@@ -114,22 +127,43 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return null;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	protected prehandle(_message: GuildMessage, _context: CommandContext): Promise<T> | T {
-		return cast<T>(null);
+	protected preHandle(message: GuildMessage, context: ModerationCommand.Parameters): Awaitable<ValueType>;
+	protected preHandle() {
+		return cast<ValueType>(null);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	protected posthandle(_message: GuildMessage, _context: PostHandledCommandContext<T>): unknown {
+	protected handle(
+		message: GuildMessage,
+		context: ModerationCommand.HandlerParameters<ValueType>
+	): Promise<ModerationManager.Entry> | ModerationManager.Entry;
+
+	protected async handle(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
+		return this.action[this.isUndoAction ? 'undo' : 'apply'](
+			message.guild,
+			// @ts-expect-error not correctly inferring the type
+			this.resolveOptions(message, context),
+			await this.getHandleData(message, context)
+		);
+	}
+
+	protected getHandleData(
+		message: GuildMessage,
+		context: ModerationCommand.HandlerParameters<ValueType>
+	): Promise<ModerationAction.Data<GetContextType<Type>>> {
+		return this.getActionData(message, context.args, context.target);
+	}
+
+	protected postHandle(message: GuildMessage, context: ModerationCommand.PostHandleParameters<ValueType>): unknown;
+	protected postHandle() {
 		return null;
 	}
 
-	protected async checkModeratable(message: GuildMessage, context: HandledCommandContext<T>) {
+	protected async checkModeratable(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
 		if (context.target.id === message.author.id) {
 			throw context.args.t(LanguageKeys.Commands.Moderation.UserSelf);
 		}
 
-		if (context.target.id === process.env.CLIENT_ID) {
+		if (isUserSelf(context.target.id)) {
 			throw context.args.t(LanguageKeys.Commands.Moderation.ToSkyra);
 		}
 
@@ -155,12 +189,12 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return member;
 	}
 
-	protected async getActionData<ContextType = never>(
+	protected async getActionData(
 		message: GuildMessage,
 		args: Args,
 		target: User,
-		context?: ContextType
-	): Promise<ModerationAction.Data<ContextType>> {
+		context?: GetContextType<Type>
+	): Promise<ModerationAction.Data<GetContextType<Type>>> {
 		const [nameDisplay, enabledDM] = await readSettings(message.guild, [
 			GuildSettings.Messages.ModeratorNameDisplay,
 			GuildSettings.Messages.ModerationDM
@@ -179,19 +213,47 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		};
 	}
 
-	protected async resolveOverloads(args: ModerationCommand.Args): Promise<CommandContext> {
+	protected resolveOptions(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>): ModerationAction.PartialOptions<Type> {
 		return {
-			targets: await args.repeat('user', { times: 10 }),
-			duration: await this.resolveDurationArgument(args),
-			reason: args.finished ? null : await args.rest('string')
+			user: context.target,
+			moderator: message.author,
+			reason: context.reason,
+			imageURL: getImage(message),
+			duration: context.duration
 		};
 	}
 
-	protected abstract handle(message: GuildMessage, context: HandledCommandContext<T>): Promise<ModerationManager.Entry> | ModerationManager.Entry;
+	/**
+	 * Resolves the overloads for the moderation command.
+	 *
+	 * @param args - The arguments for the moderation command.
+	 * @returns A promise that resolves to a CommandContext object containing the resolved targets, duration, and reason.
+	 */
+	protected async resolveParameters(args: ModerationCommand.Args): Promise<ModerationCommand.Parameters> {
+		return {
+			targets: await this.resolveParametersUser(args),
+			duration: await this.resolveParametersDuration(args),
+			reason: await this.resolveParametersReason(args)
+		};
+	}
 
-	private async resolveDurationArgument(args: ModerationCommand.Args) {
+	/**
+	 * Resolves the value for {@linkcode Parameters.targets}.
+	 *
+	 * @param args - The arguments for the moderation command.
+	 */
+	protected resolveParametersUser(args: ModerationCommand.Args): Promise<User[]> {
+		return args.repeat('user', { times: 10 });
+	}
+
+	/**
+	 * Resolves the value for {@linkcode Parameters.duration}.
+	 *
+	 * @param args - The arguments for the moderation command.
+	 */
+	protected async resolveParametersDuration(args: ModerationCommand.Args) {
 		if (args.finished) return null;
-		if (!this.optionalDuration) return null;
+		if (!this.supportsSchedule) return null;
 
 		const result = await args.pickResult('timespan', { minimum: 0, maximum: years(5) });
 		return result.match({
@@ -202,34 +264,44 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 		});
 	}
+
+	/**
+	 * Resolves the value for {@linkcode Parameters.reason}.
+	 *
+	 * @param args - The arguments for the moderation command.
+	 */
+	protected async resolveParametersReason(args: ModerationCommand.Args): Promise<string | null> {
+		return args.finished ? null : args.rest('string');
+	}
 }
 
 export namespace ModerationCommand {
 	/**
 	 * The ModerationCommand Options
 	 */
-	export interface Options extends SkyraCommand.Options {
+	export interface Options<Type extends TypeVariation> extends SkyraCommand.Options {
+		type: Type;
+		isUndoAction?: boolean;
 		requiredMember?: boolean;
-		optionalDuration?: boolean;
 	}
 
 	export type Args = SkyraCommand.Args;
 	export type Context = SkyraCommand.LoaderContext;
 	export type RunContext = SkyraCommand.RunContext;
-}
 
-export interface CommandContext {
-	targets: User[];
-	duration: number | null;
-	reason: string | null;
-}
+	export interface Parameters {
+		targets: User[];
+		duration: number | null;
+		reason: string | null;
+	}
 
-export interface HandledCommandContext<T = unknown> extends Pick<CommandContext, 'duration' | 'reason'> {
-	args: ModerationCommand.Args;
-	target: User;
-	preHandled: T;
-}
+	export interface HandlerParameters<ValueType> extends Omit<Parameters, 'targets'> {
+		args: Args;
+		target: User;
+		preHandled: ValueType;
+	}
 
-export interface PostHandledCommandContext<T = unknown> extends CommandContext {
-	preHandled: T;
+	export interface PostHandleParameters<ValueType> extends Parameters {
+		preHandled: ValueType;
+	}
 }

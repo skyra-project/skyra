@@ -1,35 +1,37 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions, ModerationCommand, type HandledCommandContext } from '#lib/moderation';
+import { ModerationCommand } from '#lib/moderation';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
-import { years } from '#utils/common';
-import { getImage } from '#utils/util';
+import { TypeVariation } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
 import { PermissionFlagsBits, type Role } from 'discord.js';
 
-@ApplyOptions<ModerationCommand.Options>({
+type Type = TypeVariation.RoleRemove;
+type ValueType = null;
+
+@ApplyOptions<ModerationCommand.Options<Type>>({
 	aliases: ['rro'],
 	description: LanguageKeys.Commands.Moderation.RemoveRoleDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.RemoveRoleExtended,
-	optionalDuration: true,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
-	requiredMember: true
+	requiredMember: true,
+	type: TypeVariation.RoleRemove
 })
-export class UserModerationCommand extends ModerationCommand {
-	protected override async resolveOverloads(args: ModerationCommand.Args) {
+export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
+	protected override async resolveParameters(args: ModerationCommand.Args) {
 		return {
-			targets: await args.repeat('user', { times: 10 }),
+			targets: await this.resolveParametersUser(args),
 			role: await args.pick('roleName'),
-			duration: this.optionalDuration ? await args.pick('timespan', { minimum: 0, maximum: years(5) }).catch(() => null) : null,
-			reason: args.finished ? null : await args.rest('string')
+			duration: await this.resolveParametersDuration(args),
+			reason: await this.resolveParametersReason(args)
 		};
 	}
 
-	protected async handle(message: GuildMessage, context: HandledCommandContext & { role: Role }) {
-		return ModerationActions.roleRemove.apply(
-			message.guild,
-			{ user: context.target, moderator: message.author, reason: context.reason, imageURL: getImage(message), duration: context.duration },
-			await this.getActionData(message, context.args, context.target, context.role)
-		);
+	protected override getHandleData(message: GuildMessage, context: HandlerParameters) {
+		return this.getActionData(message, context.args, context.target, context.role);
 	}
+}
+
+interface HandlerParameters extends ModerationCommand.HandlerParameters<ValueType> {
+	role: Role;
 }

@@ -1,22 +1,16 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions, ModerationCommand } from '#lib/moderation';
-import { getImage } from '#utils/util';
+import { ModerationCommand } from '#lib/moderation';
+import { TypeVariation } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ArgumentTypes } from '@sapphire/utilities';
 
-@ApplyOptions<ModerationCommand.Options>({
+type Type = TypeVariation.Warning;
+type ValueType = null;
+
+@ApplyOptions<ModerationCommand.Options<Type>>({
 	aliases: ['w', 'warning'],
 	description: LanguageKeys.Commands.Moderation.WarnDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.WarnExtended,
-	optionalDuration: true,
-	requiredMember: true
+	requiredMember: true,
+	type: TypeVariation.Warning
 })
-export class UserModerationCommand extends ModerationCommand {
-	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return ModerationActions.warning.apply(
-			message.guild,
-			{ user: context.target, moderator: message.author, reason: context.reason, imageURL: getImage(message), duration: context.duration },
-			await this.getActionData(message, context.args, context.target)
-		);
-	}
-}
+export class UserModerationCommand extends ModerationCommand<Type, ValueType> {}

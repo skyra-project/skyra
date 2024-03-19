@@ -16,6 +16,7 @@ import { ModerationActionVoiceMute } from '#lib/moderation/actions/ModerationAct
 import { ModerationActionWarning } from '#lib/moderation/actions/ModerationActionWarning';
 import type { RoleModerationAction } from '#lib/moderation/actions/base/RoleModerationAction';
 import { TypeVariation } from '#utils/moderationConstants';
+import type { ModerationAction } from './base/ModerationAction.js';
 
 export const ModerationActions = {
 	ban: new ModerationActionBan(),
@@ -36,9 +37,13 @@ export const ModerationActions = {
 	warning: new ModerationActionWarning()
 } as const;
 
-export function getAction<const Type extends TypeVariation>(type: Type): (typeof ModerationActions)[(typeof ActionMappings)[Type]] {
+export function getAction<const Type extends TypeVariation>(type: Type): ActionByType<Type> {
 	return ModerationActions[ActionMappings[type]];
 }
+
+export type ActionByType<Type extends TypeVariation> = (typeof ModerationActions)[(typeof ActionMappings)[Type]];
+export type GetContextType<Type extends TypeVariation> =
+	ActionByType<Type> extends ModerationAction<infer ContextType, infer _Type> ? ContextType : never;
 
 const ActionMappings = {
 	[TypeVariation.RoleAdd]: 'roleAdd',
@@ -61,5 +66,7 @@ const ActionMappings = {
 
 export type ModerationActionKey = keyof typeof ModerationActions;
 export type RoleModerationActionKey = {
-	[K in ModerationActionKey]: (typeof ModerationActions)[K] extends RoleModerationAction<infer _, infer _> ? K : never;
+	[K in ModerationActionKey]: (typeof ModerationActions)[K] extends RoleModerationAction<infer _ContextType, infer _Type> ? K : never;
 }[ModerationActionKey];
+
+export type RoleTypeVariation = (typeof ModerationActions)[RoleModerationActionKey]['type'];

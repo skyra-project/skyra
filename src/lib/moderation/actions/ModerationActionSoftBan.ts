@@ -8,7 +8,7 @@ import type { Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.Moderation;
 
-export class ModerationActionSoftban extends ModerationAction<number> {
+export class ModerationActionSoftban extends ModerationAction<number, TypeVariation.Softban> {
 	public constructor() {
 		super({
 			type: TypeVariation.Softban,

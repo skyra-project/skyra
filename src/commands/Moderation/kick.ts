@@ -1,40 +1,35 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions, ModerationCommand } from '#lib/moderation';
+import { ModerationCommand } from '#lib/moderation';
+import type { GuildMessage } from '#lib/types';
 import { getModeration } from '#utils/functions';
-import type { Unlock } from '#utils/moderationConstants';
-import { getImage } from '#utils/util';
+import { TypeVariation, type Unlock } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ArgumentTypes } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord.js';
 
-@ApplyOptions<ModerationCommand.Options>({
+type Type = TypeVariation.Kick;
+type ValueType = Unlock | null;
+
+@ApplyOptions<ModerationCommand.Options<Type>>({
 	aliases: ['k'],
 	description: LanguageKeys.Commands.Moderation.KickDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.KickExtended,
 	requiredClientPermissions: [PermissionFlagsBits.KickMembers],
-	requiredMember: true
+	requiredMember: true,
+	type: TypeVariation.Kick
 })
-export class UserModerationCommand extends ModerationCommand {
-	public override async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
+export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
+	protected override async preHandle(message: GuildMessage) {
 		return (await readSettings(message.guild, GuildSettings.Channels.Logs.MemberRemove))
 			? { unlock: getModeration(message.guild).createLock() }
 			: null;
 	}
 
-	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return ModerationActions.kick.apply(
-			message.guild,
-			{ user: context.target, moderator: message.author, reason: context.reason, imageURL: getImage(message) },
-			await this.getActionData(message, context.args, context.target)
-		);
+	protected override postHandle(_message: GuildMessage, { preHandled }: ModerationCommand.PostHandleParameters<ValueType>) {
+		preHandled?.unlock();
 	}
 
-	public override posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Unlock>['posthandle']>) {
-		if (preHandled) preHandled.unlock();
-	}
-
-	public override async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+	protected override async checkModeratable(message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {
 		const member = await super.checkModeratable(message, context);
 		if (member && !member.kickable) throw context.args.t(LanguageKeys.Commands.Moderation.KickNotKickable);
 		return member;

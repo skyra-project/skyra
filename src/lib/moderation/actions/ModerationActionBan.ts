@@ -14,14 +14,7 @@ export class ModerationActionBan extends ModerationAction<number, TypeVariation.
 		});
 	}
 
-	/**
-	 * Checks if this action is active for a given user in a guild.
-	 *
-	 * @param guild - The guild to check.
-	 * @param userId - The ID of the user.
-	 * @returns A boolean indicating whether the action is active.
-	 */
-	public async isActive(guild: Guild, userId: Snowflake) {
+	public override async isActive(guild: Guild, userId: Snowflake) {
 		const ban = await resolveOnErrorCodes(guild.bans.fetch({ user: userId, cache: false }), RESTJSONErrorCodes.UnknownBan);
 		return !isNullish(ban);
 	}

@@ -1,6 +1,6 @@
 import { readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions, type RoleModerationActionKey } from '#lib/moderation/actions/index';
+import type { RoleTypeVariation } from '#lib/moderation';
 import { ModerationCommand } from '#lib/moderation/structures/ModerationCommand';
 import type { GuildMessage } from '#lib/types';
 import { isAdmin, promptConfirmation, promptForMessage } from '#utils/functions';
@@ -8,12 +8,9 @@ import type { Argument } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits, type Role } from 'discord.js';
 
-export abstract class SetUpModerationCommand extends ModerationCommand {
-	public readonly action: (typeof ModerationActions)[RoleModerationActionKey];
-
-	public constructor(context: ModerationCommand.Context, options: SetUpModerationCommand.Options) {
-		super(context, { requiredClientPermissions: [PermissionFlagsBits.ManageRoles], ...options });
-		this.action = ModerationActions[options.actionKey];
+export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, ValueType> extends ModerationCommand<Type, ValueType> {
+	public constructor(context: ModerationCommand.Context, options: SetUpModerationCommand.Options<Type>) {
+		super(context, { requiredClientPermissions: [PermissionFlagsBits.ManageRoles], requiredMember: true, ...options });
 	}
 
 	private get role() {
@@ -29,7 +26,7 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 		return super.messageRun(message, args, context);
 	}
 
-	public async inhibit(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.RunContext) {
+	protected async inhibit(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.RunContext) {
 		// If the command messageRun is not this one (potentially help command) or the guild is null, return with no error.
 		const [roleId, t] = await readSettings(message.guild, (settings) => [settings[this.action.roleKey], settings.getLanguage()]);
 
@@ -67,14 +64,13 @@ export abstract class SetUpModerationCommand extends ModerationCommand {
 }
 
 export namespace SetUpModerationCommand {
-	/**
-	 * The ModerationCommand Options
-	 */
-	export interface Options extends ModerationCommand.Options {
-		actionKey: RoleModerationActionKey;
-	}
+	export type Options<Type extends RoleTypeVariation> = ModerationCommand.Options<Type>;
 
 	export type Args = ModerationCommand.Args;
 	export type Context = ModerationCommand.Context;
 	export type RunContext = ModerationCommand.RunContext;
+
+	export type Parameters = ModerationCommand.Parameters;
+	export type HandlerParameters<ValueType = null> = ModerationCommand.HandlerParameters<ValueType>;
+	export type PostHandleParameters<ValueType = null> = ModerationCommand.PostHandleParameters<ValueType>;
 }

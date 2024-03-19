@@ -1,23 +1,15 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions, SetUpModerationCommand } from '#lib/moderation';
-import { getImage } from '#utils/util';
+import { SetUpModerationCommand } from '#lib/moderation';
+import { TypeVariation } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ArgumentTypes } from '@sapphire/utilities';
 
-@ApplyOptions<SetUpModerationCommand.Options>({
+type Type = TypeVariation.RestrictedVoice;
+type ValueType = null;
+
+@ApplyOptions<SetUpModerationCommand.Options<Type>>({
 	aliases: ['restricted-voice', 'rv'],
 	description: LanguageKeys.Commands.Moderation.RestrictVoiceDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.RestrictVoiceExtended,
-	optionalDuration: true,
-	requiredMember: true,
-	actionKey: 'restrictedVoice'
+	type: TypeVariation.RestrictedVoice
 })
-export class UserSetUpModerationCommand extends SetUpModerationCommand {
-	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
-		return ModerationActions.restrictedVoice.apply(
-			message.guild,
-			{ user: context.target, moderator: message.author, reason: context.reason, imageURL: getImage(message), duration: context.duration },
-			await this.getActionData(message, context.args, context.target)
-		);
-	}
-}
+export class UserSetUpModerationCommand extends SetUpModerationCommand<Type, ValueType> {}

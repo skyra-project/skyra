@@ -42,6 +42,18 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	}
 
 	/**
+	 * Checks if this action is active for a given user in a guild.
+	 *
+	 * @param guild - The guild to check.
+	 * @param userId - The ID of the user.
+	 * @returns A boolean indicating whether the action is active.
+	 */
+	public isActive(guild: Guild, userId: Snowflake): Awaitable<boolean>;
+	public isActive() {
+		return false;
+	}
+
+	/**
 	 * Applies a moderation action to a user in the specified guild.
 	 *
 	 * @param guild - The guild to apply the moderation action at.
@@ -197,9 +209,9 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 * @param options - The options to fetch the moderation entry.
 	 * @returns The canceled moderation entry, or `null` if no entry was found.
 	 */
-	protected async cancelLastModerationEntryTaskFromUser(
-		options: ModerationAction.ModerationEntryFetchOptions<Type>
-	): Promise<ModerationManager.Entry<Type> | null> {
+	protected async cancelLastModerationEntryTaskFromUser<SearchType extends TypeVariation = Type>(
+		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
+	): Promise<ModerationManager.Entry<SearchType> | null> {
 		const entry = await this.retrieveLastModerationEntryFromUser(options);
 		if (isNullish(entry)) return null;
 
@@ -214,9 +226,9 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 * @param options - The options for fetching the moderation entry.
 	 * @returns The last moderation entry from the user, or `null` if no entry is found.
 	 */
-	protected async retrieveLastModerationEntryFromUser(
-		options: ModerationAction.ModerationEntryFetchOptions<Type>
-	): Promise<ModerationManager.Entry<Type> | null> {
+	protected async retrieveLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
+		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
+	): Promise<ModerationManager.Entry<SearchType> | null> {
 		// Retrieve all the entries
 		const entries = await getModeration(options.guild).fetch({ userId: options.userId });
 
@@ -232,9 +244,9 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 			// If the entry is not of the same metadata, skip it:
 			if (metadata !== null && entry.metadata !== metadata) continue;
 			// If the extra check fails, skip it:
-			if (!extra(entry as ModerationManager.Entry<Type>)) continue;
+			if (!extra(entry as ModerationManager.Entry<SearchType>)) continue;
 
-			return entry as ModerationManager.Entry<Type>;
+			return entry as ModerationManager.Entry<SearchType>;
 		}
 
 		return null;

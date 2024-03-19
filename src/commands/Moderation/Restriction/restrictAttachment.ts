@@ -1,23 +1,15 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions, SetUpModerationCommand } from '#lib/moderation';
-import { getImage } from '#utils/util';
+import { SetUpModerationCommand } from '#lib/moderation';
+import { TypeVariation } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ArgumentTypes } from '@sapphire/utilities';
 
-@ApplyOptions<SetUpModerationCommand.Options>({
+type Type = TypeVariation.RestrictedAttachment;
+type ValueType = null;
+
+@ApplyOptions<SetUpModerationCommand.Options<Type>>({
 	aliases: ['restricted-attachment', 'ra'],
 	description: LanguageKeys.Commands.Moderation.RestrictAttachmentDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.RestrictAttachmentExtended,
-	optionalDuration: true,
-	requiredMember: true,
-	actionKey: 'restrictedAttachment'
+	type: TypeVariation.RestrictedAttachment
 })
-export class UserSetUpModerationCommand extends SetUpModerationCommand {
-	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
-		return ModerationActions.restrictedAttachment.apply(
-			message.guild,
-			{ user: context.target, moderator: message.author, reason: context.reason, imageURL: getImage(message), duration: context.duration },
-			await this.getActionData(message, context.args, context.target)
-		);
-	}
-}
+export class UserSetUpModerationCommand extends SetUpModerationCommand<Type, ValueType> {}

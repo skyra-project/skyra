@@ -1,25 +1,17 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationActions, SetUpModerationCommand } from '#lib/moderation';
-import { getImage } from '#utils/util';
+import { SetUpModerationCommand } from '#lib/moderation';
+import { TypeVariation } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ArgumentTypes } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord.js';
 
-@ApplyOptions<SetUpModerationCommand.Options>({
+type Type = TypeVariation.Mute;
+type ValueType = null;
+
+@ApplyOptions<SetUpModerationCommand.Options<Type>>({
 	aliases: ['m'],
 	description: LanguageKeys.Commands.Moderation.MuteDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.MuteExtended,
-	optionalDuration: true,
 	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
-	requiredMember: true,
-	actionKey: 'mute'
+	type: TypeVariation.Mute
 })
-export class UserSetUpModerationCommand extends SetUpModerationCommand {
-	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
-		return ModerationActions.mute.apply(
-			message.guild,
-			{ user: context.target, moderator: message.author, reason: context.reason, imageURL: getImage(message), duration: context.duration },
-			await this.getActionData(message, context.args, context.target)
-		);
-	}
-}
+export class UserSetUpModerationCommand extends SetUpModerationCommand<Type, ValueType> {}

@@ -4,7 +4,7 @@ import { resolveOnErrorCodes } from '#utils/common';
 import { TypeVariation } from '#utils/moderationConstants';
 import { RESTJSONErrorCodes, type Guild, type Snowflake } from 'discord.js';
 
-export class ModerationActionVoiceMute extends ModerationAction {
+export class ModerationActionVoiceMute extends ModerationAction<never, TypeVariation.VoiceMute> {
 	public constructor() {
 		super({
 			type: TypeVariation.VoiceMute,
@@ -13,14 +13,7 @@ export class ModerationActionVoiceMute extends ModerationAction {
 		});
 	}
 
-	/**
-	 * Checks if this action is active for a given user in a guild.
-	 *
-	 * @param guild - The guild to check.
-	 * @param userId - The ID of the user.
-	 * @returns A boolean indicating whether the action is active.
-	 */
-	public async isActive(guild: Guild, userId: Snowflake) {
+	public override async isActive(guild: Guild, userId: Snowflake) {
 		const member = await resolveOnErrorCodes(guild.members.fetch(userId), RESTJSONErrorCodes.UnknownMember);
 		return member?.voice.serverMute ?? false;
 	}

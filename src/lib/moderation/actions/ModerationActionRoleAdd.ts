@@ -14,12 +14,14 @@ export class ModerationActionRoleAdd extends ModerationAction<Role, TypeVariatio
 
 	protected override async handleApplyPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<Role>) {
 		const role = data.context!;
-		await api().guilds.addRoleToMember(guild.id, entry.userId, role.id, { reason: await this.getReason(guild, entry.reason) });
+		await api().guilds.addRoleToMember(guild.id, entry.userId, role.id, {
+			reason: await this.getReason(guild, entry.reason)
+		});
 
 		await this.cancelLastModerationEntryTaskFromUser({
 			guild,
 			userId: entry.userId,
-			filter: (entry) => (entry.extraData as { role?: string })?.role === role.id
+			filter: (entry) => entry.extraData?.role === role.id
 		});
 	}
 

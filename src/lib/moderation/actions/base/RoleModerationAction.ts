@@ -3,6 +3,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
 import type { GuildMessage } from '#lib/types';
 import { PermissionsBits } from '#utils/bits';
+import { resolveOnErrorCodes } from '#utils/common';
 import { getCodeStyle, getStickyRoles, promptConfirmation } from '#utils/functions';
 import type { TypeVariation } from '#utils/moderationConstants';
 import { GuildLimits, isCategoryChannel, isTextBasedChannel, isThreadChannel, isVoiceBasedChannel } from '@sapphire/discord.js-utilities';
@@ -75,17 +76,12 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 		this.roleOverridesMerged = this.#resolveOverrides(this.roleOverridesText.bitfield | this.roleOverridesVoice.bitfield);
 	}
 
-	/**
-	 * Checks if this action is active for a given user in a guild.
-	 *
-	 * @param guild - The guild to check.
-	 * @param userId - The ID of the user.
-	 * @returns A boolean indicating whether the action is active.
-	 */
-	public async isActive(guild: Guild, userId: Snowflake) {
+	public override async isActive(guild: Guild, userId: Snowflake) {
 		const roleId = await readSettings(guild, this.roleKey);
 		if (isNullish(roleId)) return false;
-		return getStickyRoles(guild).has(userId, roleId);
+
+		const member = await resolveOnErrorCodes(guild.members.fetch(userId), RESTJSONErrorCodes.UnknownMember);
+		return !isNullish(member) && member.roles.cache.has(roleId);
 	}
 
 	/**

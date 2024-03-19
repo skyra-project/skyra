@@ -3,7 +3,7 @@ import { ModerationAction } from '#lib/moderation/actions/base/ModerationAction'
 import { TypeVariation } from '#utils/moderationConstants';
 import type { Guild } from 'discord.js';
 
-export class ModerationActionVoiceKick extends ModerationAction {
+export class ModerationActionVoiceKick extends ModerationAction<never, TypeVariation.VoiceKick> {
 	public constructor() {
 		super({
 			type: TypeVariation.VoiceKick,

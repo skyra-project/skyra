@@ -16,6 +16,7 @@
 		"#lib/database/settings": "./dist/lib/database/settings/index.js",
 		"#lib/database": "./dist/lib/database/index.js",
 		"#lib/discord": "./dist/lib/discord/index.js",
+		"#lib/moderation/actions": "./dist/lib/moderation/actions/index.js",
 		"#lib/moderation/common": "./dist/lib/moderation/common/index.js",
 		"#lib/moderation/managers": "./dist/lib/moderation/managers/index.js",
 		"#lib/moderation/workers": "./dist/lib/moderation/workers/index.js",

@@ -21,6 +21,5 @@
 		"{{LOADING}} Opzoeken van de correcte frequentie...",
 		"{{LOADING}} Wacht op antwoord..."
 	],
-	"prefixReminder": "De prefix in deze server is ingesteld op: `{{prefix}}`",
-	"reminderHeader": "⏲️ Hallo daar! Je vroeg om herinnerd te worden bij {{timestamp}} over:"
+	"prefixReminder": "De prefix in deze server is ingesteld op: `{{prefix}}`"
 }

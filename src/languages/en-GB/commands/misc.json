@@ -1,45 +1,6 @@
 {
 	"snipeEmpty": "",
 	"snipeTitle": "",
-	"remindmeDescription": "",
-	"remindmeExtended": {
-		"usages": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			""
-		]
-	},
-	"remindmeDelete": "",
-	"remindmeListEmpty": "",
-	"remindmeShowFooter": "",
-	"remindmeInvalidId": "",
-	"remindmeNotfound": "",
-	"remindmeDeprecated": "",
 	"snipeDescription": "",
 	"snipeExtended": {
 		"extendedHelp": ""

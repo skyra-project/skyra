@@ -39,9 +39,7 @@ export class UserListener extends Listener {
 				previousName === null
 					? LanguageKeys.Events.Guilds.Members.NameUpdatePreviousWasNotSet
 					: LanguageKeys.Events.Guilds.Members.NameUpdatePreviousWasSet,
-				{
-					previousName
-				}
+				{ previousName }
 			),
 			t(
 				nextName === null

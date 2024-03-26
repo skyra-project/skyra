@@ -220,7 +220,7 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 	 * Checks if the entry is completed.
 	 */
 	public isCompleted() {
-		return this.expired || (this.metadata & TypeMetadata.Completed) === TypeMetadata.Completed;
+		return (this.metadata & TypeMetadata.Completed) === TypeMetadata.Completed;
 	}
 
 	/**

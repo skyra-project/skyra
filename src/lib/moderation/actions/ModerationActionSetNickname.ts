@@ -30,14 +30,14 @@ export class ModerationActionSetNickname extends ModerationAction<string | null,
 			: resolveKey(guild, nickname ? Root.ActionSetNicknameNoReasonSet : Root.ActionSetNicknameNoReasonRemoved));
 		await api().guilds.editMember(guild.id, entry.userId, { nick: nickname }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
+		await this.completeLastModerationEntryFromUser({ guild, userId: entry.userId });
 	}
 
 	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<string>) {
 		const nickname = data.context || null;
 		await api().guilds.editMember(guild.id, entry.userId, { nick: nickname }, { reason: entry.reason || undefined });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
+		await this.completeLastModerationEntryFromUser({ guild, userId: entry.userId });
 	}
 
 	protected override async resolveOptionsExtraData(guild: Guild, options: ModerationAction.PartialOptions) {

@@ -258,7 +258,7 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 	 */
 	async #handleUndoPreRolesReplace(member: GuildMember, role: Role, reason: string, position: number) {
 		const { guild } = member;
-		const entry = await this.cancelLastModerationEntryTaskFromUser({ guild, userId: member.id });
+		const entry = await this.completeLastModerationEntryFromUser({ guild, userId: member.id });
 		if (isNullish(entry)) {
 			await member.roles.remove(role, reason);
 			return;

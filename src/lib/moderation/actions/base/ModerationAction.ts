@@ -8,7 +8,7 @@ import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { isNullish, isNullishOrEmpty, type Awaitable, isNullishOrZero } from '@sapphire/utilities';
+import { isNullish, isNullishOrEmpty, isNullishOrZero, type Awaitable } from '@sapphire/utilities';
 import { DiscordAPIError, HTTPError, RESTJSONErrorCodes, type Guild, type Snowflake, type User } from 'discord.js';
 
 const Root = LanguageKeys.Commands.Moderation;
@@ -210,7 +210,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 * @param options - The options to fetch the moderation entry.
 	 * @returns The canceled moderation entry, or `null` if no entry was found.
 	 */
-	protected async cancelLastModerationEntryTaskFromUser<SearchType extends TypeVariation = Type>(
+	protected async completeLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
 		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
 	): Promise<ModerationManager.Entry<SearchType> | null> {
 		const entry = await this.retrieveLastModerationEntryFromUser(options);

@@ -22,13 +22,13 @@ export class ModerationActionVoiceMute extends ModerationAction<never, TypeVaria
 		const reason = await this.getReason(guild, entry.reason);
 		await api().guilds.editMember(guild.id, entry.userId, { mute: true }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
+		await this.completeLastModerationEntryFromUser({ guild, userId: entry.userId });
 	}
 
 	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry) {
 		const reason = await this.getReason(guild, entry.reason, true);
 		await api().guilds.editMember(guild.id, entry.userId, { mute: false }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
+		await this.completeLastModerationEntryFromUser({ guild, userId: entry.userId });
 	}
 }

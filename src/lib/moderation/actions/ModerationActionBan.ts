@@ -23,13 +23,13 @@ export class ModerationActionBan extends ModerationAction<number, TypeVariation.
 		const reason = await this.getReason(guild, entry.reason);
 		await api().guilds.banUser(guild.id, entry.userId, { delete_message_seconds: data.context ?? 0 }, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
+		await this.completeLastModerationEntryFromUser({ guild, userId: entry.userId });
 	}
 
 	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry) {
 		const reason = await this.getReason(guild, entry.reason, true);
 		await api().guilds.unbanUser(guild.id, entry.userId, { reason });
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId });
+		await this.completeLastModerationEntryFromUser({ guild, userId: entry.userId });
 	}
 }

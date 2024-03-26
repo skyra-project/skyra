@@ -23,7 +23,7 @@ export class ModerationActionSoftban extends ModerationAction<number, TypeVariat
 		await api().guilds.banUser(guild.id, entry.userId, { delete_message_seconds: data.context ?? 0 }, this.#getBanReason(t, entry.reason));
 		await api().guilds.unbanUser(guild.id, entry.userId, this.#getUnbanReason(t, entry.reason));
 
-		await this.cancelLastModerationEntryTaskFromUser({ guild, userId: entry.userId, type: TypeVariation.Ban });
+		await this.completeLastModerationEntryFromUser({ guild, userId: entry.userId, type: TypeVariation.Ban });
 	}
 
 	#getBanReason(t: TFunction, reason: string | null | undefined) {

@@ -25,7 +25,7 @@ export class ModerationActionRoleRemove extends ModerationAction<Role, TypeVaria
 			reason: await this.getReason(guild, entry.reason)
 		});
 
-		await this.cancelLastModerationEntryTaskFromUser({
+		await this.completeLastModerationEntryFromUser({
 			guild,
 			userId: entry.userId,
 			filter: (log) => log.extraData?.role === role.id
@@ -36,7 +36,7 @@ export class ModerationActionRoleRemove extends ModerationAction<Role, TypeVaria
 		const role = data.context!;
 		await api().guilds.addRoleToMember(guild.id, entry.userId, role.id, { reason: entry.reason ?? undefined });
 
-		await this.cancelLastModerationEntryTaskFromUser({
+		await this.completeLastModerationEntryFromUser({
 			guild,
 			userId: entry.userId,
 			filter: (log) => log.extraData?.role === role.id

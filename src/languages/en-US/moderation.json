@@ -33,6 +33,7 @@
 	"actionIsActiveNickname": "This user already has the selected nickname.",
 	"actionIsNotActiveNickname": "This user does not have the selected nickname.",
 	"actionTargetSelf": "You cannot perform this action on yourself. Why would you do that anyways?",
+	"actionTargetGuildOwner": "You cannot perform this action on the server owner.",
 	"actionTargetSkyra": "I... I cannot do that to myself! You broke my heart. 💔",
 	"actionTargetHigherHierarchySkyra": "This action cannot be performed on a member with a role position that is higher than or equal to mine.",
 	"actionTargetHigherHierarchyAuthor": "This action cannot be performed on a member with a role position that is higher than or equal to yours.",

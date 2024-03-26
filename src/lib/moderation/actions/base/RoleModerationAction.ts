@@ -264,11 +264,17 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 			return;
 		}
 
-		const roles = new Set<Snowflake>(Array.isArray(entry.extraData) ? entry.extraData : []);
-		for (const roleId of roles) {
+		const roles = new Set(member.roles.cache.keys());
+		for (const roleId of Array.isArray(entry.extraData) ? entry.extraData : []) {
 			const role = member.guild.roles.cache.get(roleId);
-			if (isNullish(role) || role.managed || role.position >= position) roles.delete(roleId);
+			// Add the ids that are:
+			// - In the cache.
+			// - Lower than Skyra's hierarchy position.
+			if (!isNullish(role) && !role.managed && role.position < position) roles.add(roleId);
 		}
+
+		// Remove the action role from the set:
+		roles.delete(role.id);
 
 		await member.edit({ roles: [...roles], reason });
 	}

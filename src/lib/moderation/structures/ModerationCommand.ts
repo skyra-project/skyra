@@ -241,6 +241,10 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 			throw context.args.t(Root.ActionTargetSelf);
 		}
 
+		if (context.target.id === message.guild.ownerId) {
+			throw context.args.t(Root.ActionTargetGuildOwner);
+		}
+
 		if (isUserSelf(context.target.id)) {
 			throw context.args.t(Root.ActionTargetSkyra);
 		}
@@ -254,7 +258,8 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 			const targetHighestRolePosition = member.roles.highest.position;
 
 			// Skyra cannot moderate members with higher role position than her:
-			if (targetHighestRolePosition >= message.guild.members.me!.roles.highest.position) {
+			const me = await message.guild.members.fetchMe();
+			if (targetHighestRolePosition >= me.roles.highest.position) {
 				throw context.args.t(Root.ActionTargetHigherHierarchySkyra);
 			}
 

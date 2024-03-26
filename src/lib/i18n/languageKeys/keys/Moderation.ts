@@ -39,6 +39,7 @@ export const ActionIsActiveNickname = T('moderation:actionIsActiveNickname');
 export const ActionIsNotActiveNickname = T('moderation:actionIsNotActiveNickname');
 
 export const ActionTargetSelf = T('moderation:actionTargetSelf');
+export const ActionTargetGuildOwner = T('moderation:actionTargetGuildOwner');
 export const ActionTargetSkyra = T('moderation:actionTargetSkyra');
 export const ActionTargetHigherHierarchySkyra = T('moderation:actionTargetHigherHierarchySkyra');
 export const ActionTargetHigherHierarchyAuthor = T('moderation:actionTargetHigherHierarchyAuthor');

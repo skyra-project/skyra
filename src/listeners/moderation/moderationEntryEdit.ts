@@ -1,34 +1,54 @@
-import { GuildSettings, ModerationEntity, writeSettings } from '#lib/database';
+import { GuildSettings, ScheduleEntity, writeSettings } from '#lib/database';
+import type { ModerationManager } from '#lib/moderation';
+import { getEmbed, getUndoTaskName } from '#lib/moderation/common';
+import type { GuildMessage } from '#lib/types';
 import { resolveOnErrorCodes } from '#utils/common';
+import { getModeration } from '#utils/functions';
 import { SchemaKeys } from '#utils/moderationConstants';
+import { isUserSelf } from '#utils/util';
 import { canSendEmbeds, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
-import { RESTJSONErrorCodes, type Embed, type Message } from 'discord.js';
+import { fetchT } from '@sapphire/plugin-i18next';
+import { isNullish, isNumber } from '@sapphire/utilities';
+import { DiscordAPIError, RESTJSONErrorCodes, type Collection, type Embed, type Message, type Snowflake } from 'discord.js';
 
 export class UserListener extends Listener {
-	public run(old: ModerationEntity, entry: ModerationEntity) {
-		return Promise.all([this.cancelTask(old, entry), this.sendMessage(old, entry), this.scheduleDuration(old, entry)]);
+	public run(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
+		return Promise.all([this.scheduleDuration(old, entry), this.sendMessage(old, entry)]);
 	}
 
-	private async cancelTask(old: ModerationEntity, entry: ModerationEntity) {
-		// If the task was invalidated or had its duration set to null, delete any pending task
-		if ((!old.invalidated && entry.invalidated) || (old.duration !== null && entry.duration === null)) await entry.task?.delete();
+	private async scheduleDuration(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
+		// If the entry has been archived in this update, delete the task:
+		if (entry.isArchived() || entry.isCompleted()) {
+			await this.#tryDeleteTask(entry.task);
+			return;
+		}
+
+		if (old.duration === entry.duration) return;
+
+		const { task } = entry;
+		if (isNullish(task)) {
+			if (entry.duration !== null) await this.#createNewTask(entry);
+		} else if (entry.duration === null) {
+			// If the new duration is null, delete the previous task:
+			await this.#tryDeleteTask(task);
+		} else {
+			// If the new duration is not null, reschedule the previous task:
+			await task.reschedule(entry.expiresTimestamp!);
+		}
 	}
 
-	private async sendMessage(old: ModerationEntity, entry: ModerationEntity) {
+	private async sendMessage(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
 		// Handle invalidation
-		if (!old.invalidated && entry.invalidated) return;
+		if (this.#isArchiveUpdate(old, entry)) return;
 
-		// If both logs are equals, skip
-		if (entry.equals(old)) return;
-
-		const channel = await entry.fetchChannel();
+		const moderation = getModeration(entry.guild);
+		const channel = await moderation.fetchChannel();
 		if (channel === null || !canSendEmbeds(channel)) return;
 
-		const messageEmbed = await entry.prepareEmbed();
-		const previous = this.fetchModerationLogMessage(entry, channel);
-
-		const options = { embeds: [messageEmbed] };
+		const t = await fetchT(entry.guild);
+		const previous = await this.fetchModerationLogMessage(entry, channel);
+		const options = { embeds: [await getEmbed(t, entry)] };
 		try {
 			await resolveOnErrorCodes(
 				previous === null ? channel.send(options) : previous.edit(options),
@@ -40,87 +60,89 @@ export class UserListener extends Listener {
 		}
 	}
 
-	private fetchModerationLogMessage(entry: ModerationEntity, channel: GuildTextBasedChannelTypes) {
-		if (entry.caseId === -1) throw new TypeError('UNREACHABLE.');
-
-		for (const message of channel.messages.cache.values()) {
-			if (this.validateModerationLogMessage(message, entry.caseId)) return message;
+	private async fetchModerationLogMessage(entry: ModerationManager.Entry, channel: GuildTextBasedChannelTypes) {
+		const messages = await this.fetchChannelMessages(channel);
+		for (const message of messages.values()) {
+			if (this.#validateModerationLogMessage(message, entry.id)) return message;
 		}
 
 		return null;
 	}
 
-	private validateModerationLogMessage(message: Message, caseId: number) {
-		return (
-			message.author.id === process.env.CLIENT_ID &&
-			message.attachments.size === 0 &&
-			message.embeds.length === 1 &&
-			this.validateModerationLogMessageEmbed(message.embeds[0]) &&
-			message.embeds[0].footer!.text === `Case ${caseId}`
-		);
-	}
-
-	private validateModerationLogMessageEmbed(embed: Embed) {
-		return (
-			this.validateModerationLogMessageEmbedAuthor(embed.author) &&
-			this.validateModerationLogMessageEmbedDescription(embed.description) &&
-			this.validateModerationLogMessageEmbedColor(embed.color) &&
-			this.validateModerationLogMessageEmbedFooter(embed.footer) &&
-			this.validateModerationLogMessageEmbedTimestamp(embed.timestamp)
-		);
-	}
-
-	private validateModerationLogMessageEmbedAuthor(author: Embed['author']) {
-		return author !== null && typeof author.name === 'string' && /\(\d{17,19}\)^/.test(author.name) && typeof author.iconURL === 'string';
-	}
-
-	private validateModerationLogMessageEmbedDescription(description: Embed['description']) {
-		return typeof description === 'string' && description.split('\n').length >= 3;
-	}
-
-	private validateModerationLogMessageEmbedColor(color: Embed['color']) {
-		return typeof color === 'number';
-	}
-
-	private validateModerationLogMessageEmbedFooter(footer: Embed['footer']) {
-		return footer !== null && typeof footer.text === 'string' && typeof footer.iconURL === 'string';
-	}
-
-	private validateModerationLogMessageEmbedTimestamp(timestamp: Embed['timestamp']) {
-		return typeof timestamp === 'number';
-	}
-
-	private async scheduleDuration(old: ModerationEntity, entry: ModerationEntity) {
-		if (old.duration === entry.duration) return;
-
-		const previous = this.retrievePreviousSchedule(entry);
-		if (previous !== null) await previous.delete();
-
-		const taskName = entry.duration === null ? null : entry.appealTaskName;
-		if (taskName !== null) {
-			await this.container.schedule
-				.add(taskName, entry.duration! + Date.now(), {
-					catchUp: true,
-					data: {
-						[SchemaKeys.Case]: entry.caseId,
-						[SchemaKeys.User]: entry.userId,
-						[SchemaKeys.Guild]: entry.guildId,
-						[SchemaKeys.Duration]: entry.duration
-					}
-				})
-				.catch((error) => this.container.logger.fatal(error));
+	/**
+	 * Fetch 100 messages from the modlogs channel
+	 */
+	private async fetchChannelMessages(channel: GuildTextBasedChannelTypes, remainingRetries = 5): Promise<Collection<Snowflake, GuildMessage>> {
+		try {
+			return (await channel.messages.fetch({ limit: 100 })) as Collection<Snowflake, GuildMessage>;
+		} catch (error) {
+			if (error instanceof DiscordAPIError) throw error;
+			return this.fetchChannelMessages(channel, --remainingRetries);
 		}
 	}
 
-	private retrievePreviousSchedule(entry: ModerationEntity) {
+	async #tryDeleteTask(task: ScheduleEntity | null) {
+		if (!isNullish(task) && !task.running) await task.delete();
+	}
+
+	#validateModerationLogMessage(message: Message, caseId: number) {
 		return (
-			this.container.schedule.queue.find(
-				(task) =>
-					typeof task.data === 'object' &&
-					task.data !== null &&
-					task.data[SchemaKeys.Case] === entry.caseId &&
-					task.data[SchemaKeys.Guild] === entry.guild.id
-			) || null
+			isUserSelf(message.author.id) &&
+			message.attachments.size === 0 &&
+			message.embeds.length === 1 &&
+			this.#validateModerationLogMessageEmbed(message.embeds[0]) &&
+			message.embeds[0].footer!.text.includes(caseId.toString())
 		);
+	}
+
+	#validateModerationLogMessageEmbed(embed: Embed) {
+		return (
+			this.#validateModerationLogMessageEmbedAuthor(embed.author) &&
+			this.#validateModerationLogMessageEmbedDescription(embed.description) &&
+			this.#validateModerationLogMessageEmbedColor(embed.color) &&
+			this.#validateModerationLogMessageEmbedFooter(embed.footer) &&
+			this.#validateModerationLogMessageEmbedTimestamp(embed.timestamp)
+		);
+	}
+
+	#validateModerationLogMessageEmbedAuthor(author: Embed['author']) {
+		return author !== null && typeof author.name === 'string' && /\(\d{17,19}\)^/.test(author.name) && typeof author.iconURL === 'string';
+	}
+
+	#validateModerationLogMessageEmbedDescription(description: Embed['description']) {
+		return typeof description === 'string' && description.split('\n').length >= 3;
+	}
+
+	#validateModerationLogMessageEmbedColor(color: Embed['color']) {
+		return isNumber(color);
+	}
+
+	#validateModerationLogMessageEmbedFooter(footer: Embed['footer']) {
+		return footer !== null && typeof footer.text === 'string' && typeof footer.iconURL === 'string';
+	}
+
+	#validateModerationLogMessageEmbedTimestamp(timestamp: Embed['timestamp']) {
+		return isNumber(timestamp);
+	}
+
+	#isArchiveUpdate(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
+		return !old.isArchived() && entry.isArchived();
+	}
+
+	async #createNewTask(entry: ModerationManager.Entry) {
+		const taskName = getUndoTaskName(entry.type);
+		if (isNullish(taskName)) return;
+
+		await this.container.schedule.add(taskName, entry.expiresTimestamp!, {
+			catchUp: true,
+			data: {
+				[SchemaKeys.Case]: entry.id,
+				[SchemaKeys.User]: entry.userId,
+				[SchemaKeys.Guild]: entry.guild.id,
+				[SchemaKeys.Type]: entry.type,
+				[SchemaKeys.Duration]: entry.duration,
+				[SchemaKeys.ExtraData]: entry.extraData
+			}
+		});
 	}
 }

@@ -35,6 +35,21 @@ export class ScheduleManager {
 		return entry;
 	}
 
+	public async reschedule(entityOrId: ScheduleEntity | number, time: Date | number) {
+		if (typeof entityOrId === 'number') {
+			entityOrId = this.queue.find((entity) => entity.id === entityOrId)!;
+			if (!entityOrId) return false;
+		}
+
+		entityOrId.pause();
+		entityOrId.time = new Date(time);
+		await entityOrId.save();
+
+		this._remove(entityOrId);
+		this._insert(entityOrId);
+		return true;
+	}
+
 	public async remove(entityOrId: ScheduleEntity | number) {
 		if (typeof entityOrId === 'number') {
 			entityOrId = this.queue.find((entity) => entity.id === entityOrId)!;
@@ -74,7 +89,7 @@ export class ScheduleManager {
 	}
 
 	private _remove(entity: ScheduleEntity) {
-		const index = this.queue.findIndex((entry) => entry === entity);
+		const index = this.queue.indexOf(entity);
 		if (index !== -1) this.queue.splice(index, 1);
 	}
 

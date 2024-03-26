@@ -124,10 +124,18 @@ export function getT(locale?: LocaleString | Nullish) {
 	return container.i18n.getT(locale ?? 'en-US');
 }
 
-export function getSupportedUserLanguageName(interaction: Interaction): LocaleString {
-	if (container.i18n.languages.has(interaction.locale)) return interaction.locale;
+export function getSupportedLanguageName(interaction: Interaction): LocaleString {
 	if (interaction.guildLocale && container.i18n.languages.has(interaction.guildLocale)) return interaction.guildLocale;
 	return 'en-US';
+}
+
+export function getSupportedLanguageT(interaction: Interaction): TFunction {
+	return getT(getSupportedLanguageName(interaction));
+}
+
+export function getSupportedUserLanguageName(interaction: Interaction): LocaleString {
+	if (container.i18n.languages.has(interaction.locale)) return interaction.locale;
+	return getSupportedLanguageName(interaction);
 }
 
 export function getSupportedUserLanguageT(interaction: Interaction): TFunction {

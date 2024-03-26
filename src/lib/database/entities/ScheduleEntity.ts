@@ -121,6 +121,10 @@ export class ScheduleEntity extends BaseEntity {
 		return this;
 	}
 
+	public reschedule(time: Date | number) {
+		return this.#manager.reschedule(this, time);
+	}
+
 	public delete() {
 		return this.#manager.remove(this);
 	}

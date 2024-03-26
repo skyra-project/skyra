@@ -1,4 +1,13 @@
 {
+	"genericUnknownChannel": "I'm sorry, I tried to operate on a channel unknown to Discord and failed, this error has been reported to the developers.",
+	"genericUnknownGuild": "I'm sorry, I tried to operate on a server unknown to Discord and failed, this error has been reported to the developers.",
+	"genericUnknownMember": "I'm sorry, I tried to operate on a member unknown to Discord and failed, this error has been reported to the developers.",
+	"genericUnknownMessage": "I'm sorry, I tried to operate on a message unknown to Discord and failed, this error has been reported to the developers.",
+	"genericUnknownRole": "I'm sorry, I tried to operate on a role unknown to Discord and failed, this error has been reported to the developers.",
+	"genericMissingAccess": "I'm sorry, I tried to operate on a resource without the necessary permissions and failed, this error has been reported to the developers.",
+	"genericDiscordInternalServerError": "Oops, Discord broke itself, please try again later.",
+	"genericDiscordGateway": "Oops, the network is struggling to communicate with Discord, please try again later.",
+	"genericDiscordUnavailable": "Oops, Discord is currently unavailable, please try again later.",
 	"guildBansEmpty": "There are no bans registered in this server.",
 	"guildBansNotFound": "I tried and failed to find this user from the ban list. Are you certain this user is banned?",
 	"guildMemberNotVoicechannel": "I cannot execute this action in a member that is not connected to a voice channel.",

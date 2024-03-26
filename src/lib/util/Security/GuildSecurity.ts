@@ -1,5 +1,4 @@
 import { LockdownManager } from '#lib/structures';
-import { ModerationActions } from '#lib/util/Security/ModerationActions';
 import type { Guild } from 'discord.js';
 
 /**
@@ -12,17 +11,11 @@ export class GuildSecurity {
 	public guild: Guild;
 
 	/**
-	 * The moderation actions
-	 */
-	public actions: ModerationActions;
-
-	/**
 	 * The lockdowns map
 	 */
 	public lockdowns = new LockdownManager();
 
 	public constructor(guild: Guild) {
 		this.guild = guild;
-		this.actions = new ModerationActions(this.guild);
 	}
 }

@@ -1,8 +1,8 @@
-export function asc(a: number, b: number): -1 | 0 | 1 {
+export function asc(a: number | string | bigint, b: number | string | bigint): -1 | 0 | 1 {
 	return a < b ? -1 : a > b ? 1 : 0;
 }
 
-export function desc(a: number, b: number): -1 | 0 | 1 {
+export function desc(a: number | string | bigint, b: number | string | bigint): -1 | 0 | 1 {
 	return a > b ? -1 : a < b ? 1 : 0;
 }
 
@@ -84,7 +84,7 @@ export function bidirectionalReplace<T>(regex: RegExp, content: string, options:
 	return results;
 }
 
-export type BooleanFn<T extends readonly unknown[], R extends boolean = boolean> = (...args: T) => R;
+export type BooleanFn<ArgumentTypes extends readonly unknown[], ReturnType extends boolean = boolean> = (...args: ArgumentTypes) => ReturnType;
 
 export function andMix<T extends readonly unknown[], R extends boolean>(...fns: readonly BooleanFn<T, R>[]): BooleanFn<T, R> {
 	if (fns.length === 0) throw new Error('You must input at least one function.');
@@ -98,10 +98,12 @@ export function andMix<T extends readonly unknown[], R extends boolean>(...fns: 
 	};
 }
 
-export function orMix<T extends readonly unknown[], R extends boolean>(...fns: readonly BooleanFn<T, R>[]): BooleanFn<T, R> {
+export function orMix<ArgumentTypes extends readonly unknown[], ReturnType extends boolean>(
+	...fns: readonly BooleanFn<ArgumentTypes, ReturnType>[]
+): BooleanFn<ArgumentTypes, ReturnType> {
 	if (fns.length === 0) throw new Error('You must input at least one function.');
 	return (...args) => {
-		let ret!: R;
+		let ret!: ReturnType;
 		for (const fn of fns) {
 			if ((ret = fn(...args))) break;
 		}

@@ -1,6 +1,6 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { getModeration } from '#utils/functions';
-import { TypeMetadata, TypeVariation } from '#utils/moderationConstants';
+import { TypeVariation } from '#utils/moderationConstants';
 import { Listener } from '@sapphire/framework';
 import type { GuildBan } from 'discord.js';
 
@@ -10,13 +10,8 @@ export class UserListener extends Listener {
 
 		const moderation = getModeration(guild);
 		await moderation.waitLock();
-		await moderation
-			.create({
-				userId: user.id,
-				moderatorId: process.env.CLIENT_ID,
-				type: TypeVariation.Ban,
-				metadata: TypeMetadata.None
-			})
-			.create();
+
+		if (moderation.checkSimilarEntryHasBeenCreated(TypeVariation.Ban, user.id)) return;
+		await moderation.insert(moderation.create({ user: user.id, type: TypeVariation.Ban }));
 	}
 }

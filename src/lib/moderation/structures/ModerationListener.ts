@@ -1,8 +1,9 @@
 import { readSettings, type GuildSettingsOfType } from '#lib/database';
+import { ModerationActions } from '#lib/moderation/actions/index';
 import type { HardPunishment } from '#lib/moderation/structures/ModerationMessageListener';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
 import { seconds } from '#utils/common';
-import { getModeration, getSecurity } from '#utils/functions';
+import { getModeration } from '#utils/functions';
 import type { EmbedBuilder } from '@discordjs/builders';
 import { Listener, type Awaitable } from '@sapphire/framework';
 import type { Guild } from 'discord.js';
@@ -41,46 +42,29 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	protected async onWarning(guild: Guild, userId: string) {
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 		await this.createActionAndSend(guild, () =>
-			getSecurity(guild).actions.warning({
-				userId,
-				moderatorId: process.env.CLIENT_ID,
-				reason: '[Auto-Moderation] Threshold Reached.',
-				duration
-			})
+			ModerationActions.warning.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.', duration })
 		);
 	}
 
 	protected async onKick(guild: Guild, userId: string) {
 		await this.createActionAndSend(guild, () =>
-			getSecurity(guild).actions.kick({
-				userId,
-				moderatorId: process.env.CLIENT_ID,
-				reason: '[Auto-Moderation] Threshold Reached.'
-			})
+			ModerationActions.kick.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.' })
 		);
 	}
 
 	protected async onMute(guild: Guild, userId: string) {
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 		await this.createActionAndSend(guild, () =>
-			getSecurity(guild).actions.mute({
-				userId,
-				moderatorId: process.env.CLIENT_ID,
-				reason: '[Auto-Moderation] Threshold Reached.',
-				duration
-			})
+			ModerationActions.mute.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.', duration })
 		);
 	}
 
 	protected async onSoftBan(guild: Guild, userId: string) {
 		await this.createActionAndSend(guild, () =>
-			getSecurity(guild).actions.softBan(
-				{
-					userId,
-					moderatorId: process.env.CLIENT_ID,
-					reason: '[Auto-Moderation] Threshold Reached.'
-				},
-				seconds.fromMinutes(5)
+			ModerationActions.softban.apply(
+				guild,
+				{ user: userId, reason: '[Auto-Moderation] Threshold Reached.' },
+				{ context: seconds.fromMinutes(5) }
 			)
 		);
 	}
@@ -89,12 +73,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
 
 		await this.createActionAndSend(guild, () =>
-			getSecurity(guild).actions.ban({
-				userId,
-				moderatorId: process.env.CLIENT_ID,
-				reason: '[Auto-Moderation] Threshold Reached.',
-				duration
-			})
+			ModerationActions.ban.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.', duration })
 		);
 	}
 

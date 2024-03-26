@@ -12,7 +12,7 @@ import { PermissionLevels, type TypedT } from '#lib/types';
 import { first } from '#utils/common';
 import { Command, UserError, type MessageCommand } from '@sapphire/framework';
 import { Subcommand } from '@sapphire/plugin-subcommands';
-import type { Message, Snowflake } from 'discord.js';
+import type { ChatInputCommandInteraction, Message, Snowflake } from 'discord.js';
 
 /**
  * The base class for all Skyra commands with subcommands.
@@ -43,6 +43,20 @@ export class SkyraSubcommand extends Subcommand<SkyraSubcommand.Args, SkyraSubco
 		return implementSkyraCommandPreParse(this as MessageCommand, message, parameters, context);
 	}
 
+	/**
+	 * Retrieves the global command id from the application command registry.
+	 *
+	 * @remarks
+	 *
+	 * This method is used for slash commands, and will throw an error if the
+	 * global command ids are empty.
+	 */
+	public getGlobalCommandId(): Snowflake {
+		const ids = this.applicationCommandRegistry.globalChatInputCommandIds;
+		if (ids.size === 0) throw new Error('The global command ids are empty.');
+		return first(ids.values())!;
+	}
+
 	protected error(identifier: string | UserError, context?: unknown): never {
 		implementSkyraCommandError(identifier, context);
 	}
@@ -50,18 +64,6 @@ export class SkyraSubcommand extends Subcommand<SkyraSubcommand.Args, SkyraSubco
 	protected override parseConstructorPreConditions(options: SkyraSubcommand.Options): void {
 		super.parseConstructorPreConditions(options);
 		implementSkyraCommandParseConstructorPreConditionsPermissionLevel(this, options.permissionLevel);
-	}
-
-	/**
-	 * Retrieves the global command id from the application command registry.
-	 *
-	 * @remarks This method is used for slash commands, and will throw an error
-	 * if the global command ids are empty.
-	 */
-	protected getGlobalCommandId(): Snowflake {
-		const ids = this.applicationCommandRegistry.globalChatInputCommandIds;
-		if (ids.size === 0) throw new Error('The global command ids are empty.');
-		return first(ids.values())!;
 	}
 
 	public static readonly PaginatedOptions = implementSkyraCommandPaginatedOptions<SkyraSubcommand.Options>;
@@ -72,4 +74,6 @@ export namespace SkyraSubcommand {
 	export type Args = SkyraArgs;
 	export type LoaderContext = Command.LoaderContext;
 	export type RunContext = MessageCommand.RunContext;
+
+	export type Interaction = ChatInputCommandInteraction<'cached'>;
 }

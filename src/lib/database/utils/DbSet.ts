@@ -6,7 +6,7 @@ import { ModerationEntity } from '#lib/database/entities/ModerationEntity';
 import { ScheduleEntity } from '#lib/database/entities/ScheduleEntity';
 import { TwitchSubscriptionEntity } from '#lib/database/entities/TwitchSubscriptionEntity';
 import { UserEntity } from '#lib/database/entities/UserEntity';
-import type { DataSource, FindManyOptions, FindOptions, Repository } from 'typeorm';
+import type { DataSource, Repository } from 'typeorm';
 
 export class DbSet {
 	public readonly connection: DataSource;
@@ -32,34 +32,6 @@ export class DbSet {
 	public async fetchModerationDirectMessageEnabled(id: string) {
 		const entry = await this.users.findOne({ where: { id }, select: ['moderationDM'] });
 		return entry?.moderationDM ?? true;
-	}
-
-	/**
-	 * Finds entities that match given options.
-	 */
-	public fetchModerationEntry(options?: FindManyOptions<ModerationEntity>): Promise<ModerationEntity>;
-
-	/**
-	 * Finds entities that match given conditions.
-	 */
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	public fetchModerationEntry(conditions?: FindOptions<ModerationEntity>): Promise<ModerationEntity>;
-	public async fetchModerationEntry(optionsOrConditions?: FindOptions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
-		return this.moderations.findOne(optionsOrConditions as any);
-	}
-
-	/**
-	 * Finds entities that match given options.
-	 */
-	public fetchModerationEntries(options?: FindManyOptions<ModerationEntity>): Promise<ModerationEntity[]>;
-
-	/**
-	 * Finds entities that match given conditions.
-	 */
-	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	public fetchModerationEntries(conditions?: FindOptions<ModerationEntity>): Promise<ModerationEntity[]>;
-	public async fetchModerationEntries(optionsOrConditions?: FindOptions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
-		return this.moderations.find(optionsOrConditions as any);
 	}
 
 	public static instance: DbSet | null = null;

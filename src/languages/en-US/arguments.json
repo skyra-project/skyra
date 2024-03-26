@@ -26,6 +26,9 @@
 		"1",
 		"+"
 	],
+	"caseNoEntries": "I could not resolve `{{parameter}}` to a case, as there are no moderation cases in this server!",
+	"caseUnknownEntry": "I could not resolve `{{parameter}}` to a case, make sure you typed its number correctly!",
+	"caseNotInThisGuild": "I somehow resolved `{{parameter}}` to a case, but it is not from this server!",
 	"caseLatestOptions": [
 		"last",
 		"latest"
@@ -43,7 +46,7 @@
 	"durationFormats": "- `4h` (4 hours).\n- `20m5s` (20 minutes and 5 seconds).\n- `\"1w 2d 16h 40m 10s\"` (1 week, 2 days, 16 hours, 40 minutes, and 10 seconds).",
 	"emojiError": "I could not resolve `{{parameter}}` to a valid emoji, are you sure you used a valid twemoji (e.g. 🌊) or an emoji (e.g. {{GREENTICK}})?",
 	"floatError": "I could not resolve `{{parameter}}` to a number!",
-	"floatTooLarge": "The parameter `{{parameter}}` is too high! It needs to be less than {{maximum}}!",
+	"floatTooLarge": "The parameter `{{parameter}}` is too high! It needs to be at most {{maximum}}!",
 	"floatTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
 	"guildChannelError": "I could not resolve `{{parameter}}` to a channel from this server, please make sure you typed its name or ID correctly!",
 	"guildChannelMismatchingError": "The parameter `{{parameter}}` resolved to an incompatible channel type in this server, please try another channel!",
@@ -56,7 +59,7 @@
 	"guildVoiceChannelError": "I could not resolve `{{parameter}}` to a voice channel, please make sure you typed its name or ID correctly!",
 	"hyperlinkError": "I could not resolve `{{parameter}}` to an hyperlink, they are usually formatted similarly as `https://discord.com`!",
 	"integerError": "I could not resolve `{{parameter}}` to an integer!",
-	"integerTooLarge": "The parameter `{{parameter}}` is too high! It needs to be less than {{maximum}}!",
+	"integerTooLarge": "The parameter `{{parameter}}` is too high! It needs to be at most {{maximum}}!",
 	"integerTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
 	"invite": "I could not resolve `{{parameter}}` to a valid invite link, they have one of the following formats:\n\n- `https://discord​.gg/6gakFR2`.\n- `https://discord​.com/invite/6gakFR2`.\n- `https://discordapp​.com/invite/6gakFR2`.\n\n> **Tip**: You can omit the `https://` part, `discord​.gg/6gakFR2` is also accepted as a valid parameter.",
 	"language": "I could not resolve `{{parameter}}` to a valid language code!\n**Hint**: the following are supported: {{possibles, list(conjunction)}}.\n\n> **Tip**: You can add more (or improve the existing ones) at <https://translation.skyra.pw>!",
@@ -66,7 +69,7 @@
 	"missing": "You need to write another parameter!\n\n> **Tip**: You can do `{{commandContext.commandPrefix}}help {{command.name}}` to find out how to use this command.",
 	"newsChannel": "I could not resolve `{{parameter}}` to an announcement channel, please make sure you typed its name or ID correctly!\n\n> **Tip**: You can also mention it!",
 	"numberError": "I could not resolve `{{parameter}}` to a number!",
-	"numberTooLarge": "The parameter `{{parameter}}` is too high! It needs to be less than {{maximum}}!",
+	"numberTooLarge": "The parameter `{{parameter}}` is too high! It needs to be at most {{maximum}}!",
 	"numberTooSmall": "The parameter `{{parameter}}` is too low! It needs to be at least {{minimum}}!",
 	"piece": "I could not resolve `{{parameter}}` to a piece! Make sure you typed its name or one of its aliases correctly!",
 	"rangeInvalid": "`{{parameter}}` must be a number or a range of numbers.",

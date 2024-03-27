@@ -39,7 +39,7 @@ export const enum Emojis {
 	Loading = '<a:sloading:656988867403972629>',
 	RedCross = '<:redCross:637706251257511973>',
 	Calendar = '<:calendar_icon:1218607529702068294>',
-	SandsOfTime = '<:sandsoftime:1218608481565802587>',
+	Hourglass = '<:hourglass:1218608481565802587>',
 	Member = '<:member:1200212636441260103>',
 	ShieldMember = '<:shield_member:1218601473664094399>',
 	Moderator = '<:moderator:1218592235499688006>',

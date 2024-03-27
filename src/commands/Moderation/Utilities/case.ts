@@ -18,7 +18,6 @@ import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@s
 import { cutText, isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
 import {
 	EmbedBuilder,
-	MessageFlags,
 	PermissionFlagsBits,
 	TimestampStyles,
 	User,
@@ -109,7 +108,7 @@ export class UserCommand extends SkyraSubcommand {
 		const show = interaction.options.getBoolean('show') ?? false;
 		const t = show ? getSupportedLanguageT(interaction) : getSupportedUserLanguageT(interaction);
 
-		return interaction.reply({ embeds: [await getEmbed(t, entry)], flags: show ? undefined : MessageFlags.Ephemeral });
+		return interaction.reply({ embeds: [await getEmbed(t, entry)], ephemeral: !show });
 	}
 
 	public async chatInputRunList(interaction: SkyraSubcommand.Interaction) {
@@ -140,12 +139,12 @@ export class UserCommand extends SkyraSubcommand {
 			const action = getAction(entry.type);
 			if (!action.isUndoActionAvailable) {
 				const content = t(Root.TimeNotAllowed, { type: t(getTranslationKey(entry.type)) });
-				return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+				return interaction.reply({ content, ephemeral: true });
 			}
 
 			if (entry.isCompleted()) {
 				const content = t(Root.TimeNotAllowedInCompletedEntries, { caseId: entry.id });
-				return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+				return interaction.reply({ content, ephemeral: true });
 			}
 
 			if (duration !== 0) {
@@ -155,7 +154,7 @@ export class UserCommand extends SkyraSubcommand {
 						start: time(seconds.fromMilliseconds(entry.createdAt), TimestampStyles.LongDateTime),
 						time: time(seconds.fromMilliseconds(next), TimestampStyles.RelativeTime)
 					});
-					return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+					return interaction.reply({ content, ephemeral: true });
 				}
 			}
 		}
@@ -166,7 +165,7 @@ export class UserCommand extends SkyraSubcommand {
 		});
 
 		const content = t(Root.EditSuccess, { caseId: entry.id });
-		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+		return interaction.reply({ content, ephemeral: true });
 	}
 
 	public async chatInputRunArchive(interaction: SkyraSubcommand.Interaction) {
@@ -174,7 +173,7 @@ export class UserCommand extends SkyraSubcommand {
 		await getModeration(interaction.guild).archive(entry);
 
 		const content = getSupportedUserLanguageT(interaction)(Root.ArchiveSuccess, { caseId: entry.id });
-		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+		return interaction.reply({ content, ephemeral: true });
 	}
 
 	public async chatInputRunDelete(interaction: SkyraSubcommand.Interaction) {
@@ -182,7 +181,7 @@ export class UserCommand extends SkyraSubcommand {
 		await getModeration(interaction.guild).delete(entry);
 
 		const content = getSupportedUserLanguageT(interaction)(Root.DeleteSuccess, { caseId: entry.id });
-		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+		return interaction.reply({ content, ephemeral: true });
 	}
 
 	public async viewMessageRun(message: GuildMessage, args: SkyraSubcommand.Args) {
@@ -210,7 +209,7 @@ export class UserCommand extends SkyraSubcommand {
 	) {
 		if (entries.length === 0) {
 			const content = getSupportedUserLanguageT(interaction)(Root.ListEmpty);
-			return interaction.reply({ content, flags: MessageFlags.Ephemeral });
+			return interaction.reply({ content, ephemeral: true });
 		}
 
 		await interaction.deferReply({ ephemeral: !show });
@@ -238,7 +237,7 @@ export class UserCommand extends SkyraSubcommand {
 
 		if (!isNullishOrZero(entry.duration) && !entry.expired) {
 			const timestamp = time(seconds.fromMilliseconds(entry.expiresTimestamp!), TimestampStyles.RelativeTime);
-			lines.push(t(Root.ListDetailsExpires, { emoji: Emojis.SandsOfTime, time: timestamp }));
+			lines.push(t(Root.ListDetailsExpires, { emoji: Emojis.Hourglass, time: timestamp }));
 		}
 
 		if (!isNullishOrEmpty(entry.reason)) lines.push(blockQuote(cutText(entry.reason, 150)));
@@ -294,7 +293,7 @@ export class UserCommand extends SkyraSubcommand {
 			.setColor(OverviewColors[Math.min(OverviewColors.length - 1, warnings + mutes + kicks + bans)])
 			.setFooter({ text: footer });
 		if (user) embed.setAuthor(getFullEmbedAuthor(user));
-		await interaction.reply({ embeds: [embed], flags: show ? undefined : MessageFlags.Ephemeral });
+		await interaction.reply({ embeds: [embed], ephemeral: !show });
 	}
 
 	#sortEntries(entries: ModerationManager.Entry[]) {

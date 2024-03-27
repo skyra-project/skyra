@@ -47,7 +47,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { content });
 	}
 
-	public override chatInputRun(interaction: Interaction) {
+	public override async chatInputRun(interaction: Interaction) {
 		const durationRaw = interaction.options.getString('duration');
 		const durationResult = this.#parseDuration(durationRaw);
 		const t = getSupportedUserLanguageT(interaction);
@@ -62,9 +62,12 @@ export class UserCommand extends SkyraCommand {
 			interaction.options.getChannel<SupportedChannelType>('channel') ?? (global ? null : (interaction.channel as SupportedChannel));
 		const role = interaction.options.getRole('role') ?? interaction.guild!.roles.everyone;
 		const action = interaction.options.getString('action', true)! as 'lock' | 'unlock';
-		return action === 'lock' //
-			? this.#lock(t, interaction.user, channel, role, duration)
-			: this.#unlock(t, interaction.user, channel, role);
+
+		const content =
+			action === 'lock'
+				? await this.#lock(t, interaction.user, channel, role, duration)
+				: await this.#unlock(t, interaction.user, channel, role);
+		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
@@ -86,7 +89,7 @@ export class UserCommand extends SkyraCommand {
 		);
 	}
 
-	#lock(t: TFunction, user: User, channel: SupportedChannel | null, role: Role, duration: number | null) {
+	#lock(t: TFunction, user: User, channel: SupportedChannel | null, role: Role, duration: number | null): Promise<string> {
 		return isNullish(channel)
 			? this.#lockGuild(t, user, role, duration)
 			: channel.isThread()
@@ -181,7 +184,7 @@ export class UserCommand extends SkyraCommand {
 		return t(Root.ChannelLockFailed, { channel: channelMention(channel.id) });
 	}
 
-	#unlock(t: TFunction, user: User, channel: SupportedChannel | null, role: Role) {
+	#unlock(t: TFunction, user: User, channel: SupportedChannel | null, role: Role): Promise<string> {
 		return isNullish(channel)
 			? this.#unlockGuild(t, user, role)
 			: channel.isThread()
@@ -190,8 +193,8 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	async #unlockChannel(t: TFunction, user: User, channel: SupportedNonThreadChannel, role: Role) {
-		if (!channel.permissionsFor(role).has(LockdownPermissions)) {
-			return t(Root.ChannelLocked, { channel: channelMention(channel.id) });
+		if (channel.permissionsFor(role).has(LockdownPermissions)) {
+			return t(Root.ChannelUnlocked, { channel: channelMention(channel.id) });
 		}
 
 		if (!channel.manageable) {

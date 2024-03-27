@@ -39,6 +39,7 @@ export const ThreadUnlockFailed = FT<{ channel: ChannelMention }>('commands/lock
 // Channel
 export const SuccessChannel = FT<{ channel: ChannelMention }>('commands/lockdown:successChannel');
 export const ChannelLocked = FT<{ channel: ChannelMention }>('commands/lockdown:channelLocked');
+export const ChannelUnlocked = FT<{ channel: ChannelMention }>('commands/lockdown:channelUnlocked');
 export const ChannelUnmanageable = FT<{ channel: ChannelMention }>('commands/lockdown:channelUnmanageable');
 export const ChannelUnknownChannel = FT<{ channel: ChannelMention }>('commands/lockdown:channelUnknownChannel');
 export const ChannelLockFailed = FT<{ channel: ChannelMention }>('commands/lockdown:channelLockFailed');

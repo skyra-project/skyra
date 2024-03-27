@@ -16,20 +16,25 @@ export const Global = 'commands/lockdown:global';
 export const ActionLock = T('commands/lockdown:actionLock');
 export const ActionUnlock = T('commands/lockdown:actionUnlock');
 
-export const AuditLogRequestedBy = FT<{ user: string; channel: ChannelMention }>('commands/lockdown:auditLogRequestedBy');
+export const AuditLogLockRequestedBy = FT<{ user: string }>('commands/lockdown:auditLogLockRequestedBy');
+export const AuditLogUnlockRequestedBy = FT<{ user: string }>('commands/lockdown:auditLogUnlockRequestedBy');
 
 // Guild
 export const GuildLocked = FT<{ role: RoleMention }>('commands/lockdown:guildLocked');
+export const GuildUnlocked = FT<{ role: RoleMention }>('commands/lockdown:guildUnlocked');
 export const SuccessGuild = FT<{ role: RoleMention }>('commands/lockdown:successGuild');
 export const GuildUnknownRole = FT<{ role: RoleMention }>('commands/lockdown:guildUnknownRole');
 export const GuildLockFailed = FT<{ role: RoleMention }>('commands/lockdown:guildLockFailed');
+export const GuildUnlockFailed = FT<{ role: RoleMention }>('commands/lockdown:guildUnlockFailed');
 
 // Thread
 export const SuccessThread = FT<{ channel: ChannelMention }>('commands/lockdown:successThread');
 export const ThreadLocked = FT<{ channel: ChannelMention }>('commands/lockdown:threadLocked');
+export const ThreadUnlocked = FT<{ channel: ChannelMention }>('commands/lockdown:threadUnlocked');
 export const ThreadUnmanageable = FT<{ channel: ChannelMention }>('commands/lockdown:threadUnmanageable');
 export const ThreadUnknownChannel = FT<{ channel: ChannelMention }>('commands/lockdown:threadUnknownChannel');
 export const ThreadLockFailed = FT<{ channel: ChannelMention }>('commands/lockdown:threadLockFailed');
+export const ThreadUnlockFailed = FT<{ channel: ChannelMention }>('commands/lockdown:threadUnlockFailed');
 
 // Channel
 export const SuccessChannel = FT<{ channel: ChannelMention }>('commands/lockdown:successChannel');

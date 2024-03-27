@@ -3,7 +3,7 @@ import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { PermissionsBits } from '#utils/bits.js';
-import { toErrorCodeResult } from '#utils/common';
+import { months, toErrorCodeResult } from '#utils/common';
 import { getCodeStyle, getLogPrefix } from '#utils/functions';
 import { resolveTimeSpan } from '#utils/resolvers';
 import { getTag } from '#utils/util.js';
@@ -12,22 +12,24 @@ import { ApplicationCommandRegistry, CommandOptionsRunTypeEnum, ok } from '@sapp
 import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
 import { Time } from '@sapphire/time-utilities';
-import { isNullish } from '@sapphire/utilities';
+import { isNullish, isNullishOrZero } from '@sapphire/utilities';
 import {
 	ChannelType,
 	ChatInputCommandInteraction,
 	MessageFlags,
 	PermissionFlagsBits,
 	RESTJSONErrorCodes,
-	Role,
-	User,
 	channelMention,
 	chatInputApplicationCommandMention,
 	type CommandInteractionOption,
-	type ThreadChannelType
+	type Guild,
+	type Role,
+	type ThreadChannelType,
+	type User
 } from 'discord.js';
 
 const Root = LanguageKeys.Commands.Lockdown;
+const LockdownPermissions = PermissionFlagsBits.SendMessages | PermissionFlagsBits.SendMessagesInThreads;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['lock', 'unlock'],
@@ -87,35 +89,28 @@ export class UserCommand extends SkyraCommand {
 	#lock(t: TFunction, user: User, channel: SupportedChannel | null, role: Role, duration: number | null) {
 		return isNullish(channel)
 			? this.#lockGuild(t, user, role, duration)
-			: UserCommand.ThreadChannelTypes.includes(channel.type)
-				? this.#lockThread(t, user, channel as SupportedThreadChannel, duration)
-				: this.#lockChannel(t, user, channel as SupportedNonThreadChannel, role, duration);
+			: channel.isThread()
+				? this.#lockThread(t, user, channel, duration)
+				: this.#lockChannel(t, user, channel, role, duration);
 	}
 
 	async #lockGuild(t: TFunction, user: User, role: Role, duration: number | null) {
-		void t;
-		void user;
-		void role;
-		void duration;
-
-		if (!role.permissions.has(PermissionFlagsBits.SendMessages | PermissionFlagsBits.SendMessagesInThreads)) {
+		if (!role.permissions.has(LockdownPermissions)) {
 			return t(Root.GuildLocked, { role: role.toString() });
 		}
 
-		const reason = t(Root.AuditLogRequestedBy, { user: getTag(user), role: role.toString() });
+		const reason = t(Root.AuditLogLockRequestedBy, { user: getTag(user) });
 		const result = await toErrorCodeResult(
-			role.setPermissions(
-				PermissionsBits.difference(role.permissions.bitfield, PermissionFlagsBits.SendMessages | PermissionFlagsBits.SendMessagesInThreads),
-				reason
-			)
+			role.setPermissions(PermissionsBits.difference(role.permissions.bitfield, LockdownPermissions), reason)
 		);
 		return result.match({
-			ok: () => this.#lockGuildOk(t, role),
+			ok: () => this.#lockGuildOk(t, role, duration),
 			err: (code) => this.#lockGuildErr(t, role, code)
 		});
 	}
 
-	#lockGuildOk(t: TFunction, role: Role) {
+	async #lockGuildOk(t: TFunction, role: Role, duration: number | null) {
+		if (!isNullishOrZero(duration)) await this.#schedule(role.guild, role, null, duration);
 		return t(Root.SuccessGuild, { role: role.toString() });
 	}
 
@@ -127,8 +122,6 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	async #lockThread(t: TFunction, user: User, channel: SupportedThreadChannel, duration: number | null) {
-		void duration;
-
 		if (channel.locked) {
 			return t(Root.ThreadLocked, { channel: channelMention(channel.id) });
 		}
@@ -137,15 +130,16 @@ export class UserCommand extends SkyraCommand {
 			return t(Root.ThreadUnmanageable, { channel: channelMention(channel.id) });
 		}
 
-		const reason = t(Root.AuditLogRequestedBy, { user: getTag(user), channel: channelMention(channel.id) });
+		const reason = t(Root.AuditLogLockRequestedBy, { user: getTag(user) });
 		const result = await toErrorCodeResult(channel.setLocked(true, reason));
 		return result.match({
-			ok: () => this.#lockThreadOk(t, channel),
+			ok: () => this.#lockThreadOk(t, channel, duration),
 			err: (code) => this.#lockThreadErr(t, channel, code)
 		});
 	}
 
-	#lockThreadOk(t: TFunction, channel: SupportedThreadChannel) {
+	async #lockThreadOk(t: TFunction, channel: SupportedThreadChannel, duration: number | null) {
+		if (!isNullishOrZero(duration)) await this.#schedule(channel.guild, null, channel, duration);
 		return t(Root.SuccessThread, { channel: channelMention(channel.id) });
 	}
 
@@ -157,9 +151,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	async #lockChannel(t: TFunction, user: User, channel: SupportedNonThreadChannel, role: Role, duration: number | null) {
-		void duration;
-
-		if (!channel.permissionsFor(role).has(PermissionFlagsBits.SendMessages | PermissionFlagsBits.SendMessagesInThreads)) {
+		if (!channel.permissionsFor(role).has(LockdownPermissions)) {
 			return t(Root.ChannelLocked, { channel: channelMention(channel.id) });
 		}
 
@@ -167,17 +159,18 @@ export class UserCommand extends SkyraCommand {
 			return t(Root.ChannelUnmanageable, { channel: channelMention(channel.id) });
 		}
 
-		const reason = t(Root.AuditLogRequestedBy, { user: getTag(user), channel: channelMention(channel.id) });
+		const reason = t(Root.AuditLogLockRequestedBy, { user: getTag(user) });
 		const result = await toErrorCodeResult(
 			channel.permissionOverwrites.edit(role, { SendMessages: false, SendMessagesInThreads: false }, { reason })
 		);
 		return result.match({
-			ok: () => this.#lockChannelOk(t, channel),
+			ok: () => this.#lockChannelOk(t, channel, role, duration),
 			err: (code) => this.#lockChannelErr(t, channel, code)
 		});
 	}
 
-	#lockChannelOk(t: TFunction, channel: SupportedNonThreadChannel) {
+	async #lockChannelOk(t: TFunction, channel: SupportedNonThreadChannel, role: Role, duration: number | null) {
+		if (!isNullishOrZero(duration)) await this.#schedule(channel.guild, role, channel, duration);
 		return t(Root.SuccessChannel, { channel: channelMention(channel.id) });
 	}
 
@@ -189,96 +182,110 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	#unlock(t: TFunction, user: User, channel: SupportedChannel | null, role: Role) {
-		void t;
-		void user;
-		void role;
-		void channel;
+		return isNullish(channel)
+			? this.#unlockGuild(t, user, role)
+			: channel.isThread()
+				? this.#unlockThread(t, user, channel)
+				: this.#unlockChannel(t, user, channel, role);
 	}
 
-	// private async handleLock(
-	// 	message: GuildMessage,
-	// 	args: SkyraCommand.Args,
-	// 	role: Role,
-	// 	channel: NonThreadGuildTextBasedChannelTypes,
-	// 	duration: number | null
-	// ) {
-	// 	// If there was a lockdown, abort lock
-	// 	const lock = this.getLock(role, channel);
-	// 	if (lock !== null) {
-	// 		this.error(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
-	// 	}
+	async #unlockChannel(t: TFunction, user: User, channel: SupportedNonThreadChannel, role: Role) {
+		if (!channel.permissionsFor(role).has(LockdownPermissions)) {
+			return t(Root.ChannelLocked, { channel: channelMention(channel.id) });
+		}
 
-	// 	const allowed = this.isAllowed(role, channel);
+		if (!channel.manageable) {
+			return t(Root.ChannelUnmanageable, { channel: channelMention(channel.id) });
+		}
 
-	// 	// If they can send, begin locking
-	// 	const response = await send(message, args.t(LanguageKeys.Commands.Moderation.LockdownLocking, { channel: channel.toString() }));
-	// 	await channel.permissionOverwrites.edit(role, { SendMessages: false });
-	// 	if (canSendMessages(message.channel)) {
-	// 		await response.edit(args.t(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() })).catch(() => null);
-	// 	}
+		const reason = t(Root.AuditLogUnlockRequestedBy, { user: getTag(user) });
+		const result = await toErrorCodeResult(
+			channel.permissionOverwrites.edit(role, { SendMessages: true, SendMessagesInThreads: true }, { reason })
+		);
+		return result.match({
+			ok: () => this.#unlockChannelOk(t, channel),
+			err: (code) => this.#unlockChannelErr(t, channel, code)
+		});
+	}
 
-	// 	// Create the timeout
-	// 	const timeout = duration
-	// 		? setAccurateTimeout(() => floatPromise(this.performUnlock(message, args.t, role, channel, allowed)), duration)
-	// 		: null;
-	// 	getSecurity(message.guild).lockdowns.add(role, channel, { allowed, timeout });
-	// }
+	#unlockChannelOk(t: TFunction, channel: SupportedNonThreadChannel) {
+		return t(Root.SuccessChannel, { channel: channelMention(channel.id) });
+	}
 
-	// private isAllowed(role: Role, channel: NonThreadGuildTextBasedChannelTypes): boolean | null {
-	// 	return channel.permissionOverwrites.cache.get(role.id)?.allow.has(PermissionFlagsBits.SendMessages, false) ?? null;
-	// }
+	#unlockChannelErr(t: TFunction, channel: SupportedNonThreadChannel, code: RESTJSONErrorCodes) {
+		if (code === RESTJSONErrorCodes.UnknownChannel) return t(Root.ChannelUnknownChannel, { channel: channelMention(channel.id) });
 
-	// private async handleUnlock(message: GuildMessage, args: SkyraCommand.Args, role: Role, channel: NonThreadGuildTextBasedChannelTypes) {
-	// 	const entry = this.getLock(role, channel);
-	// 	if (entry === null) this.error(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
-	// 	if (entry.timeout) clearAccurateTimeout(entry.timeout);
-	// 	return this.performUnlock(message, args.t, role, channel, entry.allowed);
-	// }
+		this.container.logger.error(`${getLogPrefix(this)} ${getCodeStyle(code)} Could not unlock the channel ${channel.id}`);
+		return t(Root.ChannelLockFailed, { channel: channelMention(channel.id) });
+	}
 
-	// private async performUnlock(
-	// 	message: GuildMessage,
-	// 	t: TFunction,
-	// 	role: Role,
-	// 	channel: NonThreadGuildTextBasedChannelTypes,
-	// 	allowed: boolean | null
-	// ) {
-	// 	getSecurity(channel.guild).lockdowns.remove(role, channel);
+	async #unlockThread(t: TFunction, user: User, channel: SupportedThreadChannel) {
+		if (!channel.locked) {
+			return t(Root.ThreadUnlocked, { channel: channelMention(channel.id) });
+		}
 
-	// 	const overwrites = channel.permissionOverwrites.cache.get(role.id);
-	// 	if (overwrites === undefined) return;
+		if (!channel.manageable) {
+			return t(Root.ThreadUnmanageable, { channel: channelMention(channel.id) });
+		}
 
-	// 	// If the only permission overwrite is the denied SEND_MESSAGES, clean up the entire permission; if the permission
-	// 	// was denied, reset it to the default state, otherwise don't run an extra query
-	// 	if (overwrites.allow.bitfield === 0n && overwrites.deny.bitfield === PermissionFlagsBits.SendMessages) {
-	// 		await overwrites.delete();
-	// 	} else if (overwrites.deny.has(PermissionFlagsBits.SendMessages)) {
-	// 		await overwrites.edit({ SendMessages: allowed });
-	// 	}
+		const reason = t(Root.AuditLogUnlockRequestedBy, { user: getTag(user) });
+		const result = await toErrorCodeResult(channel.setLocked(false, reason));
+		return result.match({
+			ok: () => this.#unlockThreadOk(t, channel),
+			err: (code) => this.#unlockThreadErr(t, channel, code)
+		});
+	}
 
-	// 	if (canSendMessages(message.channel)) {
-	// 		const content = t(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channel.toString() });
-	// 		await send(message, content);
-	// 	}
-	// }
+	#unlockThreadOk(t: TFunction, channel: SupportedThreadChannel) {
+		return t(Root.SuccessThread, { channel: channelMention(channel.id) });
+	}
 
-	// private getLock(role: Role, channel: NonThreadGuildTextBasedChannelTypes): LockdownManager.Entry | null {
-	// 	const entry = getSecurity(channel.guild).lockdowns.get(channel.id)?.get(role.id);
-	// 	if (entry) return entry;
+	#unlockThreadErr(t: TFunction, channel: SupportedThreadChannel, code: RESTJSONErrorCodes) {
+		if (code === RESTJSONErrorCodes.UnknownChannel) return t(Root.ThreadUnknownChannel, { channel: channelMention(channel.id) });
 
-	// 	const permissions = channel.permissionOverwrites.cache.get(role.id)?.deny.has(PermissionFlagsBits.SendMessages);
-	// 	return permissions === true ? { allowed: null, timeout: null } : null;
-	// }
+		this.container.logger.error(`${getLogPrefix(this)} ${getCodeStyle(code)} Could not unlock the thread ${channel.id}`);
+		return t(Root.ThreadUnlockFailed, { channel: channelMention(channel.id) });
+	}
+
+	async #unlockGuild(t: TFunction, user: User, role: Role) {
+		if (role.permissions.has(LockdownPermissions)) {
+			return t(Root.GuildUnlocked, { role: role.toString() });
+		}
+
+		const reason = t(Root.AuditLogUnlockRequestedBy, { user: getTag(user) });
+		const result = await toErrorCodeResult(role.setPermissions(PermissionsBits.union(role.permissions.bitfield, LockdownPermissions), reason));
+		return result.match({
+			ok: () => this.#unlockGuildOk(t, role),
+			err: (error) => this.#unlockGuildErr(t, role, error)
+		});
+	}
+
+	#unlockGuildOk(t: TFunction, role: Role) {
+		return t(Root.SuccessGuild, { role: role.toString() });
+	}
+
+	#unlockGuildErr(t: TFunction, role: Role, code: RESTJSONErrorCodes) {
+		if (code === RESTJSONErrorCodes.UnknownRole) return t(Root.GuildUnknownRole, { role: role.toString() });
+
+		this.container.logger.error(`${getLogPrefix(this)} ${getCodeStyle(code)} Could not unlock the guild ${role.id}`);
+		return t(Root.GuildUnlockFailed, { role: role.toString() });
+	}
+
+	#schedule(guild: Guild, role: Role | null, channel: SupportedChannel | null, duration: number) {
+		return this.container.schedule.add('moderationEndLockdown', duration, {
+			catchUp: true,
+			data: {
+				guildId: guild.id,
+				channelId: channel?.id ?? null,
+				roleId: role?.id ?? null
+			}
+		});
+	}
 
 	#parseDuration(value: string | null) {
 		if (isNullish(value)) return ok(null);
-		return resolveTimeSpan(value, { minimum: Time.Second * 30, maximum: Time.Year });
+		return resolveTimeSpan(value, { minimum: Time.Second * 30, maximum: months(1) });
 	}
-
-	private static readonly ThreadChannelTypes: ChannelType[] = [
-		ChannelType.AnnouncementThread,
-		ChannelType.PublicThread,
-		ChannelType.PrivateThread
-	] satisfies readonly SupportedThreadChannelType[];
 }
 
 type Interaction = ChatInputCommandInteraction<'cached'>;

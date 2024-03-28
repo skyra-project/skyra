@@ -42,9 +42,13 @@
 	"listOverviewFooterWarning_other": "{{count}} advertencias",
 	"listOverviewFooterMutes_one": "{{count}} mute",
 	"listOverviewFooterMutes_other": "{{count}} mutes",
+	"listOverviewFooterTimeouts_one": "{{count}} tiempo de espera",
 	"listOverviewFooterTimeouts_other": "{{count}} tiempos de espera",
 	"listOverviewFooterKicks_one": "{{count}} expulsión",
 	"listOverviewFooterKicks_other": "{{count}} expulsiones",
 	"listOverviewFooterBans_one": "{{count}} baneo",
-	"listOverviewFooterBans_other": "{{count}} baneos"
+	"listOverviewFooterBans_other": "{{count}} baneos",
+	"editSuccess": "Se ha editado correctamente el caso {{caseId}}.",
+	"archiveSuccess": "Se ha archivado correctamente el caso {{caseId}}.",
+	"deleteSuccess": "Se ha borrado correctamente el caso {{caseId}}."
 }

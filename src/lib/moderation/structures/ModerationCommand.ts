@@ -37,9 +37,19 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 	protected readonly supportsSchedule: boolean;
 
 	/**
+	 * The maximum duration for this command.
+	 */
+	protected readonly maximumDuration: number;
+
+	/**
 	 * Whether a member is required or not.
 	 */
 	protected readonly requiredMember: boolean;
+
+	/**
+	 * Whether a duration is required or not.
+	 */
+	protected readonly requiredDuration: boolean;
 
 	protected constructor(context: ModerationCommand.Context, options: ModerationCommand.Options<Type>) {
 		super(context, {
@@ -55,7 +65,9 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		this.isUndoAction = options.isUndoAction ?? false;
 		this.actionStatusKey = options.actionStatusKey ?? (this.isUndoAction ? Root.ActionIsNotActive : Root.ActionIsActive);
 		this.supportsSchedule = this.action.isUndoActionAvailable && !this.isUndoAction;
+		this.maximumDuration = options.maximumDuration ?? years(5);
 		this.requiredMember = options.requiredMember ?? false;
+		this.requiredDuration = options.requiredDuration ?? false;
 	}
 
 	public override messageRun(
@@ -335,14 +347,16 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 	 * @param args - The arguments for the moderation command.
 	 */
 	protected async resolveParametersDuration(args: ModerationCommand.Args) {
-		if (args.finished) return null;
-		if (!this.supportsSchedule) return null;
+		if (!this.requiredDuration) {
+			if (args.finished) return null;
+			if (!this.supportsSchedule) return null;
+		}
 
-		const result = await args.pickResult('timespan', { minimum: 0, maximum: years(5) });
+		const result = await args.pickResult('timespan', { minimum: 0, maximum: this.maximumDuration });
 		return result.match({
 			ok: (value) => value,
 			err: (error) => {
-				if (error.identifier === LanguageKeys.Arguments.TimeSpan) return null;
+				if (!this.requiredDuration && error.identifier === LanguageKeys.Arguments.TimeSpan) return null;
 				throw error;
 			}
 		});
@@ -366,7 +380,9 @@ export namespace ModerationCommand {
 		type: Type;
 		isUndoAction?: boolean;
 		actionStatusKey?: TypedT;
+		maximumDuration?: number;
 		requiredMember?: boolean;
+		requiredDuration?: boolean;
 	}
 
 	export type Args = SkyraCommand.Args;

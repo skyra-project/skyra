@@ -5,7 +5,7 @@ import { TypeVariation } from '#utils/moderationConstants';
 import { isNullish } from '@sapphire/utilities';
 import { RESTJSONErrorCodes, type Guild, type Snowflake } from 'discord.js';
 
-export class ModerationActionTimeout extends ModerationAction<number | null, TypeVariation.Timeout> {
+export class ModerationActionTimeout extends ModerationAction<TypeVariation.Timeout> {
 	public constructor() {
 		super({
 			type: TypeVariation.Timeout,
@@ -19,23 +19,18 @@ export class ModerationActionTimeout extends ModerationAction<number | null, Typ
 		return !isNullish(member) && member.isCommunicationDisabled();
 	}
 
-	protected override async handleApplyPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<number>) {
+	protected override async handleApplyPre(guild: Guild, entry: ModerationAction.Entry) {
 		const reason = await this.getReason(guild, entry.reason);
-		const time = this.#getCommunicationDisabledUntil(data);
+		const time = new Date(Date.now() + entry.duration!).toISOString();
 		await api().guilds.editMember(guild.id, entry.userId, { communication_disabled_until: time }, { reason });
 
 		await this.completeLastModerationEntryFromUser({ guild, userId: entry.userId });
 	}
 
-	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<number>) {
+	protected override async handleUndoPre(guild: Guild, entry: ModerationAction.Entry) {
 		const reason = await this.getReason(guild, entry.reason, true);
-		const time = this.#getCommunicationDisabledUntil(data);
-		await api().guilds.editMember(guild.id, entry.userId, { communication_disabled_until: time }, { reason });
+		await api().guilds.editMember(guild.id, entry.userId, { communication_disabled_until: null }, { reason });
 
 		await this.completeLastModerationEntryFromUser({ guild, userId: entry.userId });
-	}
-
-	#getCommunicationDisabledUntil(data: ModerationAction.Data<number>) {
-		return isNullish(data.context) ? null : new Date(data.context).toISOString();
 	}
 }

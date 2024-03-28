@@ -1,34 +1,15 @@
-import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SetUpModerationCommand } from '#lib/moderation';
-import { getSecurity } from '#utils/functions';
-import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
-import { getImage } from '#utils/util';
+import { TypeVariation } from '#utils/moderationConstants';
 import { ApplyOptions } from '@sapphire/decorators';
-import type { ArgumentTypes } from '@sapphire/utilities';
-import { PermissionFlagsBits } from 'discord.js';
 
-@ApplyOptions<SetUpModerationCommand.Options>({
+type Type = TypeVariation.RestrictedEmoji;
+type ValueType = null;
+
+@ApplyOptions<SetUpModerationCommand.Options<Type>>({
 	aliases: ['restrict-external-emoji', 'restricted-emoji', 'restricted-external-emoji', 'ree', 'restrict-emojis'],
 	description: LanguageKeys.Commands.Moderation.RestrictEmojiDescription,
 	detailedDescription: LanguageKeys.Commands.Moderation.RestrictEmojiExtended,
-	optionalDuration: true,
-	requiredMember: true,
-	requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
-	roleKey: GuildSettings.Roles.RestrictedEmoji,
-	setUpKey: ModerationSetupRestriction.Emoji
+	type: TypeVariation.RestrictedEmoji
 })
-export class UserSetUpModerationCommand extends SetUpModerationCommand {
-	public async handle(...[message, context]: ArgumentTypes<SetUpModerationCommand['handle']>) {
-		return getSecurity(message.guild).actions.restrictEmoji(
-			{
-				userId: context.target.id,
-				moderatorId: message.author.id,
-				reason: context.reason,
-				imageURL: getImage(message),
-				duration: context.duration
-			},
-			await this.getTargetDM(message, context.args, context.target)
-		);
-	}
-}
+export class UserSetUpModerationCommand extends SetUpModerationCommand<Type, ValueType> {}

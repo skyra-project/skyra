@@ -1,9 +1,10 @@
 import { GuildEntity, GuildSettings, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
+import { ModerationActions } from '#lib/moderation/actions/index';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
 import { Events, type GuildMessage, type TypedFT, type TypedT } from '#lib/types';
 import { floatPromise, seconds } from '#utils/common';
-import { getModeration, getSecurity, isModerator } from '#utils/functions';
+import { getModeration, isModerator } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
 import { canSendMessages, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
@@ -105,57 +106,35 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 	protected async onWarning(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			getSecurity(message.guild).actions.warning({
-				userId: message.author.id,
-				moderatorId: process.env.CLIENT_ID,
-				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-				duration
-			})
+			ModerationActions.warning.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 
 	protected async onKick(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
-			getSecurity(message.guild).actions.kick({
-				userId: message.author.id,
-				moderatorId: process.env.CLIENT_ID,
-				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
-			})
+			ModerationActions.kick.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum) })
 		);
 	}
 
 	protected async onMute(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			getSecurity(message.guild).actions.mute({
-				userId: message.author.id,
-				moderatorId: process.env.CLIENT_ID,
-				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-				duration
-			})
+			ModerationActions.mute.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 
 	protected async onSoftBan(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
-			getSecurity(message.guild).actions.softBan(
-				{
-					userId: message.author.id,
-					moderatorId: process.env.CLIENT_ID,
-					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
-				},
-				seconds.fromMinutes(5)
+			ModerationActions.softban.apply(
+				message.guild,
+				{ user: message.author, reason: this.#getReason(t, points, maximum) },
+				{ context: seconds.fromMinutes(5) }
 			)
 		);
 	}
 
 	protected async onBan(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			getSecurity(message.guild).actions.ban({
-				userId: message.author.id,
-				moderatorId: process.env.CLIENT_ID,
-				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-				duration
-			})
+			ModerationActions.ban.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 
@@ -206,6 +185,10 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 		const { roles } = member;
 		return !ignoredRoles.some((id) => roles.cache.has(id));
+	}
+
+	#getReason(t: TFunction, points: number, maximum: number) {
+		return maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum });
 	}
 }
 

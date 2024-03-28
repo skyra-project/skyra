@@ -56,7 +56,7 @@ export class UserListener extends Listener {
 		const moderation = getModeration(guild);
 		await moderation.waitLock();
 
-		const latestLogForUser = moderation.getLatestLogForUser(user.id);
+		const latestLogForUser = moderation.getLatestRecentCachedEntryForUser(user.id);
 
 		if (latestLogForUser === null) {
 			return {
@@ -69,7 +69,7 @@ export class UserListener extends Listener {
 		return {
 			kicked: latestLogForUser.type === TypeVariation.Kick,
 			banned: latestLogForUser.type === TypeVariation.Ban,
-			softbanned: latestLogForUser.type === TypeVariation.SoftBan
+			softbanned: latestLogForUser.type === TypeVariation.Softban
 		};
 	}
 

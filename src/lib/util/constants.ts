@@ -38,6 +38,12 @@ export const enum Emojis {
 	GreenTickSerialized = 's637706251253317669',
 	Loading = '<a:sloading:656988867403972629>',
 	RedCross = '<:redCross:637706251257511973>',
+	Calendar = '<:calendar_icon:1218607529702068294>',
+	Hourglass = '<:hourglass:1218608481565802587>',
+	Member = '<:member:1200212636441260103>',
+	ShieldMember = '<:shield_member:1218601473664094399>',
+	Moderator = '<:moderator:1218592235499688006>',
+	AutoModerator = '<:auto_moderator:1218600075606102077>',
 	SpammerIcon = '<:spammer:1206893298292232245>',
 	QuarantinedIcon = '<:quarantined:1206899526447923210>'
 }

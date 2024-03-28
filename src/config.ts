@@ -194,7 +194,7 @@ function parseInternationalizationOptions(): InternationalizationOptions {
 			load: 'all',
 			lng: 'en-US',
 			fallbackLng: {
-				'es-419': ['es-ES'], // Latin America Spanish falls back to Spain Spanish
+				'es-419': ['es-ES', 'en-US'], // Latin America Spanish falls back to Spain Spanish
 				default: ['en-US']
 			},
 			defaultNS: 'globals',

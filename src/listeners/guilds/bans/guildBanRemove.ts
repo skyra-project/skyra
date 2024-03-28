@@ -10,13 +10,8 @@ export class UserListener extends Listener {
 
 		const moderation = getModeration(guild);
 		await moderation.waitLock();
-		await moderation
-			.create({
-				userId: user.id,
-				moderatorId: process.env.CLIENT_ID,
-				type: TypeVariation.Ban,
-				metadata: TypeMetadata.Appeal
-			})
-			.create();
+
+		if (moderation.checkSimilarEntryHasBeenCreated(TypeVariation.Ban, user.id)) return;
+		await moderation.insert(moderation.create({ user, type: TypeVariation.Ban, metadata: TypeMetadata.Undo }));
 	}
 }

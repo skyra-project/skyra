@@ -1,13 +1,15 @@
-import { GuildSettings, readSettings, ResponseType, Task, type PartialResponseValue } from '#lib/database';
+import { GuildSettings, ResponseType, Task, readSettings, type PartialResponseValue } from '#lib/database';
+import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
+import { getModeration } from '#utils/functions';
 import type { SchemaKeys } from '#utils/moderationConstants';
-import type { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
-import type { Guild, User } from 'discord.js';
+import { isNullish } from '@sapphire/utilities';
+import type { Guild, Snowflake } from 'discord.js';
 
 export abstract class ModerationTask<T = unknown> extends Task {
 	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
 		const guild = this.container.client.guilds.cache.get(data.guildID);
 		// If the guild is not available, cancel the task.
-		if (typeof guild === 'undefined') return { type: ResponseType.Ignore };
+		if (isNullish(guild)) return { type: ResponseType.Ignore };
 
 		// If the guild is not available, re-schedule the task by creating
 		// another with the same data but happening 20 seconds later.
@@ -20,15 +22,23 @@ export abstract class ModerationTask<T = unknown> extends Task {
 			/* noop */
 		}
 
+		// Mark the moderation entry as complete.
+		await getModeration(guild).complete(data.caseID);
+
 		return { type: ResponseType.Finished };
 	}
 
-	protected async getTargetDM(guild: Guild, target: User): Promise<ModerationActionsSendOptions> {
+	protected async getActionData<ContextType = never>(
+		guild: Guild,
+		targetId: Snowflake,
+		context?: ContextType
+	): Promise<ModerationAction.Data<ContextType>> {
 		return {
 			moderator: null,
-			send:
+			sendDirectMessage:
 				(await readSettings(guild, GuildSettings.Messages.ModerationDM)) &&
-				(await this.container.db.fetchModerationDirectMessageEnabled(target.id))
+				(await this.container.db.fetchModerationDirectMessageEnabled(targetId)),
+			context
 		};
 	}
 

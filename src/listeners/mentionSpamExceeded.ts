@@ -2,7 +2,7 @@ import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
 import { getModeration } from '#utils/functions';
-import { TypeMetadata, TypeVariation } from '#utils/moderationConstants';
+import { TypeVariation } from '#utils/moderationConstants';
 import { getTag } from '#utils/util';
 import { Listener } from '@sapphire/framework';
 
@@ -26,15 +26,7 @@ export class UserListener extends Listener {
 			nms.delete(message.author.id);
 
 			const reason = t(LanguageKeys.Events.NoMentionSpam.ModerationLog, { threshold });
-			await moderation
-				.create({
-					userId: message.author.id,
-					moderatorId: process.env.CLIENT_ID,
-					type: TypeVariation.Ban,
-					metadata: TypeMetadata.None,
-					reason
-				})
-				.create();
+			await moderation.insert(moderation.create({ user: message.author.id, type: TypeVariation.Ban, reason }));
 		} finally {
 			lock();
 		}

@@ -1,6 +1,5 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationTask, type ModerationData } from '#lib/moderation';
-import { getSecurity } from '#utils/functions';
+import { ModerationActions, ModerationTask, type ModerationData } from '#lib/moderation';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { PermissionFlagsBits, type Guild, type Role } from 'discord.js';
 
@@ -10,15 +9,9 @@ export class UserModerationTask extends ModerationTask {
 		if (!me.permissions.has(PermissionFlagsBits.ManageRoles)) return null;
 
 		const t = await fetchT(guild);
-		await getSecurity(guild).actions.unRemoveRole(
-			{
-				moderatorId: process.env.CLIENT_ID,
-				userId: data.userID,
-				reason: `[MODERATION] Role re-added after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`
-			},
-			data.extraData.role,
-			await this.getTargetDM(guild, await this.container.client.users.fetch(data.userID))
-		);
+		const reason = `[MODERATION] Role re-added after ${t(LanguageKeys.Globals.DurationValue, { value: data.duration })}`;
+		const actionData = await this.getActionData(guild, data.userID, data.extraData.role);
+		await ModerationActions.roleRemove.undo(guild, { user: data.userID, reason }, actionData);
 		return null;
 	}
 }

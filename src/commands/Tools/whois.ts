@@ -18,7 +18,6 @@ import {
 	ButtonStyle,
 	ChatInputCommandInteraction,
 	GuildMember,
-	MessageFlags,
 	PermissionFlagsBits,
 	UserContextMenuCommandInteraction,
 	bold,
@@ -78,7 +77,7 @@ export class UserCommand extends SkyraCommand {
 
 		return interaction.reply({
 			...this.sharedRun(getSupportedUserLanguageT(interaction), user, member),
-			flags: MessageFlags.Ephemeral
+			ephemeral: true
 		});
 	}
 
@@ -88,7 +87,7 @@ export class UserCommand extends SkyraCommand {
 
 		return interaction.reply({
 			...this.sharedRun(getSupportedUserLanguageT(interaction), user, member),
-			flags: MessageFlags.Ephemeral
+			ephemeral: true
 		});
 	}
 

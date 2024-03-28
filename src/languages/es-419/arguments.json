@@ -26,6 +26,9 @@
 		"1",
 		"+"
 	],
+	"caseNoEntries": "",
+	"caseUnknownEntry": "",
+	"caseNotInThisGuild": "",
 	"caseLatestOptions": [
 		"ultimo",
 		"último"
@@ -43,7 +46,7 @@
 	"durationFormats": "- `4h` (4 horas).\n- `20m5s` (20 minutos y 5 segundos).\n- `\"1w 2d 16h 40m 10s\"` (1 semana, 2 días, 16 horas, 40 minutos y 10 segundos).",
 	"emojiError": "No pude resolver `{{parameter}}` a un emoji válido, ¿estás seguro de que has usado un twemoji (e.g. 🌊) o un emoji (por ejemplo, {{GREENTICK}})?",
 	"floatError": "¡No pude resolver `{{parameter}}` a un número!",
-	"floatTooLarge": "¡El parámetro `{{parameter}}` es demasiado grande! ¡Debe ser menor que {{maximum}}!",
+	"floatTooLarge": "",
 	"floatTooSmall": "¡El parámetro `{{parameter}}` es demasiado pequeño! ¡Debe ser al menos {{minimum}}!",
 	"guildChannelError": "No pude resolver `{{parameter}}` a un canal de este servidor, ¡por favor asegúrese de que escribió su nombre o ID correctamente!",
 	"guildChannelMismatchingError": "El parámetro `{{parameter}}` resuelto a un tipo de canal incompatible en este servidor, ¡por favor prueba otro canal!",
@@ -56,7 +59,7 @@
 	"guildVoiceChannelError": "No pude resolver `{{parameter}}` a un canal de voz, ¡por favor asegúrese de que escribió su nombre o ID correctamente!",
 	"hyperlinkError": "No pude resolver `{{parameter}}` a un enlace, ¡normalmente están formateados de forma similar a `https://discord.com`!",
 	"integerError": "¡No pude resolver `{{parameter}}` a un entero!",
-	"integerTooLarge": "¡El parámetro `{{parameter}}` es demasiado grande! ¡Debe ser menor que {{maximum}}!",
+	"integerTooLarge": "",
 	"integerTooSmall": "¡El parámetro `{{parameter}}` es demasiado pequeño! ¡Debe ser al menos {{minimum}}!",
 	"invite": "No pude resolver `{{parameter}}` a un enlace de invitación válido, aquí tiene alguno de los formatos válidos:\n\n- `https://discord​.gg/6gakFR2`.\n- `https://discord​.com/invite/6gakFR2`.\n- `https://discordapp​.com/invite/6gakFR2`.\n\n> **Consejo**: Puedes omitir la parte `https://`, `discord​.gg/6gakFR2` también es aceptado como un parámetro válido.",
 	"language": "",
@@ -66,7 +69,7 @@
 	"missing": "¡Necesitas escribir otro parámetro!\n\n> **Consejo**: puedes hacer `{{commandContext.commandPrefix}}help {{command.name}}` para averiguar cómo usar este comando.",
 	"newsChannel": "No pude resolver `{{parameter}}` a un canal de anuncios, ¡por favor asegúrese de que escribió su nombre o ID correctamente!\n\n> **Consejo**: ¡También puedes mencionarlo!",
 	"numberError": "¡No pude resolver `{{parameter}}` a un número!",
-	"numberTooLarge": "¡El parámetro `{{parameter}}` es demasiado grande! ¡Debe ser menor que {{maximum}}!",
+	"numberTooLarge": "",
 	"numberTooSmall": "¡El parámetro `{{parameter}}` es demasiado pequeño! ¡Debe ser al menos {{minimum}}!",
 	"piece": "¡No pude resolver `{{parameter}}` a una pieza! ¡Asegúrate de que escribiste su nombre o uno de sus alias correctamente!",
 	"rangeInvalid": "`{{parameter}}` debe ser un número o un rango de números.",

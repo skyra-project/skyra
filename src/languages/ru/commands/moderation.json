@@ -1,39 +1,8 @@
 {
 	"permissions": "Разрешения для {{username}} ({{id}})",
 	"permissionsAll": "Все разрешения",
-	"timeTimed": "",
-	"timeUnsupportedType": "",
-	"timeNotScheduled": "",
-	"timeAborted": "",
-	"timeScheduled": "",
 	"slowmodeSet": "",
 	"slowmodeReset": "",
-	"timeDescription": "",
-	"timeExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
-	},
 	"banNotBannable": "",
 	"dehoistStarting": "",
 	"dehoistProgress": "",
@@ -60,17 +29,8 @@
 	"pruneInvalidPosition": "",
 	"pruneNoDeletes": "",
 	"pruneLogHeader": "",
-	"pruneLogMessage_one": "",
-	"pruneLogMessage_other": "",
-	"reasonNotExists": "",
-	"reasonUpdated_one": "",
-	"reasonUpdated_other": "",
 	"toggleModerationDmToggledEnabled": "",
 	"toggleModerationDmToggledDisabled": "",
-	"unbanMissingPermission": "",
-	"unmuteMissingPermission": "",
-	"vmuteMissingPermission": "",
-	"vmuteUserNotMuted": "",
 	"moderationOutput_one": "",
 	"moderationOutput_other": "",
 	"moderationOutputWithReason_one": "",
@@ -82,96 +42,6 @@
 	"moderationDmDescriptionWithReason": "",
 	"moderationDmDescriptionWithDuration": "",
 	"moderationDmDescriptionWithReasonWithDuration": "",
-	"historyDescription": "",
-	"historyExtended": {
-		"usages": [
-			"",
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
-	},
-	"historyFooterNew": "",
-	"historyFooterWarning_one": "",
-	"historyFooterWarning_other": "",
-	"historyFooterMutes_one": "",
-	"historyFooterMutes_other": "",
-	"historyFooterKicks_one": "",
-	"historyFooterKicks_other": "",
-	"historyFooterBans_one": "",
-	"historyFooterBans_other": "",
-	"moderationsDescription": "",
-	"moderationsExtended": {
-		"usages": [
-			"",
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
-	},
-	"moderationsEmpty": "",
-	"moderationsAmount_one": "",
-	"moderationsAmount_other": "",
-	"mutesDescription": "",
-	"mutesExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			""
-		]
-	},
-	"warningsDescription": "",
-	"warningsExtended": {
-		"usages": [
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			""
-		]
-	},
 	"slowmodeDescription": "",
 	"slowmodeExtended": {
 		"usages": [
@@ -494,32 +364,6 @@
 		],
 		"reminder": ""
 	},
-	"caseDescription": "",
-	"caseExtended": {
-		"usages": [
-			"",
-			"",
-			""
-		],
-		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
-	},
-	"caseDeleted": "",
 	"permissionsDescription": "",
 	"permissionsExtended": {
 		"usages": [
@@ -533,19 +377,6 @@
 			]
 		],
 		"extendedHelp": ""
-	},
-	"reasonDescription": "",
-	"reasonExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
 	},
 	"restrictAttachmentDescription": "",
 	"restrictAttachmentExtended": {

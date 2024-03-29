@@ -22,20 +22,14 @@ export class UserListener extends Listener {
 	}
 
 	#handleMemberUpdateTimeout(guild: Guild, data: GatewayGuildAuditLogEntryCreateDispatchData) {
-		let oldValue: number | null = null;
-		let newValue: number | null = null;
-		if (!isNullishOrEmpty(data.changes)) {
-			const change = data.changes.find((change) => change.key === 'communication_disabled_until');
-			if (isNullish(change)) return;
-			if (!isNullish(change.old_value)) oldValue = Date.parse(change.old_value as string);
-			if (!isNullish(change.new_value)) newValue = Date.parse(change.new_value as string);
-		}
+		if (isNullishOrEmpty(data.changes)) return;
+
+		const change = data.changes.find((change) => change.key === 'communication_disabled_until');
+		if (isNullish(change)) return;
 
 		getLogger(guild).timeout.setFromAuditLogs(data.target_id!, {
 			userId: data.user_id!,
-			reason: data.reason,
-			oldValue,
-			newValue
+			reason: data.reason
 		});
 	}
 }

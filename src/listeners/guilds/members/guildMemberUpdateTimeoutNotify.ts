@@ -16,23 +16,24 @@ export class UserListener extends Listener {
 
 		const { user, guild } = next;
 		const logger = getLogger(guild);
-		const actionBySkyra = logger.timeout.isSet(guild.id);
-		const contextPromise = logger.timeout.wait(guild.id);
+		const actionBySkyra = logger.timeout.isSet(next.id);
+		const contextPromise = logger.timeout.wait(next.id);
 
 		// If the action was done by Skyra, or external timeout is enabled, create a moderation action:
-		if (actionBySkyra || (await readSettings(next, GuildSettings.Events.Timeout))) {
+		if (!actionBySkyra && (await readSettings(next, GuildSettings.Events.Timeout))) {
 			const context = await contextPromise;
 			const moderation = getModeration(guild);
 			await moderation.waitLock();
 
 			if (moderation.checkSimilarEntryHasBeenCreated(TypeVariation.Timeout, user.id)) return;
 
+			const duration = this.#getDuration(nextTimeout);
 			const entry = moderation.create({
-				user: user.id,
+				user,
 				moderator: context?.userId,
 				type: TypeVariation.Timeout,
-				metadata: nextTimeout ? TypeMetadata.Temporary : TypeMetadata.Undo,
-				duration: nextTimeout,
+				metadata: duration ? TypeMetadata.Temporary : TypeMetadata.Undo,
+				duration,
 				reason: context?.reason
 			});
 			await moderation.insert(entry);
@@ -42,5 +43,12 @@ export class UserListener extends Listener {
 	#getTimeout(member: GuildMember) {
 		const timeout = member.communicationDisabledUntilTimestamp;
 		return isNumber(timeout) && timeout >= Date.now() ? timeout : null;
+	}
+
+	#getDuration(timeout: number | null) {
+		if (timeout === null) return null;
+
+		const now = Date.now();
+		return timeout > now ? timeout - now : null;
 	}
 }

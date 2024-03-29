@@ -31,6 +31,7 @@ export const UndoTaskNameMappings = {
 	[TypeVariation.Mute]: 'moderationEndMute',
 	[TypeVariation.Ban]: 'moderationEndBan',
 	[TypeVariation.VoiceMute]: 'moderationEndVoiceMute',
+	[TypeVariation.Timeout]: 'moderationEndTimeout',
 	[TypeVariation.RestrictedAttachment]: 'moderationEndRestrictionAttachment',
 	[TypeVariation.RestrictedReaction]: 'moderationEndRestrictionReaction',
 	[TypeVariation.RestrictedEmbed]: 'moderationEndRestrictionEmbed',

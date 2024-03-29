@@ -93,14 +93,14 @@ export class ModerationManager {
 		return new ModerationManagerEntry({
 			id: -1,
 			createdAt: -1,
-			duration: null,
-			extraData: null as ModerationManager.ExtraData<Type>,
+			...data,
+			duration: data.duration ?? null,
+			extraData: data.extraData ?? (null as ModerationManager.ExtraData<Type>),
 			guild: this.guild,
-			moderator: process.env.CLIENT_ID,
-			reason: null,
-			imageURL: null,
-			metadata: TypeMetadata.None,
-			...data
+			moderator: data.moderator ?? process.env.CLIENT_ID,
+			reason: data.reason ?? null,
+			imageURL: data.imageURL ?? null,
+			metadata: data.metadata ?? TypeMetadata.None
 		});
 	}
 
@@ -138,6 +138,7 @@ export class ModerationManager {
 	 */
 	public async archive(entryOrId: ModerationManager.EntryResolvable) {
 		const entry = await this.#resolveEntry(entryOrId);
+		if (entry.isArchived()) return entry;
 		return this.#performUpdate(entry, { metadata: entry.metadata | TypeMetadata.Archived });
 	}
 
@@ -150,6 +151,7 @@ export class ModerationManager {
 	 */
 	public async complete(entryOrId: ModerationManager.EntryResolvable) {
 		const entry = await this.#resolveEntry(entryOrId);
+		if (entry.isCompleted()) return entry;
 		return this.#performUpdate(entry, { metadata: entry.metadata | TypeMetadata.Completed });
 	}
 

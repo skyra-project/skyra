@@ -65,7 +65,13 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	public async apply(guild: Guild, options: ModerationAction.PartialOptions<Type>, data: ModerationAction.Data<ContextType> = {}) {
 		const moderation = getModeration(guild);
 		const entry = moderation.create(await this.resolveOptions(guild, options, data));
-		await this.handleApplyPre(guild, entry, data);
+		try {
+			this.handleApplyPreOnStart(guild, entry, data);
+			await this.handleApplyPre(guild, entry, data);
+		} catch (error) {
+			await this.handleApplyPreOnError(error as Error, guild, entry, data);
+			throw error;
+		}
 		await this.sendDirectMessage(guild, entry, data);
 		await this.handleApplyPost(guild, entry, data);
 		return moderation.insert(entry);
@@ -76,13 +82,19 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to apply the moderation action at.
 	 * @param options - The options for the moderation action.
-	 * @param data - The options for sending the direct message.
+	 * @param data - The data for the action.
 	 * @returns A promise that resolves to the created entry.
 	 */
 	public async undo(guild: Guild, options: ModerationAction.PartialOptions<Type>, data: ModerationAction.Data<ContextType> = {}) {
 		const moderation = getModeration(guild);
 		const entry = moderation.create(await this.resolveAppealOptions(guild, options, data));
-		await this.handleUndoPre(guild, entry, data);
+		try {
+			this.handleUndoPreOnStart(guild, entry, data);
+			await this.handleUndoPre(guild, entry, data);
+		} catch (error) {
+			await this.handleUndoPreOnError(error as Error, guild, entry, data);
+			throw error;
+		}
 		await this.sendDirectMessage(guild, entry, data);
 		await this.handleUndoPost(guild, entry, data);
 		return moderation.insert(entry);
@@ -94,9 +106,36 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to apply the moderation action at.
 	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected handleApplyPre(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleApplyPre() {}
+
+	/**
+	 * Handles a hook that is executed before the moderation action is applied at {@linkcode handleApplyPre}.
+	 *
+	 * @param guild - The guild at which the moderation action is being applied.
+	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
+	 */
+	protected handleApplyPreOnStart(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): unknown;
+	protected handleApplyPreOnStart() {}
+
+	/**
+	 * Handles a hook that is executed when {@linkcode handleApplyPre} threw an error.
+	 *
+	 * @param guild - The guild at which the moderation action is being applied.
+	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
+	 */
+	protected handleApplyPreOnError(
+		error: Error,
+		guild: Guild,
+		entry: ModerationManager.Entry<Type>,
+		data: ModerationAction.Data<ContextType>
+	): unknown;
+
+	protected handleApplyPreOnError() {}
 
 	/**
 	 * Handles the post-apply of the moderation action. Executed after the moderation entry is created and the user has
@@ -104,6 +143,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to apply the moderation action at.
 	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected handleApplyPost(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleApplyPost() {}
@@ -114,9 +154,36 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to undo a moderation action at.
 	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected handleUndoPre(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleUndoPre() {}
+
+	/**
+	 * Handles a hook that is executed before the moderation action is applied at {@linkcode handleUndoPre}.
+	 *
+	 * @param guild - The guild at which the moderation action is being applied.
+	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
+	 */
+	protected handleUndoPreOnStart(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): unknown;
+	protected handleUndoPreOnStart() {}
+
+	/**
+	 * Handles a hook that is executed when {@linkcode handleUndoPre} threw an error.
+	 *
+	 * @param guild - The guild at which the moderation action is being applied.
+	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
+	 */
+	protected handleUndoPreOnError(
+		error: Error,
+		guild: Guild,
+		entry: ModerationManager.Entry<Type>,
+		data: ModerationAction.Data<ContextType>
+	): unknown;
+
+	protected handleUndoPreOnError() {}
 
 	/**
 	 * Handles the post-undo of the moderation action. Executed after the moderation entry is created and the user has
@@ -124,6 +191,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to undo a moderation action at.
 	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected handleUndoPost(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleUndoPost() {}
@@ -133,14 +201,14 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		options: ModerationAction.PartialOptions<Type>,
 		data: ModerationAction.Data<ContextType>,
 		metadata: TypeMetadata = 0
-	) {
+	): Promise<ModerationManager.CreateData<Type>> {
 		return {
 			...options,
 			duration: options.duration || null,
 			type: this.type,
 			metadata,
 			extraData: options.extraData || (await this.resolveOptionsExtraData(guild, options, data))
-		} satisfies ModerationManager.CreateData<Type>;
+		};
 	}
 
 	/**
@@ -163,7 +231,9 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	/**
 	 * Resolves the options for an appeal.
 	 *
+	 * @param guild - The guild where the moderation action occurred.
 	 * @param options - The original options for the moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected async resolveAppealOptions(guild: Guild, options: ModerationAction.PartialOptions<Type>, data: ModerationAction.Data<ContextType>) {
 		return this.resolveOptions(guild, options, data, TypeMetadata.Undo);
@@ -174,7 +244,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild where the moderation action occurred.
 	 * @param entry - The moderation entry.
-	 * @param data - The options for sending the message.
+	 * @param data - The data for the action.
 	 */
 	protected async sendDirectMessage(guild: Guild, entry: ModerationManager.Entry, data: ModerationAction.Data<ContextType>) {
 		if (!data.sendDirectMessage) return;
@@ -216,7 +286,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		const entry = await this.retrieveLastModerationEntryFromUser(options);
 		if (isNullish(entry)) return null;
 
-		if (!isNullishOrZero(entry.duration)) {
+		if (!isNullishOrZero(entry.duration) && !entry.isCompleted()) {
 			await getModeration(options.guild).complete(entry);
 		}
 		return entry;

@@ -113,5 +113,5 @@ export class LoggerTypeManager<Entry extends LoggerTypeContext = LoggerTypeConte
 
 export interface LoggerTypeContext {
 	userId: Snowflake;
-	reason?: string;
+	reason?: string | null;
 }

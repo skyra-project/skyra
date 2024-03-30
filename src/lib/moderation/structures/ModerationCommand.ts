@@ -73,7 +73,7 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		this.minimumDuration = this.action.minimumDuration;
 		this.maximumDuration = this.action.maximumDuration;
 		this.requiredMember = options.requiredMember ?? false;
-		this.requiredDuration = this.action.durationRequired;
+		this.requiredDuration = this.action.durationRequired && !this.isUndoAction;
 	}
 
 	public override messageRun(

@@ -83,7 +83,7 @@ export abstract class LoggerTypeManager {
 		// 3. Wait for audit logs to set the context data.
 		const referPromise = createReferPromise<LoggerTypeContext | null>();
 		const timeout = setTimeout(() => this.#fetch(referPromise, id, signal), MaximumTimeForAuditLogEntryCreate);
-		signal?.addEventListener('abort', () => referPromise.reject(signal.reason));
+		signal?.addEventListener('abort', () => referPromise.resolve(null));
 
 		this.#promises.set(id, referPromise);
 		try {

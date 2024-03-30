@@ -37,6 +37,11 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 	protected readonly supportsSchedule: boolean;
 
 	/**
+	 * The minimum duration for this command.
+	 */
+	protected readonly minimumDuration: number;
+
+	/**
 	 * The maximum duration for this command.
 	 */
 	protected readonly maximumDuration: number;
@@ -65,6 +70,7 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		this.isUndoAction = options.isUndoAction ?? false;
 		this.actionStatusKey = options.actionStatusKey ?? (this.isUndoAction ? Root.ActionIsNotActive : Root.ActionIsActive);
 		this.supportsSchedule = this.action.isUndoActionAvailable && !this.isUndoAction;
+		this.minimumDuration = options.minimumDuration ?? 0;
 		this.maximumDuration = options.maximumDuration ?? years(5);
 		this.requiredMember = options.requiredMember ?? false;
 		this.requiredDuration = options.requiredDuration ?? false;
@@ -352,7 +358,7 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 			if (!this.supportsSchedule) return null;
 		}
 
-		const result = await args.pickResult('timespan', { minimum: 0, maximum: this.maximumDuration });
+		const result = await args.pickResult('timespan', { minimum: this.minimumDuration, maximum: this.maximumDuration });
 		return result.match({
 			ok: (value) => value,
 			err: (error) => {
@@ -380,6 +386,7 @@ export namespace ModerationCommand {
 		type: Type;
 		isUndoAction?: boolean;
 		actionStatusKey?: TypedT;
+		minimumDuration?: number;
 		maximumDuration?: number;
 		requiredMember?: boolean;
 		requiredDuration?: boolean;

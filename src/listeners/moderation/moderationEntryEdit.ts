@@ -14,7 +14,7 @@ import { DiscordAPIError, RESTJSONErrorCodes, type Collection, type Embed, type 
 
 export class UserListener extends Listener {
 	public run(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
-		return Promise.all([this.scheduleDuration(old, entry), this.sendMessage(entry)]);
+		return Promise.all([this.scheduleDuration(old, entry), this.sendMessage(old, entry)]);
 	}
 
 	private async scheduleDuration(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
@@ -38,8 +38,8 @@ export class UserListener extends Listener {
 		}
 	}
 
-	private async sendMessage(entry: ModerationManager.Entry) {
-		if (entry.isArchived() || entry.isCompleted()) return;
+	private async sendMessage(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
+		if (entry.isArchived() || this.#isCompleteUpdate(old, entry)) return;
 
 		const moderation = getModeration(entry.guild);
 		const channel = await moderation.fetchChannel();
@@ -78,6 +78,10 @@ export class UserListener extends Listener {
 			if (error instanceof DiscordAPIError) throw error;
 			return this.fetchChannelMessages(channel, --remainingRetries);
 		}
+	}
+
+	#isCompleteUpdate(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
+		return !old.isCompleted() && entry.isCompleted();
 	}
 
 	async #tryDeleteTask(task: ScheduleEntity | null) {

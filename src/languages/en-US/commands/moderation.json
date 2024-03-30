@@ -82,7 +82,7 @@
 				"The amount of time worth of messages to delete, each flag is optional and can be combined. Up to 7 days."
 			]
 		],
-		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the server's owner cannot be banned.\nThis action can be optionally timed to create a temporary ban.",
+		"extendedHelp": "This command requires **{{BanMembers, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the server's owner cannot be banned.\nThis action can be optionally timed to create a temporary ban.",
 		"examples": [
 			"@Pete",
 			"@Pete Spamming all channels.",
@@ -92,7 +92,7 @@
 	"dehoistDescription": "Shoot everyone with the Dehoistinator 3000",
 	"dehoistExtended": {
 		"extendedHelp": "The act of hoisting involves adding special characters in front of your nickname in order to appear higher in the members list.\nThis command replaces any member's nickname that includes those special characters with a special character that drags them to the bottom of the list.",
-		"reminder": "This command requires **{{MANAGE_NICKNAMES, permissions}}**, and only members with lower role hierarchy position can be dehoisted."
+		"reminder": "This command requires **{{ManageNicknames, permissions}}**, and only members with lower role hierarchy position can be dehoisted."
 	},
 	"kickDescription": "Hit somebody with the 👢.",
 	"kickExtended": {
@@ -101,7 +101,7 @@
 			"User1 User2 User3...User10",
 			"User Reason"
 		],
-		"extendedHelp": "This command requires **{{KICK_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be kicked by me. No, the server's owner cannot be kicked.",
+		"extendedHelp": "This command requires **{{KickMembers, permissions}}**, and only members with lower role hierarchy position can be kicked by me. No, the server's owner cannot be kicked.",
 		"explainedUsage": [
 			[
 				"User/User1/User2",
@@ -547,11 +547,57 @@
 				"The amount of time worth of messages to delete, each flag is optional and can be combined. Up to 7 days."
 			]
 		],
-		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the server's owner cannot be banned.\nThe ban feature from Discord has a feature that allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being a number between 0 (no days) and 7.\nThe user gets unbanned right after the ban, so it is like a kick, but that can prune many many messages.",
+		"extendedHelp": "This command requires **{{BanMembers, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the server's owner cannot be banned.\nThe ban feature from Discord has a feature that allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being a number between 0 (no days) and 7.\nThe user gets unbanned right after the ban, so it is like a kick, but that can prune many many messages.",
 		"examples": [
 			"@Pete",
 			"@Pete Spamming all channels",
 			"@Pete 7 All messages sent in 7 are gone now, YEE HAH!"
+		]
+	},
+	"timeoutApplyDescription": "Time out a user.",
+	"timeoutApplyExtended": {
+		"usages": [
+			"Duration User",
+			"Duration User Reason"
+		],
+		"explainedUsage": [
+			[
+				"Duration",
+				"The duration of the timeout. For example 24h for 24 hours."
+			],
+			[
+				"User",
+				"The user to time out."
+			],
+			[
+				"Reason",
+				"The reason for the timeout. This will also show in the server's audit logs."
+			]
+		],
+		"examples": [
+			"30s @Pete",
+			"2h @Pete Spamming all channels"
+		]
+	},
+	"timeoutUndoDescription": "Remove a time out from a user.",
+	"timeoutUndoExtended": {
+		"usages": [
+			"User",
+			"User Reason"
+		],
+		"explainedUsage": [
+			[
+				"User",
+				"The user to time out."
+			],
+			[
+				"Reason",
+				"The reason for the timeout. This will also show in the server's audit logs."
+			]
+		],
+		"examples": [
+			"@Pete",
+			"@Pete Turns out he was not the one who spammed all channels 🤷"
 		]
 	},
 	"toggleModerationDmDescription": "Toggle moderation DMs.",
@@ -575,7 +621,7 @@
 				"The reason for the ban removal. This will also show in the server's audit logs."
 			]
 		],
-		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**. It literally gets somebody from the rubbish bin, cleans them up, and allows the pass to this server's gates.",
+		"extendedHelp": "This command requires **{{BanMembers, permissions}}**. It literally gets somebody from the rubbish bin, cleans them up, and allows the pass to this server's gates.",
 		"examples": [
 			"@Pete",
 			"@Pete Turns out he was not the one who spammed all channels 🤷"

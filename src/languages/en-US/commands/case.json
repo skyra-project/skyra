@@ -29,6 +29,7 @@
 	"optionsShowDescription": "Whether or not to show the response publicly.",
 	"timeNotAllowed": "The type of the moderation case (**{{type}}**) does not allow for a duration.",
 	"timeNotAllowedInCompletedEntries": "The moderation case `{{caseId}}` has already been completed and cannot be edited.",
+	"timeEditNotSupported": "The type of the moderation case (**{{type}}**) does not allow editing the duration.",
 	"timeTooEarly": "The duration of the moderation case would end before it starts ({{time}}). The duration starts at {{start}}.",
 	"listEmpty": "There are no moderation cases with the selected filters.",
 	"listDetailsTitle_one": "There is 1 entry.",

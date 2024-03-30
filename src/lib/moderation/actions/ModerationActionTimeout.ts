@@ -1,6 +1,6 @@
 import { api } from '#lib/discord/Api';
 import { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
-import { resolveOnErrorCodes } from '#utils/common';
+import { days, resolveOnErrorCodes } from '#utils/common';
 import { getLogger } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
 import { isNullish } from '@sapphire/utilities';
@@ -11,6 +11,9 @@ export class ModerationActionTimeout extends ModerationAction<TypeVariation.Time
 		super({
 			type: TypeVariation.Timeout,
 			isUndoActionAvailable: true,
+			maximumDuration: days(28),
+			durationRequired: true,
+			durationExternal: true,
 			logPrefix: 'Moderation => Timeout'
 		});
 	}

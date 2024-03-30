@@ -4,7 +4,7 @@ import { ModerationManager, getAction } from '#lib/moderation';
 import { getEmbed, getTitle, getTranslationKey } from '#lib/moderation/common';
 import { SkyraCommand, SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
-import { desc, minutes, seconds, years } from '#utils/common';
+import { desc, minutes, seconds } from '#utils/common';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { getModeration } from '#utils/functions';
 import { TypeVariation } from '#utils/moderationConstants';
@@ -131,7 +131,7 @@ export class UserCommand extends SkyraSubcommand {
 	public async chatInputRunEdit(interaction: SkyraSubcommand.Interaction) {
 		const entry = await this.#getCase(interaction, true);
 		const reason = interaction.options.getString('reason');
-		const duration = this.#getDuration(interaction);
+		const duration = this.#getDuration(interaction, entry);
 
 		const moderation = getModeration(interaction.guild);
 		const t = getSupportedUserLanguageT(interaction);
@@ -300,15 +300,19 @@ export class UserCommand extends SkyraSubcommand {
 		return entries.sort((a, b) => desc(a.id, b.id));
 	}
 
-	#getDuration(interaction: SkyraSubcommand.Interaction, required: true): number;
-	#getDuration(interaction: SkyraSubcommand.Interaction, required?: false): number | null;
-	#getDuration(interaction: SkyraSubcommand.Interaction, required?: boolean) {
-		const parameter = interaction.options.getString('duration', required);
-		if (isNullish(parameter)) return null;
+	#getDuration(interaction: SkyraSubcommand.Interaction, entry: ModerationManager.Entry) {
+		const parameter = interaction.options.getString('duration');
+		if (isNullishOrEmpty(parameter)) return null;
 
-		return resolveTimeSpan(parameter, { minimum: 0, maximum: years(1) }) //
+		const action = getAction(entry.type);
+		if (action.durationExternal) {
+			const t = getSupportedUserLanguageT(interaction);
+			throw t(Root.TimeEditNotSupported, { type: t(getTranslationKey(entry.type)) });
+		}
+
+		return resolveTimeSpan(parameter, { minimum: action.minimumDuration, maximum: action.maximumDuration }) //
 			.mapErr((key) => getSupportedUserLanguageT(interaction)(key, { parameter: parameter.toString() }))
-			.unwrap();
+			.unwrapRaw();
 	}
 
 	async #getCase(interaction: SkyraSubcommand.Interaction, required: true): Promise<ModerationManager.Entry>;

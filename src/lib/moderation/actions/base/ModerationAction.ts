@@ -3,6 +3,7 @@ import { getTitle, getTranslationKey } from '#lib/moderation/common';
 import type { ModerationManager } from '#lib/moderation/managers/ModerationManager';
 import type { TypedT } from '#lib/types';
 import { TypeMetadata, type TypeVariation } from '#lib/util/moderationConstants';
+import { seconds, years } from '#utils/common';
 import { getCodeStyle, getLogPrefix, getModeration } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
@@ -20,9 +21,35 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	public readonly type: Type;
 
 	/**
+	 * The minimum duration for the action.
+	 */
+	public readonly minimumDuration: number;
+
+	/**
+	 * The maximum duration for the action.
+	 */
+	public readonly maximumDuration: number;
+
+	/**
 	 * Whether or not the action allows undoing.
 	 */
 	public readonly isUndoActionAvailable: boolean;
+
+	/**
+	 * Whether or not the action requires a duration.
+	 */
+	public readonly durationRequired: boolean;
+
+	/**
+	 * Whether or not the action uses an external timer. This is true for
+	 * actions that are not time-managed by the bot, such as timeouts.
+	 *
+	 * @remarks
+	 *
+	 * If this field is set to `true`, the action will need to be re-applied in
+	 * order to update the duration.
+	 */
+	public readonly durationExternal: boolean;
 
 	/**
 	 * The prefix used for logging moderation actions.
@@ -38,6 +65,10 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		this.type = options.type;
 		this.actionKey = getTranslationKey(this.type);
 		this.logPrefix = getLogPrefix(options.logPrefix);
+		this.durationRequired = options.durationRequired ?? false;
+		this.durationExternal = options.durationExternal ?? false;
+		this.minimumDuration = options.minimumDuration ?? (this.durationRequired ? seconds(5) : 0);
+		this.maximumDuration = options.maximumDuration ?? years(1);
 		this.isUndoActionAvailable = options.isUndoActionAvailable;
 	}
 
@@ -372,6 +403,10 @@ export namespace ModerationAction {
 		type: Type;
 		logPrefix: string;
 		isUndoActionAvailable: boolean;
+		minimumDuration?: number;
+		maximumDuration?: number;
+		durationRequired?: boolean;
+		durationExternal?: boolean;
 	}
 
 	export type Options<Type extends TypeVariation = TypeVariation> = ModerationManager.CreateData<Type>;

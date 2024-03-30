@@ -5,7 +5,7 @@ import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAc
 import type { ModerationManager } from '#lib/moderation/managers/ModerationManager';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels, type GuildMessage, type TypedT } from '#lib/types';
-import { asc, floatPromise, seconds, years } from '#utils/common';
+import { asc, floatPromise, seconds } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { TypeVariation } from '#utils/moderationConstants';
 import { getImage, getTag, isUserSelf } from '#utils/util';
@@ -70,10 +70,10 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		this.isUndoAction = options.isUndoAction ?? false;
 		this.actionStatusKey = options.actionStatusKey ?? (this.isUndoAction ? Root.ActionIsNotActive : Root.ActionIsActive);
 		this.supportsSchedule = this.action.isUndoActionAvailable && !this.isUndoAction;
-		this.minimumDuration = options.minimumDuration ?? 0;
-		this.maximumDuration = options.maximumDuration ?? years(5);
+		this.minimumDuration = this.action.minimumDuration;
+		this.maximumDuration = this.action.maximumDuration;
 		this.requiredMember = options.requiredMember ?? false;
-		this.requiredDuration = options.requiredDuration ?? false;
+		this.requiredDuration = this.action.durationRequired;
 	}
 
 	public override messageRun(
@@ -386,10 +386,7 @@ export namespace ModerationCommand {
 		type: Type;
 		isUndoAction?: boolean;
 		actionStatusKey?: TypedT;
-		minimumDuration?: number;
-		maximumDuration?: number;
 		requiredMember?: boolean;
-		requiredDuration?: boolean;
 	}
 
 	export type Args = SkyraCommand.Args;

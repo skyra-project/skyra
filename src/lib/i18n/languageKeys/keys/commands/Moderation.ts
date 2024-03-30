@@ -23,6 +23,7 @@ export const TimeoutApplyDescription = T('commands/moderation:timeoutApplyDescri
 export const TimeoutApplyExtended = T<LanguageHelpDisplayOptions>('commands/moderation:timeoutApplyExtended');
 export const TimeoutUndoDescription = T('commands/moderation:timeoutUndoDescription');
 export const TimeoutUndoExtended = T<LanguageHelpDisplayOptions>('commands/moderation:timeoutUndoExtended');
+export const TimeoutNotModeratable = T('commands/moderation:timeoutNotModeratable');
 export const ToggleModerationDmDescription = T('commands/moderation:toggleModerationDmDescription');
 export const ToggleModerationDmExtended = T<LanguageHelpDisplayOptions>('commands/moderation:toggleModerationDmExtended');
 export const UnbanDescription = T('commands/moderation:unbanDescription');

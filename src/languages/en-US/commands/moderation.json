@@ -600,6 +600,7 @@
 			"@Pete Turns out he was not the one who spammed all channels 🤷"
 		]
 	},
+	"timeoutNotModeratable": "The target cannot be timed out by me.",
 	"toggleModerationDmDescription": "Toggle moderation DMs.",
 	"toggleModerationDmExtended": {
 		"extendedHelp": "This command allows you to toggle moderation DMs. By default, they are on, meaning that any moderation action (automatic or manual) will DM you, but you can disable them with this command."

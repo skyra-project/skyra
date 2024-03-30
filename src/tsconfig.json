@@ -17,6 +17,7 @@
 			"#lib/discord": ["lib/discord/index.js"],
 			"#lib/moderation/actions": ["lib/moderation/actions/index.js"],
 			"#lib/moderation/common": ["lib/moderation/common/index.js"],
+			"#lib/moderation/managers/loggers": ["lib/moderation/managers/loggers/index.js"],
 			"#lib/moderation/managers": ["lib/moderation/managers/index.js"],
 			"#lib/moderation/workers": ["lib/moderation/workers/index.js"],
 			"#lib/moderation": ["lib/moderation/index.js"],

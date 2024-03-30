@@ -55,6 +55,56 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	}
 
 	/**
+	 * Cancels the last moderation entry task from a user.
+	 *
+	 * @param options - The options to fetch the moderation entry.
+	 * @returns The canceled moderation entry, or `null` if no entry was found.
+	 */
+	public async completeLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
+		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
+	): Promise<ModerationManager.Entry<SearchType> | null> {
+		const entry = await this.retrieveLastModerationEntryFromUser(options);
+		if (isNullish(entry)) return null;
+
+		if (!isNullishOrZero(entry.duration) && !entry.isCompleted()) {
+			await getModeration(options.guild).complete(entry);
+		}
+		return entry;
+	}
+
+	/**
+	 * Retrieves the last moderation entry from a user based on the provided options.
+	 *
+	 * @param options - The options for fetching the moderation entry.
+	 * @returns The last moderation entry from the user, or `null` if no entry is found.
+	 */
+	public async retrieveLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
+		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
+	): Promise<ModerationManager.Entry<SearchType> | null> {
+		// Retrieve all the entries
+		const entries = await getModeration(options.guild).fetch({ userId: options.userId });
+
+		const type = options.type ?? this.type;
+		const metadata = options.metadata ?? null;
+		const extra = options.filter ?? (() => true);
+
+		for (const entry of entries.values()) {
+			// If the entry has been archived or has completed, skip it:
+			if (entry.isArchived() || entry.isCompleted()) continue;
+			// If the entry is not of the same type, skip it:
+			if (entry.type !== type) continue;
+			// If the entry is not of the same metadata, skip it:
+			if (metadata !== null && entry.metadata !== metadata) continue;
+			// If the extra check fails, skip it:
+			if (!extra(entry as ModerationManager.Entry<SearchType>)) continue;
+
+			return entry as ModerationManager.Entry<SearchType>;
+		}
+
+		return null;
+	}
+
+	/**
 	 * Applies a moderation action to a user in the specified guild.
 	 *
 	 * @param guild - The guild to apply the moderation action at.
@@ -272,56 +322,6 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		return isNullishOrEmpty(reason)
 			? t(undo ? Root.ActionRevokeNoReason : Root.ActionApplyNoReason, { action })
 			: t(undo ? Root.ActionRevokeReason : Root.ActionApplyReason, { action, reason });
-	}
-
-	/**
-	 * Cancels the last moderation entry task from a user.
-	 *
-	 * @param options - The options to fetch the moderation entry.
-	 * @returns The canceled moderation entry, or `null` if no entry was found.
-	 */
-	protected async completeLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
-		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
-	): Promise<ModerationManager.Entry<SearchType> | null> {
-		const entry = await this.retrieveLastModerationEntryFromUser(options);
-		if (isNullish(entry)) return null;
-
-		if (!isNullishOrZero(entry.duration) && !entry.isCompleted()) {
-			await getModeration(options.guild).complete(entry);
-		}
-		return entry;
-	}
-
-	/**
-	 * Retrieves the last moderation entry from a user based on the provided options.
-	 *
-	 * @param options - The options for fetching the moderation entry.
-	 * @returns The last moderation entry from the user, or `null` if no entry is found.
-	 */
-	protected async retrieveLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
-		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
-	): Promise<ModerationManager.Entry<SearchType> | null> {
-		// Retrieve all the entries
-		const entries = await getModeration(options.guild).fetch({ userId: options.userId });
-
-		const type = options.type ?? this.type;
-		const metadata = options.metadata ?? null;
-		const extra = options.filter ?? (() => true);
-
-		for (const entry of entries.values()) {
-			// If the entry has been archived or has completed, skip it:
-			if (entry.isArchived() || entry.isCompleted()) continue;
-			// If the entry is not of the same type, skip it:
-			if (entry.type !== type) continue;
-			// If the entry is not of the same metadata, skip it:
-			if (metadata !== null && entry.metadata !== metadata) continue;
-			// If the extra check fails, skip it:
-			if (!extra(entry as ModerationManager.Entry<SearchType>)) continue;
-
-			return entry as ModerationManager.Entry<SearchType>;
-		}
-
-		return null;
 	}
 
 	async #buildEmbed(guild: Guild, entry: ModerationManager.Entry, data: ModerationAction.Data<ContextType>) {

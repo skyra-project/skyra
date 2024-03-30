@@ -12,6 +12,7 @@ import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingRea
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { EmojiObject } from '#utils/functions';
 import type { EmbedBuilder } from '@discordjs/builders';
+import type { API } from '@discordjs/core/http-only';
 import type { Piece, Store } from '@sapphire/framework';
 import type { Awaitable, Nullish } from '@sapphire/utilities';
 import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utilities';
@@ -43,6 +44,7 @@ declare module 'discord.js' {
 
 declare module '@sapphire/pieces' {
 	interface Container {
+		api?: API;
 		db: DbSet;
 		schedule: ScheduleManager;
 		settings: SettingsManager;

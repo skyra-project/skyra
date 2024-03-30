@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings } from '#lib/database';
+import { ModerationActions } from '#lib/moderation';
 import { Events } from '#lib/types';
 import { getLogger, getModeration } from '#utils/functions';
 import { TypeMetadata, TypeVariation } from '#utils/moderationConstants';
@@ -16,28 +17,35 @@ export class UserListener extends Listener {
 
 		const { user, guild } = next;
 		const logger = getLogger(guild);
-		const actionBySkyra = logger.timeout.isSet(next.id);
-		const contextPromise = logger.timeout.wait(next.id);
 
-		// If the action was done by Skyra, or external timeout is enabled, create a moderation action:
-		if (!actionBySkyra && (await readSettings(next, GuildSettings.Events.Timeout))) {
-			const context = await contextPromise;
-			const moderation = getModeration(guild);
-			await moderation.waitLock();
+		// If the action was done by Skyra, skip:
+		const actionBySkyra = logger.timeout.isSet(user.id);
+		if (actionBySkyra) return;
 
-			if (moderation.checkSimilarEntryHasBeenCreated(TypeVariation.Timeout, user.id)) return;
+		const controller = new AbortController();
+		const contextPromise = logger.timeout.wait(user.id, controller.signal);
 
-			const duration = this.#getDuration(nextTimeout);
-			const entry = moderation.create({
-				user,
-				moderator: context?.userId,
-				type: TypeVariation.Timeout,
-				metadata: duration ? TypeMetadata.Temporary : TypeMetadata.Undo,
-				duration,
-				reason: context?.reason
-			});
-			await moderation.insert(entry);
+		// If the guild doesn't have manual logging enabled, skip:
+		const manualLoggingEnabled = await readSettings(guild, GuildSettings.Events.Timeout);
+		if (!manualLoggingEnabled) {
+			controller.abort();
+			return;
 		}
+
+		const context = await contextPromise;
+		const moderation = getModeration(guild);
+
+		const duration = this.#getDuration(nextTimeout);
+		const entry = moderation.create({
+			user,
+			moderator: context?.userId,
+			type: TypeVariation.Timeout,
+			metadata: duration ? TypeMetadata.Temporary : TypeMetadata.Undo,
+			duration,
+			reason: context?.reason
+		});
+		await moderation.insert(entry);
+		await ModerationActions.timeout.completeLastModerationEntryFromUser({ guild, userId: user.id });
 	}
 
 	#getTimeout(member: GuildMember) {

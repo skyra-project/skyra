@@ -88,7 +88,6 @@ export const TLDs = [
 	'author',
 	'auto',
 	'autos',
-	'avianca',
 	'aw',
 	'aws',
 	'ax',

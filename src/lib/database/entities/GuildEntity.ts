@@ -180,6 +180,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	@Column('boolean', { name: 'events.ban-remove', default: false })
 	public eventsBanRemove = false;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.EventsTimeout })
+	@Column('boolean', { name: 'events.timeout', default: false })
+	public eventsTimeout = false;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsUnknownMessages })
 	@Column('boolean', { name: 'events.unknown-messages', default: false })
 	public eventsUnknownMessages = false;

@@ -5,7 +5,7 @@ import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAc
 import type { ModerationManager } from '#lib/moderation/managers/ModerationManager';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels, type GuildMessage, type TypedT } from '#lib/types';
-import { asc, floatPromise, seconds, years } from '#utils/common';
+import { asc, floatPromise, seconds } from '#utils/common';
 import { deleteMessage, isGuildOwner } from '#utils/functions';
 import type { TypeVariation } from '#utils/moderationConstants';
 import { getImage, getTag, isUserSelf } from '#utils/util';
@@ -37,9 +37,24 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 	protected readonly supportsSchedule: boolean;
 
 	/**
+	 * The minimum duration for this command.
+	 */
+	protected readonly minimumDuration: number;
+
+	/**
+	 * The maximum duration for this command.
+	 */
+	protected readonly maximumDuration: number;
+
+	/**
 	 * Whether a member is required or not.
 	 */
 	protected readonly requiredMember: boolean;
+
+	/**
+	 * Whether a duration is required or not.
+	 */
+	protected readonly requiredDuration: boolean;
 
 	protected constructor(context: ModerationCommand.Context, options: ModerationCommand.Options<Type>) {
 		super(context, {
@@ -55,7 +70,10 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		this.isUndoAction = options.isUndoAction ?? false;
 		this.actionStatusKey = options.actionStatusKey ?? (this.isUndoAction ? Root.ActionIsNotActive : Root.ActionIsActive);
 		this.supportsSchedule = this.action.isUndoActionAvailable && !this.isUndoAction;
+		this.minimumDuration = this.action.minimumDuration;
+		this.maximumDuration = this.action.maximumDuration;
 		this.requiredMember = options.requiredMember ?? false;
+		this.requiredDuration = this.action.durationRequired && !this.isUndoAction;
 	}
 
 	public override messageRun(
@@ -335,14 +353,16 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 	 * @param args - The arguments for the moderation command.
 	 */
 	protected async resolveParametersDuration(args: ModerationCommand.Args) {
-		if (args.finished) return null;
-		if (!this.supportsSchedule) return null;
+		if (!this.requiredDuration) {
+			if (args.finished) return null;
+			if (!this.supportsSchedule) return null;
+		}
 
-		const result = await args.pickResult('timespan', { minimum: 0, maximum: years(5) });
+		const result = await args.pickResult('timespan', { minimum: this.minimumDuration, maximum: this.maximumDuration });
 		return result.match({
 			ok: (value) => value,
 			err: (error) => {
-				if (error.identifier === LanguageKeys.Arguments.TimeSpan) return null;
+				if (!this.requiredDuration && error.identifier === LanguageKeys.Arguments.TimeSpan) return null;
 				throw error;
 			}
 		});

@@ -9,7 +9,7 @@ import { isUserSelf } from '#utils/util';
 import { canSendEmbeds, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
-import { isNullish, isNumber } from '@sapphire/utilities';
+import { isNullish } from '@sapphire/utilities';
 import { DiscordAPIError, RESTJSONErrorCodes, type Collection, type Embed, type Message, type Snowflake } from 'discord.js';
 
 export class UserListener extends Listener {
@@ -39,8 +39,7 @@ export class UserListener extends Listener {
 	}
 
 	private async sendMessage(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
-		// Handle invalidation
-		if (this.#isArchiveUpdate(old, entry)) return;
+		if (entry.isArchived() || this.#isCompleteUpdate(old, entry)) return;
 
 		const moderation = getModeration(entry.guild);
 		const channel = await moderation.fetchChannel();
@@ -81,6 +80,10 @@ export class UserListener extends Listener {
 		}
 	}
 
+	#isCompleteUpdate(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
+		return !old.isCompleted() && entry.isCompleted();
+	}
+
 	async #tryDeleteTask(task: ScheduleEntity | null) {
 		if (!isNullish(task) && !task.running) await task.delete();
 	}
@@ -106,7 +109,7 @@ export class UserListener extends Listener {
 	}
 
 	#validateModerationLogMessageEmbedAuthor(author: Embed['author']) {
-		return author !== null && typeof author.name === 'string' && /\(\d{17,19}\)^/.test(author.name) && typeof author.iconURL === 'string';
+		return author !== null && typeof author.name === 'string' && /\(\d{17,19}\)$/.test(author.name) && typeof author.iconURL === 'string';
 	}
 
 	#validateModerationLogMessageEmbedDescription(description: Embed['description']) {
@@ -114,7 +117,7 @@ export class UserListener extends Listener {
 	}
 
 	#validateModerationLogMessageEmbedColor(color: Embed['color']) {
-		return isNumber(color);
+		return !isNullish(color);
 	}
 
 	#validateModerationLogMessageEmbedFooter(footer: Embed['footer']) {
@@ -122,11 +125,7 @@ export class UserListener extends Listener {
 	}
 
 	#validateModerationLogMessageEmbedTimestamp(timestamp: Embed['timestamp']) {
-		return isNumber(timestamp);
-	}
-
-	#isArchiveUpdate(old: ModerationManager.Entry, entry: ModerationManager.Entry) {
-		return !old.isArchived() && entry.isArchived();
+		return !isNullish(timestamp);
 	}
 
 	async #createNewTask(entry: ModerationManager.Entry) {

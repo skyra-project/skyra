@@ -25,6 +25,6 @@ export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
 	}
 
 	public override postHandle(_message: GuildMessage, { preHandled }: ModerationCommand.PostHandleParameters<ValueType>) {
-		preHandled?.unlock?.();
+		preHandled?.unlock();
 	}
 }

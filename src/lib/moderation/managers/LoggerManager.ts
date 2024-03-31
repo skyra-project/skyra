@@ -1,5 +1,5 @@
 import { writeSettings, type GuildSettingsOfType } from '#lib/database';
-import { LoggerTypeManager } from '#lib/moderation/managers/LoggerTypeManager';
+import { PruneLoggerTypeManager, TimeoutLoggerTypeManager } from '#lib/moderation/managers/loggers';
 import { toErrorCodeResult } from '#utils/common';
 import { getCodeStyle, getLogPrefix } from '#utils/functions/pieces';
 import { EmbedBuilder } from '@discordjs/builders';
@@ -8,19 +8,19 @@ import { isFunction, isNullish, isNullishOrEmpty, type Awaitable, type Nullish }
 import { PermissionFlagsBits, RESTJSONErrorCodes, type Guild, type GuildBasedChannel, type MessageCreateOptions, type Snowflake } from 'discord.js';
 
 export class LoggerManager {
-	public readonly prune = new LoggerTypeManager(this);
-
-	#guild: Guild;
+	public readonly timeout = new TimeoutLoggerTypeManager(this);
+	public readonly prune = new PruneLoggerTypeManager(this);
+	public readonly guild: Guild;
 
 	public constructor(guild: Guild) {
-		this.#guild = guild;
+		this.guild = guild;
 	}
 
 	/**
 	 * Whether or not the bot can view audit logs.
 	 */
 	public get canViewAuditLogs() {
-		return this.#guild.members.me!.permissions.has(PermissionFlagsBits.ViewAuditLog);
+		return this.guild.members.me!.permissions.has(PermissionFlagsBits.ViewAuditLog);
 	}
 
 	/**
@@ -34,7 +34,7 @@ export class LoggerManager {
 			return false;
 		}
 
-		const result = await toErrorCodeResult(this.#guild.channels.fetch(options.channelId));
+		const result = await toErrorCodeResult(this.guild.channels.fetch(options.channelId));
 		return result.match({
 			ok: (channel) => this.#sendChannelOk(options, channel),
 			err: (code) => this.#sendChannelErr(options, code)
@@ -54,7 +54,7 @@ export class LoggerManager {
 		if (!isNullishOrEmpty(messageOptions.embeds)) requiredPermissions |= PermissionFlagsBits.EmbedLinks;
 		if (!isNullishOrEmpty(messageOptions.files)) requiredPermissions |= PermissionFlagsBits.AttachFiles;
 
-		const hasPermissions = channel.permissionsFor(await this.#guild.members.fetchMe()).has(requiredPermissions);
+		const hasPermissions = channel.permissionsFor(await this.guild.members.fetchMe()).has(requiredPermissions);
 		if (!hasPermissions) return false;
 
 		const result = await toErrorCodeResult(channel.send(messageOptions));
@@ -68,7 +68,7 @@ export class LoggerManager {
 
 		// If the channel was not found, clear the settings:
 		if (code === RESTJSONErrorCodes.UnknownChannel) {
-			await writeSettings(this.#guild, [[options.key, null]]);
+			await writeSettings(this.guild, [[options.key, null]]);
 		} else {
 			this.#logError(code, options.channelId!, 'Failed to fetch channel');
 		}

@@ -31,6 +31,7 @@ export const UndoTaskNameMappings = {
 	[TypeVariation.Mute]: 'moderationEndMute',
 	[TypeVariation.Ban]: 'moderationEndBan',
 	[TypeVariation.VoiceMute]: 'moderationEndVoiceMute',
+	[TypeVariation.Timeout]: 'moderationEndTimeout',
 	[TypeVariation.RestrictedAttachment]: 'moderationEndRestrictionAttachment',
 	[TypeVariation.RestrictedReaction]: 'moderationEndRestrictionReaction',
 	[TypeVariation.RestrictedEmbed]: 'moderationEndRestrictionEmbed',
@@ -87,6 +88,7 @@ const TypeCodes = {
 	TemporaryRoleAdd: combineTypeData(TypeVariation.RoleAdd, TypeMetadata.Temporary),
 	TemporaryRoleRemove: combineTypeData(TypeVariation.RoleRemove, TypeMetadata.Temporary),
 	TemporarySetNickname: combineTypeData(TypeVariation.SetNickname, TypeMetadata.Temporary),
+	TemporaryTimeout: combineTypeData(TypeVariation.Timeout, TypeMetadata.Temporary),
 	TemporaryVoiceMute: combineTypeData(TypeVariation.VoiceMute, TypeMetadata.Temporary),
 	TemporaryWarning: combineTypeData(TypeVariation.Warning, TypeMetadata.Temporary)
 } as const;
@@ -141,6 +143,7 @@ const Metadata = new Map<TypeCodes, Colors>([
 	[TypeCodes.TemporaryRoleAdd, Colors.Lime300],
 	[TypeCodes.TemporaryRoleRemove, Colors.Lime300],
 	[TypeCodes.TemporarySetNickname, Colors.Lime300],
+	[TypeCodes.TemporaryTimeout, Colors.Amber],
 	[TypeCodes.TemporaryVoiceMute, Colors.Amber300],
 	[TypeCodes.TemporaryWarning, Colors.Yellow300]
 ]) as ReadonlyMap<TypeCodes, Colors>;

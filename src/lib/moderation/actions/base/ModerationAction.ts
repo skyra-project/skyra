@@ -3,6 +3,7 @@ import { getTitle, getTranslationKey } from '#lib/moderation/common';
 import type { ModerationManager } from '#lib/moderation/managers/ModerationManager';
 import type { TypedT } from '#lib/types';
 import { TypeMetadata, type TypeVariation } from '#lib/util/moderationConstants';
+import { seconds, years } from '#utils/common';
 import { getCodeStyle, getLogPrefix, getModeration } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
@@ -20,9 +21,35 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	public readonly type: Type;
 
 	/**
+	 * The minimum duration for the action.
+	 */
+	public readonly minimumDuration: number;
+
+	/**
+	 * The maximum duration for the action.
+	 */
+	public readonly maximumDuration: number;
+
+	/**
 	 * Whether or not the action allows undoing.
 	 */
 	public readonly isUndoActionAvailable: boolean;
+
+	/**
+	 * Whether or not the action requires a duration.
+	 */
+	public readonly durationRequired: boolean;
+
+	/**
+	 * Whether or not the action uses an external timer. This is true for
+	 * actions that are not time-managed by the bot, such as timeouts.
+	 *
+	 * @remarks
+	 *
+	 * If this field is set to `true`, the action will need to be re-applied in
+	 * order to update the duration.
+	 */
+	public readonly durationExternal: boolean;
 
 	/**
 	 * The prefix used for logging moderation actions.
@@ -38,6 +65,10 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		this.type = options.type;
 		this.actionKey = getTranslationKey(this.type);
 		this.logPrefix = getLogPrefix(options.logPrefix);
+		this.durationRequired = options.durationRequired ?? false;
+		this.durationExternal = options.durationExternal ?? false;
+		this.minimumDuration = options.minimumDuration ?? (this.durationRequired ? seconds(5) : 0);
+		this.maximumDuration = options.maximumDuration ?? years(1);
 		this.isUndoActionAvailable = options.isUndoActionAvailable;
 	}
 
@@ -55,6 +86,56 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	}
 
 	/**
+	 * Cancels the last moderation entry task from a user.
+	 *
+	 * @param options - The options to fetch the moderation entry.
+	 * @returns The canceled moderation entry, or `null` if no entry was found.
+	 */
+	public async completeLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
+		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
+	): Promise<ModerationManager.Entry<SearchType> | null> {
+		const entry = await this.retrieveLastModerationEntryFromUser(options);
+		if (isNullish(entry)) return null;
+
+		if (!isNullishOrZero(entry.duration) && !entry.isCompleted()) {
+			await getModeration(options.guild).complete(entry);
+		}
+		return entry;
+	}
+
+	/**
+	 * Retrieves the last moderation entry from a user based on the provided options.
+	 *
+	 * @param options - The options for fetching the moderation entry.
+	 * @returns The last moderation entry from the user, or `null` if no entry is found.
+	 */
+	public async retrieveLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
+		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
+	): Promise<ModerationManager.Entry<SearchType> | null> {
+		// Retrieve all the entries
+		const entries = await getModeration(options.guild).fetch({ userId: options.userId });
+
+		const type = options.type ?? this.type;
+		const metadata = options.metadata ?? null;
+		const extra = options.filter ?? (() => true);
+
+		for (const entry of entries.values()) {
+			// If the entry has been archived or has completed, skip it:
+			if (entry.isArchived() || entry.isCompleted()) continue;
+			// If the entry is not of the same type, skip it:
+			if (entry.type !== type) continue;
+			// If the entry is not of the same metadata, skip it:
+			if (metadata !== null && entry.metadata !== metadata) continue;
+			// If the extra check fails, skip it:
+			if (!extra(entry as ModerationManager.Entry<SearchType>)) continue;
+
+			return entry as ModerationManager.Entry<SearchType>;
+		}
+
+		return null;
+	}
+
+	/**
 	 * Applies a moderation action to a user in the specified guild.
 	 *
 	 * @param guild - The guild to apply the moderation action at.
@@ -65,7 +146,13 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	public async apply(guild: Guild, options: ModerationAction.PartialOptions<Type>, data: ModerationAction.Data<ContextType> = {}) {
 		const moderation = getModeration(guild);
 		const entry = moderation.create(await this.resolveOptions(guild, options, data));
-		await this.handleApplyPre(guild, entry, data);
+		try {
+			this.handleApplyPreOnStart(guild, entry, data);
+			await this.handleApplyPre(guild, entry, data);
+		} catch (error) {
+			await this.handleApplyPreOnError(error as Error, guild, entry, data);
+			throw error;
+		}
 		await this.sendDirectMessage(guild, entry, data);
 		await this.handleApplyPost(guild, entry, data);
 		return moderation.insert(entry);
@@ -76,13 +163,19 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to apply the moderation action at.
 	 * @param options - The options for the moderation action.
-	 * @param data - The options for sending the direct message.
+	 * @param data - The data for the action.
 	 * @returns A promise that resolves to the created entry.
 	 */
 	public async undo(guild: Guild, options: ModerationAction.PartialOptions<Type>, data: ModerationAction.Data<ContextType> = {}) {
 		const moderation = getModeration(guild);
 		const entry = moderation.create(await this.resolveAppealOptions(guild, options, data));
-		await this.handleUndoPre(guild, entry, data);
+		try {
+			this.handleUndoPreOnStart(guild, entry, data);
+			await this.handleUndoPre(guild, entry, data);
+		} catch (error) {
+			await this.handleUndoPreOnError(error as Error, guild, entry, data);
+			throw error;
+		}
 		await this.sendDirectMessage(guild, entry, data);
 		await this.handleUndoPost(guild, entry, data);
 		return moderation.insert(entry);
@@ -94,9 +187,36 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to apply the moderation action at.
 	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected handleApplyPre(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleApplyPre() {}
+
+	/**
+	 * Handles a hook that is executed before the moderation action is applied at {@linkcode handleApplyPre}.
+	 *
+	 * @param guild - The guild at which the moderation action is being applied.
+	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
+	 */
+	protected handleApplyPreOnStart(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): unknown;
+	protected handleApplyPreOnStart() {}
+
+	/**
+	 * Handles a hook that is executed when {@linkcode handleApplyPre} threw an error.
+	 *
+	 * @param guild - The guild at which the moderation action is being applied.
+	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
+	 */
+	protected handleApplyPreOnError(
+		error: Error,
+		guild: Guild,
+		entry: ModerationManager.Entry<Type>,
+		data: ModerationAction.Data<ContextType>
+	): unknown;
+
+	protected handleApplyPreOnError() {}
 
 	/**
 	 * Handles the post-apply of the moderation action. Executed after the moderation entry is created and the user has
@@ -104,6 +224,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to apply the moderation action at.
 	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected handleApplyPost(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleApplyPost() {}
@@ -114,9 +235,36 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to undo a moderation action at.
 	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected handleUndoPre(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleUndoPre() {}
+
+	/**
+	 * Handles a hook that is executed before the moderation action is applied at {@linkcode handleUndoPre}.
+	 *
+	 * @param guild - The guild at which the moderation action is being applied.
+	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
+	 */
+	protected handleUndoPreOnStart(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): unknown;
+	protected handleUndoPreOnStart() {}
+
+	/**
+	 * Handles a hook that is executed when {@linkcode handleUndoPre} threw an error.
+	 *
+	 * @param guild - The guild at which the moderation action is being applied.
+	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
+	 */
+	protected handleUndoPreOnError(
+		error: Error,
+		guild: Guild,
+		entry: ModerationManager.Entry<Type>,
+		data: ModerationAction.Data<ContextType>
+	): unknown;
+
+	protected handleUndoPreOnError() {}
 
 	/**
 	 * Handles the post-undo of the moderation action. Executed after the moderation entry is created and the user has
@@ -124,6 +272,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild to undo a moderation action at.
 	 * @param entry - The draft moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected handleUndoPost(guild: Guild, entry: ModerationManager.Entry<Type>, data: ModerationAction.Data<ContextType>): Awaitable<unknown>;
 	protected handleUndoPost() {}
@@ -133,14 +282,14 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		options: ModerationAction.PartialOptions<Type>,
 		data: ModerationAction.Data<ContextType>,
 		metadata: TypeMetadata = 0
-	) {
+	): Promise<ModerationManager.CreateData<Type>> {
 		return {
 			...options,
 			duration: options.duration || null,
 			type: this.type,
 			metadata,
 			extraData: options.extraData || (await this.resolveOptionsExtraData(guild, options, data))
-		} satisfies ModerationManager.CreateData<Type>;
+		};
 	}
 
 	/**
@@ -163,7 +312,9 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	/**
 	 * Resolves the options for an appeal.
 	 *
+	 * @param guild - The guild where the moderation action occurred.
 	 * @param options - The original options for the moderation action.
+	 * @param data - The data for the action.
 	 */
 	protected async resolveAppealOptions(guild: Guild, options: ModerationAction.PartialOptions<Type>, data: ModerationAction.Data<ContextType>) {
 		return this.resolveOptions(guild, options, data, TypeMetadata.Undo);
@@ -174,7 +325,7 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 	 *
 	 * @param guild - The guild where the moderation action occurred.
 	 * @param entry - The moderation entry.
-	 * @param data - The options for sending the message.
+	 * @param data - The data for the action.
 	 */
 	protected async sendDirectMessage(guild: Guild, entry: ModerationManager.Entry, data: ModerationAction.Data<ContextType>) {
 		if (!data.sendDirectMessage) return;
@@ -202,56 +353,6 @@ export abstract class ModerationAction<ContextType = never, Type extends TypeVar
 		return isNullishOrEmpty(reason)
 			? t(undo ? Root.ActionRevokeNoReason : Root.ActionApplyNoReason, { action })
 			: t(undo ? Root.ActionRevokeReason : Root.ActionApplyReason, { action, reason });
-	}
-
-	/**
-	 * Cancels the last moderation entry task from a user.
-	 *
-	 * @param options - The options to fetch the moderation entry.
-	 * @returns The canceled moderation entry, or `null` if no entry was found.
-	 */
-	protected async completeLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
-		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
-	): Promise<ModerationManager.Entry<SearchType> | null> {
-		const entry = await this.retrieveLastModerationEntryFromUser(options);
-		if (isNullish(entry)) return null;
-
-		if (!isNullishOrZero(entry.duration)) {
-			await getModeration(options.guild).complete(entry);
-		}
-		return entry;
-	}
-
-	/**
-	 * Retrieves the last moderation entry from a user based on the provided options.
-	 *
-	 * @param options - The options for fetching the moderation entry.
-	 * @returns The last moderation entry from the user, or `null` if no entry is found.
-	 */
-	protected async retrieveLastModerationEntryFromUser<SearchType extends TypeVariation = Type>(
-		options: ModerationAction.ModerationEntryFetchOptions<SearchType>
-	): Promise<ModerationManager.Entry<SearchType> | null> {
-		// Retrieve all the entries
-		const entries = await getModeration(options.guild).fetch({ userId: options.userId });
-
-		const type = options.type ?? this.type;
-		const metadata = options.metadata ?? null;
-		const extra = options.filter ?? (() => true);
-
-		for (const entry of entries.values()) {
-			// If the entry has been archived or has completed, skip it:
-			if (entry.isArchived() || entry.isCompleted()) continue;
-			// If the entry is not of the same type, skip it:
-			if (entry.type !== type) continue;
-			// If the entry is not of the same metadata, skip it:
-			if (metadata !== null && entry.metadata !== metadata) continue;
-			// If the extra check fails, skip it:
-			if (!extra(entry as ModerationManager.Entry<SearchType>)) continue;
-
-			return entry as ModerationManager.Entry<SearchType>;
-		}
-
-		return null;
 	}
 
 	async #buildEmbed(guild: Guild, entry: ModerationManager.Entry, data: ModerationAction.Data<ContextType>) {
@@ -302,6 +403,10 @@ export namespace ModerationAction {
 		type: Type;
 		logPrefix: string;
 		isUndoActionAvailable: boolean;
+		minimumDuration?: number;
+		maximumDuration?: number;
+		durationRequired?: boolean;
+		durationExternal?: boolean;
 	}
 
 	export type Options<Type extends TypeVariation = TypeVariation> = ModerationManager.CreateData<Type>;

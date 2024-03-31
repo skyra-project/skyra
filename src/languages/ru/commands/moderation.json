@@ -554,6 +554,53 @@
 			""
 		]
 	},
+	"timeoutApplyDescription": "",
+	"timeoutApplyExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"timeoutUndoDescription": "",
+	"timeoutUndoExtended": {
+		"usages": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"timeoutNotModeratable": "",
 	"toggleModerationDmDescription": "",
 	"toggleModerationDmExtended": {
 		"extendedHelp": ""

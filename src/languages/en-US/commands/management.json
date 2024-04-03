@@ -1,14 +1,68 @@
 {
-	"commandModeEnable": "Enables the sub-system.",
-	"commandModeDisable": "Disables the sub-system.",
-	"commandModeActionAlert": "Toggle message alerts in the channel.",
-	"commandModeActionLog": "Toggle message logs in the moderation logs channel, if set.",
-	"commandModeActionDelete": "Toggle message deletions.",
-	"commandModePunishment": "The moderation action to take.",
-	"commandModePunishmentDuration": "The duration for the punishment.",
-	"commandModeThreshold": "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset.",
-	"commandModeThresholdDuration": "The time in which infractions will accumulate before taking action, instantly if unset.",
-	"commandModeReminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
+	"showName": "show",
+	"showDescription": "Show the current configuration for this server",
+	"editName": "edit",
+	"editDescription": "Edit the configuration for this server",
+	"resetName": "reset",
+	"resetDescription": "Reset a configuration key to its default value",
+	"optionsEnabledName": "enabled",
+	"optionsEnabledDescription": "Toggle the sub-system",
+	"optionsActionAlertName": "alert",
+	"optionsActionAlertDescription": "Toggle message alerts in the channel",
+	"optionsActionLogName": "log",
+	"optionsActionLogDescription": "Toggle message logs in the moderation logs channel, if set",
+	"optionsActionDeleteName": "delete",
+	"optionsActionDeleteDescription": "Toggle message deletions",
+	"optionsPunishmentName": "punishment",
+	"optionsPunishmentDescription": "Set the moderation action to take after the threshold is reached",
+	"optionsPunishmentDurationName": "punishment-duration",
+	"optionsPunishmentDurationDescription": "Set the duration for the punishment",
+	"optionsThresholdName": "threshold",
+	"optionsThresholdDescription": "Set the amount of infractions allowed within the set period",
+	"optionsThresholdPeriodName": "threshold-period",
+	"optionsThresholdPeriodDescription": "Set the time in which infractions will accumulate",
+	"optionsKeyName": "key",
+	"optionsKeyDescription": "The key to reset",
+	"optionsKeyEnabled": "Enabled",
+	"optionsKeyActionAlert": "Alert Messages",
+	"optionsKeyActionLog": "Post Moderation Logs",
+	"optionsKeyActionDelete": "Message Deletions",
+	"optionsKeyPunishment": "Punishment",
+	"optionsKeyPunishmentDuration": "Punishment Duration",
+	"optionsKeyThreshold": "Punishment Threshold",
+	"optionsKeyThresholdPeriod": "Punishment Threshold Period",
+	"attachmentsName": "automod-attachments",
+	"attachmentsDescription": "Manage the auto-moderator for attachments",
+	"capitalsName": "automod-capitals",
+	"capitalsDescription": "Manage the auto-moderator for capitalization",
+	"wordsName": "automod-words",
+	"wordsDescription": "Manage the auto-moderator for words",
+	"invitesName": "automod-invites",
+	"invitesDescription": "Manage the auto-moderator for invites",
+	"linksName": "automod-links",
+	"linksDescription": "Manage the auto-moderator for links",
+	"spamName": "automod-spam",
+	"spamDescription": "Manage the auto-moderator for spam",
+	"newlinesName": "automod-newlines",
+	"newlinesDescription": "Manage the auto-moderator for lines",
+	"reactionsName": "automod-reactions",
+	"reactionsDescription": "Manage the auto-moderator for reactions",
+	"showDisabled": "Auto-moderator inactive",
+	"showEnabled": "Auto-moderator active",
+	"showReplyActive": "{{emoji}} **Alert Messages**",
+	"showReplyInactive": "{{emoji}} ~~Alert Messages~~",
+	"showLogActive": "{{emoji}} **Post Moderation Logs**",
+	"showLogInactive": "{{emoji}} ~~Post Moderation Logs~~",
+	"showDeleteActive": "{{emoji}} **Message Deletions**",
+	"showDeleteInactive": "{{emoji}} ~~Message Deletions~~",
+	"showPunishmentTitle": "Punishment active",
+	"showPunishment": "Type: {{name}}",
+	"showPunishmentTemporary": "Type: {{name}} for {{duration}}",
+	"showPunishmentThresholdMaximumUnset": "- Threshold: *unset*",
+	"showPunishmentThresholdMaximum": "- Threshold: {{maximum, number}}",
+	"showPunishmentThresholdPeriodUnset": "- Threshold Period: *unset*",
+	"showPunishmentThresholdPeriod": "- Threshold Period: {{duration}}",
+	"editSuccess": "Successfully edited the auto-moderator's settings.",
 	"commandHandlerAborted": "Aborted",
 	"permissionNodesHigher": "{{REDCROSS}} You cannot modify nor preview the permission nodes for this target.",
 	"permissionNodesCannotAllowEveryone": "{{REDCROSS}} You cannot allow commands for the `@everyone` role.",
@@ -442,134 +496,6 @@
 		],
 		"reminder": "The member's roles will not be modified by this command, you need to add or remove them."
 	},
-	"attachmentsModeDescription": "Manage this server's flags for the attachments filter.",
-	"attachmentsModeExtended": {
-		"usages": [
-			"on/e/enable",
-			"off/d/disable",
-			"action/soft-action alert/log/delete",
-			"punish/punishment none/warn/mute/kick/softban/ban",
-			"pd/punish-duration/punishment-duration Timespan",
-			"tm/threshold Integer",
-			"td/threshold-duration Timespan",
-			"sh/show",
-			""
-		],
-		"extendedHelp": "The attachmentsMode command manages the behavior of the attachments system.",
-		"explainedUsage": [
-			[
-				"Enable",
-				"$t(commands/management:commandModeEnable)"
-			],
-			[
-				"Disable",
-				"$t(commands/management:commandModeDisable)"
-			],
-			[
-				"Action Alert",
-				"$t(commands/management:commandModeActionAlert)"
-			],
-			[
-				"Action Log",
-				"$t(commands/management:commandModeActionLog)"
-			],
-			[
-				"Action Delete",
-				"$t(commands/management:commandModeActionDelete)"
-			],
-			[
-				"Punishment",
-				"$t(commands/management:commandModePunishment)"
-			],
-			[
-				"Punishment-Duration",
-				"$t(commands/management:commandModePunishmentDuration)"
-			],
-			[
-				"Threshold-Maximum",
-				"$t(commands/management:commandModeThreshold)"
-			],
-			[
-				"Threshold-Duration",
-				"$t(commands/management:commandModeThresholdDuration)"
-			]
-		],
-		"reminder": "$t(commands/management:commandModeReminder)",
-		"examples": [
-			"enable",
-			"disable",
-			"action alert",
-			"punishment ban",
-			"punishment mute",
-			"punishment-duration 1m",
-			"threshold-maximum 5",
-			"threshold-duration 30s"
-		]
-	},
-	"capitalsModeDescription": "Manage this server's flags for the caps filter.",
-	"capitalsModeExtended": {
-		"usages": [
-			"on/e/enable",
-			"off/d/disable",
-			"action/soft-action alert/log/delete",
-			"punish/punishment none/warn/mute/kick/softban/ban",
-			"pd/punish-duration/punishment-duration Timespan",
-			"tm/threshold-maximum Integer",
-			"td/threshold-duration Timespan",
-			"sh/show",
-			""
-		],
-		"extendedHelp": "The capitalsMode command manages the behavior of the caps system.\nThe minimum amount of characters before filtering can be set with `Skyra, settings set selfmod.capitals.minimum <number>`.\nThe percentage of uppercase letters can be set with `Skyra, settings set selfmod.capitals.maximum <number>`.",
-		"explainedUsage": [
-			[
-				"Enable",
-				"$t(commands/management:commandModeEnable)"
-			],
-			[
-				"Disable",
-				"$t(commands/management:commandModeDisable)"
-			],
-			[
-				"Action Alert",
-				"$t(commands/management:commandModeActionAlert)"
-			],
-			[
-				"Action Log",
-				"$t(commands/management:commandModeActionLog)"
-			],
-			[
-				"Action Delete",
-				"$t(commands/management:commandModeActionDelete)"
-			],
-			[
-				"Punishment",
-				"$t(commands/management:commandModePunishment)"
-			],
-			[
-				"Punishment-Duration",
-				"$t(commands/management:commandModePunishmentDuration)"
-			],
-			[
-				"Threshold-Maximum",
-				"$t(commands/management:commandModeThreshold)"
-			],
-			[
-				"Threshold-Duration",
-				"$t(commands/management:commandModeThresholdDuration)"
-			]
-		],
-		"reminder": "$t(commands/management:commandModeReminder)",
-		"examples": [
-			"enable",
-			"disable",
-			"action alert",
-			"punishment ban",
-			"punishment mute",
-			"punishment-duration 1m",
-			"threshold-maximum 5",
-			"threshold-duration 30s"
-		]
-	},
 	"filterDescription": "Manage this server's list of blocked words.",
 	"filterExtended": {
 		"usages": [
@@ -586,390 +512,6 @@
 			"reset",
 			"show",
 			""
-		]
-	},
-	"filterModeDescription": "Manage this server's word filter modes.",
-	"filterModeExtended": {
-		"usages": [
-			"on/e/enable",
-			"off/d/disable",
-			"action/soft-action alert/log/delete",
-			"punish/punishment none/warn/mute/kick/softban/ban",
-			"pd/punish-duration/punishment-duration Timespan",
-			"tm/threshold-maximum Integer",
-			"td/threshold-duration Timespan",
-			"sh/show",
-			""
-		],
-		"extendedHelp": "The filterMode command manages the behavior of the word filter system. Run `Skyra, help filter` for how to add words.",
-		"explainedUsage": [
-			[
-				"Enable",
-				"$t(commands/management:commandModeEnable)"
-			],
-			[
-				"Disable",
-				"$t(commands/management:commandModeDisable)"
-			],
-			[
-				"Action Alert",
-				"$t(commands/management:commandModeActionAlert)"
-			],
-			[
-				"Action Log",
-				"$t(commands/management:commandModeActionLog)"
-			],
-			[
-				"Action Delete",
-				"$t(commands/management:commandModeActionDelete)"
-			],
-			[
-				"Punishment",
-				"$t(commands/management:commandModePunishment)"
-			],
-			[
-				"Punishment-Duration",
-				"$t(commands/management:commandModePunishmentDuration)"
-			],
-			[
-				"Threshold-Maximum",
-				"$t(commands/management:commandModeThreshold)"
-			],
-			[
-				"Threshold-Duration",
-				"$t(commands/management:commandModeThresholdDuration)"
-			]
-		],
-		"reminder": "$t(commands/management:commandModeReminder)",
-		"examples": [
-			"enable",
-			"disable",
-			"action alert",
-			"punishment ban",
-			"punishment mute",
-			"punishment-duration 1m",
-			"threshold-maximum 5",
-			"threshold-duration 30s"
-		]
-	},
-	"inviteModeDescription": "Manage the behavior for the invite link filter.",
-	"inviteModeExtended": {
-		"usages": [
-			"on/e/enable",
-			"off/d/disable",
-			"action/soft-action alert/log/delete",
-			"punish/punishment none/warn/mute/kick/softban/ban",
-			"pd/punish-duration/punishment-duration Timespan",
-			"tm/threshold-maximum Integer",
-			"td/threshold-duration Timespan",
-			"sh/show",
-			""
-		],
-		"extendedHelp": "The inviteMode command manages the behavior of the invite filter system.",
-		"explainedUsage": [
-			[
-				"Enable",
-				"$t(commands/management:commandModeEnable)"
-			],
-			[
-				"Disable",
-				"$t(commands/management:commandModeDisable)"
-			],
-			[
-				"Action Alert",
-				"$t(commands/management:commandModeActionAlert)"
-			],
-			[
-				"Action Log",
-				"$t(commands/management:commandModeActionLog)"
-			],
-			[
-				"Action Delete",
-				"$t(commands/management:commandModeActionDelete)"
-			],
-			[
-				"Punishment",
-				"$t(commands/management:commandModePunishment)"
-			],
-			[
-				"Punishment-Duration",
-				"$t(commands/management:commandModePunishmentDuration)"
-			],
-			[
-				"Threshold-Maximum",
-				"$t(commands/management:commandModeThreshold)"
-			],
-			[
-				"Threshold-Duration",
-				"$t(commands/management:commandModeThresholdDuration)"
-			]
-		],
-		"reminder": "$t(commands/management:commandModeReminder)",
-		"examples": [
-			"enable",
-			"disable",
-			"action alert",
-			"punishment ban",
-			"punishment mute",
-			"punishment-duration 1m",
-			"threshold-maximum 5",
-			"threshold-duration 30s"
-		]
-	},
-	"linkModeDescription": "Manage the behavior for the link filter.",
-	"linkModeExtended": {
-		"usages": [
-			"on/e/enable",
-			"off/d/disable",
-			"action/soft-action alert/log/delete",
-			"punish/punishment none/warn/mute/kick/softban/ban",
-			"pd/punish-duration/punishment-duration Timespan",
-			"tm/threshold-maximum Integer",
-			"td/threshold-duration Timespan",
-			"sh/show",
-			""
-		],
-		"extendedHelp": "The linkMode command manages the behavior of the link system.",
-		"explainedUsage": [
-			[
-				"Enable",
-				"$t(commands/management:commandModeEnable)"
-			],
-			[
-				"Disable",
-				"$t(commands/management:commandModeDisable)"
-			],
-			[
-				"Action Alert",
-				"$t(commands/management:commandModeActionAlert)"
-			],
-			[
-				"Action Log",
-				"$t(commands/management:commandModeActionLog)"
-			],
-			[
-				"Action Delete",
-				"$t(commands/management:commandModeActionDelete)"
-			],
-			[
-				"Punishment",
-				"$t(commands/management:commandModePunishment)"
-			],
-			[
-				"Punishment-Duration",
-				"$t(commands/management:commandModePunishmentDuration)"
-			],
-			[
-				"Threshold-Maximum",
-				"$t(commands/management:commandModeThreshold)"
-			],
-			[
-				"Threshold-Duration",
-				"$t(commands/management:commandModeThresholdDuration)"
-			]
-		],
-		"reminder": "$t(commands/management:commandModeReminder)",
-		"examples": [
-			"enable",
-			"disable",
-			"action alert",
-			"punishment ban",
-			"punishment mute",
-			"punishment-duration 1m",
-			"threshold-maximum 5",
-			"threshold-duration 30s"
-		]
-	},
-	"messageModeDescription": "Manage the behavior for the message filter system.",
-	"messageModeExtended": {
-		"usages": [
-			"on/e/enable",
-			"off/d/disable",
-			"action/soft-action alert/log/delete",
-			"punish/punishment none/warn/mute/kick/softban/ban",
-			"pd/punish-duration/punishment-duration Timespan",
-			"tm/threshold-maximum Integer",
-			"td/threshold-duration Timespan",
-			"sh/show",
-			""
-		],
-		"extendedHelp": "The messageMode command manages the behavior of the message filter system.",
-		"explainedUsage": [
-			[
-				"Enable",
-				"$t(commands/management:commandModeEnable)"
-			],
-			[
-				"Disable",
-				"$t(commands/management:commandModeDisable)"
-			],
-			[
-				"Action Alert",
-				"$t(commands/management:commandModeActionAlert)"
-			],
-			[
-				"Action Log",
-				"$t(commands/management:commandModeActionLog)"
-			],
-			[
-				"Action Delete",
-				"$t(commands/management:commandModeActionDelete)"
-			],
-			[
-				"Punishment",
-				"$t(commands/management:commandModePunishment)"
-			],
-			[
-				"Punishment-Duration",
-				"$t(commands/management:commandModePunishmentDuration)"
-			],
-			[
-				"Threshold-Maximum",
-				"$t(commands/management:commandModeThreshold)"
-			],
-			[
-				"Threshold-Duration",
-				"$t(commands/management:commandModeThresholdDuration)"
-			]
-		],
-		"reminder": "$t(commands/management:commandModeReminder)",
-		"examples": [
-			"enable",
-			"disable",
-			"action alert",
-			"punishment ban",
-			"punishment mute",
-			"punishment-duration 1m",
-			"threshold-maximum 5",
-			"threshold-duration 30s"
-		]
-	},
-	"newlineModeDescription": "Manage the behavior for the new line filter system.",
-	"newlineModeExtended": {
-		"usages": [
-			"on/e/enable",
-			"off/d/disable",
-			"action/soft-action alert/log/delete",
-			"punish/punishment none/warn/mute/kick/softban/ban",
-			"pd/punish-duration/punishment-duration Timespan",
-			"tm/threshold-maximum Integer",
-			"td/threshold-duration Timespan",
-			"sh/show",
-			""
-		],
-		"extendedHelp": "The newLineMode command manages the behavior of the new line filter system.\nThe maximum amount of lines allowed can be set with `Skyra, settings set selfmod.newlines.maximum <number>`",
-		"explainedUsage": [
-			[
-				"Enable",
-				"$t(commands/management:commandModeEnable)"
-			],
-			[
-				"Disable",
-				"$t(commands/management:commandModeDisable)"
-			],
-			[
-				"Action Alert",
-				"$t(commands/management:commandModeActionAlert)"
-			],
-			[
-				"Action Log",
-				"$t(commands/management:commandModeActionLog)"
-			],
-			[
-				"Action Delete",
-				"$t(commands/management:commandModeActionDelete)"
-			],
-			[
-				"Punishment",
-				"$t(commands/management:commandModePunishment)"
-			],
-			[
-				"Punishment-Duration",
-				"$t(commands/management:commandModePunishmentDuration)"
-			],
-			[
-				"Threshold-Maximum",
-				"$t(commands/management:commandModeThreshold)"
-			],
-			[
-				"Threshold-Duration",
-				"$t(commands/management:commandModeThresholdDuration)"
-			]
-		],
-		"reminder": "$t(commands/management:commandModeReminder)",
-		"examples": [
-			"enable",
-			"disable",
-			"action alert",
-			"punishment ban",
-			"punishment mute",
-			"punishment-duration 1m",
-			"threshold-maximum 5",
-			"threshold-duration 30s"
-		]
-	},
-	"reactionModeDescription": "Manage the behavior for the reaction filter system.",
-	"reactionModeExtended": {
-		"usages": [
-			"on/e/enable",
-			"off/d/disable",
-			"action/soft-action alert/log/delete",
-			"punish/punishment none/warn/mute/kick/softban/ban",
-			"pd/punish-duration/punishment-duration Timespan",
-			"tm/threshold-maximum Integer",
-			"td/threshold-duration Timespan",
-			"sh/show",
-			""
-		],
-		"extendedHelp": "The reactionMode command manages the behavior of the reaction filter system.",
-		"explainedUsage": [
-			[
-				"Enable",
-				"$t(commands/management:commandModeEnable)"
-			],
-			[
-				"Disable",
-				"$t(commands/management:commandModeDisable)"
-			],
-			[
-				"Action Alert",
-				"$t(commands/management:commandModeActionAlert)"
-			],
-			[
-				"Action Log",
-				"$t(commands/management:commandModeActionLog)"
-			],
-			[
-				"Action Delete",
-				"$t(commands/management:commandModeActionDelete)"
-			],
-			[
-				"Punishment",
-				"$t(commands/management:commandModePunishment)"
-			],
-			[
-				"Punishment-Duration",
-				"$t(commands/management:commandModePunishmentDuration)"
-			],
-			[
-				"Threshold-Maximum",
-				"$t(commands/management:commandModeThreshold)"
-			],
-			[
-				"Threshold-Duration",
-				"$t(commands/management:commandModeThresholdDuration)"
-			]
-		],
-		"reminder": "$t(commands/management:commandModeReminder)",
-		"examples": [
-			"enable",
-			"disable",
-			"action alert",
-			"punishment ban",
-			"punishment mute",
-			"punishment-duration 1m",
-			"threshold-maximum 5",
-			"threshold-duration 30s"
 		]
 	},
 	"rolesDescription": "List, claim or unclaim public roles in this server.",

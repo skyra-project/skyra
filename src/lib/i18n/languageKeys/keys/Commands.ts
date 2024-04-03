@@ -6,7 +6,6 @@ export * as General from '#lib/i18n/languageKeys/keys/commands/General';
 export * as Management from '#lib/i18n/languageKeys/keys/commands/Management';
 export * as Misc from '#lib/i18n/languageKeys/keys/commands/Misc';
 export * as Moderation from '#lib/i18n/languageKeys/keys/commands/Moderation';
-export * as SettingsModeration from '#lib/i18n/languageKeys/keys/commands/SettingsModeration';
 export * as Shared from '#lib/i18n/languageKeys/keys/commands/Shared';
 export * as System from '#lib/i18n/languageKeys/keys/commands/System';
 export * as Tools from '#lib/i18n/languageKeys/keys/commands/Tools';

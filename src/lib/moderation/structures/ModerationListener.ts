@@ -1,7 +1,7 @@
 import { readSettings, type GuildSettingsOfType } from '#lib/database';
 import { ModerationActions } from '#lib/moderation/actions/index';
 import type { HardPunishment } from '#lib/moderation/structures/ModerationMessageListener';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
+import { AutoModerationOnInfraction, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
 import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import type { EmbedBuilder } from '@discordjs/builders';
@@ -11,10 +11,10 @@ import type { Guild } from 'discord.js';
 export abstract class ModerationListener<V extends unknown[], T = unknown> extends Listener {
 	public abstract override run(...params: V): unknown;
 
-	protected processSoftPunishment(args: Readonly<V>, preProcessed: T, bitField: SelfModeratorBitField) {
-		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE)) this.onDelete(args, preProcessed);
-		if (bitField.has(SelfModeratorBitField.FLAGS.ALERT)) this.onAlert(args, preProcessed);
-		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) this.onLog(args, preProcessed);
+	protected processSoftPunishment(args: Readonly<V>, preProcessed: T, bitfield: number) {
+		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Delete)) this.onDelete(args, preProcessed);
+		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Alert)) this.onAlert(args, preProcessed);
+		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Log)) this.onLog(args, preProcessed);
 	}
 
 	protected async processHardPunishment(guild: Guild, userId: string, action: SelfModeratorHardActionFlags) {
@@ -28,7 +28,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 			case SelfModeratorHardActionFlags.Mute:
 				await this.onMute(guild, userId);
 				break;
-			case SelfModeratorHardActionFlags.SoftBan:
+			case SelfModeratorHardActionFlags.Softban:
 				await this.onSoftBan(guild, userId);
 				break;
 			case SelfModeratorHardActionFlags.Ban:

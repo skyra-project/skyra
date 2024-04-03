@@ -1,314 +1,358 @@
-import { configurableKeys, readSettings, writeSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
+import { GuildEntity, configurableKeys, readSettings, writeSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
+import type { Adder } from '#lib/database/utils/Adder';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
-import { SkyraCommand } from '#lib/structures';
-import { PermissionLevels, type GuildMessage } from '#lib/types';
-import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
-import { send } from '@sapphire/plugin-editable-commands';
-import type { TFunction } from '@sapphire/plugin-i18next';
-import { codeBlock } from '@sapphire/utilities';
+import { getSupportedUserLanguageT } from '#lib/i18n/translate';
+import { AutoModerationOnInfraction, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
+import { SkyraSubcommand } from '#lib/structures';
+import { PermissionLevels, type TypedT } from '#lib/types';
+import { Colors, Emojis } from '#utils/constants';
+import { resolveTimeSpan } from '#utils/resolvers';
+import { EmbedBuilder, type SlashCommandSubcommandBuilder } from '@discordjs/builders';
+import { ApplicationCommandRegistry, CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
+import { isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
+import { Guild, PermissionFlagsBits } from 'discord.js';
 
-export enum AKeys {
-	Enable,
-	Disable,
-	SoftAction,
-	HardAction,
-	HardActionDuration,
-	ThresholdMaximum,
-	ThresholdDuration,
-	Show
-}
+const Root = LanguageKeys.Commands.Management;
+const RootModeration = LanguageKeys.Moderation;
 
-export const kActions = new Map<string, AKeys>([
-	['e', AKeys.Enable],
-	['enable', AKeys.Enable],
-	['on', AKeys.Enable],
-	['d', AKeys.Disable],
-	['disable', AKeys.Disable],
-	['off', AKeys.Disable],
-	['a', AKeys.SoftAction],
-	['action', AKeys.SoftAction],
-	['soft-action', AKeys.SoftAction],
-	['p', AKeys.HardAction],
-	['punish', AKeys.HardAction],
-	['punishment', AKeys.HardAction],
-	['pd', AKeys.HardActionDuration],
-	['punish-duration', AKeys.HardActionDuration],
-	['punishment-duration', AKeys.HardActionDuration],
-	['t', AKeys.ThresholdMaximum],
-	['tm', AKeys.ThresholdMaximum],
-	['threshold', AKeys.ThresholdMaximum],
-	['threshold-maximum', AKeys.ThresholdMaximum],
-	['td', AKeys.ThresholdDuration],
-	['threshold-duration', AKeys.ThresholdDuration],
-	['s', AKeys.Show],
-	['sh', AKeys.Show],
-	['show', AKeys.Show],
-	['display', AKeys.Show]
-]);
+export abstract class SelfModerationCommand extends SkyraSubcommand {
+	protected readonly adderPropertyName: AdderKey;
+	protected readonly keyEnabled: GuildSettingsOfType<boolean>;
+	protected readonly keyOnInfraction: GuildSettingsOfType<number>;
+	protected readonly keyPunishment: GuildSettingsOfType<number | null>;
+	protected readonly keyPunishmentDuration: GuildSettingsOfType<number | null>;
+	protected readonly keyPunishmentThreshold: GuildSettingsOfType<number | null>;
+	protected readonly keyPunishmentThresholdPeriod: GuildSettingsOfType<number | null>;
 
-export enum ASKeys {
-	Alert = SelfModeratorBitField.FLAGS.ALERT,
-	Log = SelfModeratorBitField.FLAGS.LOG,
-	Delete = SelfModeratorBitField.FLAGS.DELETE
-}
+	readonly #localizedNameKey: TypedT;
 
-export const kSoftActions = new Map<string, ASKeys>([
-	['a', ASKeys.Alert],
-	['al', ASKeys.Alert],
-	['alert', ASKeys.Alert],
-	['l', ASKeys.Log],
-	['log', ASKeys.Log],
-	['d', ASKeys.Delete],
-	['del', ASKeys.Delete],
-	['delete', ASKeys.Delete]
-]);
+	readonly #punishmentDurationMinimum: number;
+	readonly #punishmentDurationMaximum: number;
+	readonly #punishmentThresholdMinimum: number;
+	readonly #punishmentThresholdMaximum: number;
+	readonly #punishmentThresholdDurationMinimum: number;
+	readonly #punishmentThresholdDurationMaximum: number;
 
-export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
-	['r', SelfModeratorHardActionFlags.None],
-	['reset', SelfModeratorHardActionFlags.None],
-	['n', SelfModeratorHardActionFlags.None],
-	['none', SelfModeratorHardActionFlags.None],
-	['w', SelfModeratorHardActionFlags.Warning],
-	['warn', SelfModeratorHardActionFlags.Warning],
-	['warning', SelfModeratorHardActionFlags.Warning],
-	['m', SelfModeratorHardActionFlags.Mute],
-	['mute', SelfModeratorHardActionFlags.Mute],
-	['k', SelfModeratorHardActionFlags.Kick],
-	['kick', SelfModeratorHardActionFlags.Kick],
-	['sb', SelfModeratorHardActionFlags.SoftBan],
-	['softban', SelfModeratorHardActionFlags.SoftBan],
-	['soft-ban', SelfModeratorHardActionFlags.SoftBan],
-	['b', SelfModeratorHardActionFlags.Ban],
-	['ban', SelfModeratorHardActionFlags.Ban]
-]);
-
-export abstract class SelfModerationCommand extends SkyraCommand {
-	protected constructor(context: SkyraCommand.LoaderContext, options: SelfModerationCommand.Options) {
+	protected constructor(context: SkyraSubcommand.LoaderContext, options: SelfModerationCommand.Options) {
 		super(context, {
+			detailedDescription: LanguageKeys.Commands.Shared.SlashOnlyDetailedDescription,
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: [CommandOptionsRunTypeEnum.GuildAny],
+			hidden: true,
+			subcommands: [
+				{ name: 'show', chatInputRun: 'chatInputRunShow', default: true },
+				{ name: 'edit', chatInputRun: 'chatInputRunEdit' },
+				{ name: 'reset', chatInputRun: 'chatInputRunReset' }
+			],
 			...options
 		});
+
+		this.adderPropertyName = options.adderPropertyName;
+		this.keyEnabled = options.keyEnabled;
+		this.keyOnInfraction = options.keyOnInfraction;
+		this.keyPunishment = options.keyPunishment;
+		this.keyPunishmentDuration = options.keyPunishmentDuration;
+		this.keyPunishmentThreshold = options.keyPunishmentThreshold;
+		this.keyPunishmentThresholdPeriod = options.keyPunishmentThresholdPeriod;
+
+		this.#localizedNameKey = options.localizedNameKey;
+
+		const punishmentDuration = configurableKeys.get(this.keyPunishmentDuration)!;
+		this.#punishmentDurationMinimum = punishmentDuration.minimum!;
+		this.#punishmentDurationMaximum = punishmentDuration.maximum!;
+
+		const punishmentThreshold = configurableKeys.get(this.keyPunishmentThresholdPeriod)!;
+		this.#punishmentThresholdMinimum = punishmentThreshold.minimum!;
+		this.#punishmentThresholdMaximum = punishmentThreshold.maximum!;
+
+		const punishmentThresholdDuration = configurableKeys.get(this.keyPunishmentThresholdPeriod)!;
+		this.#punishmentThresholdDurationMinimum = punishmentThresholdDuration.minimum!;
+		this.#punishmentThresholdDurationMaximum = punishmentThresholdDuration.maximum!;
 	}
 
-	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
-		const type = this.getAction(args);
-		if (type === AKeys.Show) return this.show(message);
-
-		let value = (await this.getValue(args, type)) as unknown;
-
-		const key = this.getProperty(type)!;
-		const t = await writeSettings(message.guild, (settings) => {
-			Reflect.set(settings, key, value);
-			return settings.getLanguage();
-		});
-
-		switch (type) {
-			case AKeys.SoftAction: {
-				value = SelfModerationCommand.displaySoftAction(t, value as number).join('`, `');
-				break;
-			}
-			case AKeys.HardAction: {
-				value = t(SelfModerationCommand.displayHardAction(value as SelfModeratorHardActionFlags));
-				break;
-			}
-			case AKeys.Enable:
-			case AKeys.Disable:
-			case AKeys.ThresholdMaximum:
-			case AKeys.ThresholdDuration:
-			case AKeys.HardActionDuration:
-				break;
-		}
-
-		const content = SelfModerationCommand.getLanguageKey(t, type, value);
-		return send(message, content);
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
+		registry.registerChatInputCommand((builder) =>
+			applyLocalizedBuilder(builder, this.#localizedNameKey, this.description)
+				.setDMPermission(false)
+				.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+				.addSubcommand((subcommand) => this.registerShowSubcommand(subcommand))
+				.addSubcommand((subcommand) => this.registerEditSubcommand(subcommand))
+				.addSubcommand((subcommand) => this.registerResetSubcommand(subcommand))
+		);
 	}
 
-	protected async show(message: GuildMessage) {
-		const [enabled, softAction, hardAction, hardActionDuration, adder, t] = await readSettings(message.guild, (settings) => [
+	public async chatInputRunShow(interaction: SkyraSubcommand.Interaction) {
+		const [enabled, onInfraction, punishment, punishmentDuration, adder] = await readSettings(interaction.guild, (settings) => [
 			settings[this.keyEnabled],
-			settings[this.keySoftAction],
-			settings[this.keyHardAction],
-			settings[this.keyHardActionDuration],
-			settings.adders[this.$adder],
-			settings.getLanguage()
+			settings[this.keyOnInfraction],
+			settings[this.keyPunishment],
+			settings[this.keyPunishmentDuration],
+			settings.adders[this.adderPropertyName]
 		]);
 
-		const [yes, no] = [t(LanguageKeys.Arguments.BooleanEnabled), t(LanguageKeys.Arguments.BooleanDisabled)];
-		const codeBlockContent = t(LanguageKeys.Commands.Moderation.AutomaticParameterShow, {
-			kEnabled: enabled ? yes : no,
-			kAlert: SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
-			kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
-			kDelete: SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
-			kHardAction: t(SelfModerationCommand.displayHardAction(hardAction)),
-			hardActionDurationText: hardActionDuration
-				? t(LanguageKeys.Globals.DurationValue, { value: hardActionDuration })
-				: t(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent),
-			thresholdMaximumText: adder?.maximum ? adder.maximum : t(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
-			thresholdDurationText: adder?.duration
-				? t(LanguageKeys.Globals.DurationValue, { value: adder.duration })
-				: t(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
-			joinArrays: '\n'
-		});
-		const content = codeBlock('prolog', codeBlockContent);
-		return send(message, content);
+		const t = getSupportedUserLanguageT(interaction);
+		const embed = enabled //
+			? this.showEnabled(t, onInfraction, punishment, punishmentDuration, adder)
+			: this.showDisabled(t);
+		return interaction.reply({ embeds: [embed], ephemeral: true });
 	}
 
-	private getAction(args: SkyraCommand.Args) {
-		if (args.finished) return AKeys.Show;
+	public async chatInputRunEdit(interaction: SkyraSubcommand.Interaction) {
+		const valueEnabled = interaction.options.getBoolean('enabled');
+		const valueOnInfraction = this.#getInfraction(interaction, await readSettings(interaction.guild, this.keyOnInfraction));
+		const valuePunishment = interaction.options.getInteger('punishment');
+		const valuePunishmentDuration = this.#getDuration(
+			interaction,
+			'punishment-duration',
+			this.#punishmentDurationMinimum,
+			this.#punishmentDurationMaximum
+		);
+		const valuePunishmentThreshold = interaction.options.getInteger('threshold-maximum');
+		const valuePunishmentThresholdDuration = this.#getDuration(
+			interaction,
+			'threshold-duration',
+			this.#punishmentThresholdDurationMinimum,
+			this.#punishmentThresholdDurationMaximum
+		);
 
-		const action = kActions.get(args.next().toLowerCase());
-		if (typeof action === 'undefined') {
-			return this.error(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingAction, { name: this.name });
-		}
+		const pairs: [keyof GuildEntity, GuildEntity[keyof GuildEntity]][] = [];
+		if (!isNullish(valueEnabled)) pairs.push([this.keyEnabled, valueEnabled]);
+		if (!isNullish(valueOnInfraction)) pairs.push([this.keyOnInfraction, valueOnInfraction]);
+		if (!isNullish(valuePunishment)) pairs.push([this.keyPunishment, valuePunishment]);
+		if (!isNullish(valuePunishmentDuration)) pairs.push([this.keyPunishmentDuration, valuePunishmentDuration]);
+		if (!isNullish(valuePunishmentThreshold)) pairs.push([this.keyPunishmentThreshold, valuePunishmentThreshold]);
+		if (!isNullish(valuePunishmentThresholdDuration)) pairs.push([this.keyPunishmentThresholdPeriod, valuePunishmentThresholdDuration]);
 
-		return action;
+		await writeSettings(interaction.guild, pairs);
+
+		const t = getSupportedUserLanguageT(interaction);
+		const content = t(Root.EditSuccess);
+		return interaction.reply({ content, ephemeral: true });
 	}
 
-	private async getValue(args: SkyraCommand.Args, type: AKeys) {
-		if (type === AKeys.Enable) return true;
-		if (type === AKeys.Disable) return false;
-		if (type === AKeys.Show) return null;
-		if (args.finished) this.error(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingArguments, { name: this.name });
+	public async chatInputRunReset(interaction: SkyraSubcommand.Interaction) {
+		const [key, value] = await this.resetGetKeyValuePair(interaction.guild, interaction.options.getString('key', true) as ResetKey);
+		await writeSettings(interaction.guild, [[key, value]]);
 
-		if (type === AKeys.SoftAction) {
-			const softAction = kSoftActions.get(args.next().toLowerCase());
-			if (typeof softAction === 'undefined') {
-				this.error(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftAction, { name: this.name });
-			}
-
-			const previousSoftAction = await readSettings(args.message.guild!, this.keySoftAction);
-			return SelfModerationCommand.toggle(previousSoftAction, softAction);
-		}
-
-		if (type === AKeys.HardAction) {
-			const hardAction = kHardActions.get(args.next().toLowerCase());
-			if (typeof hardAction === 'undefined') {
-				this.error(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardAction, { name: this.name });
-			}
-
-			return hardAction;
-		}
-
-		if (type === AKeys.HardActionDuration) {
-			const key = configurableKeys.get(this.keyHardActionDuration)!;
-			return args.pick('timespan', { minimum: key.minimum, maximum: key.maximum });
-		}
-
-		if (type === AKeys.ThresholdMaximum) {
-			const key = configurableKeys.get(this.keyThresholdMaximum)!;
-			return args.pick('integer', { minimum: key.minimum, maximum: key.maximum });
-		}
-
-		if (type === AKeys.ThresholdDuration) {
-			const key = configurableKeys.get(this.keyThresholdDuration)!;
-			return args.pick('timespan', { minimum: key.minimum, maximum: key.maximum });
-		}
-
-		throw new Error('Unreachable');
+		const t = getSupportedUserLanguageT(interaction);
+		const content = t(Root.EditSuccess);
+		return interaction.reply({ content, ephemeral: true });
 	}
 
-	private getProperty(action: AKeys) {
-		switch (action) {
-			case AKeys.Enable:
-			case AKeys.Disable:
-				return this.keyEnabled;
-			case AKeys.SoftAction:
-				return this.keySoftAction;
-			case AKeys.HardAction:
-				return this.keyHardAction;
-			case AKeys.HardActionDuration:
-				return this.keyHardActionDuration;
-			case AKeys.ThresholdMaximum:
-				return this.keyThresholdMaximum;
-			case AKeys.ThresholdDuration:
-				return this.keyThresholdDuration;
-			default:
-				throw new Error('Unexpected.');
+	protected async resetGetKeyValuePair(guild: Guild, key: ResetKey): Promise<[keyof GuildEntity, GuildEntity[keyof GuildEntity]]> {
+		switch (key) {
+			case 'enabled':
+				return [this.keyEnabled, false];
+			case 'alert':
+				return [this.keyOnInfraction, await this.resetGetOnInfractionFlags(guild, AutoModerationOnInfraction.flags.Alert)];
+			case 'log':
+				return [this.keyOnInfraction, await this.resetGetOnInfractionFlags(guild, AutoModerationOnInfraction.flags.Log)];
+			case 'delete':
+				return [this.keyOnInfraction, await this.resetGetOnInfractionFlags(guild, AutoModerationOnInfraction.flags.Delete)];
+			case 'punishment':
+				return [this.keyPunishment, this.resetGetValue(this.keyPunishment)];
+			case 'punishment-duration':
+				return [this.keyPunishmentDuration, this.resetGetValue(this.keyPunishmentDuration)];
+			case 'threshold':
+				return [this.keyPunishmentThreshold, this.resetGetValue(this.keyPunishmentThreshold)];
+			case 'threshold-duration':
+				return [this.keyPunishmentThresholdPeriod, this.resetGetValue(this.keyPunishmentThresholdPeriod)];
 		}
 	}
 
-	private static displaySoftAction(t: TFunction, softAction: number) {
-		const actions: string[] = [];
-		if (SelfModerationCommand.has(softAction, ASKeys.Alert)) actions.push(t(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionAlert));
-		if (SelfModerationCommand.has(softAction, ASKeys.Log)) actions.push(t(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionLog));
-		if (SelfModerationCommand.has(softAction, ASKeys.Delete)) actions.push(t(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionDelete));
-		return actions;
+	protected resetGetValue<const Key extends keyof GuildEntity>(key: Key): GuildEntity[Key] {
+		return configurableKeys.get(key)!.default as GuildEntity[Key];
 	}
 
-	private static getLanguageKey(t: TFunction, action: AKeys, value: unknown) {
-		switch (action) {
-			case AKeys.Enable:
-				return t(LanguageKeys.Commands.Moderation.AutomaticParameterEnabled);
-			case AKeys.Disable:
-				return t(LanguageKeys.Commands.Moderation.AutomaticParameterDisabled);
-			case AKeys.SoftAction: {
-				return value
-					? t(LanguageKeys.Commands.Moderation.AutomaticParameterSoftActionWithValue, { value: value as string })
-					: t(LanguageKeys.Commands.Moderation.AutomaticParameterSoftAction);
-			}
-			case AKeys.HardAction:
-				return t(LanguageKeys.Commands.Moderation.AutomaticParameterHardAction, { value: value as string });
-			case AKeys.HardActionDuration: {
-				return value
-					? t(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDurationWithValue, { value: value as number })
-					: t(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDuration);
-			}
-			case AKeys.ThresholdMaximum: {
-				return value
-					? t(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximumWithValue, { value: value as number })
-					: t(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximum);
-			}
-			case AKeys.ThresholdDuration: {
-				return value
-					? t(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDurationWithValue, { value: value as number })
-					: t(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDuration);
-			}
-			default:
-				throw new Error('Unexpected.');
+	protected async resetGetOnInfractionFlags(guild: Guild, bit: number) {
+		const bitfield = await readSettings(guild, this.keyOnInfraction);
+		return AutoModerationOnInfraction.difference(bitfield, bit);
+	}
+
+	protected showDisabled(t: TFunction) {
+		return new EmbedBuilder() //
+			.setColor(Colors.Red)
+			.setTitle(t(Root.ShowDisabled));
+	}
+
+	protected showEnabled(
+		t: TFunction,
+		onInfraction: number,
+		punishment: SelfModeratorHardActionFlags | null,
+		punishmentDuration: number | null,
+		adder: Adder<string> | null
+	) {
+		const embed = new EmbedBuilder() //
+			.setColor(Colors.Green)
+			.setTitle(t(Root.ShowEnabled))
+			.setDescription(this.showEnabledOnInfraction(t, onInfraction));
+
+		if (!isNullishOrZero(punishment)) {
+			embed.addFields({
+				name: t(Root.ShowPunishmentTitle),
+				value: this.showEnabledOnPunishment(t, punishment, punishmentDuration, adder)
+			});
 		}
+
+		return embed;
 	}
 
-	private static displayHardAction(hardAction: SelfModeratorHardActionFlags | null) {
-		switch (hardAction) {
+	protected showEnabledOnInfraction(t: TFunction, value: number) {
+		const replyLine = AutoModerationOnInfraction.has(value, AutoModerationOnInfraction.flags.Alert)
+			? t(Root.ShowReplyActive, { emoji: Emojis.Reply })
+			: t(Root.ShowReplyInactive, { emoji: Emojis.ReplyInactive });
+		const logLine = AutoModerationOnInfraction.has(value, AutoModerationOnInfraction.flags.Log)
+			? t(Root.ShowLogActive, { emoji: Emojis.Flag })
+			: t(Root.ShowLogInactive, { emoji: Emojis.FlagInactive });
+		const deleteLine = AutoModerationOnInfraction.has(value, AutoModerationOnInfraction.flags.Delete)
+			? t(Root.ShowDeleteActive, { emoji: Emojis.Delete })
+			: t(Root.ShowDeleteInactive, { emoji: Emojis.DeleteInactive });
+
+		return `${replyLine}\n${logLine}\n${deleteLine}`;
+	}
+
+	protected showEnabledOnPunishment(
+		t: TFunction,
+		punishment: SelfModeratorHardActionFlags,
+		punishmentDuration: number | null,
+		adder: Adder<string> | null
+	): string {
+		const name = t(this.showEnabledOnPunishmentNameKey(punishment));
+		const line = isNullishOrZero(punishmentDuration) //
+			? t(Root.ShowPunishment, { name })
+			: t(Root.ShowPunishmentTemporary, { name, duration: t(LanguageKeys.Globals.DurationValue, { value: punishmentDuration }) });
+
+		return isNullish(adder) ? line : `${line}\n${this.showEnabledOnPunishmentThreshold(t, adder)}`;
+	}
+
+	protected showEnabledOnPunishmentNameKey(punishment: SelfModeratorHardActionFlags) {
+		switch (punishment) {
 			case SelfModeratorHardActionFlags.Ban:
-				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionBan;
+				return RootModeration.TypeBan;
 			case SelfModeratorHardActionFlags.Kick:
-				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionKick;
+				return RootModeration.TypeKick;
+			case SelfModeratorHardActionFlags.Timeout:
+				return RootModeration.TypeTimeout;
 			case SelfModeratorHardActionFlags.Mute:
-				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionMute;
-			case SelfModeratorHardActionFlags.SoftBan:
-				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionSoftBan;
+				return RootModeration.TypeMute;
+			case SelfModeratorHardActionFlags.Softban:
+				return RootModeration.TypeSoftban;
 			case SelfModeratorHardActionFlags.Warning:
-				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionWarning;
-			default:
-				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionNone;
+				return RootModeration.TypeWarning;
+			case SelfModeratorHardActionFlags.None:
+				throw new Error('Unreachable');
 		}
 	}
 
-	private static has(bitfields: number, bitfield: number) {
-		return (bitfields & bitfield) === bitfield;
+	protected showEnabledOnPunishmentThreshold(t: TFunction, adder: Adder<string>): string {
+		return `${this.showEnabledOnPunishmentThresholdMaximum(t, adder.maximum)}\n${this.showEnabledOnPunishmentThresholdPeriod(t, adder.duration)}`;
 	}
 
-	private static toggle(bitfields: number, bitfield: number) {
-		return SelfModerationCommand.has(bitfields, bitfield) ? bitfields & ~bitfield : bitfields | bitfield;
+	protected showEnabledOnPunishmentThresholdMaximum(t: TFunction, maximum: number): string {
+		return isNullishOrZero(maximum) //
+			? t(Root.ShowPunishmentThresholdMaximumUnset)
+			: t(Root.ShowPunishmentThresholdMaximum, { maximum });
 	}
 
-	protected abstract $adder: AdderKey;
-	protected abstract keyEnabled: GuildSettingsOfType<boolean>;
-	protected abstract keySoftAction: GuildSettingsOfType<number>;
-	protected abstract keyHardAction: GuildSettingsOfType<number | null>;
-	protected abstract keyHardActionDuration: GuildSettingsOfType<number | null>;
-	protected abstract keyThresholdMaximum: GuildSettingsOfType<number | null>;
-	protected abstract keyThresholdDuration: GuildSettingsOfType<number | null>;
+	protected showEnabledOnPunishmentThresholdPeriod(t: TFunction, duration: number): string {
+		return isNullishOrZero(duration) //
+			? t(Root.ShowPunishmentThresholdPeriodUnset)
+			: t(Root.ShowPunishmentThresholdPeriod, { duration: t(LanguageKeys.Globals.DurationValue, { value: duration }) });
+	}
+
+	protected registerShowSubcommand(subcommand: SlashCommandSubcommandBuilder) {
+		return applyLocalizedBuilder(subcommand, Root.Show);
+	}
+
+	protected registerEditSubcommand(subcommand: SlashCommandSubcommandBuilder) {
+		return applyLocalizedBuilder(subcommand, Root.Edit) //
+			.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsEnabled))
+			.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsActionAlert))
+			.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsActionLog))
+			.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsActionDelete))
+			.addIntegerOption((option) =>
+				applyLocalizedBuilder(option, Root.OptionsPunishment) //
+					.setChoices(
+						createLocalizedChoice(RootModeration.TypeWarning, { value: SelfModeratorHardActionFlags.Warning }),
+						createLocalizedChoice(RootModeration.TypeTimeout, { value: SelfModeratorHardActionFlags.Timeout }),
+						createLocalizedChoice(RootModeration.TypeMute, { value: SelfModeratorHardActionFlags.Mute }),
+						createLocalizedChoice(RootModeration.TypeKick, { value: SelfModeratorHardActionFlags.Kick }),
+						createLocalizedChoice(RootModeration.TypeSoftban, { value: SelfModeratorHardActionFlags.Softban }),
+						createLocalizedChoice(RootModeration.TypeBan, { value: SelfModeratorHardActionFlags.Ban })
+					)
+			)
+			.addStringOption((option) => applyLocalizedBuilder(option, Root.OptionsPunishmentDuration))
+			.addIntegerOption((option) =>
+				applyLocalizedBuilder(option, Root.OptionsThreshold)
+					.setMinValue(this.#punishmentThresholdMinimum)
+					.setMaxValue(this.#punishmentThresholdMaximum)
+			)
+			.addStringOption((option) => applyLocalizedBuilder(option, Root.OptionsThresholdPeriod));
+	}
+
+	protected registerResetSubcommand(subcommand: SlashCommandSubcommandBuilder) {
+		return applyLocalizedBuilder(subcommand, Root.Reset).addStringOption((option) =>
+			applyLocalizedBuilder(option, Root.OptionsKey)
+				.setChoices(
+					createLocalizedChoice(Root.OptionsKeyEnabled, { value: 'enabled' }),
+					createLocalizedChoice(Root.OptionsKeyActionAlert, { value: 'alert' }),
+					createLocalizedChoice(Root.OptionsKeyActionLog, { value: 'log' }),
+					createLocalizedChoice(Root.OptionsKeyActionDelete, { value: 'delete' }),
+					createLocalizedChoice(Root.OptionsKeyPunishment, { value: 'punishment' }),
+					createLocalizedChoice(Root.OptionsKeyPunishmentDuration, { value: 'punishment-duration' }),
+					createLocalizedChoice(Root.OptionsKeyThreshold, { value: 'threshold' }),
+					createLocalizedChoice(Root.OptionsKeyThresholdPeriod, { value: 'threshold-duration' })
+				)
+				.setRequired(true)
+		);
+	}
+
+	#getInfraction(interaction: SkyraSubcommand.Interaction, existing: number) {
+		const actionAlert = interaction.options.getBoolean('alert');
+		const actionLog = interaction.options.getBoolean('log');
+		const actionDelete = interaction.options.getBoolean('delete');
+
+		const existingActionAlert = AutoModerationOnInfraction.has(existing, AutoModerationOnInfraction.flags.Alert);
+		const existingActionLog = AutoModerationOnInfraction.has(existing, AutoModerationOnInfraction.flags.Log);
+		const existingActionDelete = AutoModerationOnInfraction.has(existing, AutoModerationOnInfraction.flags.Delete);
+
+		let bitfield = 0;
+		if (actionAlert ?? existingActionAlert) bitfield |= AutoModerationOnInfraction.flags.Alert;
+		if (actionLog ?? existingActionLog) bitfield |= AutoModerationOnInfraction.flags.Log;
+		if (actionDelete ?? existingActionDelete) bitfield |= AutoModerationOnInfraction.flags.Delete;
+
+		return bitfield;
+	}
+
+	#getDuration(interaction: SkyraSubcommand.Interaction, option: string, minimum: number, maximum: number) {
+		const parameter = interaction.options.getString(option);
+		if (isNullishOrEmpty(parameter)) return null;
+
+		return resolveTimeSpan(parameter, { minimum, maximum }) //
+			.mapErr((key) => getSupportedUserLanguageT(interaction)(key, { parameter: parameter.toString() }))
+			.unwrapRaw();
+	}
 }
 
+type ResetKey = 'enabled' | 'alert' | 'log' | 'delete' | 'punishment' | 'punishment-duration' | 'threshold' | 'threshold-duration';
+
 export namespace SelfModerationCommand {
+	export type LoaderContext = SkyraSubcommand.LoaderContext;
+
 	/**
 	 * The SelfModerationCommand Options
 	 */
-	export type Options = SkyraCommand.Options;
+	export interface Options extends Omit<SkyraSubcommand.Options, 'detailedDescription'> {
+		localizedNameKey: TypedT;
+		adderPropertyName: AdderKey;
+		keyEnabled: GuildSettingsOfType<boolean>;
+		keyOnInfraction: GuildSettingsOfType<number>;
+		keyPunishment: GuildSettingsOfType<number | null>;
+		keyPunishmentDuration: GuildSettingsOfType<number | null>;
+		keyPunishmentThreshold: GuildSettingsOfType<number | null>;
+		keyPunishmentThresholdPeriod: GuildSettingsOfType<number | null>;
+	}
 
-	export type Args = SkyraCommand.Args;
+	export type Args = SkyraSubcommand.Args;
 }

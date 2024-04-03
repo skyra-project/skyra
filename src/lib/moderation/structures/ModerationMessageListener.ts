@@ -1,7 +1,7 @@
 import { GuildEntity, GuildSettings, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import { ModerationActions } from '#lib/moderation/actions/index';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
+import { AutoModerationOnInfraction, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
 import { Events, type GuildMessage, type TypedFT, type TypedT } from '#lib/types';
 import { floatPromise, seconds } from '#utils/common';
 import { getModeration, isModerator } from '#utils/functions';
@@ -48,8 +48,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 			settings.adders[this.hardPunishmentPath.adder],
 			settings.getLanguage()
 		]);
-		const bitField = new SelfModeratorBitField(filter);
-		this.processSoftPunishment(message, logChannelId, language, bitField, preProcessed);
+		this.processSoftPunishment(message, logChannelId, language, filter, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;
 
@@ -63,22 +62,16 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		}
 	}
 
-	protected processSoftPunishment(
-		message: GuildMessage,
-		logChannelId: string | Nullish,
-		language: TFunction,
-		bitField: SelfModeratorBitField,
-		preProcessed: T
-	) {
-		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE) && message.deletable) {
+	protected processSoftPunishment(message: GuildMessage, logChannelId: string | Nullish, language: TFunction, bitfield: number, preProcessed: T) {
+		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Delete) && message.deletable) {
 			floatPromise(this.onDelete(message, language, preProcessed) as any);
 		}
 
-		if (bitField.has(SelfModeratorBitField.FLAGS.ALERT) && canSendMessages(message.channel)) {
+		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Alert) && canSendMessages(message.channel)) {
 			floatPromise(this.onAlert(message, language, preProcessed) as any);
 		}
 
-		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) {
+		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Log)) {
 			floatPromise(this.onLog(message, logChannelId, language, preProcessed) as any);
 		}
 	}
@@ -95,7 +88,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 			case SelfModeratorHardActionFlags.Mute:
 				await this.onMute(message, language, points, maximum, duration);
 				break;
-			case SelfModeratorHardActionFlags.SoftBan:
+			case SelfModeratorHardActionFlags.Softban:
 				await this.onSoftBan(message, language, points, maximum);
 				break;
 			case SelfModeratorHardActionFlags.Ban:

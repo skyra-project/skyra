@@ -1,7 +1,7 @@
 import { GuildSettings, readSettings, type GuildSettingsOfType } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationListener, SelfModeratorBitField, type HardPunishment } from '#lib/moderation';
+import { ModerationListener, AutoModerationOnInfraction, type HardPunishment } from '#lib/moderation';
 import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, seconds } from '#utils/common';
@@ -49,7 +49,7 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 		const preProcessed = this.preProcess(args);
 		if (preProcessed === null) return;
 
-		this.processSoftPunishment(args, preProcessed, new SelfModeratorBitField(softAction));
+		this.processSoftPunishment(args, preProcessed, AutoModerationOnInfraction.resolve(softAction));
 
 		if (!adder) return this.processHardPunishment(data.guild, data.userId, hardAction);
 

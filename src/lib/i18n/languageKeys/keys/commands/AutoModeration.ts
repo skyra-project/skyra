@@ -53,12 +53,9 @@ export const ShowLogInactive = FT<{ emoji: string }>('commands/auto-moderation:s
 export const ShowDeleteActive = FT<{ emoji: string }>('commands/auto-moderation:showDeleteActive');
 export const ShowDeleteInactive = FT<{ emoji: string }>('commands/auto-moderation:showDeleteInactive');
 export const ShowPunishmentTitle = T('commands/auto-moderation:showPunishmentTitle');
-export const ShowPunishment = FT<{ name: string }>('commands/auto-moderation:showPunishment');
-export const ShowPunishmentTemporary = FT<{ name: string; duration: string }>('commands/auto-moderation:showPunishmentTemporary');
-export const ShowPunishmentThresholdMaximumUnset = T('commands/auto-moderation:showPunishmentThresholdMaximumUnset');
-export const ShowPunishmentThresholdMaximum = FT<{ maximum: string }>('commands/auto-moderation:showPunishmentThresholdMaximum');
-export const ShowPunishmentThresholdPeriodUnset = T('commands/auto-moderation:showPunishmentThresholdPeriodUnset');
-export const ShowPunishmentThresholdPeriod = FT<{ duration: string }>('commands/auto-moderation:showPunishmentThresholdPeriod');
+export const ShowPunishment = FT<{ name: string; emoji: string }>('commands/auto-moderation:showPunishment');
+export const ShowPunishmentTemporary = FT<{ name: string; emoji: string; duration: string }>('commands/auto-moderation:showPunishmentTemporary');
+export const ShowPunishmentThreshold = FT<{ threshold: number; period: string; emoji: string }>('commands/auto-moderation:showPunishmentThreshold');
 
 export const EditSuccess = T('commands/auto-moderation:editSuccess');
 

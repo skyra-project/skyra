@@ -50,8 +50,14 @@ export const enum Emojis {
 	ReplyInactive = '<:reply_inactive:1225386832146075739>',
 	Flag = '<:flag:1225386828152963122>',
 	FlagInactive = '<:flag_inactive:1225386829558186028>',
+	Timer = '<:timer:1225500654399918170>',
+	Bucket = '<:bucket:1225500653212930160>',
 	Delete = '<:delete:1225386833307766854>',
-	DeleteInactive = '<:delete_inactive:1225386834394353675>'
+	DeleteInactive = '<:delete_inactive:1225386834394353675>',
+	Timeout = '<:timeout:1225498291131908178>',
+	Kick = '<:kick:1225498287092793427>',
+	Softban = '<:softban:1225498289131094016>',
+	Ban = '<:ban:1225498285637369916>'
 }
 
 export const enum BrandingColors {

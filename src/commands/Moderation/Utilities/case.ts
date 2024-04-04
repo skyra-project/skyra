@@ -323,6 +323,6 @@ export class UserCommand extends SkyraSubcommand {
 
 		const parameter = caseId.toString();
 		const t = getSupportedUserLanguageT(interaction);
-		return (await resolveCase(parameter, t, interaction.guild)).unwrap();
+		return (await resolveCase(parameter, t, interaction.guild)).unwrapRaw();
 	}
 }

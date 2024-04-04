@@ -2,10 +2,11 @@ import { readSettings, type GuildSettingsOfType } from '#lib/database';
 import { ModerationActions } from '#lib/moderation/actions/index';
 import { AutoModerationOnInfraction, AutoModerationPunishment } from '#lib/moderation/structures/AutoModerationOnInfraction';
 import type { HardPunishment } from '#lib/moderation/structures/ModerationMessageListener';
-import { seconds } from '#utils/common';
+import { days, seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import type { EmbedBuilder } from '@discordjs/builders';
 import { Listener, type Awaitable } from '@sapphire/framework';
+import { isNullishOrZero } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 
 export abstract class ModerationListener<V extends unknown[], T = unknown> extends Listener {
@@ -24,6 +25,9 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 				break;
 			case AutoModerationPunishment.Kick:
 				await this.onKick(guild, userId);
+				break;
+			case AutoModerationPunishment.Timeout:
+				await this.onTimeout(guild, userId);
 				break;
 			case AutoModerationPunishment.Mute:
 				await this.onMute(guild, userId);
@@ -49,6 +53,18 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	protected async onKick(guild: Guild, userId: string) {
 		await this.createActionAndSend(guild, () =>
 			ModerationActions.kick.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.' })
+		);
+	}
+
+	protected async onTimeout(guild: Guild, userId: string) {
+		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
+		if (isNullishOrZero(duration)) return;
+		await this.createActionAndSend(guild, () =>
+			ModerationActions.timeout.apply(guild, {
+				user: userId,
+				reason: '[Auto-Moderation] Threshold Reached.',
+				duration: Math.min(duration, days(28))
+			})
 		);
 	}
 

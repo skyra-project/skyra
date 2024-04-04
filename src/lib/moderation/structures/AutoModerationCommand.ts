@@ -8,10 +8,10 @@ import { PermissionLevels, type TypedT } from '#lib/types';
 import { Colors, Emojis } from '#utils/constants';
 import { resolveTimeSpan } from '#utils/resolvers';
 import { EmbedBuilder, type SlashCommandBuilder, type SlashCommandSubcommandBuilder } from '@discordjs/builders';
-import { ApplicationCommandRegistry, CommandOptionsRunTypeEnum } from '@sapphire/framework';
+import { CommandOptionsRunTypeEnum, type ApplicationCommandRegistry } from '@sapphire/framework';
 import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, type Awaitable } from '@sapphire/utilities';
-import { Guild, PermissionFlagsBits } from 'discord.js';
+import { PermissionFlagsBits, strikethrough, type Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.AutoModeration;
 const RootModeration = LanguageKeys.Moderation;
@@ -104,10 +104,10 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			this.#punishmentDurationMinimum,
 			this.#punishmentDurationMaximum
 		);
-		const valuePunishmentThreshold = interaction.options.getInteger('threshold-maximum');
+		const valuePunishmentThreshold = interaction.options.getInteger('threshold');
 		const valuePunishmentThresholdDuration = this.#getDuration(
 			interaction,
-			'threshold-duration',
+			'threshold-period',
 			this.#punishmentThresholdDurationMinimum,
 			this.#punishmentThresholdDurationMaximum
 		);
@@ -216,10 +216,16 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		punishmentDuration: number | null,
 		adder: Adder<string> | null
 	): string {
-		const name = t(this.showEnabledOnPunishmentNameKey(punishment));
-		const line = isNullishOrZero(punishmentDuration) //
-			? t(Root.ShowPunishment, { name })
-			: t(Root.ShowPunishmentTemporary, { name, duration: t(LanguageKeys.Globals.DurationValue, { value: punishmentDuration }) });
+		const { key, emoji } = this.showEnabledOnPunishmentNameKey(punishment);
+		const name = t(key);
+		let line: string;
+		if (isNullishOrZero(punishmentDuration)) {
+			line = t(Root.ShowPunishment, { name, emoji });
+			// Add strikethrough if the punishment is a timeout and the duration is not set:
+			if (punishment === AutoModerationPunishment.Timeout) line = strikethrough(line);
+		} else {
+			line = t(Root.ShowPunishmentTemporary, { name, emoji, duration: t(LanguageKeys.Globals.DurationValue, { value: punishmentDuration }) });
+		}
 
 		return isNullish(adder) ? line : `${line}\n${this.showEnabledOnPunishmentThreshold(t, adder)}`;
 	}
@@ -227,36 +233,28 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	protected showEnabledOnPunishmentNameKey(punishment: AutoModerationPunishment) {
 		switch (punishment) {
 			case AutoModerationPunishment.Ban:
-				return RootModeration.TypeBan;
+				return { key: RootModeration.TypeBan, emoji: Emojis.Ban };
 			case AutoModerationPunishment.Kick:
-				return RootModeration.TypeKick;
+				return { key: RootModeration.TypeKick, emoji: Emojis.Kick };
 			case AutoModerationPunishment.Timeout:
-				return RootModeration.TypeTimeout;
+				return { key: RootModeration.TypeTimeout, emoji: Emojis.Timeout };
 			case AutoModerationPunishment.Mute:
-				return RootModeration.TypeMute;
+				return { key: RootModeration.TypeMute, emoji: Emojis.Timeout };
 			case AutoModerationPunishment.Softban:
-				return RootModeration.TypeSoftban;
+				return { key: RootModeration.TypeSoftban, emoji: Emojis.Softban };
 			case AutoModerationPunishment.Warning:
-				return RootModeration.TypeWarning;
+				return { key: RootModeration.TypeWarning, emoji: Emojis.Flag };
 			case AutoModerationPunishment.None:
 				throw new Error('Unreachable');
 		}
 	}
 
 	protected showEnabledOnPunishmentThreshold(t: TFunction, adder: Adder<string>): string {
-		return `${this.showEnabledOnPunishmentThresholdMaximum(t, adder.maximum)}\n${this.showEnabledOnPunishmentThresholdPeriod(t, adder.duration)}`;
-	}
-
-	protected showEnabledOnPunishmentThresholdMaximum(t: TFunction, maximum: number): string {
-		return isNullishOrZero(maximum) //
-			? t(Root.ShowPunishmentThresholdMaximumUnset)
-			: t(Root.ShowPunishmentThresholdMaximum, { maximum });
-	}
-
-	protected showEnabledOnPunishmentThresholdPeriod(t: TFunction, duration: number): string {
-		return isNullishOrZero(duration) //
-			? t(Root.ShowPunishmentThresholdPeriodUnset)
-			: t(Root.ShowPunishmentThresholdPeriod, { duration: t(LanguageKeys.Globals.DurationValue, { value: duration }) });
+		return t(Root.ShowPunishmentThreshold, {
+			threshold: adder.maximum,
+			period: t(LanguageKeys.Globals.DurationValue, { value: adder.duration }),
+			emoji: Emojis.Bucket
+		});
 	}
 
 	/**

@@ -45,7 +45,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 			const identifier = this.getCodeIdentifier(source);
 
 			// If it has already been scanned, skip
-			const key = `${source}${code}`;
+			const key = `${source}/${code}`;
 			if (scanned.has(key)) continue;
 			scanned.add(key);
 

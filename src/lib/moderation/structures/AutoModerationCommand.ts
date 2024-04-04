@@ -1,8 +1,8 @@
-import { GuildEntity, configurableKeys, readSettings, writeSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
+import { configurableKeys, readSettings, writeSettings, type AdderKey, type GuildEntity, type GuildSettingsOfType } from '#lib/database';
 import type { Adder } from '#lib/database/utils/Adder';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
-import { AutoModerationOnInfraction, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
+import { AutoModerationOnInfraction, AutoModerationPunishment } from '#lib/moderation/structures/AutoModerationOnInfraction';
 import { SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type TypedT } from '#lib/types';
 import { Colors, Emojis } from '#utils/constants';
@@ -13,10 +13,10 @@ import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@s
 import { isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
 import { Guild, PermissionFlagsBits } from 'discord.js';
 
-const Root = LanguageKeys.Commands.Management;
+const Root = LanguageKeys.Commands.AutoModeration;
 const RootModeration = LanguageKeys.Moderation;
 
-export abstract class SelfModerationCommand extends SkyraSubcommand {
+export abstract class AutoModerationCommand extends SkyraSubcommand {
 	protected readonly adderPropertyName: AdderKey;
 	protected readonly keyEnabled: GuildSettingsOfType<boolean>;
 	protected readonly keyOnInfraction: GuildSettingsOfType<number>;
@@ -34,7 +34,7 @@ export abstract class SelfModerationCommand extends SkyraSubcommand {
 	readonly #punishmentThresholdDurationMinimum: number;
 	readonly #punishmentThresholdDurationMaximum: number;
 
-	protected constructor(context: SkyraSubcommand.LoaderContext, options: SelfModerationCommand.Options) {
+	protected constructor(context: SkyraSubcommand.LoaderContext, options: AutoModerationCommand.Options) {
 		super(context, {
 			detailedDescription: LanguageKeys.Commands.Shared.SlashOnlyDetailedDescription,
 			permissionLevel: PermissionLevels.Administrator,
@@ -179,7 +179,7 @@ export abstract class SelfModerationCommand extends SkyraSubcommand {
 	protected showEnabled(
 		t: TFunction,
 		onInfraction: number,
-		punishment: SelfModeratorHardActionFlags | null,
+		punishment: AutoModerationPunishment | null,
 		punishmentDuration: number | null,
 		adder: Adder<string> | null
 	) {
@@ -214,7 +214,7 @@ export abstract class SelfModerationCommand extends SkyraSubcommand {
 
 	protected showEnabledOnPunishment(
 		t: TFunction,
-		punishment: SelfModeratorHardActionFlags,
+		punishment: AutoModerationPunishment,
 		punishmentDuration: number | null,
 		adder: Adder<string> | null
 	): string {
@@ -226,21 +226,21 @@ export abstract class SelfModerationCommand extends SkyraSubcommand {
 		return isNullish(adder) ? line : `${line}\n${this.showEnabledOnPunishmentThreshold(t, adder)}`;
 	}
 
-	protected showEnabledOnPunishmentNameKey(punishment: SelfModeratorHardActionFlags) {
+	protected showEnabledOnPunishmentNameKey(punishment: AutoModerationPunishment) {
 		switch (punishment) {
-			case SelfModeratorHardActionFlags.Ban:
+			case AutoModerationPunishment.Ban:
 				return RootModeration.TypeBan;
-			case SelfModeratorHardActionFlags.Kick:
+			case AutoModerationPunishment.Kick:
 				return RootModeration.TypeKick;
-			case SelfModeratorHardActionFlags.Timeout:
+			case AutoModerationPunishment.Timeout:
 				return RootModeration.TypeTimeout;
-			case SelfModeratorHardActionFlags.Mute:
+			case AutoModerationPunishment.Mute:
 				return RootModeration.TypeMute;
-			case SelfModeratorHardActionFlags.Softban:
+			case AutoModerationPunishment.Softban:
 				return RootModeration.TypeSoftban;
-			case SelfModeratorHardActionFlags.Warning:
+			case AutoModerationPunishment.Warning:
 				return RootModeration.TypeWarning;
-			case SelfModeratorHardActionFlags.None:
+			case AutoModerationPunishment.None:
 				throw new Error('Unreachable');
 		}
 	}
@@ -274,12 +274,12 @@ export abstract class SelfModerationCommand extends SkyraSubcommand {
 			.addIntegerOption((option) =>
 				applyLocalizedBuilder(option, Root.OptionsPunishment) //
 					.setChoices(
-						createLocalizedChoice(RootModeration.TypeWarning, { value: SelfModeratorHardActionFlags.Warning }),
-						createLocalizedChoice(RootModeration.TypeTimeout, { value: SelfModeratorHardActionFlags.Timeout }),
-						createLocalizedChoice(RootModeration.TypeMute, { value: SelfModeratorHardActionFlags.Mute }),
-						createLocalizedChoice(RootModeration.TypeKick, { value: SelfModeratorHardActionFlags.Kick }),
-						createLocalizedChoice(RootModeration.TypeSoftban, { value: SelfModeratorHardActionFlags.Softban }),
-						createLocalizedChoice(RootModeration.TypeBan, { value: SelfModeratorHardActionFlags.Ban })
+						createLocalizedChoice(RootModeration.TypeWarning, { value: AutoModerationPunishment.Warning }),
+						createLocalizedChoice(RootModeration.TypeTimeout, { value: AutoModerationPunishment.Timeout }),
+						createLocalizedChoice(RootModeration.TypeMute, { value: AutoModerationPunishment.Mute }),
+						createLocalizedChoice(RootModeration.TypeKick, { value: AutoModerationPunishment.Kick }),
+						createLocalizedChoice(RootModeration.TypeSoftban, { value: AutoModerationPunishment.Softban }),
+						createLocalizedChoice(RootModeration.TypeBan, { value: AutoModerationPunishment.Ban })
 					)
 			)
 			.addStringOption((option) => applyLocalizedBuilder(option, Root.OptionsPunishmentDuration))
@@ -337,11 +337,11 @@ export abstract class SelfModerationCommand extends SkyraSubcommand {
 
 type ResetKey = 'enabled' | 'alert' | 'log' | 'delete' | 'punishment' | 'punishment-duration' | 'threshold' | 'threshold-duration';
 
-export namespace SelfModerationCommand {
+export namespace AutoModerationCommand {
 	export type LoaderContext = SkyraSubcommand.LoaderContext;
 
 	/**
-	 * The SelfModerationCommand Options
+	 * The AutoModerationCommand Options
 	 */
 	export interface Options extends Omit<SkyraSubcommand.Options, 'detailedDescription'> {
 		localizedNameKey: TypedT;

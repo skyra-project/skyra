@@ -1,12 +1,12 @@
 import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SelfModerationCommand } from '#lib/moderation';
+import { AutoModerationCommand } from '#lib/moderation';
 import { ApplyOptions } from '@sapphire/decorators';
 
-const Root = LanguageKeys.Commands.Management;
-const SettingsRoot = GuildSettings.Selfmod.Messages;
+const Root = LanguageKeys.Commands.AutoModeration;
+const SettingsRoot = GuildSettings.AutoModeration.Messages;
 
-@ApplyOptions<SelfModerationCommand.Options>({
+@ApplyOptions<AutoModerationCommand.Options>({
 	description: Root.SpamDescription,
 	localizedNameKey: Root.SpamName,
 	adderPropertyName: 'messages',
@@ -17,4 +17,4 @@ const SettingsRoot = GuildSettings.Selfmod.Messages;
 	keyPunishmentThreshold: SettingsRoot.ThresholdMaximum,
 	keyPunishmentThresholdPeriod: SettingsRoot.ThresholdDuration
 })
-export class UserSelfModerationCommand extends SelfModerationCommand {}
+export class UserAutoModerationCommand extends AutoModerationCommand {}

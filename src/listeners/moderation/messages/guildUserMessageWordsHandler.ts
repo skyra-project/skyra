@@ -16,13 +16,13 @@ import type { TextChannel } from 'discord.js';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationWords,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationWordsWithMaximum,
-	keyEnabled: GuildSettings.Selfmod.Filter.Enabled,
-	ignoredChannelsPath: GuildSettings.Selfmod.Filter.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.Selfmod.Filter.IgnoredRoles,
-	softPunishmentPath: GuildSettings.Selfmod.Filter.SoftAction,
+	keyEnabled: GuildSettings.AutoModeration.Filter.Enabled,
+	ignoredChannelsPath: GuildSettings.AutoModeration.Filter.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.AutoModeration.Filter.IgnoredRoles,
+	softPunishmentPath: GuildSettings.AutoModeration.Filter.SoftAction,
 	hardPunishmentPath: {
-		action: GuildSettings.Selfmod.Filter.HardAction,
-		actionDuration: GuildSettings.Selfmod.Filter.HardActionDuration,
+		action: GuildSettings.AutoModeration.Filter.HardAction,
+		actionDuration: GuildSettings.AutoModeration.Filter.HardActionDuration,
 		adder: 'words'
 	}
 })

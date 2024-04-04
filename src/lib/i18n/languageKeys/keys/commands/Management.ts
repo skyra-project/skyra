@@ -2,64 +2,6 @@ import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 import type { GuildVerificationLevel, Role } from 'discord.js';
 
-export const Show = 'commands/management:show';
-export const Edit = 'commands/management:edit';
-export const Reset = 'commands/management:reset';
-
-export const OptionsEnabled = 'commands/management:optionsEnabled';
-export const OptionsActionAlert = 'commands/management:optionsActionAlert';
-export const OptionsActionLog = 'commands/management:optionsActionLog';
-export const OptionsActionDelete = 'commands/management:optionsActionDelete';
-export const OptionsPunishment = 'commands/management:optionsPunishment';
-export const OptionsPunishmentDuration = 'commands/management:optionsPunishmentDuration';
-export const OptionsThreshold = 'commands/management:optionsThreshold';
-export const OptionsThresholdPeriod = 'commands/management:optionsThresholdPeriod';
-export const OptionsKey = 'commands/management:optionsKey';
-
-export const OptionsKeyEnabled = T('commands/management:optionsKeyEnabled');
-export const OptionsKeyActionAlert = T('commands/management:optionsKeyActionAlert');
-export const OptionsKeyActionLog = T('commands/management:optionsKeyActionLog');
-export const OptionsKeyActionDelete = T('commands/management:optionsKeyActionDelete');
-export const OptionsKeyPunishment = T('commands/management:optionsKeyPunishment');
-export const OptionsKeyPunishmentDuration = T('commands/management:optionsKeyPunishmentDuration');
-export const OptionsKeyThreshold = T('commands/management:optionsKeyThreshold');
-export const OptionsKeyThresholdPeriod = T('commands/management:optionsKeyThresholdPeriod');
-
-export const AttachmentsName = T('commands/management:attachmentsName');
-export const AttachmentsDescription = T('commands/management:attachmentsDescription');
-export const CapitalsName = T('commands/management:capitalsName');
-export const CapitalsDescription = T('commands/management:capitalsDescription');
-export const WordsName = T('commands/management:wordsName');
-export const WordsDescription = T('commands/management:wordsDescription');
-export const InvitesName = T('commands/management:invitesName');
-export const InvitesDescription = T('commands/management:invitesDescription');
-export const LinksName = T('commands/management:linksName');
-export const LinksDescription = T('commands/management:linksDescription');
-export const SpamName = T('commands/management:spamName');
-export const SpamDescription = T('commands/management:spamDescription');
-export const NewlinesName = T('commands/management:newlinesName');
-export const NewlinesDescription = T('commands/management:newlinesDescription');
-export const ReactionsName = T('commands/management:reactionsName');
-export const ReactionsDescription = T('commands/management:reactionsDescription');
-
-export const ShowDisabled = T('commands/management:showDisabled');
-export const ShowEnabled = T('commands/management:showEnabled');
-export const ShowReplyActive = FT<{ emoji: string }>('commands/management:showReplyActive');
-export const ShowReplyInactive = FT<{ emoji: string }>('commands/management:showReplyInactive');
-export const ShowLogActive = FT<{ emoji: string }>('commands/management:showLogActive');
-export const ShowLogInactive = FT<{ emoji: string }>('commands/management:showLogInactive');
-export const ShowDeleteActive = FT<{ emoji: string }>('commands/management:showDeleteActive');
-export const ShowDeleteInactive = FT<{ emoji: string }>('commands/management:showDeleteInactive');
-export const ShowPunishmentTitle = T('commands/management:showPunishmentTitle');
-export const ShowPunishment = FT<{ name: string }>('commands/management:showPunishment');
-export const ShowPunishmentTemporary = FT<{ name: string; duration: string }>('commands/management:showPunishmentTemporary');
-export const ShowPunishmentThresholdMaximumUnset = T('commands/management:showPunishmentThresholdMaximumUnset');
-export const ShowPunishmentThresholdMaximum = FT<{ maximum: string }>('commands/management:showPunishmentThresholdMaximum');
-export const ShowPunishmentThresholdPeriodUnset = T('commands/management:showPunishmentThresholdPeriodUnset');
-export const ShowPunishmentThresholdPeriod = FT<{ duration: string }>('commands/management:showPunishmentThresholdPeriod');
-
-export const EditSuccess = T('commands/management:editSuccess');
-
 export const CreateMuteDescription = T<string>('commands/management:createMuteDescription');
 export const CreateMuteExtended = T<LanguageHelpDisplayOptions>('commands/management:createMuteExtended');
 export const FilterAdded = FT<{ word: string }, string>('commands/management:filterAdded');

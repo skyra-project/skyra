@@ -1,7 +1,7 @@
 import { GuildSettings, readSettings, type GuildSettingsOfType } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { ModerationListener, AutoModerationOnInfraction, type HardPunishment } from '#lib/moderation';
+import { AutoModerationOnInfraction, ModerationListener, type HardPunishment } from '#lib/moderation';
 import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, seconds } from '#utils/common';
@@ -18,11 +18,11 @@ type ArgumentType = [data: LLRCData, reaction: SerializedEmoji, channelId: strin
 
 @ApplyOptions<ModerationListener.Options>({ event: Events.RawReactionAdd })
 export class UserModerationEvent extends ModerationListener<ArgumentType, unknown> {
-	protected keyEnabled: GuildSettingsOfType<boolean> = GuildSettings.Selfmod.Reactions.Enabled;
-	protected softPunishmentPath: GuildSettingsOfType<number> = GuildSettings.Selfmod.Reactions.SoftAction;
+	protected keyEnabled: GuildSettingsOfType<boolean> = GuildSettings.AutoModeration.Reactions.Enabled;
+	protected softPunishmentPath: GuildSettingsOfType<number> = GuildSettings.AutoModeration.Reactions.SoftAction;
 	protected hardPunishmentPath: HardPunishment = {
-		action: GuildSettings.Selfmod.Reactions.HardAction,
-		actionDuration: GuildSettings.Selfmod.Reactions.HardActionDuration,
+		action: GuildSettings.AutoModeration.Reactions.HardAction,
+		actionDuration: GuildSettings.AutoModeration.Reactions.HardActionDuration,
 		adder: 'reactions'
 	};
 
@@ -30,12 +30,12 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 		const [enabled, blockedReactions, logChannelId, ignoredChannels, softAction, hardAction, adder] = await readSettings(
 			data.guild,
 			(settings) => [
-				settings[GuildSettings.Selfmod.Reactions.Enabled],
-				settings[GuildSettings.Selfmod.Reactions.Blocked],
+				settings[GuildSettings.AutoModeration.Reactions.Enabled],
+				settings[GuildSettings.AutoModeration.Reactions.Blocked],
 				settings[GuildSettings.Channels.Logs.Moderation],
 				settings[GuildSettings.Channels.Ignore.ReactionAdd],
-				settings[GuildSettings.Selfmod.Reactions.SoftAction],
-				settings[GuildSettings.Selfmod.Reactions.HardAction],
+				settings[GuildSettings.AutoModeration.Reactions.SoftAction],
+				settings[GuildSettings.AutoModeration.Reactions.HardAction],
 				settings.adders[this.hardPunishmentPath.adder]
 			]
 		);

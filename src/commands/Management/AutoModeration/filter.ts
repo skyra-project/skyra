@@ -25,7 +25,7 @@ export class UserCommand extends SkyraSubcommand {
 		const word = await this.getWord(args);
 		await writeSettings(message.guild, async (settings) => {
 			// Check if the word is not filtered:
-			const words = settings[GuildSettings.Selfmod.Filter.Raw];
+			const words = settings[GuildSettings.AutoModeration.Filter.Raw];
 			if (await this.hasWord(settings, word)) {
 				this.error(LanguageKeys.Commands.Management.FilterAlreadyFiltered);
 			}
@@ -42,7 +42,7 @@ export class UserCommand extends SkyraSubcommand {
 		const word = await this.getWord(args);
 		await writeSettings(message.guild, (settings) => {
 			// Check if the word is not filtered:
-			const words = settings[GuildSettings.Selfmod.Filter.Raw];
+			const words = settings[GuildSettings.AutoModeration.Filter.Raw];
 			const index = words.indexOf(word);
 			if (index === -1) {
 				this.error(LanguageKeys.Commands.Management.FilterNotFiltered);
@@ -57,14 +57,14 @@ export class UserCommand extends SkyraSubcommand {
 	}
 
 	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
-		await writeSettings(message.guild, [[GuildSettings.Selfmod.Filter.Raw, []]]);
+		await writeSettings(message.guild, [[GuildSettings.AutoModeration.Filter.Raw, []]]);
 
 		const content = args.t(LanguageKeys.Commands.Management.FilterReset);
 		return send(message, content);
 	}
 
 	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
-		const raw = await readSettings(message.guild, GuildSettings.Selfmod.Filter.Raw);
+		const raw = await readSettings(message.guild, GuildSettings.AutoModeration.Filter.Raw);
 
 		const content = raw.length
 			? args.t(LanguageKeys.Commands.Management.FilterShow, { words: `\`${raw.join('`, `')}\`` })
@@ -78,7 +78,7 @@ export class UserCommand extends SkyraSubcommand {
 	}
 
 	private async hasWord(settings: GuildEntity, content: string) {
-		const words = settings[GuildSettings.Selfmod.Filter.Raw];
+		const words = settings[GuildSettings.AutoModeration.Filter.Raw];
 		if (words.includes(content)) return true;
 
 		const regExp = settings.wordFilterRegExp;

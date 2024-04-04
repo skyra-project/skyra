@@ -6,7 +6,7 @@ export const AutoModerationOnInfraction = new BitField({
 	Alert: 1 << 2
 });
 
-export enum SelfModeratorHardActionFlags {
+export enum AutoModerationPunishment {
 	None,
 	Warning,
 	Kick,

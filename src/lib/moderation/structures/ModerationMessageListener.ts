@@ -1,7 +1,7 @@
 import { GuildEntity, GuildSettings, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import { ModerationActions } from '#lib/moderation/actions/index';
-import { AutoModerationOnInfraction, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
+import { AutoModerationOnInfraction, AutoModerationPunishment } from '#lib/moderation/structures/AutoModerationOnInfraction';
 import { Events, type GuildMessage, type TypedFT, type TypedT } from '#lib/types';
 import { floatPromise, seconds } from '#utils/common';
 import { getModeration, isModerator } from '#utils/functions';
@@ -79,19 +79,19 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	protected async processHardPunishment(message: GuildMessage, language: TFunction, points: number, maximum: number) {
 		const [action, duration] = await readSettings(message.guild, [this.hardPunishmentPath.action, this.hardPunishmentPath.actionDuration]);
 		switch (action) {
-			case SelfModeratorHardActionFlags.Warning:
+			case AutoModerationPunishment.Warning:
 				await this.onWarning(message, language, points, maximum, duration);
 				break;
-			case SelfModeratorHardActionFlags.Kick:
+			case AutoModerationPunishment.Kick:
 				await this.onKick(message, language, points, maximum);
 				break;
-			case SelfModeratorHardActionFlags.Mute:
+			case AutoModerationPunishment.Mute:
 				await this.onMute(message, language, points, maximum, duration);
 				break;
-			case SelfModeratorHardActionFlags.Softban:
+			case AutoModerationPunishment.Softban:
 				await this.onSoftBan(message, language, points, maximum);
 				break;
-			case SelfModeratorHardActionFlags.Ban:
+			case AutoModerationPunishment.Ban:
 				await this.onBan(message, language, points, maximum, duration);
 				break;
 		}
@@ -161,7 +161,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	}
 
 	private checkMessageChannel(settings: GuildEntity, channel: GuildTextBasedChannelTypes) {
-		const globalIgnore = settings[GuildSettings.Selfmod.IgnoreChannels];
+		const globalIgnore = settings[GuildSettings.AutoModeration.IgnoreChannels];
 		if (globalIgnore.includes(channel.id)) return false;
 
 		const localIgnore = settings[this.ignoredChannelsPath] as readonly string[];

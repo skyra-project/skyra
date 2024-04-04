@@ -1,7 +1,7 @@
 import { readSettings, type GuildSettingsOfType } from '#lib/database';
 import { ModerationActions } from '#lib/moderation/actions/index';
+import { AutoModerationOnInfraction, AutoModerationPunishment } from '#lib/moderation/structures/AutoModerationOnInfraction';
 import type { HardPunishment } from '#lib/moderation/structures/ModerationMessageListener';
-import { AutoModerationOnInfraction, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
 import { seconds } from '#utils/common';
 import { getModeration } from '#utils/functions';
 import type { EmbedBuilder } from '@discordjs/builders';
@@ -17,24 +17,24 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Log)) this.onLog(args, preProcessed);
 	}
 
-	protected async processHardPunishment(guild: Guild, userId: string, action: SelfModeratorHardActionFlags) {
+	protected async processHardPunishment(guild: Guild, userId: string, action: AutoModerationPunishment) {
 		switch (action) {
-			case SelfModeratorHardActionFlags.Warning:
+			case AutoModerationPunishment.Warning:
 				await this.onWarning(guild, userId);
 				break;
-			case SelfModeratorHardActionFlags.Kick:
+			case AutoModerationPunishment.Kick:
 				await this.onKick(guild, userId);
 				break;
-			case SelfModeratorHardActionFlags.Mute:
+			case AutoModerationPunishment.Mute:
 				await this.onMute(guild, userId);
 				break;
-			case SelfModeratorHardActionFlags.Softban:
+			case AutoModerationPunishment.Softban:
 				await this.onSoftBan(guild, userId);
 				break;
-			case SelfModeratorHardActionFlags.Ban:
+			case AutoModerationPunishment.Ban:
 				await this.onBan(guild, userId);
 				break;
-			case SelfModeratorHardActionFlags.None:
+			case AutoModerationPunishment.None:
 				break;
 		}
 	}

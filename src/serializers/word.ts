@@ -20,7 +20,7 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	private async hasWord(settings: GuildEntity, content: string) {
-		const words = settings[GuildSettings.Selfmod.Filter.Raw];
+		const words = settings[GuildSettings.AutoModeration.Filter.Raw];
 		if (words.includes(content)) return true;
 
 		const regExp = settings.wordFilterRegExp;

@@ -1,13 +1,13 @@
 import { GuildSettings, readSettings } from '#lib/database';
-import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
 import type { GuildMessage } from '#lib/types';
 import { floatPromise } from '#utils/common';
 import { Colors } from '#utils/constants';
-import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
+import { addAutomaticFields, deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { getContent, getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { codeBlock, cutText } from '@sapphire/utilities';
@@ -52,8 +52,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction, results: FilterResults) {
-		return new SkyraEmbed()
-			.splitFields(cutText(results.highlighted, 4000))
+		return addAutomaticFields(new EmbedBuilder(), cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(message.author, message.url))
 			.setFooter({ text: `#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.WordFooter)}` })

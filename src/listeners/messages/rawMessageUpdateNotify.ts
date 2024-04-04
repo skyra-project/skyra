@@ -1,11 +1,11 @@
 import { GuildSettings, readSettings } from '#lib/database';
-import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { type GuildMessage } from '#lib/types';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { Colors } from '#utils/constants';
-import { getLogger } from '#utils/functions';
+import { addAutomaticFields, getLogger } from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
@@ -54,18 +54,16 @@ export class UserListener extends Listener {
 			channelId: logChannelId,
 			condition: () => this.onCondition(cachedMessage, channel, data.author!, ...settings),
 			makeMessage: () => {
-				const embed = new SkyraEmbed()
+				const embed = new EmbedBuilder()
 					.setColor(Colors.Amber)
 					.setAuthor(getFullEmbedAuthor(data.author!, messageLink(data.channel_id, data.id)))
 					.setTimestamp();
 
 				if (isNullish(cachedMessage)) {
-					embed //
-						.splitFields(currentContent)
+					addAutomaticFields(embed, currentContent) //
 						.setFooter({ text: t(LanguageKeys.Events.Messages.MessageUpdateUnknown, { channel: `#${channel.name}` }) });
 				} else {
-					embed
-						.splitFields(this.getMessageDifference(oldContent!, currentContent))
+					addAutomaticFields(embed, this.getMessageDifference(oldContent!, currentContent)) //
 						.setFooter({ text: t(LanguageKeys.Events.Messages.MessageUpdate, { channel: `#${channel.name}` }) });
 				}
 				return embed;

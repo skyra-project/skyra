@@ -3,6 +3,8 @@ import { FT, T } from '#lib/types';
 export const Show = 'commands/auto-moderation:show';
 export const Edit = 'commands/auto-moderation:edit';
 export const Reset = 'commands/auto-moderation:reset';
+export const AddName = 'commands/auto-moderation:addName';
+export const RemoveName = 'commands/auto-moderation:removeName';
 
 export const OptionsEnabled = 'commands/auto-moderation:optionsEnabled';
 export const OptionsActionAlert = 'commands/auto-moderation:optionsActionAlert';
@@ -13,6 +15,7 @@ export const OptionsPunishmentDuration = 'commands/auto-moderation:optionsPunish
 export const OptionsThreshold = 'commands/auto-moderation:optionsThreshold';
 export const OptionsThresholdPeriod = 'commands/auto-moderation:optionsThresholdPeriod';
 export const OptionsKey = 'commands/auto-moderation:optionsKey';
+export const OptionsWord = 'commands/auto-moderation:optionsWord';
 
 export const OptionsKeyEnabled = T('commands/auto-moderation:optionsKeyEnabled');
 export const OptionsKeyActionAlert = T('commands/auto-moderation:optionsKeyActionAlert');
@@ -22,6 +25,7 @@ export const OptionsKeyPunishment = T('commands/auto-moderation:optionsKeyPunish
 export const OptionsKeyPunishmentDuration = T('commands/auto-moderation:optionsKeyPunishmentDuration');
 export const OptionsKeyThreshold = T('commands/auto-moderation:optionsKeyThreshold');
 export const OptionsKeyThresholdPeriod = T('commands/auto-moderation:optionsKeyThresholdPeriod');
+export const OptionsKeyWords = T('commands/auto-moderation:optionsKeyWords');
 
 export const AttachmentsName = T('commands/auto-moderation:attachmentsName');
 export const AttachmentsDescription = T('commands/auto-moderation:attachmentsDescription');
@@ -57,3 +61,9 @@ export const ShowPunishmentThresholdPeriodUnset = T('commands/auto-moderation:sh
 export const ShowPunishmentThresholdPeriod = FT<{ duration: string }>('commands/auto-moderation:showPunishmentThresholdPeriod');
 
 export const EditSuccess = T('commands/auto-moderation:editSuccess');
+
+export const WordAddDescription = T('commands/auto-moderation:wordAddDescription');
+export const WordAddFiltered = FT<{ word: string }>('commands/auto-moderation:wordAddFiltered');
+export const WordRemoveDescription = T('commands/auto-moderation:wordRemoveDescription');
+export const WordRemoveNotFiltered = FT<{ word: string }>('commands/auto-moderation:wordRemoveNotFiltered');
+export const WordShowList = FT<{ words: string[] }>('commands/auto-moderation:wordShowList');

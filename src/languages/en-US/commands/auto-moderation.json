@@ -5,6 +5,8 @@
 	"editDescription": "Edit the configuration for this server",
 	"resetName": "reset",
 	"resetDescription": "Reset a configuration key to its default value",
+	"addName": "add",
+	"removeName": "remove",
 	"optionsEnabledName": "enabled",
 	"optionsEnabledDescription": "Toggle the sub-system",
 	"optionsActionAlertName": "alert",
@@ -31,6 +33,9 @@
 	"optionsKeyPunishmentDuration": "Punishment Duration",
 	"optionsKeyThreshold": "Punishment Threshold",
 	"optionsKeyThresholdPeriod": "Punishment Threshold Period",
+	"optionsKeyWords": "Words",
+	"optionsWordName": "word",
+	"optionsWordDescription": "The word to add or remove",
 	"attachmentsName": "automod-attachments",
 	"attachmentsDescription": "Manage the auto-moderator for attachments",
 	"capitalsName": "automod-capitals",
@@ -62,5 +67,10 @@
 	"showPunishmentThresholdMaximum": "- Threshold: {{maximum, number}}",
 	"showPunishmentThresholdPeriodUnset": "- Threshold Period: *unset*",
 	"showPunishmentThresholdPeriod": "- Threshold Period: {{duration}}",
-	"editSuccess": "Successfully edited the auto-moderator's settings."
+	"editSuccess": "Successfully edited the auto-moderator's settings.",
+	"wordAddDescription": "Add a word to the filter list",
+	"wordAddFiltered": "The word `{{word}}` was already on the filter list.",
+	"wordRemoveDescription": "Remove a word from the filter list",
+	"wordRemoveNotFiltered": "The word `{{word}}` was not on the filter list.",
+	"wordShowList": "{{words, list(conjunction)}}"
 }

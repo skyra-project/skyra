@@ -4,15 +4,6 @@ import type { GuildVerificationLevel, Role } from 'discord.js';
 
 export const CreateMuteDescription = T<string>('commands/management:createMuteDescription');
 export const CreateMuteExtended = T<LanguageHelpDisplayOptions>('commands/management:createMuteExtended');
-export const FilterAdded = FT<{ word: string }, string>('commands/management:filterAdded');
-export const FilterAlreadyFiltered = T<string>('commands/management:filterAlreadyFiltered');
-export const FilterDescription = T<string>('commands/management:filterDescription');
-export const FilterExtended = T<LanguageHelpDisplayOptions>('commands/management:filterExtended');
-export const FilterNotFiltered = T<string>('commands/management:filterNotFiltered');
-export const FilterRemoved = FT<{ word: string }, string>('commands/management:filterRemoved');
-export const FilterReset = T<string>('commands/management:filterReset');
-export const FilterShow = FT<{ words: string }, string>('commands/management:filterShow');
-export const FilterShowEmpty = T<string>('commands/management:filterShowEmpty');
 export const GuildInfoChannels = FT<{ text: number; voice: number; categories: number; afkChannelText: string }, string>(
 	'commands/management:guildInfoChannels'
 );

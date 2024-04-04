@@ -7,16 +7,17 @@ import { SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type TypedT } from '#lib/types';
 import { Colors, Emojis } from '#utils/constants';
 import { resolveTimeSpan } from '#utils/resolvers';
-import { EmbedBuilder, type SlashCommandSubcommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, type SlashCommandBuilder, type SlashCommandSubcommandBuilder } from '@discordjs/builders';
 import { ApplicationCommandRegistry, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
-import { isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
+import { isNullish, isNullishOrEmpty, isNullishOrZero, type Awaitable } from '@sapphire/utilities';
 import { Guild, PermissionFlagsBits } from 'discord.js';
 
 const Root = LanguageKeys.Commands.AutoModeration;
 const RootModeration = LanguageKeys.Moderation;
 
 export abstract class AutoModerationCommand extends SkyraSubcommand {
+	protected readonly resetKeys: readonly AutoModerationCommand.OptionsResetKey[];
 	protected readonly adderPropertyName: AdderKey;
 	protected readonly keyEnabled: GuildSettingsOfType<boolean>;
 	protected readonly keyOnInfraction: GuildSettingsOfType<number>;
@@ -34,7 +35,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	readonly #punishmentThresholdDurationMinimum: number;
 	readonly #punishmentThresholdDurationMaximum: number;
 
-	protected constructor(context: SkyraSubcommand.LoaderContext, options: AutoModerationCommand.Options) {
+	protected constructor(context: AutoModerationCommand.LoaderContext, options: AutoModerationCommand.Options) {
 		super(context, {
 			detailedDescription: LanguageKeys.Commands.Shared.SlashOnlyDetailedDescription,
 			permissionLevel: PermissionLevels.Administrator,
@@ -43,11 +44,13 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			subcommands: [
 				{ name: 'show', chatInputRun: 'chatInputRunShow', default: true },
 				{ name: 'edit', chatInputRun: 'chatInputRunEdit' },
-				{ name: 'reset', chatInputRun: 'chatInputRunReset' }
+				{ name: 'reset', chatInputRun: 'chatInputRunReset' },
+				...(options.subcommands ?? [])
 			],
 			...options
 		});
 
+		this.resetKeys = options.resetKeys ?? [];
 		this.adderPropertyName = options.adderPropertyName;
 		this.keyEnabled = options.keyEnabled;
 		this.keyOnInfraction = options.keyOnInfraction;
@@ -73,32 +76,25 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand((builder) =>
-			applyLocalizedBuilder(builder, this.#localizedNameKey, this.description)
-				.setDMPermission(false)
-				.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-				.addSubcommand((subcommand) => this.registerShowSubcommand(subcommand))
-				.addSubcommand((subcommand) => this.registerEditSubcommand(subcommand))
-				.addSubcommand((subcommand) => this.registerResetSubcommand(subcommand))
+			this.registerSubcommands(
+				builder //
+					.setDMPermission(false)
+					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+			)
 		);
 	}
 
-	public async chatInputRunShow(interaction: SkyraSubcommand.Interaction) {
-		const [enabled, onInfraction, punishment, punishmentDuration, adder] = await readSettings(interaction.guild, (settings) => [
-			settings[this.keyEnabled],
-			settings[this.keyOnInfraction],
-			settings[this.keyPunishment],
-			settings[this.keyPunishmentDuration],
-			settings.adders[this.adderPropertyName]
-		]);
+	public async chatInputRunShow(interaction: AutoModerationCommand.Interaction) {
+		const settings = await readSettings(interaction.guild);
 
 		const t = getSupportedUserLanguageT(interaction);
-		const embed = enabled //
-			? this.showEnabled(t, onInfraction, punishment, punishmentDuration, adder)
+		const embed = settings[this.keyEnabled] //
+			? this.showEnabled(t, settings)
 			: this.showDisabled(t);
 		return interaction.reply({ embeds: [embed], ephemeral: true });
 	}
 
-	public async chatInputRunEdit(interaction: SkyraSubcommand.Interaction) {
+	public async chatInputRunEdit(interaction: AutoModerationCommand.Interaction) {
 		const valueEnabled = interaction.options.getBoolean('enabled');
 		const valueOnInfraction = this.#getInfraction(interaction, await readSettings(interaction.guild, this.keyOnInfraction));
 		const valuePunishment = interaction.options.getInteger('punishment');
@@ -131,7 +127,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		return interaction.reply({ content, ephemeral: true });
 	}
 
-	public async chatInputRunReset(interaction: SkyraSubcommand.Interaction) {
+	public async chatInputRunReset(interaction: AutoModerationCommand.Interaction) {
 		const [key, value] = await this.resetGetKeyValuePair(interaction.guild, interaction.options.getString('key', true) as ResetKey);
 		await writeSettings(interaction.guild, [[key, value]]);
 
@@ -140,7 +136,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		return interaction.reply({ content, ephemeral: true });
 	}
 
-	protected async resetGetKeyValuePair(guild: Guild, key: ResetKey): Promise<[keyof GuildEntity, GuildEntity[keyof GuildEntity]]> {
+	protected async resetGetKeyValuePair(guild: Guild, key: ResetKey): Promise<readonly [keyof GuildEntity, GuildEntity[keyof GuildEntity]]> {
 		switch (key) {
 			case 'enabled':
 				return [this.keyEnabled, false];
@@ -158,7 +154,14 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 				return [this.keyPunishmentThreshold, this.resetGetValue(this.keyPunishmentThreshold)];
 			case 'threshold-duration':
 				return [this.keyPunishmentThresholdPeriod, this.resetGetValue(this.keyPunishmentThresholdPeriod)];
+			default:
+				return this.resetGetKeyValuePairFallback(guild, key);
 		}
+	}
+
+	protected resetGetKeyValuePairFallback(guild: Guild, key: string): Awaitable<readonly [keyof GuildEntity, GuildEntity[keyof GuildEntity]]>;
+	protected resetGetKeyValuePairFallback(): never {
+		throw new Error('Unreachable');
 	}
 
 	protected resetGetValue<const Key extends keyof GuildEntity>(key: Key): GuildEntity[Key] {
@@ -176,22 +179,17 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			.setTitle(t(Root.ShowDisabled));
 	}
 
-	protected showEnabled(
-		t: TFunction,
-		onInfraction: number,
-		punishment: AutoModerationPunishment | null,
-		punishmentDuration: number | null,
-		adder: Adder<string> | null
-	) {
+	protected showEnabled(t: TFunction, settings: GuildEntity) {
 		const embed = new EmbedBuilder() //
 			.setColor(Colors.Green)
 			.setTitle(t(Root.ShowEnabled))
-			.setDescription(this.showEnabledOnInfraction(t, onInfraction));
+			.setDescription(this.showEnabledOnInfraction(t, settings[this.keyOnInfraction]));
 
+		const punishment = settings[this.keyPunishment];
 		if (!isNullishOrZero(punishment)) {
 			embed.addFields({
 				name: t(Root.ShowPunishmentTitle),
-				value: this.showEnabledOnPunishment(t, punishment, punishmentDuration, adder)
+				value: this.showEnabledOnPunishment(t, punishment, settings[this.keyPunishmentDuration], settings.adders[this.adderPropertyName])
 			});
 		}
 
@@ -261,6 +259,22 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			: t(Root.ShowPunishmentThresholdPeriod, { duration: t(LanguageKeys.Globals.DurationValue, { value: duration }) });
 	}
 
+	/**
+	 * Registers the subcommands to the builder, calling:
+	 * - {@linkcode registerShowSubcommand}
+	 * - {@linkcode registerEditSubcommand}
+	 * - {@linkcode registerResetSubcommand}
+	 *
+	 * @param builder - The builder to register the subcommands to
+	 * @returns The updated builder
+	 */
+	protected registerSubcommands(builder: SlashCommandBuilder) {
+		return applyLocalizedBuilder(builder, this.#localizedNameKey, this.description)
+			.addSubcommand((subcommand) => this.registerShowSubcommand(subcommand))
+			.addSubcommand((subcommand) => this.registerEditSubcommand(subcommand))
+			.addSubcommand((subcommand) => this.registerResetSubcommand(subcommand));
+	}
+
 	protected registerShowSubcommand(subcommand: SlashCommandSubcommandBuilder) {
 		return applyLocalizedBuilder(subcommand, Root.Show);
 	}
@@ -292,23 +306,29 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	}
 
 	protected registerResetSubcommand(subcommand: SlashCommandSubcommandBuilder) {
+		const choices = [
+			createLocalizedChoice(Root.OptionsKeyEnabled, { value: 'enabled' }),
+			createLocalizedChoice(Root.OptionsKeyActionAlert, { value: 'alert' }),
+			createLocalizedChoice(Root.OptionsKeyActionLog, { value: 'log' }),
+			createLocalizedChoice(Root.OptionsKeyActionDelete, { value: 'delete' }),
+			createLocalizedChoice(Root.OptionsKeyPunishment, { value: 'punishment' }),
+			createLocalizedChoice(Root.OptionsKeyPunishmentDuration, { value: 'punishment-duration' }),
+			createLocalizedChoice(Root.OptionsKeyThreshold, { value: 'threshold' }),
+			createLocalizedChoice(Root.OptionsKeyThresholdPeriod, { value: 'threshold-duration' })
+		];
+
+		for (const { key: name, value } of this.resetKeys) {
+			choices.push(createLocalizedChoice(name, { value }));
+		}
+
 		return applyLocalizedBuilder(subcommand, Root.Reset).addStringOption((option) =>
 			applyLocalizedBuilder(option, Root.OptionsKey)
-				.setChoices(
-					createLocalizedChoice(Root.OptionsKeyEnabled, { value: 'enabled' }),
-					createLocalizedChoice(Root.OptionsKeyActionAlert, { value: 'alert' }),
-					createLocalizedChoice(Root.OptionsKeyActionLog, { value: 'log' }),
-					createLocalizedChoice(Root.OptionsKeyActionDelete, { value: 'delete' }),
-					createLocalizedChoice(Root.OptionsKeyPunishment, { value: 'punishment' }),
-					createLocalizedChoice(Root.OptionsKeyPunishmentDuration, { value: 'punishment-duration' }),
-					createLocalizedChoice(Root.OptionsKeyThreshold, { value: 'threshold' }),
-					createLocalizedChoice(Root.OptionsKeyThresholdPeriod, { value: 'threshold-duration' })
-				)
+				.setChoices(...choices)
 				.setRequired(true)
 		);
 	}
 
-	#getInfraction(interaction: SkyraSubcommand.Interaction, existing: number) {
+	#getInfraction(interaction: AutoModerationCommand.Interaction, existing: number) {
 		const actionAlert = interaction.options.getBoolean('alert');
 		const actionLog = interaction.options.getBoolean('log');
 		const actionDelete = interaction.options.getBoolean('delete');
@@ -325,7 +345,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		return bitfield;
 	}
 
-	#getDuration(interaction: SkyraSubcommand.Interaction, option: string, minimum: number, maximum: number) {
+	#getDuration(interaction: AutoModerationCommand.Interaction, option: string, minimum: number, maximum: number) {
 		const parameter = interaction.options.getString(option);
 		if (isNullishOrEmpty(parameter)) return null;
 
@@ -352,7 +372,13 @@ export namespace AutoModerationCommand {
 		keyPunishmentDuration: GuildSettingsOfType<number | null>;
 		keyPunishmentThreshold: GuildSettingsOfType<number | null>;
 		keyPunishmentThresholdPeriod: GuildSettingsOfType<number | null>;
+		resetKeys?: readonly OptionsResetKey[];
 	}
 
-	export type Args = SkyraSubcommand.Args;
+	export interface OptionsResetKey {
+		key: TypedT;
+		value: string;
+	}
+
+	export type Interaction = SkyraSubcommand.Interaction;
 }

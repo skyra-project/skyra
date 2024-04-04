@@ -41,13 +41,13 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: [CommandOptionsRunTypeEnum.GuildAny],
 			hidden: true,
+			...options,
 			subcommands: [
-				{ name: 'show', chatInputRun: 'chatInputRunShow', default: true },
+				{ name: 'show', chatInputRun: 'chatInputRunShow' },
 				{ name: 'edit', chatInputRun: 'chatInputRunEdit' },
 				{ name: 'reset', chatInputRun: 'chatInputRunReset' },
 				...(options.subcommands ?? [])
-			],
-			...options
+			]
 		});
 
 		this.resetKeys = options.resetKeys ?? [];

@@ -72,5 +72,9 @@
 	"wordAddFiltered": "The word `{{word}}` was already on the filter list.",
 	"wordRemoveDescription": "Remove a word from the filter list",
 	"wordRemoveNotFiltered": "The word `{{word}}` was not on the filter list.",
-	"wordShowList": "{{words, list(conjunction)}}"
+	"wordShowList": "{{words, list(conjunction)}}",
+	"wordShowListTitle_one": "Filtered Word ({{count, number}})",
+	"wordShowListTitle_other": "Filtered Words ({{count, number}})",
+	"wordShowListEmpty": "Please use {{command}} to add words to the filter list.",
+	"wordShowListTitleEmpty": "No words are currently filtered"
 }

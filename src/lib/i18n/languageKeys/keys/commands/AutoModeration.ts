@@ -67,3 +67,6 @@ export const WordAddFiltered = FT<{ word: string }>('commands/auto-moderation:wo
 export const WordRemoveDescription = T('commands/auto-moderation:wordRemoveDescription');
 export const WordRemoveNotFiltered = FT<{ word: string }>('commands/auto-moderation:wordRemoveNotFiltered');
 export const WordShowList = FT<{ words: string[] }>('commands/auto-moderation:wordShowList');
+export const WordShowListTitle = FT<{ count: number }>('commands/auto-moderation:wordShowListTitle');
+export const WordShowListEmpty = FT<{ command: string }>('commands/auto-moderation:wordShowListEmpty');
+export const WordShowListTitleEmpty = T('commands/auto-moderation:wordShowListTitleEmpty');

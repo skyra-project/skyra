@@ -4,7 +4,7 @@ import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { AutoModerationCommand } from '#lib/moderation';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
 import { addAutomaticFields } from '#utils/functions';
-import type { SlashCommandBuilder, SlashCommandSubcommandBuilder } from '@discordjs/builders';
+import { chatInputApplicationCommandMention, type SlashCommandBuilder, type SlashCommandSubcommandBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { applyLocalizedBuilder, type TFunction } from '@sapphire/plugin-i18next';
 import { isNullishOrEmpty, type Awaitable } from '@sapphire/utilities';
@@ -66,8 +66,18 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		const embed = super.showEnabled(t, settings);
 
 		const words = settings[SettingsRoot.Raw];
-		if (!isNullishOrEmpty(words)) {
-			addAutomaticFields(embed, t(Root.WordShowList, { words: words.map((word) => inlineCode(word)) }));
+		if (isNullishOrEmpty(words)) {
+			const command = chatInputApplicationCommandMention(this.name, 'add', this.getGlobalCommandId());
+			embed.addFields({
+				name: t(Root.WordShowListTitleEmpty),
+				value: t(Root.WordShowListEmpty, { command })
+			});
+		} else {
+			addAutomaticFields(
+				embed,
+				t(Root.WordShowListTitle, { count: words.length }),
+				t(Root.WordShowList, { words: words.map((word) => inlineCode(word)) })
+			);
 		}
 		return embed;
 	}

@@ -3,9 +3,12 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { AutoModerationCommand } from '#lib/moderation';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
+import type { SkyraSubcommand } from '#lib/structures';
+import type { GuildMessage } from '#lib/types';
 import { addAutomaticFields } from '#utils/functions';
 import { chatInputApplicationCommandMention, type SlashCommandBuilder, type SlashCommandSubcommandBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
+import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, type TFunction } from '@sapphire/plugin-i18next';
 import { isNullishOrEmpty, type Awaitable } from '@sapphire/utilities';
 import { remove as removeConfusables } from 'confusables';
@@ -15,11 +18,12 @@ const Root = LanguageKeys.Commands.AutoModeration;
 const SettingsRoot = GuildSettings.AutoModeration.Filter;
 
 @ApplyOptions<AutoModerationCommand.Options>({
+	aliases: ['filter-mode', 'word-filter-mode', 'manage-filter', 'filter'],
 	description: Root.WordsDescription,
 	localizedNameKey: Root.WordsName,
 	subcommands: [
-		{ name: 'add', chatInputRun: 'chatInputRunAdd' },
-		{ name: 'remove', chatInputRun: 'chatInputRunRemove' }
+		{ name: 'add', chatInputRun: 'chatInputRunAdd', messageRun: 'messageRunAdd' },
+		{ name: 'remove', chatInputRun: 'chatInputRunRemove', messageRun: 'messageRunRemove' }
 	],
 	resetKeys: [{ key: Root.OptionsKeyWords, value: 'words' }],
 	adderPropertyName: 'words',
@@ -31,6 +35,18 @@ const SettingsRoot = GuildSettings.AutoModeration.Filter;
 	keyPunishmentThresholdPeriod: SettingsRoot.ThresholdDuration
 })
 export class UserAutoModerationCommand extends AutoModerationCommand {
+	/** @deprecated */
+	public messageRunAdd(message: GuildMessage, args: SkyraSubcommand.Args) {
+		const command = chatInputApplicationCommandMention(this.name, 'add', this.getGlobalCommandId());
+		return send(message, args.t(LanguageKeys.Commands.Shared.DeprecatedMessage, { command }));
+	}
+
+	/** @deprecated */
+	public messageRunRemove(message: GuildMessage, args: SkyraSubcommand.Args) {
+		const command = chatInputApplicationCommandMention(this.name, 'remove', this.getGlobalCommandId());
+		return send(message, args.t(LanguageKeys.Commands.Shared.DeprecatedMessage, { command }));
+	}
+
 	public async chatInputRunAdd(interaction: AutoModerationCommand.Interaction) {
 		const word = this.#getWord(interaction);
 		const { guild } = interaction;

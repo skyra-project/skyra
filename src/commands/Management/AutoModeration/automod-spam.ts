@@ -7,6 +7,7 @@ const Root = LanguageKeys.Commands.AutoModeration;
 const SettingsRoot = GuildSettings.AutoModeration.Messages;
 
 @ApplyOptions<AutoModerationCommand.Options>({
+	aliases: ['message-mode', 'messages-mode', 'manage-message', 'manage-messages'],
 	description: Root.SpamDescription,
 	localizedNameKey: Root.SpamName,
 	adderPropertyName: 'messages',

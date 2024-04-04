@@ -7,6 +7,7 @@ const Root = LanguageKeys.Commands.AutoModeration;
 const SettingsRoot = GuildSettings.AutoModeration.NewLines;
 
 @ApplyOptions<AutoModerationCommand.Options>({
+	aliases: ['newline-mode', 'newlines-mode', 'manage-newline', 'manage-newlines'],
 	description: Root.NewlinesDescription,
 	localizedNameKey: Root.NewlinesName,
 	adderPropertyName: 'newlines',

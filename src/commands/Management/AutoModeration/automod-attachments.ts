@@ -7,6 +7,7 @@ const Root = LanguageKeys.Commands.AutoModeration;
 const SettingsRoot = GuildSettings.AutoModeration.Attachments;
 
 @ApplyOptions<AutoModerationCommand.Options>({
+	aliases: ['attachment-mode', 'attachments-mode', 'manage-attachment', 'manage-attachments'],
 	description: Root.AttachmentsDescription,
 	localizedNameKey: Root.AttachmentsName,
 	adderPropertyName: 'attachments',

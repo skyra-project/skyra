@@ -4,14 +4,15 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { AutoModerationOnInfraction, AutoModerationPunishment } from '#lib/moderation/structures/AutoModerationOnInfraction';
 import { SkyraSubcommand } from '#lib/structures';
-import { PermissionLevels, type TypedT } from '#lib/types';
+import { PermissionLevels, type GuildMessage, type TypedT } from '#lib/types';
 import { Colors, Emojis } from '#utils/constants';
 import { resolveTimeSpan } from '#utils/resolvers';
 import { EmbedBuilder, type SlashCommandBuilder, type SlashCommandSubcommandBuilder } from '@discordjs/builders';
 import { CommandOptionsRunTypeEnum, type ApplicationCommandRegistry } from '@sapphire/framework';
+import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, type Awaitable } from '@sapphire/utilities';
-import { PermissionFlagsBits, strikethrough, type Guild } from 'discord.js';
+import { PermissionFlagsBits, chatInputApplicationCommandMention, strikethrough, type Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.AutoModeration;
 const RootModeration = LanguageKeys.Moderation;
@@ -43,9 +44,9 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			hidden: true,
 			...options,
 			subcommands: [
-				{ name: 'show', chatInputRun: 'chatInputRunShow' },
-				{ name: 'edit', chatInputRun: 'chatInputRunEdit' },
-				{ name: 'reset', chatInputRun: 'chatInputRunReset' },
+				{ name: 'show', chatInputRun: 'chatInputRunShow', messageRun: 'messageRunShow', default: true },
+				{ name: 'edit', chatInputRun: 'chatInputRunEdit', messageRun: 'messageRunEdit' },
+				{ name: 'reset', chatInputRun: 'chatInputRunReset', messageRun: 'messageRunReset' },
 				...(options.subcommands ?? [])
 			]
 		});
@@ -82,6 +83,24 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 			)
 		);
+	}
+
+	/** @deprecated */
+	public messageRunShow(message: GuildMessage, args: SkyraSubcommand.Args) {
+		const command = chatInputApplicationCommandMention(this.name, 'show', this.getGlobalCommandId());
+		return send(message, args.t(LanguageKeys.Commands.Shared.DeprecatedMessage, { command }));
+	}
+
+	/** @deprecated */
+	public messageRunEdit(message: GuildMessage, args: SkyraSubcommand.Args) {
+		const command = chatInputApplicationCommandMention(this.name, 'edit', this.getGlobalCommandId());
+		return send(message, args.t(LanguageKeys.Commands.Shared.DeprecatedMessage, { command }));
+	}
+
+	/** @deprecated */
+	public messageRunReset(message: GuildMessage, args: SkyraSubcommand.Args) {
+		const command = chatInputApplicationCommandMention(this.name, 'reset', this.getGlobalCommandId());
+		return send(message, args.t(LanguageKeys.Commands.Shared.DeprecatedMessage, { command }));
 	}
 
 	public async chatInputRunShow(interaction: AutoModerationCommand.Interaction) {

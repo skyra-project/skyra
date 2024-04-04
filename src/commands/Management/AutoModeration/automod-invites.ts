@@ -7,6 +7,7 @@ const Root = LanguageKeys.Commands.AutoModeration;
 const SettingsRoot = GuildSettings.AutoModeration.Invites;
 
 @ApplyOptions<AutoModerationCommand.Options>({
+	aliases: ['invite-mode', 'invites-mode', 'manage-invite', 'manage-invites'],
 	description: Root.InvitesDescription,
 	localizedNameKey: Root.InvitesName,
 	adderPropertyName: 'invites',

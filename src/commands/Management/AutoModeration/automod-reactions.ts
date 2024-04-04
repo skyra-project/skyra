@@ -7,6 +7,7 @@ const Root = LanguageKeys.Commands.AutoModeration;
 const SettingsRoot = GuildSettings.AutoModeration.Reactions;
 
 @ApplyOptions<AutoModerationCommand.Options>({
+	aliases: ['reaction-mode', 'r-mode'],
 	description: Root.ReactionsDescription,
 	localizedNameKey: Root.ReactionsName,
 	adderPropertyName: 'reactions',

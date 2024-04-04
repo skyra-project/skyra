@@ -7,6 +7,7 @@ const Root = LanguageKeys.Commands.AutoModeration;
 const SettingsRoot = GuildSettings.AutoModeration.Links;
 
 @ApplyOptions<AutoModerationCommand.Options>({
+	aliases: ['link-mode', 'links-mode', 'manage-link', 'manage-links'],
 	description: Root.LinksDescription,
 	localizedNameKey: Root.LinksName,
 	adderPropertyName: 'links',

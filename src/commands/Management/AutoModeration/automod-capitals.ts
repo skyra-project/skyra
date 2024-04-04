@@ -7,6 +7,7 @@ const Root = LanguageKeys.Commands.AutoModeration;
 const SettingsRoot = GuildSettings.AutoModeration.Capitals;
 
 @ApplyOptions<AutoModerationCommand.Options>({
+	aliases: ['capitals-mode', 'manage-capitals'],
 	description: Root.CapitalsDescription,
 	localizedNameKey: Root.CapitalsName,
 	adderPropertyName: 'capitals',

@@ -115,7 +115,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	protected async onTimeout(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		if (isNullishOrZero(duration)) return;
 		await this.createActionAndSend(message, () =>
-			ModerationActions.mute.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
+			ModerationActions.timeout.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 

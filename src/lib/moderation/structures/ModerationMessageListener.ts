@@ -9,7 +9,7 @@ import { EmbedBuilder } from '@discordjs/builders';
 import { canSendMessages, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import type { Awaitable, Nullish } from '@sapphire/utilities';
+import { isNullishOrZero, type Awaitable, type Nullish } from '@sapphire/utilities';
 import type { GuildMember } from 'discord.js';
 
 export abstract class ModerationMessageListener<T = unknown> extends Listener {
@@ -85,6 +85,9 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 			case AutoModerationPunishment.Kick:
 				await this.onKick(message, language, points, maximum);
 				break;
+			case AutoModerationPunishment.Timeout:
+				await this.onTimeout(message, language, points, maximum, duration);
+				break;
 			case AutoModerationPunishment.Mute:
 				await this.onMute(message, language, points, maximum, duration);
 				break;
@@ -106,6 +109,13 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	protected async onKick(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
 			ModerationActions.kick.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum) })
+		);
+	}
+
+	protected async onTimeout(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
+		if (isNullishOrZero(duration)) return;
+		await this.createActionAndSend(message, () =>
+			ModerationActions.mute.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 

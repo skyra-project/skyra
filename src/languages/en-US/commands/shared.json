@@ -1,6 +1,7 @@
 {
 	"deprecatedMessage": "Message based commands are **deprecated**, and will be removed in the future. You should use the {{command}} slash command instead!",
-	"slashDetailed": {
-		"extendedHelp": "This is a chat input only command, please refer to the information from Discord's interface for how to use this command."
-	}
+	"slashOnlyDetailedDescription": {
+		"extendedHelp": "This command is only available via slash commands. Please use the slash command instead."
+	},
+	"slashOnlyErrorMessage": "This command is only available via slash commands. Please use the slash command instead."
 }

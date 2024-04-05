@@ -1,4 +1,3 @@
-import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { SkyraCommand } from '#lib/structures';
@@ -6,8 +5,9 @@ import type { GuildMessage } from '#lib/types';
 import { PermissionsBits } from '#utils/bits';
 import { desc, map, maybeParseDate, months, seconds } from '#utils/common';
 import { Colors, EmojiData, Emojis } from '#utils/constants';
+import { addAutomaticFields } from '#utils/functions';
 import { getDisplayAvatar, getTag } from '#utils/util';
-import { ActionRowBuilder, ButtonBuilder, TimestampStyles, time } from '@discordjs/builders';
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
@@ -111,7 +111,7 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private user(t: TFunction, user: User) {
-		return new SkyraEmbed()
+		return new EmbedBuilder()
 			.setColor(Colors.White)
 			.setThumbnail(getDisplayAvatar(user, { size: 256 }))
 			.setDescription(this.getUserInformation(t, user));
@@ -120,7 +120,7 @@ export class UserCommand extends SkyraCommand {
 	private member(t: TFunction, member: IncomingGuildMember, user: User) {
 		const isCached = member instanceof GuildMember;
 		const displayColor = isCached ? member.displayColor || Colors.White : Colors.White;
-		const embed = new SkyraEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(displayColor)
 			.setThumbnail(getDisplayAvatar(user, { size: 256 }))
 			.setDescription(this.getMemberInformation(t, member, user));
@@ -152,10 +152,10 @@ export class UserCommand extends SkyraCommand {
 		return `${header}\n${description}`;
 	}
 
-	private applyMemberRoles(t: TFunction, roles: string[] | null, embed: SkyraEmbed) {
+	private applyMemberRoles(t: TFunction, roles: string[] | null, embed: EmbedBuilder) {
 		if (isNullishOrEmpty(roles)) return;
 
-		embed.splitFields(t(Root.RolesTitle, { count: roles.length }), roles.join(' '));
+		addAutomaticFields(embed, t(Root.RolesTitle, { count: roles.length }), roles.join(' '));
 	}
 
 	private getGuildMemberRoles(member: GuildMember) {
@@ -173,7 +173,7 @@ export class UserCommand extends SkyraCommand {
 		return member.roles.map((id) => roleMention(id));
 	}
 
-	private applyMemberKeyPermissions(t: TFunction, member: IncomingGuildMember, embed: SkyraEmbed) {
+	private applyMemberKeyPermissions(t: TFunction, member: IncomingGuildMember, embed: EmbedBuilder) {
 		const bitfield = this.getMemberPermissions(member);
 
 		// If the member has Administrator, add a field indicating the member

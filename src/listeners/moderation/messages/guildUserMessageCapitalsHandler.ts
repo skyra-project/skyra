@@ -16,13 +16,13 @@ import type { TextChannel } from 'discord.js';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationCapitals,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationCapitalsWithMaximum,
-	keyEnabled: GuildSettings.Selfmod.Capitals.Enabled,
-	ignoredChannelsPath: GuildSettings.Selfmod.Capitals.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.Selfmod.Capitals.IgnoredRoles,
-	softPunishmentPath: GuildSettings.Selfmod.Capitals.SoftAction,
+	keyEnabled: GuildSettings.AutoModeration.Capitals.Enabled,
+	ignoredChannelsPath: GuildSettings.AutoModeration.Capitals.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.AutoModeration.Capitals.IgnoredRoles,
+	softPunishmentPath: GuildSettings.AutoModeration.Capitals.SoftAction,
 	hardPunishmentPath: {
-		action: GuildSettings.Selfmod.Capitals.HardAction,
-		actionDuration: GuildSettings.Selfmod.Capitals.HardActionDuration,
+		action: GuildSettings.AutoModeration.Capitals.HardAction,
+		actionDuration: GuildSettings.AutoModeration.Capitals.HardActionDuration,
 		adder: 'capitals'
 	}
 })
@@ -31,8 +31,8 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 		if (message.content.length === 0) return null;
 
 		const [minimumCapitals, maximumCapitals] = await readSettings(message.guild, [
-			GuildSettings.Selfmod.Capitals.Minimum,
-			GuildSettings.Selfmod.Capitals.Maximum
+			GuildSettings.AutoModeration.Capitals.Minimum,
+			GuildSettings.AutoModeration.Capitals.Maximum
 		]);
 
 		if (message.content.length < minimumCapitals) return null;

@@ -1,7 +1,7 @@
 import { GuildEntity, GuildSettings, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import { ModerationActions } from '#lib/moderation/actions/index';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '#lib/moderation/structures/SelfModeratorBitField';
+import { AutoModerationOnInfraction, AutoModerationPunishment } from '#lib/moderation/structures/AutoModerationOnInfraction';
 import { Events, type GuildMessage, type TypedFT, type TypedT } from '#lib/types';
 import { floatPromise, seconds } from '#utils/common';
 import { getModeration, isModerator } from '#utils/functions';
@@ -9,7 +9,7 @@ import { EmbedBuilder } from '@discordjs/builders';
 import { canSendMessages, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import type { Awaitable, Nullish } from '@sapphire/utilities';
+import { isNullishOrZero, type Awaitable, type Nullish } from '@sapphire/utilities';
 import type { GuildMember } from 'discord.js';
 
 export abstract class ModerationMessageListener<T = unknown> extends Listener {
@@ -48,8 +48,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 			settings.adders[this.hardPunishmentPath.adder],
 			settings.getLanguage()
 		]);
-		const bitField = new SelfModeratorBitField(filter);
-		this.processSoftPunishment(message, logChannelId, language, bitField, preProcessed);
+		this.processSoftPunishment(message, logChannelId, language, filter, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;
 
@@ -63,22 +62,16 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		}
 	}
 
-	protected processSoftPunishment(
-		message: GuildMessage,
-		logChannelId: string | Nullish,
-		language: TFunction,
-		bitField: SelfModeratorBitField,
-		preProcessed: T
-	) {
-		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE) && message.deletable) {
+	protected processSoftPunishment(message: GuildMessage, logChannelId: string | Nullish, language: TFunction, bitfield: number, preProcessed: T) {
+		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Delete) && message.deletable) {
 			floatPromise(this.onDelete(message, language, preProcessed) as any);
 		}
 
-		if (bitField.has(SelfModeratorBitField.FLAGS.ALERT) && canSendMessages(message.channel)) {
+		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Alert) && canSendMessages(message.channel)) {
 			floatPromise(this.onAlert(message, language, preProcessed) as any);
 		}
 
-		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) {
+		if (AutoModerationOnInfraction.has(bitfield, AutoModerationOnInfraction.flags.Log)) {
 			floatPromise(this.onLog(message, logChannelId, language, preProcessed) as any);
 		}
 	}
@@ -86,19 +79,22 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	protected async processHardPunishment(message: GuildMessage, language: TFunction, points: number, maximum: number) {
 		const [action, duration] = await readSettings(message.guild, [this.hardPunishmentPath.action, this.hardPunishmentPath.actionDuration]);
 		switch (action) {
-			case SelfModeratorHardActionFlags.Warning:
+			case AutoModerationPunishment.Warning:
 				await this.onWarning(message, language, points, maximum, duration);
 				break;
-			case SelfModeratorHardActionFlags.Kick:
+			case AutoModerationPunishment.Kick:
 				await this.onKick(message, language, points, maximum);
 				break;
-			case SelfModeratorHardActionFlags.Mute:
+			case AutoModerationPunishment.Timeout:
+				await this.onTimeout(message, language, points, maximum, duration);
+				break;
+			case AutoModerationPunishment.Mute:
 				await this.onMute(message, language, points, maximum, duration);
 				break;
-			case SelfModeratorHardActionFlags.SoftBan:
+			case AutoModerationPunishment.Softban:
 				await this.onSoftBan(message, language, points, maximum);
 				break;
-			case SelfModeratorHardActionFlags.Ban:
+			case AutoModerationPunishment.Ban:
 				await this.onBan(message, language, points, maximum, duration);
 				break;
 		}
@@ -113,6 +109,13 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	protected async onKick(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
 			ModerationActions.kick.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum) })
+		);
+	}
+
+	protected async onTimeout(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
+		if (isNullishOrZero(duration)) return;
+		await this.createActionAndSend(message, () =>
+			ModerationActions.timeout.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 
@@ -168,7 +171,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	}
 
 	private checkMessageChannel(settings: GuildEntity, channel: GuildTextBasedChannelTypes) {
-		const globalIgnore = settings[GuildSettings.Selfmod.IgnoreChannels];
+		const globalIgnore = settings[GuildSettings.AutoModeration.IgnoreChannels];
 		if (globalIgnore.includes(channel.id)) return false;
 
 		const localIgnore = settings[this.ignoredChannelsPath] as readonly string[];

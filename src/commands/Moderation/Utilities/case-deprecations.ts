@@ -16,8 +16,8 @@ import { chatInputApplicationCommandMention } from 'discord.js';
 })
 export class UserCommand extends SkyraCommand {
 	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args, context: SkyraCommand.RunContext) {
-		const caseCommand = this.store.get('case')!;
-		const id = this.getGlobalCommandId.call(caseCommand);
+		const caseCommand = this.store.get('case') as SkyraCommand;
+		const id = caseCommand.getGlobalCommandId();
 		const command = chatInputApplicationCommandMention(caseCommand.name, this.#getSubcommand(context.commandName), id);
 		const content = args.t(LanguageKeys.Commands.Shared.DeprecatedMessage, { command });
 		return send(message, content);

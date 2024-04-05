@@ -25,36 +25,36 @@ export class AdderManager implements IBaseManager {
 	public refresh(): void {
 		const settings = this.#settings;
 		this.attachments = this.makeAdder(
-			settings[GuildSettings.Selfmod.Attachments.ThresholdMaximum], //
-			settings[GuildSettings.Selfmod.Attachments.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Attachments.ThresholdMaximum], //
+			settings[GuildSettings.AutoModeration.Attachments.ThresholdDuration]
 		);
 		this.capitals = this.makeAdder(
-			settings[GuildSettings.Selfmod.Capitals.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Capitals.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Capitals.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Capitals.ThresholdDuration]
 		);
 		this.links = this.makeAdder(
-			settings[GuildSettings.Selfmod.Links.ThresholdMaximum], //
-			settings[GuildSettings.Selfmod.Links.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Links.ThresholdMaximum], //
+			settings[GuildSettings.AutoModeration.Links.ThresholdDuration]
 		);
 		this.messages = this.makeAdder(
-			settings[GuildSettings.Selfmod.Messages.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Messages.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Messages.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Messages.ThresholdDuration]
 		);
 		this.newlines = this.makeAdder(
-			settings[GuildSettings.Selfmod.NewLines.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.NewLines.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.NewLines.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.NewLines.ThresholdDuration]
 		);
 		this.invites = this.makeAdder(
-			settings[GuildSettings.Selfmod.Invites.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Invites.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Invites.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Invites.ThresholdDuration]
 		);
 		this.words = this.makeAdder(
-			settings[GuildSettings.Selfmod.Filter.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Filter.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Filter.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Filter.ThresholdDuration]
 		);
 		this.reactions = this.makeAdder(
-			settings[GuildSettings.Selfmod.Reactions.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Reactions.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Reactions.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Reactions.ThresholdDuration]
 		);
 	}
 
@@ -62,43 +62,43 @@ export class AdderManager implements IBaseManager {
 		const settings = this.#settings;
 		this.attachments = this.updateAdder(
 			this.attachments,
-			settings[GuildSettings.Selfmod.Attachments.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Attachments.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Attachments.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Attachments.ThresholdDuration]
 		);
 		this.capitals = this.updateAdder(
 			this.capitals,
-			settings[GuildSettings.Selfmod.Capitals.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Capitals.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Capitals.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Capitals.ThresholdDuration]
 		);
 		this.links = this.updateAdder(
 			this.links,
-			settings[GuildSettings.Selfmod.Links.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Links.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Links.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Links.ThresholdDuration]
 		);
 		this.messages = this.updateAdder(
 			this.messages,
-			settings[GuildSettings.Selfmod.Messages.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Messages.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Messages.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Messages.ThresholdDuration]
 		);
 		this.newlines = this.updateAdder(
 			this.newlines,
-			settings[GuildSettings.Selfmod.NewLines.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.NewLines.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.NewLines.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.NewLines.ThresholdDuration]
 		);
 		this.invites = this.updateAdder(
 			this.invites,
-			settings[GuildSettings.Selfmod.Invites.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Invites.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Invites.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Invites.ThresholdDuration]
 		);
 		this.words = this.updateAdder(
 			this.words,
-			settings[GuildSettings.Selfmod.Filter.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Filter.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Filter.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Filter.ThresholdDuration]
 		);
 		this.reactions = this.updateAdder(
 			this.reactions,
-			settings[GuildSettings.Selfmod.Reactions.ThresholdMaximum],
-			settings[GuildSettings.Selfmod.Reactions.ThresholdDuration]
+			settings[GuildSettings.AutoModeration.Reactions.ThresholdMaximum],
+			settings[GuildSettings.AutoModeration.Reactions.ThresholdDuration]
 		);
 	}
 

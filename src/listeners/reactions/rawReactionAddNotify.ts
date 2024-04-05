@@ -47,7 +47,7 @@ export class UserListener extends Listener {
 			(settings) => [
 				settings.getLanguage(),
 				settings[GuildSettings.Channels.Logs.Reaction],
-				settings[GuildSettings.Selfmod.Reactions.Allowed],
+				settings[GuildSettings.AutoModeration.Reactions.Allowed],
 				settings[GuildSettings.Events.IncludeTwemoji],
 				settings[GuildSettings.Messages.IgnoreChannels],
 				settings[GuildSettings.Channels.Ignore.ReactionAdd],

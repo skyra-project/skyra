@@ -12,9 +12,9 @@ export class UserListener extends Listener {
 		if (await isModerator(message.member)) return;
 
 		const [enabled, globalIgnore, alerts, ratelimits] = await readSettings(message.guild, (settings) => [
-			settings[GuildSettings.Selfmod.NoMentionSpam.Enabled],
-			settings[GuildSettings.Selfmod.IgnoreChannels],
-			settings[GuildSettings.Selfmod.NoMentionSpam.Alerts],
+			settings[GuildSettings.AutoModeration.NoMentionSpam.Enabled],
+			settings[GuildSettings.AutoModeration.IgnoreChannels],
+			settings[GuildSettings.AutoModeration.NoMentionSpam.Alerts],
 			settings.nms
 		]);
 		if (!enabled) return;

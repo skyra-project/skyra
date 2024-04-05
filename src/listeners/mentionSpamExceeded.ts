@@ -9,7 +9,7 @@ import { Listener } from '@sapphire/framework';
 export class UserListener extends Listener {
 	public async run(message: GuildMessage) {
 		const [threshold, nms, t] = await readSettings(message.guild, (settings) => [
-			settings[GuildSettings.Selfmod.NoMentionSpam.MentionsAllowed],
+			settings[GuildSettings.AutoModeration.NoMentionSpam.MentionsAllowed],
 			settings.nms,
 			settings.getLanguage()
 		]);

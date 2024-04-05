@@ -2,23 +2,8 @@ import type { LanguageHelpDisplayOptions } from '#lib/i18n/LanguageHelp';
 import { FT, T } from '#lib/types';
 import type { GuildVerificationLevel, Role } from 'discord.js';
 
-export const AttachmentsModeDescription = T<string>('commands/management:attachmentsModeDescription');
-export const AttachmentsModeExtended = T<LanguageHelpDisplayOptions>('commands/management:attachmentsModeExtended');
-export const CapitalsModeDescription = T<string>('commands/management:capitalsModeDescription');
-export const CapitalsModeExtended = T<LanguageHelpDisplayOptions>('commands/management:capitalsModeExtended');
 export const CreateMuteDescription = T<string>('commands/management:createMuteDescription');
 export const CreateMuteExtended = T<LanguageHelpDisplayOptions>('commands/management:createMuteExtended');
-export const FilterAdded = FT<{ word: string }, string>('commands/management:filterAdded');
-export const FilterAlreadyFiltered = T<string>('commands/management:filterAlreadyFiltered');
-export const FilterDescription = T<string>('commands/management:filterDescription');
-export const FilterExtended = T<LanguageHelpDisplayOptions>('commands/management:filterExtended');
-export const FilterModeDescription = T<string>('commands/management:filterModeDescription');
-export const FilterModeExtended = T<LanguageHelpDisplayOptions>('commands/management:filterModeExtended');
-export const FilterNotFiltered = T<string>('commands/management:filterNotFiltered');
-export const FilterRemoved = FT<{ word: string }, string>('commands/management:filterRemoved');
-export const FilterReset = T<string>('commands/management:filterReset');
-export const FilterShow = FT<{ words: string }, string>('commands/management:filterShow');
-export const FilterShowEmpty = T<string>('commands/management:filterShowEmpty');
 export const GuildInfoChannels = FT<{ text: number; voice: number; categories: number; afkChannelText: string }, string>(
 	'commands/management:guildInfoChannels'
 );
@@ -41,10 +26,6 @@ export const GuildInfoBanner = T('commands/management:guildInfoBanner');
 export const GuildInfoIcon = T('commands/management:guildInfoIcon');
 export const GuildInfoSplash = T('commands/management:guildInfoSplash');
 export const GuildInfoDiscoverySplash = T('commands/management:guildInfoDiscoverySplash');
-export const InviteModeDescription = T<string>('commands/management:inviteModeDescription');
-export const InviteModeExtended = T<LanguageHelpDisplayOptions>('commands/management:inviteModeExtended');
-export const LinkModeDescription = T<string>('commands/management:linkModeDescription');
-export const LinkModeExtended = T<LanguageHelpDisplayOptions>('commands/management:linkModeExtended');
 export const ManageCommandAutoDeleteAdd = FT<{ channel: string; time: number }, string>('commands/management:manageCommandAutoDeleteAdd');
 export const ManageCommandAutoDeleteDescription = T<string>('commands/management:managecommandautodeleteDescription');
 export const ManageCommandAutoDeleteExtended = T<LanguageHelpDisplayOptions>('commands/management:managecommandautodeleteExtended');
@@ -74,10 +55,6 @@ export const ManageReactionRolesRemoveNotExists = T<string>('commands/management
 export const ManageReactionRolesReset = T<string>('commands/management:manageReactionRolesReset');
 export const ManageReactionRolesResetEmpty = T<string>('commands/management:manageReactionRolesResetEmpty');
 export const ManageReactionRolesShowEmpty = T<string>('commands/management:manageReactionRolesShowEmpty');
-export const MessageModeDescription = T<string>('commands/management:messageModeDescription');
-export const MessageModeExtended = T<LanguageHelpDisplayOptions>('commands/management:messageModeExtended');
-export const NewlineModeDescription = T<string>('commands/management:newlineModeDescription');
-export const NewlineModeExtended = T<LanguageHelpDisplayOptions>('commands/management:newlineModeExtended');
 export const PermissionNodesAdd = T<string>('commands/management:permissionNodesAdd');
 export const PermissionNodesCommandNotExists = T<string>('commands/management:permissionNodesCommandNotExists');
 export const PermissionNodesDescription = T<string>('commands/management:permissionNodesDescription');
@@ -91,8 +68,6 @@ export const PermissionNodesReset = T<string>('commands/management:permissionNod
 export const PermissionNodesShowAllow = FT<{ allow: string }, string>('commands/management:permissionNodesShowAllow');
 export const PermissionNodesShowDeny = FT<{ deny: string }, string>('commands/management:permissionNodesShowDeny');
 export const PermissionNodesShowName = FT<{ name: string }, string>('commands/management:permissionNodesShowName');
-export const ReactionModeDescription = T<string>('commands/management:reactionModeDescription');
-export const ReactionModeExtended = T<LanguageHelpDisplayOptions>('commands/management:reactionModeExtended');
 export const RoleInfoAll = T<string>('commands/management:roleInfoAll');
 export const RoleInfoData = FT<{ role: Role; hoisted: string; mentionable: string }, string>('commands/management:roleInfoData');
 export const RoleInfoDescription = T<string>('commands/management:roleInfoDescription');

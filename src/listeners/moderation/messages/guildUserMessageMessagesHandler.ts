@@ -13,13 +13,13 @@ import type { TextChannel } from 'discord.js';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationMessages,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationMessagesWithMaximum,
-	keyEnabled: GuildSettings.Selfmod.Messages.Enabled,
-	ignoredChannelsPath: GuildSettings.Selfmod.Messages.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.Selfmod.Messages.IgnoredRoles,
-	softPunishmentPath: GuildSettings.Selfmod.Messages.SoftAction,
+	keyEnabled: GuildSettings.AutoModeration.Messages.Enabled,
+	ignoredChannelsPath: GuildSettings.AutoModeration.Messages.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.AutoModeration.Messages.IgnoredRoles,
+	softPunishmentPath: GuildSettings.AutoModeration.Messages.SoftAction,
 	hardPunishmentPath: {
-		action: GuildSettings.Selfmod.Messages.HardAction,
-		actionDuration: GuildSettings.Selfmod.Messages.HardActionDuration,
+		action: GuildSettings.AutoModeration.Messages.HardAction,
+		actionDuration: GuildSettings.AutoModeration.Messages.HardActionDuration,
 		adder: 'messages'
 	}
 })
@@ -29,8 +29,8 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	protected async preProcess(message: GuildMessage): Promise<1 | null> {
 		// Retrieve the threshold
 		const [threshold, queueSize] = await readSettings(message.guild, [
-			GuildSettings.Selfmod.Messages.Maximum,
-			GuildSettings.Selfmod.Messages.QueueSize
+			GuildSettings.AutoModeration.Messages.Maximum,
+			GuildSettings.AutoModeration.Messages.QueueSize
 		]);
 		if (threshold === 0) return null;
 

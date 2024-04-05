@@ -14,13 +14,13 @@ import type { TextChannel } from 'discord.js';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationLinks,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationLinksWithMaximum,
-	keyEnabled: GuildSettings.Selfmod.Links.Enabled,
-	ignoredChannelsPath: GuildSettings.Selfmod.Links.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.Selfmod.Links.IgnoredRoles,
-	softPunishmentPath: GuildSettings.Selfmod.Links.SoftAction,
+	keyEnabled: GuildSettings.AutoModeration.Links.Enabled,
+	ignoredChannelsPath: GuildSettings.AutoModeration.Links.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.AutoModeration.Links.IgnoredRoles,
+	softPunishmentPath: GuildSettings.AutoModeration.Links.SoftAction,
 	hardPunishmentPath: {
-		action: GuildSettings.Selfmod.Links.HardAction,
-		actionDuration: GuildSettings.Selfmod.Links.HardActionDuration,
+		action: GuildSettings.AutoModeration.Links.HardAction,
+		actionDuration: GuildSettings.AutoModeration.Links.HardActionDuration,
 		adder: 'links'
 	}
 })
@@ -33,7 +33,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 
 		let match: RegExpExecArray | null = null;
 
-		const allowed = await readSettings(message.guild, GuildSettings.Selfmod.Links.Allowed);
+		const allowed = await readSettings(message.guild, GuildSettings.AutoModeration.Links.Allowed);
 		while ((match = this.kRegExp.exec(message.content)) !== null) {
 			const { hostname } = match.groups!;
 			if (this.kAllowedDomains.test(hostname)) continue;

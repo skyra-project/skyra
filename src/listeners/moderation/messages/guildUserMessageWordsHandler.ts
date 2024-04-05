@@ -1,13 +1,13 @@
 import { GuildSettings, readSettings } from '#lib/database';
-import { SkyraEmbed } from '#lib/discord';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
 import type { GuildMessage } from '#lib/types';
 import { floatPromise } from '#utils/common';
 import { Colors } from '#utils/constants';
-import { deleteMessage, sendTemporaryMessage } from '#utils/functions';
+import { addAutomaticFields, deleteMessage, sendTemporaryMessage } from '#utils/functions';
 import { getContent, getFullEmbedAuthor } from '#utils/util';
+import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { codeBlock, cutText } from '@sapphire/utilities';
@@ -16,13 +16,13 @@ import type { TextChannel } from 'discord.js';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationWords,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationWordsWithMaximum,
-	keyEnabled: GuildSettings.Selfmod.Filter.Enabled,
-	ignoredChannelsPath: GuildSettings.Selfmod.Filter.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.Selfmod.Filter.IgnoredRoles,
-	softPunishmentPath: GuildSettings.Selfmod.Filter.SoftAction,
+	keyEnabled: GuildSettings.AutoModeration.Filter.Enabled,
+	ignoredChannelsPath: GuildSettings.AutoModeration.Filter.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.AutoModeration.Filter.IgnoredRoles,
+	softPunishmentPath: GuildSettings.AutoModeration.Filter.SoftAction,
 	hardPunishmentPath: {
-		action: GuildSettings.Selfmod.Filter.HardAction,
-		actionDuration: GuildSettings.Selfmod.Filter.HardActionDuration,
+		action: GuildSettings.AutoModeration.Filter.HardAction,
+		actionDuration: GuildSettings.AutoModeration.Filter.HardActionDuration,
 		adder: 'words'
 	}
 })
@@ -52,8 +52,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	}
 
 	protected onLogMessage(message: GuildMessage, t: TFunction, results: FilterResults) {
-		return new SkyraEmbed()
-			.splitFields(cutText(results.highlighted, 4000))
+		return addAutomaticFields(new EmbedBuilder(), cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
 			.setAuthor(getFullEmbedAuthor(message.author, message.url))
 			.setFooter({ text: `#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Events.Moderation.Messages.WordFooter)}` })

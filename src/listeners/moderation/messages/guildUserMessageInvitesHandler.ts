@@ -18,13 +18,13 @@ const enum CodeType {
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationInvites,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationInvitesWithMaximum,
-	keyEnabled: GuildSettings.Selfmod.Invites.Enabled,
-	ignoredChannelsPath: GuildSettings.Selfmod.Invites.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.Selfmod.Invites.IgnoredRoles,
-	softPunishmentPath: GuildSettings.Selfmod.Invites.SoftAction,
+	keyEnabled: GuildSettings.AutoModeration.Invites.Enabled,
+	ignoredChannelsPath: GuildSettings.AutoModeration.Invites.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.AutoModeration.Invites.IgnoredRoles,
+	softPunishmentPath: GuildSettings.AutoModeration.Invites.SoftAction,
 	hardPunishmentPath: {
-		action: GuildSettings.Selfmod.Invites.HardAction,
-		actionDuration: GuildSettings.Selfmod.Invites.HardActionDuration,
+		action: GuildSettings.AutoModeration.Invites.HardAction,
+		actionDuration: GuildSettings.AutoModeration.Invites.HardActionDuration,
 		adder: 'invites'
 	}
 })
@@ -45,7 +45,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 			const identifier = this.getCodeIdentifier(source);
 
 			// If it has already been scanned, skip
-			const key = `${source}${code}`;
+			const key = `${source}/${code}`;
 			if (scanned.has(key)) continue;
 			scanned.add(key);
 
@@ -79,8 +79,8 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 
 	private async fetchIfAllowedInvite(message: GuildMessage, code: string) {
 		const [ignoredCodes, ignoredGuilds] = await readSettings(message.guild, [
-			GuildSettings.Selfmod.Invites.IgnoredCodes,
-			GuildSettings.Selfmod.Invites.IgnoredGuilds
+			GuildSettings.AutoModeration.Invites.IgnoredCodes,
+			GuildSettings.AutoModeration.Invites.IgnoredGuilds
 		]);
 
 		// Ignored codes take short-circuit.

@@ -13,13 +13,13 @@ import type { TextChannel } from 'discord.js';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationAttachments,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationAttachmentsWithMaximum,
-	keyEnabled: GuildSettings.Selfmod.Attachments.Enabled,
-	ignoredChannelsPath: GuildSettings.Selfmod.Attachments.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.Selfmod.Attachments.IgnoredRoles,
-	softPunishmentPath: GuildSettings.Selfmod.Attachments.SoftAction,
+	keyEnabled: GuildSettings.AutoModeration.Attachments.Enabled,
+	ignoredChannelsPath: GuildSettings.AutoModeration.Attachments.IgnoredChannels,
+	ignoredRolesPath: GuildSettings.AutoModeration.Attachments.IgnoredRoles,
+	softPunishmentPath: GuildSettings.AutoModeration.Attachments.SoftAction,
 	hardPunishmentPath: {
-		action: GuildSettings.Selfmod.Attachments.HardAction,
-		actionDuration: GuildSettings.Selfmod.Attachments.HardActionDuration,
+		action: GuildSettings.AutoModeration.Attachments.HardAction,
+		actionDuration: GuildSettings.AutoModeration.Attachments.HardActionDuration,
 		adder: 'attachments'
 	}
 })

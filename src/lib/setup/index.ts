@@ -16,4 +16,4 @@ import { inspect } from 'node:util';
 
 inspect.defaultOptions.depth = 1;
 colorette.createColors({ useColor: true });
-ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.BulkOverwrite);
+ApplicationCommandRegistries.setDefaultBehaviorWhenNotIdentical(RegisterBehavior.Overwrite);

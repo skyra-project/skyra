@@ -9,6 +9,7 @@ import type { ConnectionOptions } from '@influxdata/influxdb-client';
 import { LogLevel } from '@sapphire/framework';
 import type { ServerOptions, ServerOptionsAuth } from '@sapphire/plugin-api';
 import { i18next, type I18nextFormatter, type InternationalizationOptions } from '@sapphire/plugin-i18next';
+import { Time } from '@sapphire/time-utilities';
 import { envIsDefined, envParseArray, envParseBoolean, envParseInteger, envParseString, setup } from '@skyra/env-utilities';
 import {
 	ActivityType,
@@ -237,6 +238,9 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	presence: { activities: parsePresenceActivity() },
 	regexPrefix: parseRegExpPrefix(),
 	schedule: { interval: seconds(5) },
+	rest: {
+		timeout: Time.Minute * 2
+	},
 	nms: {
 		everyone: 5,
 		role: 2

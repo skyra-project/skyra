@@ -1,9 +1,9 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels } from '#lib/types';
+import { clean } from '#utils/Sanitizer/clean';
 import { createReferPromise, seconds } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
-import { clean } from '#utils/Sanitizer/clean';
 import { cast } from '#utils/util';
 import { bold } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,8 +11,10 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { Stopwatch } from '@sapphire/stopwatch';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import type { Message } from 'discord.js';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 import { inspect } from 'node:util';
-import { createContext, Script } from 'node:vm';
+import { Script, createContext } from 'node:vm';
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['ev'],
@@ -63,6 +65,7 @@ export class UserCommand extends SkyraCommand {
 				fs: await import('node:fs'),
 				http: await import('node:http'),
 				os: await import('node:os'),
+				module: await import('node:module'),
 				path: await import('node:path'),
 				process: await import('node:process'),
 				url: await import('node:url'),
@@ -93,7 +96,10 @@ export class UserCommand extends SkyraCommand {
 				},
 				container: this.container,
 				client: this.container.client,
-				command: this
+				command: this,
+				require: createRequire(import.meta.url),
+				__filename: fileURLToPath(import.meta.url),
+				__dirname: fileURLToPath(new URL('.', import.meta.url))
 			};
 		}
 

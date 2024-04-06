@@ -1,6 +1,7 @@
 {
 	"deprecatedMessage": "",
-	"slashDetailed": {
+	"slashOnlyDetailedDescription": {
 		"extendedHelp": ""
-	}
+	},
+	"slashOnlyErrorMessage": ""
 }

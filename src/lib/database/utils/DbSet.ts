@@ -1,5 +1,4 @@
 import { connect } from '#lib/database/database.config';
-import { ClientEntity } from '#lib/database/entities/ClientEntity';
 import { GuildEntity } from '#lib/database/entities/GuildEntity';
 import { GuildSubscriptionEntity } from '#lib/database/entities/GuildSubscriptionEntity';
 import { ModerationEntity } from '#lib/database/entities/ModerationEntity';
@@ -10,7 +9,6 @@ import type { DataSource, Repository } from 'typeorm';
 
 export class DbSet {
 	public readonly connection: DataSource;
-	public readonly clients: Repository<ClientEntity>;
 	public readonly guilds: Repository<GuildEntity>;
 	public readonly guildSubscriptions: Repository<GuildSubscriptionEntity>;
 	public readonly moderations: Repository<ModerationEntity>;
@@ -20,7 +18,6 @@ export class DbSet {
 
 	private constructor(connection: DataSource) {
 		this.connection = connection;
-		this.clients = this.connection.getRepository(ClientEntity);
 		this.guilds = this.connection.getRepository(GuildEntity);
 		this.guildSubscriptions = this.connection.getRepository(GuildSubscriptionEntity);
 		this.moderations = this.connection.getRepository(ModerationEntity);

@@ -1,123 +1,178 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import type { StatsGeneral, StatsUptime, StatsUsage } from '#lib/i18n/languageKeys/keys/commands/General';
-import { SkyraArgs, SkyraCommand } from '#lib/structures';
-import { seconds } from '#utils/common';
-import { getColor, getEmbedAuthor } from '#utils/util';
-import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, TimestampStyles, time, type MessageActionRowComponentBuilder } from '@discordjs/builders';
+import { getSupportedUserLanguageT } from '#lib/i18n/translate';
+import { SkyraCommand } from '#lib/structures';
+import { EmbedBuilder, TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { version as sapphireVersion } from '@sapphire/framework';
+import { ApplicationCommandRegistry, version as sapphireVersion } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { roundNumber } from '@sapphire/utilities';
-import { ButtonStyle, OAuth2Scopes, PermissionFlagsBits, version as djsVersion, type Message } from 'discord.js';
+import { applyLocalizedBuilder, type TFunction } from '@sapphire/plugin-i18next';
+import {
+	ButtonStyle,
+	ComponentType,
+	OAuth2Scopes,
+	PermissionFlagsBits,
+	chatInputApplicationCommandMention,
+	version as djsVersion,
+	type APIActionRowComponent,
+	type APIEmbedField,
+	type APIMessageActionRowComponent,
+	type Message
+} from 'discord.js';
 import { cpus, uptime, type CpuInfo } from 'os';
+
+const Root = LanguageKeys.Commands.Info;
 
 @ApplyOptions<SkyraCommand.Options>({
 	aliases: ['bot-info', 'stats', 'sts'],
-	description: LanguageKeys.Commands.General.InfoDescription,
-	detailedDescription: LanguageKeys.Commands.General.InfoExtended,
-	requiredClientPermissions: [PermissionFlagsBits.EmbedLinks]
+	description: Root.Description,
+	detailedDescription: LanguageKeys.Commands.Shared.SlashOnlyDetailedDescription,
+	hidden: true
 })
 export class UserCommand extends SkyraCommand {
-	public override async messageRun(message: Message, args: SkyraCommand.Args) {
-		const embed = this.buildEmbed(message, args);
-		const components = this.buildComponents(args);
-		return send(message, { embeds: [embed], components });
+	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
+		registry.registerChatInputCommand((command) => applyLocalizedBuilder(command, Root.Name, Root.Description));
 	}
 
-	private buildEmbed(message: Message, args: SkyraCommand.Args) {
-		const titles = args.t(LanguageKeys.Commands.General.InfoTitles);
-		const fields = args.t(LanguageKeys.Commands.General.InfoFields, {
-			stats: this.generalStatistics,
-			uptime: this.uptimeStatistics,
-			usage: this.usageStatistics
+	public override messageRun(message: Message, args: SkyraCommand.Args) {
+		const content = args.t(LanguageKeys.Commands.Shared.DeprecatedMessage, {
+			command: chatInputApplicationCommandMention(this.name, this.getGlobalCommandId())
 		});
-
-		return new EmbedBuilder()
-			.setColor(getColor(message))
-			.setAuthor(getEmbedAuthor(this.container.client.user!))
-			.setDescription(args.t(LanguageKeys.Commands.General.InfoBody))
-			.setTimestamp()
-			.addFields(
-				{ name: titles.stats, value: fields.stats },
-				{ name: titles.uptime, value: fields.uptime },
-				{ name: titles.serverUsage, value: fields.serverUsage }
-			);
+		return send(message, { content });
 	}
 
-	private buildComponents(args: SkyraArgs): ActionRowBuilder<MessageActionRowComponentBuilder>[] {
-		const componentLabels = args.t(LanguageKeys.Commands.General.InfoComponentLabels);
+	public override async chatInputRun(interaction: SkyraCommand.Interaction) {
+		const t = getSupportedUserLanguageT(interaction);
+		const embed = new EmbedBuilder()
+			.setDescription(t(Root.EmbedDescription))
+			.addFields(this.getApplicationStatistics(t), this.getUptimeStatistics(t), this.getServerUsageStatistics(t));
+		const components = this.getComponents(t);
 
-		return [
-			new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
-				new ButtonBuilder() //
-					.setStyle(ButtonStyle.Link)
-					.setURL(this.inviteLink)
-					.setLabel(componentLabels.addToServer)
-					.setEmoji({ name: '🎉' }),
-				new ButtonBuilder() //
-					.setStyle(ButtonStyle.Link)
-					.setURL('https://discord.gg/6gakFR2')
-					.setLabel(componentLabels.supportServer)
-					.setEmoji({ name: '🆘' })
-			),
-			new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
-				new ButtonBuilder()
-					.setStyle(ButtonStyle.Link)
-					.setURL('https://github.com/skyra-project/skyra')
-					.setLabel(componentLabels.repository)
-					.setEmoji({ id: '950888087188283422', name: 'github2' }),
-				new ButtonBuilder() //
-					.setStyle(ButtonStyle.Link)
-					.setURL('https://donate.skyra.pw/patreon')
-					.setLabel(componentLabels.donate)
-					.setEmoji({ name: '🧡' })
-			)
-		];
+		return interaction.reply({ embeds: [embed], components, ephemeral: true });
 	}
 
-	private get inviteLink() {
+	private getApplicationStatistics(t: TFunction): APIEmbedField {
+		return {
+			name: t(Root.EmbedFieldApplicationTitle),
+			value: t(Root.EmbedFieldApplicationValue, {
+				channels: this.container.client.channels.cache.size,
+				guilds: this.container.client.guilds.cache.size,
+				users: this.container.client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0),
+				versionNode: process.version,
+				versionDiscord: `v${djsVersion}`,
+				versionSapphire: `v${sapphireVersion}`
+			})
+		};
+	}
+
+	private getUptimeStatistics(t: TFunction): APIEmbedField {
+		const now = Date.now();
+		const nowSeconds = Math.round(now / 1000);
+
+		return {
+			name: t(Root.EmbedFieldUptimeTitle),
+			value: t(Root.EmbedFieldUptimeValue, {
+				host: time(Math.round(nowSeconds - uptime()), TimestampStyles.RelativeTime),
+				client: time(Math.round(nowSeconds - process.uptime()), TimestampStyles.RelativeTime)
+			})
+		};
+	}
+
+	private getServerUsageStatistics(t: TFunction): APIEmbedField {
+		const usage = process.memoryUsage();
+
+		return {
+			name: t(Root.EmbedFieldServerUsageTitle),
+			value: t(Root.EmbedFieldServerUsageValue, {
+				cpu: cpus().map(this.formatCpuInfo.bind(null)).join(' | '),
+				heapUsed: (usage.heapUsed / 1048576).toLocaleString(t.lng, { maximumFractionDigits: 2 }),
+				heapTotal: (usage.heapTotal / 1048576).toLocaleString(t.lng, { maximumFractionDigits: 2 })
+			})
+		};
+	}
+
+	private getComponents(t: TFunction) {
+		const url = this.getInvite();
+		const support = this.getSupportComponent(t);
+		const github = this.getGitHubComponent(t);
+		const donate = this.getDonateComponent(t);
+		const data = url
+			? [this.getActionRow(support, this.getInviteComponent(t, url)), this.getActionRow(github, donate)]
+			: [this.getActionRow(support, github, donate)];
+
+		return data;
+	}
+
+	private getActionRow(...components: APIMessageActionRowComponent[]): APIActionRowComponent<APIMessageActionRowComponent> {
+		return { type: ComponentType.ActionRow, components };
+	}
+
+	private getSupportComponent(t: TFunction): APIMessageActionRowComponent {
+		return {
+			type: ComponentType.Button,
+			style: ButtonStyle.Link,
+			label: t(Root.ButtonSupport),
+			emoji: { name: '🆘' },
+			url: 'https://discord.gg/6gakFR2'
+		};
+	}
+
+	private getInviteComponent(t: TFunction, url: string): APIMessageActionRowComponent {
+		return {
+			type: ComponentType.Button,
+			style: ButtonStyle.Link,
+			label: t(Root.ButtonInvite),
+			emoji: { name: '🎉' },
+			url
+		};
+	}
+
+	private getGitHubComponent(t: TFunction): APIMessageActionRowComponent {
+		return {
+			type: ComponentType.Button,
+			style: ButtonStyle.Link,
+			label: t(Root.ButtonGitHub),
+			emoji: { id: '950888087188283422', name: 'github2' },
+			url: 'https://github.com/skyra-project/skyra'
+		};
+	}
+
+	private getDonateComponent(t: TFunction): APIMessageActionRowComponent {
+		return {
+			type: ComponentType.Button,
+			style: ButtonStyle.Link,
+			label: t(Root.ButtonDonate),
+			emoji: { name: '🧡' },
+			url: 'https://donate.skyra.pw'
+		};
+	}
+
+	private formatCpuInfo({ times }: CpuInfo) {
+		return `${Math.round(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100}%`;
+	}
+
+	private getInvite() {
 		return this.container.client.generateInvite({
 			scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
 			permissions:
-				PermissionFlagsBits.ViewChannel |
+				PermissionFlagsBits.AddReactions |
+				PermissionFlagsBits.AttachFiles |
+				PermissionFlagsBits.BanMembers |
+				PermissionFlagsBits.ChangeNickname |
+				PermissionFlagsBits.DeafenMembers |
+				PermissionFlagsBits.EmbedLinks |
+				PermissionFlagsBits.KickMembers |
+				PermissionFlagsBits.ManageChannels |
+				PermissionFlagsBits.ManageMessages |
+				PermissionFlagsBits.ManageNicknames |
+				PermissionFlagsBits.ManageRoles |
+				PermissionFlagsBits.ManageThreads |
+				PermissionFlagsBits.MoveMembers |
+				PermissionFlagsBits.MuteMembers |
 				PermissionFlagsBits.ReadMessageHistory |
 				PermissionFlagsBits.SendMessages |
-				PermissionFlagsBits.EmbedLinks
+				PermissionFlagsBits.SendMessagesInThreads |
+				PermissionFlagsBits.UseExternalEmojis |
+				PermissionFlagsBits.ViewChannel
 		});
-	}
-
-	private get generalStatistics(): StatsGeneral {
-		const { client } = this.container;
-		return {
-			channels: client.channels.cache.size,
-			guilds: client.guilds.cache.size,
-			nodeJs: process.version,
-			users: client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0),
-			djsVersion: `v${djsVersion}`,
-			sapphireVersion: `v${sapphireVersion}`
-		};
-	}
-
-	private get uptimeStatistics(): StatsUptime {
-		const now = Date.now();
-		const nowSeconds = roundNumber(now / 1000);
-		return {
-			client: time(seconds.fromMilliseconds(now - this.container.client.uptime!), TimestampStyles.RelativeTime),
-			host: time(roundNumber(nowSeconds - uptime()), TimestampStyles.RelativeTime),
-			total: time(roundNumber(nowSeconds - process.uptime()), TimestampStyles.RelativeTime)
-		};
-	}
-
-	private get usageStatistics(): StatsUsage {
-		const usage = process.memoryUsage();
-		return {
-			cpuLoad: cpus().map(UserCommand.formatCpuInfo.bind(null)).join(' | '),
-			ramTotal: usage.heapTotal / 1048576,
-			ramUsed: usage.heapUsed / 1048576
-		};
-	}
-
-	private static formatCpuInfo({ times }: CpuInfo) {
-		return `${roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100}%`;
 	}
 }

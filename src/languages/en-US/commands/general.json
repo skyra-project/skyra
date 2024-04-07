@@ -27,43 +27,6 @@
 	},
 	"helpDm": "📥 | The list of commands you have access to has been sent to your DMs.",
 	"helpNodm": "{{REDCROSS}} | You have DMs disabled so I couldn't send you the list of commands.",
-	"infoBody": "[Skyra](https://skyra.pw) {{VERSION}} is a multi-purpose Discord Bot designed to run the majority of tasks in your server with great performance and uptime.\nI use the [Sapphire Framework](https://sapphirejs.dev) for the [Discord.js library](https://discord.js.org).\n\n[Privacy Policy](https://skyra.pw/privacy) | [Terms of Service](https://github.com/skyra-project/skyra/blob/main/.github/TERMS_OF_SERVICE.md).",
-	"infoDescription": "Provides some information about me.",
-	"infoExtended": {
-		"extendedHelp": "Just... that :P"
-	},
-	"infoTitles": {
-		"stats": "Statistics",
-		"uptime": "Uptime",
-		"serverUsage": "Server Usage"
-	},
-	"infoFields": {
-		"stats": "• **Users**: {{stats.users, number}}\n• **Servers**: {{stats.guilds, number}}\n• **Channels**: {{stats.channels, number}}\n• **Discord.js**: {{stats.djsVersion}}\n• **Sapphire**: {{stats.sapphireVersion}}\n• **Node.js**: {{stats.nodeJs}}",
-		"uptime": "• **Host**: {{uptime.host}}\n• **Total**: {{uptime.total}}\n• **Client**: {{uptime.client}}",
-		"serverUsage": "• **CPU Load**: {{usage.cpuLoad}}\n• **Heap**: {{usage.ramUsed, number}}MB (Total: {{usage.ramTotal, number}}MB)"
-	},
-	"infoComponentLabels": {
-		"addToServer": "Add me to your server!",
-		"supportServer": "Support server",
-		"repository": "GitHub Repository",
-		"donate": "Donate"
-	},
-	"inviteDescription": "Shows the invite link to add Skyra to your server.",
-	"inviteExtended": {
-		"usages": [
-			"--noperms/--nopermissions"
-		],
-		"extendedHelp": "If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms`, or `--nopermissions` to the command.",
-		"examples": [
-			"",
-			"noperms",
-			"--noperms",
-			"--nopermissions"
-		]
-	},
-	"invitePermissionInviteText": "Invite Skyra to your server",
-	"invitePermissionsDescription": "Don't be afraid to uncheck some permissions, I will let you know if you're trying to run a command without permissions.",
-	"invitePermissionSupportServerText": "Join Support Server",
 	"v7Description": "Gets the information regarding Skyra v7",
 	"v7Extended": {
 		"extendedHelp": "This is a **hidden** command used exclusively to send a notice to everyone who tries to use commands that have been removed according to [Skyra v7](https://skyra.notion.site/skyra/Skyra-v7-922ba06004654142a7b63347a92513a8) plans."

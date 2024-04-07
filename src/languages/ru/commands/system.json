@@ -17,10 +17,6 @@
 		],
 		"reminder": ""
 	},
-	"donateDescription": "",
-	"donateExtended": {
-		"extendedHelp": ""
-	},
 	"evalTimeout": "",
 	"evalError": "**Ошибка**:{{output}}\n**Тип**:{{type}}\n{{time}}",
 	"dmNotSent": "",
@@ -30,11 +26,5 @@
 	"rebootExtended": {
 		"extendedHelp": "",
 		"reminder": ""
-	},
-	"supportDescription": "",
-	"supportEmbedDescription": "",
-	"supportEmbedTitle": "",
-	"supportExtended": {
-		"extendedHelp": ""
 	}
 }

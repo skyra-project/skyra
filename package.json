@@ -63,7 +63,7 @@
 		"@sapphire/decorators": "^6.1.0",
 		"@sapphire/discord.js-utilities": "7.1.6",
 		"@sapphire/fetch": "^3.0.2",
-		"@sapphire/framework": "5.0.10",
+		"@sapphire/framework": "5.1.0",
 		"@sapphire/plugin-api": "^6.1.1",
 		"@sapphire/plugin-editable-commands": "^4.0.2",
 		"@sapphire/plugin-i18next": "^7.1.2",
@@ -85,10 +85,10 @@
 		"colorette": "^2.0.20",
 		"confusables": "^1.1.1",
 		"diff": "^5.2.0",
-		"discord-api-types": "^0.37.77",
+		"discord-api-types": "^0.37.79",
 		"discord.js": "^14.14.1",
 		"he": "^1.2.0",
-		"pg": "^8.11.4",
+		"pg": "^8.11.5",
 		"typeorm": "0.3.20",
 		"typeorm-naming-strategies": "^4.1.0",
 		"zlib-sync": "^0.1.9"
@@ -106,8 +106,8 @@
 		"@types/node": "^20.11.17",
 		"@types/pg": "^8.11.4",
 		"@types/ws": "^8.5.10",
-		"@typescript-eslint/eslint-plugin": "^7.4.0",
-		"@typescript-eslint/parser": "^7.4.0",
+		"@typescript-eslint/eslint-plugin": "^7.5.0",
+		"@typescript-eslint/parser": "^7.5.0",
 		"@vitest/coverage-v8": "^1.4.0",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^8.57.0",
@@ -116,13 +116,13 @@
 		"lint-staged": "^15.2.2",
 		"prettier": "^3.2.5",
 		"tsc-watch": "^6.2.0",
-		"typescript": "^5.4.3",
+		"typescript": "^5.4.4",
 		"vitest": "^1.4.0"
 	},
 	"resolutions": {
 		"@types/node": "20.11.5",
 		"ansi-regex": "^5.0.1",
-		"discord-api-types": "^0.37.77",
+		"discord-api-types": "^0.37.79",
 		"minimist": "^1.2.8"
 	},
 	"engines": {
@@ -150,6 +150,6 @@
 	"prettier": "@sapphire/prettier-config",
 	"packageManager": "yarn@4.1.1",
 	"volta": {
-		"node": "20.12.0"
+		"node": "20.12.1"
 	}
 }

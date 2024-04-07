@@ -64,12 +64,6 @@
 	"invitePermissionInviteText": "Invite Skyra to your server",
 	"invitePermissionsDescription": "Don't be afraid to uncheck some permissions, I will let you know if you're trying to run a command without permissions.",
 	"invitePermissionSupportServerText": "Join Support Server",
-	"ping": "{{LOADING}} Ping?",
-	"pingDescription": "Runs a connection test to Discord.",
-	"pingExtended": {
-		"extendedHelp": "Pong!"
-	},
-	"pingPong": "Pong! (Roundtrip took: {{diff}}ms. Heartbeat: {{ping}}ms.)",
 	"v7Description": "Gets the information regarding Skyra v7",
 	"v7Extended": {
 		"extendedHelp": "This is a **hidden** command used exclusively to send a notice to everyone who tries to use commands that have been removed according to [Skyra v7](https://skyra.notion.site/skyra/Skyra-v7-922ba06004654142a7b63347a92513a8) plans."

@@ -63,7 +63,7 @@ export class ScheduleEntity extends BaseEntity {
 	 * The stored metadata to send to the Task
 	 */
 	@Column('jsonb')
-	public data!: Record<string, unknown>;
+	public data!: object;
 
 	/**
 	 * Whether or not the entity is running

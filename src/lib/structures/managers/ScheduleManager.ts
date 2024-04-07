@@ -209,7 +209,7 @@ export interface ScheduleManagerAddOptions {
 	/**
 	 * The data to pass to the Task piece when the ScheduledTask is ready for execution.
 	 */
-	data?: Record<string, unknown>;
+	data?: object;
 }
 
 export type TimeResolvable = number | Date | string | Cron;

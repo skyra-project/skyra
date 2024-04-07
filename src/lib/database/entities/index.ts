@@ -1,4 +1,3 @@
-export * from '#lib/database/entities/ClientEntity';
 export * from '#lib/database/entities/GuildEntity';
 export * from '#lib/database/entities/GuildSubscriptionEntity';
 export * from '#lib/database/entities/ModerationEntity';

@@ -2,7 +2,11 @@ import { Table, TableColumn, type MigrationInterface, type QueryRunner } from 't
 
 export class V80RemoveOldTables1712481816866 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.dropTable('client', true);
+		await queryRunner.dropTable('client');
+
+		// Remove old tables
+		await queryRunner.dropTable('banner', true);
+		await queryRunner.dropTable('giveaway', true);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {

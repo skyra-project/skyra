@@ -17,10 +17,6 @@
 		],
 		"reminder": "Reserved for bot owners."
 	},
-	"donateDescription": "Get information about how to donate to keep Skyra alive longer.",
-	"donateExtended": {
-		"extendedHelp": "Skyra Project started on 24th October 2016, if you are reading this, you are using version {{VERSION}}. The development team improves a lot in every iteration of Skyra.\n\nHowever, not everything is free and we need your help to keep Skyra alive.\nWe will be very thankful if you help us.\nWe have been working on a lot of things, and Skyra is precious to us. Take care of her ❤\n\nDo you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi"
-	},
 	"evalTimeout": "TIMEOUT: Took longer than {{seconds}} seconds.",
 	"evalError": "**Error**:{{output}}\n**Type**:{{type}}\n{{time}}",
 	"dmNotSent": "I cannot send you a message in DMs, did you block me?",
@@ -30,11 +26,5 @@
 	"rebootExtended": {
 		"extendedHelp": "The bot goes boom, then the bot goes revive.",
 		"reminder": "Reserved for bot owners."
-	},
-	"supportDescription": "Show support instructions",
-	"supportEmbedDescription": "Then you should probably join [Skyra's Lounge](https://join.skyra.pw)! There, you can receive support by the developers and other members of the community!",
-	"supportEmbedTitle": "Looking for help, {{username}}?",
-	"supportExtended": {
-		"extendedHelp": "This command gives you a link to *Skyra's Lounge*, the best place for everything related to me."
 	}
 }

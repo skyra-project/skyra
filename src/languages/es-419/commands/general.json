@@ -64,12 +64,6 @@
 	"invitePermissionInviteText": "Invítame a tu servidor",
 	"invitePermissionsDescription": "No tengas miedo de desmarcar algunos permisos, te informaré si estás intentando ejecutar un comando sin permisos.",
 	"invitePermissionSupportServerText": "Unirse al Servidor de Soporte",
-	"ping": "{{LOADING}} Eco...",
-	"pingDescription": "Ejecuta una prueba de conexión con Discord.",
-	"pingExtended": {
-		"extendedHelp": "¡Eco!"
-	},
-	"pingPong": "¡Eco! (Respondí en: {{diff}}ms. Latido: {{ping}}ms.)",
 	"v7Description": "",
 	"v7Extended": {
 		"extendedHelp": ""

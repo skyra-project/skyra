@@ -1,1 +1,15 @@
-[]
+{
+	"name": "info",
+	"description": "Provee la información sobre mí junto a mi enlace de invitación y el del servidor de soporte",
+	"embedDescription": "[Skyra](https://skyra.pw) {{VERSION}} es un bot diseñado para ayudarte a moderar tu servidor. Uso [Sapphire Framework](https://sapphirejs.dev) con la [librería Discord.js](https://discord.js.org).\n- [Política de privacidad](https://skyra.pw/privacy) | [Términos de servicio](https://github.com/skyra-project/skyra/blob/main/.github/TERMS_OF_SERVICE.md).",
+	"embedFieldApplicationTitle": "Estadísticas",
+	"embedFieldApplicationValue": "- **Usuarios**: {{users, number}}\n- **Servidores**: {{guilds, number}}\n- **Canales**: {{channels, number}}\n- **Discord.js**: {{versionDiscord}}\n- **Sapphire**: {{versionSapphire}}\n- **Node.js**: {{versionNode}}",
+	"embedFieldUptimeTitle": "Tiempo de Funcionamiento",
+	"embedFieldUptimeValue": "- **Servidor**: {{host}}\n- **Cliente**: {{client}}",
+	"embedFieldServerUsageTitle": "Uso del Servidor",
+	"embedFieldServerUsageValue": "- **Uso de CPU**: {{cpu}}\n- **Memoria**: {{heapUsed}}MB (Total: {{heapTotal}}MB)",
+	"buttonInvite": "¡Añádeme a tu servidor!",
+	"buttonSupport": "Servidor de soporte",
+	"buttonGitHub": "Repositorio de GitHub",
+	"buttonDonate": "Donar"
+}

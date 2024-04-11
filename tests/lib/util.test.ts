@@ -31,28 +31,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('oneToTen', () => {
-		test('GIVEN positive rational number THEN returns level 0 (😪)', () => {
-			expect(utils.oneToTen(2 / 3)).toStrictEqual({ color: 5968128, emoji: '😪' });
-		});
-
-		test('GIVEN negative rational number THEN returns level 0 (😪)', () => {
-			expect(utils.oneToTen(-2 / 3)).toStrictEqual({ color: 5968128, emoji: '😪' });
-		});
-
-		test('GIVEN positive integer number THEN returns level 2 (😫)', () => {
-			expect(utils.oneToTen(2)).toStrictEqual({ color: 11211008, emoji: '😫' });
-		});
-
-		test('GIVEN negative integer number THEN returns level 0 (😪)', () => {
-			expect(utils.oneToTen(-5)).toStrictEqual({ color: 5968128, emoji: '😪' });
-		});
-
-		test('GIVEN positive integer over 10 THEN returns level 10 (😍)', () => {
-			expect(utils.oneToTen(11)).toStrictEqual({ color: 5362927, emoji: '😍' });
-		});
-	});
-
 	describe('extractDetailedMentions', () => {
 		test('GIVEN empty string THEN returns empty results', () => {
 			const result = utils.extractDetailedMentions('');

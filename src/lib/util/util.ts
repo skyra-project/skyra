@@ -23,20 +23,6 @@ import {
 } from 'discord.js';
 import { first } from './common/iterators.js';
 
-const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
-	[0, { emoji: '😪', color: 0x5b1100 }],
-	[1, { emoji: '😪', color: 0x5b1100 }],
-	[2, { emoji: '😫', color: 0xab1100 }],
-	[3, { emoji: '😔', color: 0xff2b00 }],
-	[4, { emoji: '😒', color: 0xff6100 }],
-	[5, { emoji: '😌', color: 0xff9c00 }],
-	[6, { emoji: '😕', color: 0xb4bf00 }],
-	[7, { emoji: '😬', color: 0x84fc00 }],
-	[8, { emoji: '🙂', color: 0x5bf700 }],
-	[9, { emoji: '😃', color: 0x24f700 }],
-	[10, { emoji: '😍', color: 0x51d4ef }]
-]);
-
 /**
  * Image extensions:
  * - bmp
@@ -55,13 +41,6 @@ export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
  * - ...Video extensions
  */
 export const MEDIA_EXTENSION = /\.(bmp|jpe?g|png|gifv?|web[pm]|wav|mp[34]|ogg)$/i;
-
-export function oneToTen(level: number): UtilOneToTenEntry | undefined {
-	level |= 0;
-	if (level < 0) level = 0;
-	else if (level > 10) level = 10;
-	return ONE_TO_TEN.get(level);
-}
 
 /**
  * Get the content from a message.
@@ -375,11 +354,6 @@ export function getColor(message: Message) {
  */
 export function isUserSelf(userId: Snowflake) {
 	return userId === process.env.CLIENT_ID;
-}
-
-export interface UtilOneToTenEntry {
-	emoji: string;
-	color: number;
 }
 
 export interface MuteOptions {

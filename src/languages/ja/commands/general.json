@@ -27,49 +27,6 @@
 	},
 	"helpDm": "",
 	"helpNodm": "",
-	"infoBody": "",
-	"infoDescription": "",
-	"infoExtended": {
-		"extendedHelp": ""
-	},
-	"infoTitles": {
-		"stats": "",
-		"uptime": "",
-		"serverUsage": ""
-	},
-	"infoFields": {
-		"stats": "",
-		"uptime": "",
-		"serverUsage": ""
-	},
-	"infoComponentLabels": {
-		"addToServer": "",
-		"supportServer": "",
-		"repository": "",
-		"donate": ""
-	},
-	"inviteDescription": "",
-	"inviteExtended": {
-		"usages": [
-			""
-		],
-		"extendedHelp": "",
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
-	},
-	"invitePermissionInviteText": "",
-	"invitePermissionsDescription": "",
-	"invitePermissionSupportServerText": "",
-	"ping": "",
-	"pingDescription": "",
-	"pingExtended": {
-		"extendedHelp": ""
-	},
-	"pingPong": "",
 	"v7Description": "",
 	"v7Extended": {
 		"extendedHelp": ""

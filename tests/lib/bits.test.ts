@@ -58,7 +58,8 @@ describe('Bits', () => {
 				'CreateGuildExpressions',
 				'CreateEvents',
 				'UseExternalSounds',
-				'SendVoiceMessages'
+				'SendVoiceMessages',
+				'SendPolls'
 			]);
 		});
 	});

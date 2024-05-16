@@ -1239,9 +1239,9 @@ __metadata:
   linkType: hard
 
 "@skyra/editable-commands@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "@skyra/editable-commands@npm:3.0.1"
-  checksum: 10/1ce649569e95b51dfa228e76e9f9c93afcfb990237a9337878a2d6158b5638abc192a3435c8c2a1d5af5fd74ca2465aa44f30b65aac45ef11730e9738af5758d
+  version: 3.0.2
+  resolution: "@skyra/editable-commands@npm:3.0.2"
+  checksum: 10/e47d355e9dc3114bb0a1ece0034f24047659d871b1ca088d3a0277185080bb43a7ba3d3bdb2ba44b44ab4875949697202d736e9b97479653598f5b8fefe11cae
   languageName: node
   linkType: hard
 

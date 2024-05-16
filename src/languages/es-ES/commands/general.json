@@ -27,49 +27,6 @@
 	},
 	"helpDm": "📥 | La lista de comandos a los que tienes acceso ha sido enviada a tus mensajes directos.",
 	"helpNodm": "{{REDCROSS}} | Tienes los mensajes directos deshabilitados, por lo que no pude enviarte la lista de comandos.",
-	"infoBody": "",
-	"infoDescription": "Proporciona información acerca de mí.",
-	"infoExtended": {
-		"extendedHelp": "Simplemente... eso :P"
-	},
-	"infoTitles": {
-		"stats": "",
-		"uptime": "",
-		"serverUsage": ""
-	},
-	"infoFields": {
-		"stats": "",
-		"uptime": "",
-		"serverUsage": ""
-	},
-	"infoComponentLabels": {
-		"addToServer": "",
-		"supportServer": "",
-		"repository": "",
-		"donate": ""
-	},
-	"inviteDescription": "Muestra el enlace de invitación para añadir Skyra a tu servidor.",
-	"inviteExtended": {
-		"usages": [
-			"--noperms/--nopermissions"
-		],
-		"extendedHelp": "Si desea obtener un enlace donde Skyra no solicitará ningún permiso, añada `noperms`, `--noperms` o `--nopermissions` al comando.",
-		"examples": [
-			"",
-			"noperms",
-			"--noperms",
-			"--nopermissions"
-		]
-	},
-	"invitePermissionInviteText": "Invítame a tu servidor",
-	"invitePermissionsDescription": "No tengas miedo de desmarcar algunos permisos, te informaré si estás intentando ejecutar un comando sin permisos.",
-	"invitePermissionSupportServerText": "Unirse al Servidor de Soporte",
-	"ping": "{{LOADING}} Eco...",
-	"pingDescription": "Ejecuta una prueba de conexión con Discord.",
-	"pingExtended": {
-		"extendedHelp": "¡Eco!"
-	},
-	"pingPong": "¡Eco! (Respondí en: {{diff}}ms. Latido: {{ping}}ms.)",
 	"v7Description": "",
 	"v7Extended": {
 		"extendedHelp": ""

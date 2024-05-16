@@ -32,6 +32,7 @@
 	"RequestToSpeak": "Request to Speak",
 	"SendMessages": "Send Messages",
 	"SendMessagesInThreads": "Send Messages in Threads",
+	"SendPolls": "Create Polls",
 	"SendTTSMessages": "Send Text-to-speech Messages",
 	"SendVoiceMessages": "Send Voice Messages",
 	"Speak": "Speak",

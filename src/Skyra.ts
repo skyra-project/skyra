@@ -4,7 +4,6 @@ import '#lib/setup';
 import { SkyraClient } from '#lib/SkyraClient';
 import { rootFolder } from '#utils/constants';
 import { container } from '@sapphire/framework';
-import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';
 import { envIsDefined, envParseString } from '@skyra/env-utilities';
 
@@ -16,12 +15,15 @@ async function main() {
 		Sentry.init({
 			dsn: envParseString('SENTRY_URL'),
 			integrations: [
-				new Sentry.Integrations.Modules(),
-				new Sentry.Integrations.FunctionToString(),
-				new Sentry.Integrations.LinkedErrors(),
-				new Sentry.Integrations.Console(),
-				new Sentry.Integrations.Http({ breadcrumbs: true, tracing: true }),
-				new RewriteFrames({ root: rootFolder })
+				Sentry.consoleIntegration(),
+				Sentry.functionToStringIntegration(),
+				Sentry.linkedErrorsIntegration(),
+				Sentry.modulesIntegration(),
+				Sentry.onUncaughtExceptionIntegration(),
+				Sentry.onUnhandledRejectionIntegration(),
+				Sentry.httpIntegration({ breadcrumbs: true }),
+				Sentry.postgresIntegration(),
+				Sentry.rewriteFramesIntegration({ root: rootFolder })
 			]
 		});
 	}

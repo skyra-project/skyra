@@ -1332,6 +1332,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/iterator-utilities@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@sapphire/iterator-utilities@npm:1.0.1"
+  checksum: 10/d7a0f0513e46c7c139a049834256c6a1bdb8466ffb2125c08a83ea1d0baae447f79c7da7a30c7bb550743c0933fd126e8905ede841772d8885589f57484d8ca4
+  languageName: node
+  linkType: hard
+
 "@sapphire/lexure@npm:^1.1.7":
   version: 1.1.7
   resolution: "@sapphire/lexure@npm:1.1.7"
@@ -7546,6 +7553,7 @@ __metadata:
     "@sapphire/eslint-config": "npm:^5.0.4"
     "@sapphire/fetch": "npm:^3.0.2"
     "@sapphire/framework": "npm:5.2.1"
+    "@sapphire/iterator-utilities": "npm:^1.0.1"
     "@sapphire/plugin-api": "npm:^6.1.1"
     "@sapphire/plugin-editable-commands": "npm:^4.0.2"
     "@sapphire/plugin-i18next": "npm:^7.1.2"

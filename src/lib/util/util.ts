@@ -3,6 +3,7 @@ import type { GuildMessage } from '#lib/types';
 import { BrandingColors, Urls, ZeroWidthSpace } from '#lib/util/constants';
 import { EmbedBuilder } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
+import { first } from '@sapphire/iterator-utilities/first';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullishOrEmpty, isNullishOrZero, tryParseURL, type Nullish } from '@sapphire/utilities';
@@ -21,7 +22,6 @@ import {
 	type User,
 	type UserResolvable
 } from 'discord.js';
-import { first } from './common/iterators.js';
 
 /**
  * Image extensions:

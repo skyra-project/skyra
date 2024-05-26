@@ -1,11 +1,12 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type TypedT } from '#lib/types';
-import { filter, map } from '#utils/common';
 import { Colors } from '#utils/constants';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { Listener } from '@sapphire/framework';
+import { filter } from '@sapphire/iterator-utilities/filter';
+import { map } from '@sapphire/iterator-utilities/map';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import type { Guild, User } from 'discord.js';
 

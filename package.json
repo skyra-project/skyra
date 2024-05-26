@@ -64,6 +64,7 @@
 		"@sapphire/discord.js-utilities": "7.2.1",
 		"@sapphire/fetch": "^3.0.2",
 		"@sapphire/framework": "5.2.1",
+		"@sapphire/iterator-utilities": "^1.0.1",
 		"@sapphire/plugin-api": "^6.1.1",
 		"@sapphire/plugin-editable-commands": "^4.0.2",
 		"@sapphire/plugin-i18next": "^7.1.2",

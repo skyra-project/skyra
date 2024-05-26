@@ -9,8 +9,8 @@ import {
 	type ExtendOptions
 } from '#lib/structures/commands/base/BaseSkyraCommandUtilities';
 import { PermissionLevels, type TypedT } from '#lib/types';
-import { first } from '#utils/common';
 import { Command, UserError, type Awaitable, type MessageCommand } from '@sapphire/framework';
+import { first } from '@sapphire/iterator-utilities/first';
 import { ChatInputCommandInteraction, type Message, type Snowflake } from 'discord.js';
 
 /**

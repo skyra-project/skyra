@@ -1,12 +1,13 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors, Urls, ZeroWidthSpace } from '#lib/util/constants';
+import { isImageAttachment } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
 import { first } from '@sapphire/iterator-utilities/first';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullishOrEmpty, isNullishOrZero, tryParseURL, type Nullish } from '@sapphire/utilities';
+import { isNullishOrEmpty, tryParseURL, type Nullish } from '@sapphire/utilities';
 import {
 	PermissionFlagsBits,
 	StickerFormatType,
@@ -35,14 +36,6 @@ import {
 export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
 
 /**
- * Media extensions
- * - ...Image extensions
- * - ...Audio extensions
- * - ...Video extensions
- */
-export const MEDIA_EXTENSION = /\.(bmp|jpe?g|png|gifv?|web[pm]|wav|mp[34]|ogg)$/i;
-
-/**
  * Get the content from a message.
  * @param message The Message instance to get the content from
  */
@@ -55,7 +48,7 @@ export function getContent(message: Message): string | null {
 	return null;
 }
 
-export interface ImageAttachment {
+export interface ResolvedImageAttachment {
 	url: string;
 	proxyURL: string;
 	height: number;
@@ -64,14 +57,7 @@ export interface ImageAttachment {
 
 export function* getImages(message: Message): IterableIterator<string> {
 	for (const attachment of message.attachments.values()) {
-		// Skip if the attachment doesn't have a content type:
-		if (isNullishOrEmpty(attachment.contentType)) continue;
-		// Skip if the attachment doesn't have a size:
-		if (isNullishOrZero(attachment.width) || isNullishOrZero(attachment.height)) continue;
-		// Skip if the attachment isn't an image:
-		if (!attachment.contentType.startsWith('image/')) continue;
-
-		yield attachment.proxyURL ?? attachment.url;
+		if (isImageAttachment(attachment)) yield attachment.proxyURL ?? attachment.url;
 	}
 
 	for (const embed of message.embeds) {

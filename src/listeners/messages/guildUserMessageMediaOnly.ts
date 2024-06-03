@@ -1,7 +1,8 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { Events, type GuildMessage } from '#lib/types';
-import { deleteMessage, isMediaAttachment, isModerator } from '#utils/functions';
+import { deleteMessage, isModerator } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
+import { isMediaAttachment } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildUserMessage })

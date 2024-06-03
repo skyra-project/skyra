@@ -1,8 +1,8 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { BrandingColors, Urls, ZeroWidthSpace } from '#lib/util/constants';
-import { isImageAttachment } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
+import { isImageAttachment } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
 import { first } from '@sapphire/iterator-utilities/first';
 import { send } from '@sapphire/plugin-editable-commands';

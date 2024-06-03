@@ -1,7 +1,6 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { Events, type GuildMessage } from '#lib/types';
-import { deleteMessage, isModerator } from '#utils/functions';
-import { MEDIA_EXTENSION } from '#utils/util';
+import { deleteMessage, isMediaAttachment, isModerator } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 
@@ -32,6 +31,6 @@ export class UserListener extends Listener {
 	}
 
 	private hasMediaAttachments(message: GuildMessage) {
-		return message.attachments.some((att) => MEDIA_EXTENSION.test(att.url));
+		return message.attachments.some((attachment) => isMediaAttachment(attachment));
 	}
 }

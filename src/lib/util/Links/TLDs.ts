@@ -805,7 +805,6 @@ export const TLDs = [
 	'nab',
 	'nagoya',
 	'name',
-	'natura',
 	'navy',
 	'nba',
 	'nc',

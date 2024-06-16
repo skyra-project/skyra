@@ -17,7 +17,7 @@ services:
         max-file: '3'
 
   postgres:
-    container_name: postgres2
+    container_name: postgres
     image: 'postgres:15-alpine'
     networks:
       - skyra
@@ -60,7 +60,7 @@ services:
     container_name: skyra
     depends_on:
       - influx
-      - postgres2
+      - postgres
     env_file:
       - src/.env.development
       - src/.env.development.local

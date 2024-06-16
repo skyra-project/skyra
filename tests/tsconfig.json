@@ -1,9 +1,9 @@
 {
 	"extends": "../tsconfig.base.json",
 	"compilerOptions": {
-		"rootDir": ".",
 		"noEmit": true,
 		"types": ["vitest/globals"],
+		"verbatimModuleSyntax": false,
 		"paths": {
 			"#utils/*": ["../src/lib/util/*"],
 			"#lib/*": ["../src/lib/*"],

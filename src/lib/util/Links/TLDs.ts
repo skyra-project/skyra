@@ -1041,7 +1041,6 @@ export const TLDs = [
 	'sh',
 	'shangrila',
 	'sharp',
-	'shaw',
 	'shell',
 	'shia',
 	'shiksha',

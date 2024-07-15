@@ -305,7 +305,9 @@ export class UserListener extends Listener<typeof Events.GuildUpdate> {
 
 	private displayWidgetEnabled(t: TFunction, previous: boolean | null, next: boolean | null): string {
 		return t(
-			next ?? !previous ? LanguageKeys.Events.Guilds.Logs.ServerUpdateWidgetEnabled : LanguageKeys.Events.Guilds.Logs.ServerUpdateWidgetDisabled
+			(next ?? !previous)
+				? LanguageKeys.Events.Guilds.Logs.ServerUpdateWidgetEnabled
+				: LanguageKeys.Events.Guilds.Logs.ServerUpdateWidgetDisabled
 		);
 	}
 }

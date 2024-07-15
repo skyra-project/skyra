@@ -28,7 +28,7 @@ export class UserArgument extends Argument<Role> {
 
 	public resolveRole(query: string, guild: Guild) {
 		const role = RoleMentionRegex.exec(query) ?? SnowflakeRegex.exec(query);
-		return role ? guild.roles.cache.get(role[1]) ?? null : null;
+		return role ? (guild.roles.cache.get(role[1]) ?? null) : null;
 	}
 }
 

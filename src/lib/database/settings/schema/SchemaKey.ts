@@ -2,14 +2,15 @@ import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { SchemaGroup } from '#lib/database/settings/schema/SchemaGroup';
 import type { Serializer } from '#lib/database/settings/structures/Serializer';
+import type { GuildDataKey } from '#lib/database/settings/types';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import type { TypedT } from '#lib/types';
 import { container } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullish, type NonNullObject } from '@sapphire/utilities';
+import { isNullish } from '@sapphire/utilities';
 
-export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implements ISchemaValue {
+export class SchemaKey<K extends GuildDataKey = GuildDataKey> implements ISchemaValue {
 	/**
 	 * The i18n key for the configuration key.
 	 */
@@ -39,11 +40,6 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 	 * The property from the TypeORM entity.
 	 */
 	public property: K;
-
-	/**
-	 * The class this targets.
-	 */
-	public target: NonNullObject;
 
 	/**
 	 * The type of the value this property accepts.
@@ -77,7 +73,6 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		this.inclusive = options.inclusive ?? false;
 		this.name = options.name;
 		this.property = options.property as K;
-		this.target = options.target;
 		this.type = options.type;
 		this.array = options.array;
 		this.default = options.default;
@@ -136,5 +131,5 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 
 export type ConfigurableKeyValueOptions = Pick<
 	SchemaKey,
-	'description' | 'maximum' | 'minimum' | 'inclusive' | 'name' | 'property' | 'target' | 'type' | 'array' | 'default' | 'dashboardOnly'
+	'description' | 'maximum' | 'minimum' | 'inclusive' | 'name' | 'property' | 'type' | 'array' | 'default' | 'dashboardOnly'
 >;

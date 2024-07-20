@@ -1,7 +1,7 @@
 export * from '#lib/database/settings/base/IBaseEntity';
 export * from '#lib/database/settings/base/IBaseManager';
 export * from '#lib/database/settings/base/SettingsCollection';
-export * from '#lib/database/settings/ConfigurableKey';
+export * from '#lib/database/settings/configuration';
 export * from '#lib/database/settings/functions';
 export * from '#lib/database/settings/schema/SchemaGroup';
 export * from '#lib/database/settings/schema/SchemaKey';
@@ -13,4 +13,5 @@ export * from '#lib/database/settings/structures/Serializer';
 export * from '#lib/database/settings/structures/SerializerStore';
 export * from '#lib/database/settings/structures/Task';
 export * from '#lib/database/settings/structures/TaskStore';
+export * from '#lib/database/settings/types';
 export * from '#lib/database/settings/Utils';

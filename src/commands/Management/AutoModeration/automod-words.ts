@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings, type GuildEntity } from '#lib/database';
+import { GuildSettings, readSettings, writeSettings, type GuildDataKey, type GuildDataValue, type GuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { AutoModerationCommand } from '#lib/moderation';
@@ -115,10 +115,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 			.addStringOption((option) => applyLocalizedBuilder(option, Root.OptionsWord).setRequired(true).setMinLength(2).setMaxLength(32));
 	}
 
-	protected override resetGetKeyValuePairFallback(
-		guild: Guild,
-		key: string
-	): Awaitable<readonly [keyof GuildEntity, GuildEntity[keyof GuildEntity]]> {
+	protected override resetGetKeyValuePairFallback(guild: Guild, key: string): Awaitable<readonly [GuildDataKey, GuildDataValue]> {
 		if (key === 'words') return [SettingsRoot.Raw, []];
 		return super.resetGetKeyValuePairFallback(guild, key);
 	}

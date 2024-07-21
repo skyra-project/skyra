@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { seconds, toErrorCodeResult } from '#utils/common';
@@ -31,7 +32,7 @@ export class UserListener extends Listener {
 		const targetChannelId = settings.channelsLogsMemberAdd;
 		if (mutedRoleId && stickyRoles.includes(mutedRoleId)) {
 			void this.#handleMutedMemberAddRole(member, mutedRoleId);
-			void this.#handleMutedMemberNotify(settings.getLanguage(), member, targetChannelId);
+			void this.#handleMutedMemberNotify(getT(settings.language), member, targetChannelId);
 
 			return true;
 		}

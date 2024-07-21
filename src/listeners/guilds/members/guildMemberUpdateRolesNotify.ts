@@ -1,4 +1,5 @@
 import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -39,7 +40,7 @@ export class UserListener extends Listener {
 		const { user } = next;
 
 		// Set the Role change log
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		this.container.client.emit(Events.GuildMessageLog, next.guild, logChannelId, 'channelsLogsMemberRolesUpdate', () =>
 			new EmbedBuilder()
 				.setColor(Colors.Yellow)

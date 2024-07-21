@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { seconds } from '#utils/common';
@@ -44,7 +45,7 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 			return;
 		}
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const changes: string[] = [...this.differenceChannel(t, previous as GuildBasedChannelTypes, next as GuildBasedChannelTypes)];
 		if (changes.length === 0) return;
 

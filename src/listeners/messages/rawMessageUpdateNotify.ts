@@ -1,4 +1,5 @@
 import { GuildEntity, GuildSettings, readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { type GuildMessage } from '#lib/types';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
@@ -44,7 +45,7 @@ export class UserListener extends Listener {
 			channelId: settings[key],
 			condition: () => this.onCondition(cachedMessage, channel, data.author!, settings),
 			makeMessage: () => {
-				const t = settings.getLanguage();
+				const t = getT(settings.language);
 				const embed = new EmbedBuilder()
 					.setColor(Colors.Amber)
 					.setAuthor(getFullEmbedAuthor(data.author!, messageLink(data.channel_id, data.id)))

@@ -1,5 +1,6 @@
 import { GuildSettings, readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import type { LLRCData, LLRCDataEmoji } from '#utils/LongLivingReactionCollector';
@@ -43,7 +44,7 @@ export class UserListener extends Listener {
 		if (!this.#canFetchMessages(data.channel)) return;
 
 		const settings = await readSettings(data.guild);
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const allowedEmojis = settings[GuildSettings.AutoModeration.Reactions.Allowed];
 
 		const emojiId = getEmojiId(emoji);

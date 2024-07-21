@@ -1,4 +1,5 @@
 import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -45,7 +46,7 @@ export class UserListener extends Listener {
 				!settings.channelsIgnoreMessageDeletes.some((id) => id === channel.id && channel.parentId === id) ||
 				!settings.channelsIgnoreAll.some((id) => id === channel.id || channel.parentId === id),
 			makeMessage: async () => {
-				const t = settings.getLanguage();
+				const t = getT(settings.language);
 				const context = await contextPromise;
 				const description = context
 					? t(LanguageKeys.Events.Messages.MessageDeleteBulk, {

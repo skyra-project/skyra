@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type TypedT } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -31,7 +32,7 @@ export class UserListener extends Listener {
 		if (!logChannelId) return;
 
 		// Send the Username log
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, GuildSettings.Channels.Logs.MemberUserNameUpdate, () =>
 			this.buildEmbed(user, t, this.getNameDescription(t, previous, next), LanguageKeys.Events.Guilds.Members.UsernameUpdate)
 		);

@@ -1,5 +1,6 @@
 import { configurableGroups, isSchemaGroup, readSettings, remove, SchemaGroup, SchemaKey, set, writeSettings } from '#lib/database/settings';
 import { api } from '#lib/discord/Api';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraArgs, type SkyraCommand } from '#lib/structures';
 import { Events, type GuildMessage } from '#lib/types';
@@ -86,7 +87,7 @@ export class SettingsMenu {
 
 			const settings = await readSettings(this.message.guild);
 
-			this.t = settings.getLanguage();
+			this.t = getT(settings.language);
 			const value = settings[this.schema.property];
 			const serialized = this.schema.display(settings, this.t);
 			description.push(t(this.schema.description), '', t(LanguageKeys.Commands.Admin.ConfMenuRenderUpdate));
@@ -232,12 +233,12 @@ export class SettingsMenu {
 					}
 					case UpdateType.Reset: {
 						Reflect.set(settings, key.property, key.default);
-						this.t = settings.getLanguage();
+						this.t = getT(settings.language);
 						break;
 					}
 					case UpdateType.Replace: {
 						Reflect.set(settings, key.property, value);
-						this.t = settings.getLanguage();
+						this.t = getT(settings.language);
 						break;
 					}
 				}

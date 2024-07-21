@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { differenceBitField } from '#utils/common/comparators';
@@ -23,7 +24,7 @@ export class UserListener extends Listener<typeof Events.GuildRoleUpdate> {
 			return;
 		}
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const changes: string[] = [...this.differenceRole(t, previous, next)];
 		if (changes.length === 0) return;
 

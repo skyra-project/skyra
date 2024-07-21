@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { differenceMap } from '#utils/common/comparators';
 import { Colors } from '#utils/constants';
@@ -22,7 +23,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiUpdate> {
 			return;
 		}
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const changes: string[] = [...this.differenceEmoji(t, previous, next)];
 		if (changes.length === 0) return;
 

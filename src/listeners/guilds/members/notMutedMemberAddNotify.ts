@@ -1,4 +1,5 @@
 import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { seconds } from '#utils/common';
@@ -21,7 +22,7 @@ export class UserListener extends Listener {
 			key: 'channelsLogsMemberAdd',
 			channelId: logChannelId,
 			makeMessage: () => {
-				const t = settings.getLanguage();
+				const t = getT(settings.language);
 				const { user } = member;
 				const description = t(Root.GuildMemberAddDescription, {
 					user: getUserMentionWithFlagsString(user.flags?.bitfield ?? 0, user.id),

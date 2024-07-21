@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { Colors } from '#utils/constants';
@@ -22,7 +23,7 @@ export class UserListener extends Listener<typeof Events.GuildRoleCreate> {
 			return;
 		}
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const changes: string[] = [...this.getRoleInformation(t, next)];
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Green)

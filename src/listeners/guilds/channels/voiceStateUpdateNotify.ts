@@ -1,4 +1,5 @@
 import { GuildEntity, readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
 import { getLogger } from '#utils/functions';
@@ -25,7 +26,7 @@ export class UserListener extends Listener<typeof Events.VoiceStateUpdate> {
 			channelId: settings.channelsLogsVoiceChannel,
 			condition: () => this.onCondition(oldChannel, nextChannel, user, settings),
 			makeMessage: () => {
-				const t = settings.getLanguage();
+				const t = getT(settings.language);
 				const { description, color } = this.render(t, oldChannel, nextChannel);
 				return new EmbedBuilder() //
 					.setAuthor(getFullEmbedAuthor(user))

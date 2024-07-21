@@ -2,6 +2,7 @@ import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { SchemaGroup } from '#lib/database/settings/schema/SchemaGroup';
 import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import { UserError } from '@sapphire/framework';
@@ -38,7 +39,7 @@ export async function set(settings: GuildEntity, key: SchemaKey, args: SkyraArgs
 		Reflect.set(settings, key.property, parsed);
 	}
 
-	return settings.getLanguage();
+	return getT(settings.language);
 }
 
 export async function remove(settings: GuildEntity, key: SchemaKey, args: SkyraArgs) {
@@ -62,11 +63,11 @@ export async function remove(settings: GuildEntity, key: SchemaKey, args: SkyraA
 		Reflect.set(settings, key.property, key.default);
 	}
 
-	return settings.getLanguage();
+	return getT(settings.language);
 }
 
 export function reset(settings: GuildEntity, key: SchemaKey) {
-	const language = settings.getLanguage();
+	const language = getT(settings.language);
 	Reflect.set(settings, key.property, key.default);
 	return language;
 }

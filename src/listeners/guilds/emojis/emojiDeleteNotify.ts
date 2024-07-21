@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
 import { EmbedBuilder } from '@discordjs/builders';
@@ -20,7 +21,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiDelete> {
 			return;
 		}
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Red)
 			.setThumbnail(next.imageURL({ size: 256 }))

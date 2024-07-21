@@ -1,4 +1,5 @@
 import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -32,7 +33,7 @@ export class UserListener extends Listener {
 		const logChannelId = settings.channelsLogsImage;
 		if (isNullish(logChannelId) || settings.channelsIgnoreAll.includes(message.channel.id)) return;
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		for (const attachment of this.getAttachments(message)) {
 			const dimensions = this.getDimensions(attachment.width, attachment.height);
 

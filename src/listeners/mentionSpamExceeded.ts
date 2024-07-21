@@ -1,4 +1,5 @@
 import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
 import { getModeration } from '#utils/functions';
@@ -12,7 +13,7 @@ export class UserListener extends Listener {
 		const moderation = getModeration(message.guild);
 		const lock = moderation.createLock();
 		try {
-			const t = settings.getLanguage();
+			const t = getT(settings.language);
 			await message.guild.members
 				.ban(message.author.id, { deleteMessageSeconds: 0, reason: t(LanguageKeys.Events.NoMentionSpam.Footer) })
 				.catch((error) => this.container.client.emit(Events.Error, error));

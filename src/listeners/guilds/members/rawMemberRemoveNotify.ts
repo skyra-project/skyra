@@ -1,4 +1,5 @@
 import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { seconds } from '#utils/common';
@@ -23,7 +24,7 @@ export class UserListener extends Listener {
 
 		const isModerationAction = await this.isModerationAction(guild, user);
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const footer = isModerationAction.kicked
 			? t(Root.GuildMemberKicked)
 			: isModerationAction.banned

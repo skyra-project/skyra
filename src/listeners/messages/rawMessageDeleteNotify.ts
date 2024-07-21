@@ -1,4 +1,5 @@
 import { GuildEntity, GuildSettings, readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -33,7 +34,7 @@ export class UserListener extends Listener {
 			channelId: settings[key],
 			condition: () => this.onCondition(message, channel, settings),
 			makeMessage: () => {
-				const t = settings.getLanguage();
+				const t = getT(settings.language);
 				const embed = new EmbedBuilder().setColor(Colors.Red).setTimestamp();
 
 				if (isNullish(message)) {

@@ -1,5 +1,6 @@
 import { GuildEntity, GuildSettings, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
+import { getT } from '#lib/i18n';
 import { ModerationActions } from '#lib/moderation/actions/index';
 import { AutoModerationOnInfraction, AutoModerationPunishment } from '#lib/moderation/structures/AutoModerationOnInfraction';
 import { Events, type GuildMessage, type TypedFT, type TypedT } from '#lib/types';
@@ -46,7 +47,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 		const logChannelId = settings.channelsLogsModeration;
 		const filter = settings[this.softPunishmentPath];
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		this.processSoftPunishment(message, logChannelId, t, filter, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;

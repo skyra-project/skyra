@@ -9,6 +9,7 @@ import {
 	type GuildEntity,
 	type Serializer
 } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { seconds } from '#utils/common';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -98,7 +99,7 @@ export class UserRoute extends Route {
 		const context: PartialSerializerUpdateContext = {
 			entity,
 			guild,
-			t: entity.getLanguage()
+			t: getT(entity.language)
 		};
 
 		const errors: string[] = [];

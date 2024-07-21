@@ -1,4 +1,5 @@
 import { readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
 import type { GuildMessage } from '#lib/types';
@@ -106,7 +107,7 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 		});
 		const t = await writeSettings(guild, (settings) => {
 			Reflect.set(settings, this.roleKey, role.id);
-			return settings.getLanguage();
+			return getT(settings.language);
 		});
 
 		const manageableChannelCount = guild.channels.cache.reduce(

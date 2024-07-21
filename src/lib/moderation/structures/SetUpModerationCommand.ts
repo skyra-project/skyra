@@ -1,4 +1,5 @@
 import { readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { RoleTypeVariation } from '#lib/moderation';
 import { ModerationCommand } from '#lib/moderation/structures/ModerationCommand';
@@ -47,7 +48,7 @@ export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, Val
 			this.error(LanguageKeys.Commands.Moderation.RestrictLowlevel);
 		}
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const role = (await this.askForRole(message, args, context)).unwrapRaw();
 			await writeSettings(message.guild, [[this.action.roleKey, role.id]]);

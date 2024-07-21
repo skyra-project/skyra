@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toChannelsArray } from '#utils/bits';
 import { differenceArray, differenceBitField, seconds } from '#utils/common';
@@ -36,7 +37,7 @@ export class UserListener extends Listener<typeof Events.GuildUpdate> {
 			return;
 		}
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const changes: string[] = [...this.differenceGuild(t, previous, next)];
 		if (changes.length === 0) return;
 

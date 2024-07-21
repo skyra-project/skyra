@@ -1,4 +1,5 @@
 import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -22,7 +23,7 @@ export class UserListener extends Listener {
 		const nextNickname = next.nickname;
 		const { user } = next;
 		if (prevNickname !== nextNickname) {
-			const t = settings.getLanguage();
+			const t = getT(settings.language);
 			this.container.client.emit(Events.GuildMessageLog, next.guild, logChannelId, 'channelsLogsMemberNickNameUpdate', () =>
 				new EmbedBuilder()
 					.setColor(Colors.Yellow)

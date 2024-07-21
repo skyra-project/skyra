@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { seconds } from '#utils/common';
@@ -32,7 +33,7 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 			return;
 		}
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const changes: string[] = [...this.getChannelInformation(t, next)];
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Green)

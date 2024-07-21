@@ -1,4 +1,5 @@
 import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
 import { EmbedBuilder } from '@discordjs/builders';
@@ -21,7 +22,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiCreate> {
 			return;
 		}
 
-		const t = settings.getLanguage();
+		const t = getT(settings.language);
 		const changes: string[] = [...this.getEmojiInformation(t, next)];
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Green)

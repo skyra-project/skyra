@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings, writeSettings } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
@@ -17,7 +17,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiDelete> {
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
 		if (channel === undefined) {
-			await writeSettings(next.guild, [[GuildSettings.Channels.Logs.EmojiDelete, null]]);
+			await writeSettings(next.guild, [['channelsLogsEmojiDelete', null]]);
 			return;
 		}
 

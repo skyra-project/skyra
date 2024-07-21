@@ -1,4 +1,4 @@
-import { GuildSettings, writeSettings } from '#lib/database';
+import { writeSettings } from '#lib/database';
 import type { ModerationManager } from '#lib/moderation';
 import { getEmbed, getUndoTaskName } from '#lib/moderation/common';
 import { resolveOnErrorCodes } from '#utils/common';
@@ -25,7 +25,7 @@ export class UserListener extends Listener {
 		try {
 			await resolveOnErrorCodes(channel.send(options), RESTJSONErrorCodes.MissingAccess, RESTJSONErrorCodes.MissingPermissions);
 		} catch (error) {
-			await writeSettings(entry.guild, [[GuildSettings.Channels.Logs.Moderation, null]]);
+			await writeSettings(entry.guild, [['channelsLogsModeration', null]]);
 		}
 	}
 

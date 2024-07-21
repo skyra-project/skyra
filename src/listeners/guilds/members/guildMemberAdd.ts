@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings, writeSettings } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
@@ -28,7 +28,7 @@ export class UserListener extends Listener {
 
 		// Handle the case the user is muted
 		const settings = await readSettings(member);
-		const mutedRoleId = settings[GuildSettings.Roles.Muted];
+		const mutedRoleId = settings.rolesMuted;
 		const targetChannelId = settings.channelsLogsMemberAdd;
 		if (mutedRoleId && stickyRoles.includes(mutedRoleId)) {
 			void this.#handleMutedMemberAddRole(member, mutedRoleId);
@@ -46,7 +46,7 @@ export class UserListener extends Listener {
 		const { guild } = member;
 		const role = guild.roles.cache.get(mutedRoleId);
 		if (isNullish(role)) {
-			await writeSettings(member, [[GuildSettings.Roles.Muted, null]]);
+			await writeSettings(member, [['rolesMuted', null]]);
 		} else {
 			const result = await toErrorCodeResult(member.roles.add(role));
 			await result.inspectErrAsync((code) => this.#handleMutedMemberAddRoleErr(guild, code));
@@ -59,7 +59,7 @@ export class UserListener extends Listener {
 
 		// The role was deleted, remove it from the settings:
 		if (code === RESTJSONErrorCodes.UnknownRole) {
-			await writeSettings(guild, [[GuildSettings.Roles.Muted, null]]);
+			await writeSettings(guild, [['rolesMuted', null]]);
 			return;
 		}
 

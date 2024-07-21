@@ -1,4 +1,4 @@
-import { GuildSettings, writeSettings } from '#lib/database';
+import { writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
@@ -18,12 +18,12 @@ export class UserCommand extends SkyraCommand {
 		const prefix = await args.pick('string', { minimum: 1, maximum: 10 });
 		await writeSettings(message.guild, (settings) => {
 			// If it's the same value, throw:
-			if (settings[GuildSettings.Prefix] === prefix) {
+			if (settings.prefix === prefix) {
 				this.error(LanguageKeys.Misc.ConfigurationEquals);
 			}
 
 			// Else set the new value:
-			settings[GuildSettings.Prefix] = prefix;
+			settings.prefix = prefix;
 		});
 
 		const content = args.t(LanguageKeys.Commands.Management.SetPrefixSet, { prefix });

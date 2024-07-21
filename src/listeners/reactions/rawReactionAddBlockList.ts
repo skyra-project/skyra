@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, type GuildSettingsOfType } from '#lib/database';
+import { readSettings, type GuildSettingsOfType } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { AutoModerationOnInfraction, ModerationListener, type HardPunishment } from '#lib/moderation';
@@ -25,11 +25,11 @@ type ArgumentType = [data: LLRCData, reaction: SerializedEmoji, channelId: strin
 
 @ApplyOptions<ModerationListener.Options>({ event: Events.RawReactionAdd })
 export class UserModerationEvent extends ModerationListener<ArgumentType, unknown> {
-	protected keyEnabled: GuildSettingsOfType<boolean> = GuildSettings.AutoModeration.Reactions.Enabled;
-	protected softPunishmentPath: GuildSettingsOfType<number> = GuildSettings.AutoModeration.Reactions.SoftAction;
+	protected keyEnabled: GuildSettingsOfType<boolean> = 'selfmodReactionsEnabled';
+	protected softPunishmentPath: GuildSettingsOfType<number> = 'selfmodReactionsSoftAction';
 	protected hardPunishmentPath: HardPunishment = {
-		action: GuildSettings.AutoModeration.Reactions.HardAction,
-		actionDuration: GuildSettings.AutoModeration.Reactions.HardActionDuration,
+		action: 'selfmodReactionsHardAction',
+		actionDuration: 'selfmodReactionsHardActionDuration',
 		adder: 'reactions'
 	};
 
@@ -97,12 +97,6 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 	}
 
 	protected onLog(args: Readonly<ArgumentType>) {
-		this.container.client.emit(
-			Events.GuildMessageLog,
-			args[0].guild,
-			args[2],
-			GuildSettings.Channels.Logs.Moderation,
-			this.onLogMessage.bind(this, args)
-		);
+		this.container.client.emit(Events.GuildMessageLog, args[0].guild, args[2], 'channelsLogsModeration', this.onLogMessage.bind(this, args));
 	}
 }

@@ -1,4 +1,4 @@
-import { GuildSettings, PermissionNodeAction, readSettings, writeSettings, type PermissionsNode } from '#lib/database';
+import { PermissionNodeAction, readSettings, writeSettings, type PermissionsNode } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
@@ -83,10 +83,9 @@ export class UserCommand extends SkyraSubcommand {
 
 		if (!this.checkPermissions(message, target)) this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
 		const isRole = target instanceof Role;
-		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const settings = await readSettings(message.guild);
-		const nodes = settings[key];
+		const nodes = isRole ? settings.permissionsRoles : settings.permissionsUsers;
 		const node = nodes.find((n) => n.id === target.id);
 		if (typeof node === 'undefined') this.error(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 

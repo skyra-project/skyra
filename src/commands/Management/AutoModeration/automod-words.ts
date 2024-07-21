@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings, type GuildDataKey, type GuildDataValue, type GuildEntity } from '#lib/database';
+import { readSettings, writeSettings, type GuildDataKey, type GuildDataValue, type GuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { AutoModerationCommand } from '#lib/moderation';
@@ -15,7 +15,6 @@ import { remove as removeConfusables } from 'confusables';
 import { inlineCode, type Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.AutoModeration;
-const SettingsRoot = GuildSettings.AutoModeration.Filter;
 
 @ApplyOptions<AutoModerationCommand.Options>({
 	aliases: ['filter-mode', 'word-filter-mode', 'manage-filter', 'filter'],
@@ -27,12 +26,12 @@ const SettingsRoot = GuildSettings.AutoModeration.Filter;
 	],
 	resetKeys: [{ key: Root.OptionsKeyWords, value: 'words' }],
 	adderPropertyName: 'words',
-	keyEnabled: SettingsRoot.Enabled,
-	keyOnInfraction: SettingsRoot.SoftAction,
-	keyPunishment: SettingsRoot.HardAction,
-	keyPunishmentDuration: SettingsRoot.HardActionDuration,
-	keyPunishmentThreshold: SettingsRoot.ThresholdMaximum,
-	keyPunishmentThresholdPeriod: SettingsRoot.ThresholdDuration
+	keyEnabled: 'selfmodFilterEnabled',
+	keyOnInfraction: 'selfmodFilterSoftAction',
+	keyPunishment: 'selfmodFilterHardAction',
+	keyPunishmentDuration: 'selfmodFilterHardActionDuration',
+	keyPunishmentThreshold: 'selfmodFilterThresholdMaximum',
+	keyPunishmentThresholdPeriod: 'selfmodFilterThresholdDuration'
 })
 export class UserAutoModerationCommand extends AutoModerationCommand {
 	/** @deprecated */
@@ -57,8 +56,8 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 			return interaction.reply({ content: t(Root.WordAddFiltered, { word }), ephemeral: true });
 		}
 
-		const updated = settings[SettingsRoot.Raw].concat(word);
-		await writeSettings(guild, [[SettingsRoot.Raw, updated]]);
+		const updated = settings.selfmodFilterRaw.concat(word);
+		await writeSettings(guild, [['selfmodFilterRaw', updated]]);
 		return interaction.reply({ content: t(Root.EditSuccess), ephemeral: true });
 	}
 
@@ -68,20 +67,20 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		const settings = await readSettings(guild);
 
 		const t = getSupportedUserLanguageT(interaction);
-		const index = settings[SettingsRoot.Raw].indexOf(word);
+		const index = settings.selfmodFilterRaw.indexOf(word);
 		if (index === -1) {
 			return interaction.reply({ content: t(Root.WordRemoveNotFiltered, { word }), ephemeral: true });
 		}
 
-		const updated = settings[SettingsRoot.Raw].toSpliced(index, 1);
-		await writeSettings(guild, [[SettingsRoot.Raw, updated]]);
+		const updated = settings.selfmodFilterRaw.toSpliced(index, 1);
+		await writeSettings(guild, [['selfmodFilterRaw', updated]]);
 		return interaction.reply({ content: t(Root.EditSuccess), ephemeral: true });
 	}
 
 	protected override showEnabled(t: TFunction, settings: GuildEntity) {
 		const embed = super.showEnabled(t, settings);
 
-		const words = settings[SettingsRoot.Raw];
+		const words = settings.selfmodFilterRaw;
 		if (isNullishOrEmpty(words)) {
 			const command = chatInputApplicationCommandMention(this.name, 'add', this.getGlobalCommandId());
 			embed.addFields({
@@ -116,7 +115,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 	}
 
 	protected override resetGetKeyValuePairFallback(guild: Guild, key: string): Awaitable<readonly [GuildDataKey, GuildDataValue]> {
-		if (key === 'words') return [SettingsRoot.Raw, []];
+		if (key === 'words') return ['selfmodFilterRaw', []];
 		return super.resetGetKeyValuePairFallback(guild, key);
 	}
 
@@ -125,7 +124,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 	}
 
 	async #hasWord(settings: GuildEntity, word: string) {
-		const words = settings[SettingsRoot.Raw];
+		const words = settings.selfmodFilterRaw;
 		if (words.includes(word)) return true;
 
 		const regExp = settings.wordFilterRegExp;

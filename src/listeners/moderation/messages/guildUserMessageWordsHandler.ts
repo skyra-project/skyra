@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
@@ -16,13 +16,13 @@ import type { TextChannel } from 'discord.js';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationWords,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationWordsWithMaximum,
-	keyEnabled: GuildSettings.AutoModeration.Filter.Enabled,
-	ignoredChannelsPath: GuildSettings.AutoModeration.Filter.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.AutoModeration.Filter.IgnoredRoles,
-	softPunishmentPath: GuildSettings.AutoModeration.Filter.SoftAction,
+	keyEnabled: 'selfmodFilterEnabled',
+	ignoredChannelsPath: 'selfmodFilterIgnoredChannels',
+	ignoredRolesPath: 'selfmodFilterIgnoredRoles',
+	softPunishmentPath: 'selfmodFilterSoftAction',
 	hardPunishmentPath: {
-		action: GuildSettings.AutoModeration.Filter.HardAction,
-		actionDuration: GuildSettings.AutoModeration.Filter.HardActionDuration,
+		action: 'selfmodFilterHardAction',
+		actionDuration: 'selfmodFilterHardActionDuration',
 		adder: 'words'
 	}
 })

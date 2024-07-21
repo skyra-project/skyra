@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -82,7 +82,7 @@ export class UserPaginatedMessageCommand extends SkyraCommand {
 		if (actualInitialRole && settings.rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
 			if (!message.guild.roles.cache.has(actualInitialRole)) {
-				await writeSettings(message.guild, [[GuildSettings.Roles.Initial, null]]).catch((error) => this.container.logger.fatal(error));
+				await writeSettings(message.guild, [['rolesInitial', null]]).catch((error) => this.container.logger.fatal(error));
 			} else if (message.member!.roles.cache.has(actualInitialRole)) {
 				memberRoles.delete(actualInitialRole);
 			}
@@ -117,7 +117,7 @@ export class UserPaginatedMessageCommand extends SkyraCommand {
 		if (remove.length) {
 			const allRoles = new Set(publicRoles);
 			for (const role of remove) allRoles.delete(role);
-			await writeSettings(message.guild, [[GuildSettings.Roles.Public, [...allRoles]]]);
+			await writeSettings(message.guild, [['rolesPublic', [...allRoles]]]);
 		}
 
 		// There's the possibility all roles could be inexistent, therefore the system

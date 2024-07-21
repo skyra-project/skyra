@@ -1,4 +1,4 @@
-import { GuildSettings, writeSettings } from '#lib/database';
+import { writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
@@ -18,7 +18,7 @@ export class UserCommand extends SkyraCommand {
 		const channel = await args.pick(UserCommand.hereOrTextChannelResolver);
 
 		const [oldLength, newLength] = await writeSettings(message.guild, (settings) => {
-			const ignoredChannels = settings[GuildSettings.DisabledChannels];
+			const ignoredChannels = settings.disabledChannels;
 			const oldLength = ignoredChannels.length;
 
 			const channelId = channel.id;

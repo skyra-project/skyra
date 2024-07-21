@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
@@ -45,7 +45,7 @@ export class UserListener extends Listener {
 
 		const settings = await readSettings(data.guild);
 		const t = getT(settings.language);
-		const allowedEmojis = settings[GuildSettings.AutoModeration.Reactions.Allowed];
+		const allowedEmojis = settings.selfmodReactionsAllowed;
 
 		const emojiId = getEmojiId(emoji);
 		if (allowedEmojis.some((allowedEmoji) => getEmojiId(allowedEmoji) === emojiId)) return;
@@ -66,7 +66,7 @@ export class UserListener extends Listener {
 		if (user.bot) return;
 
 		await getLogger(data.guild).send({
-			key: GuildSettings.Channels.Logs.Reaction,
+			key: 'channelsLogsReaction',
 			channelId: targetChannelId,
 			makeMessage: () =>
 				new EmbedBuilder()

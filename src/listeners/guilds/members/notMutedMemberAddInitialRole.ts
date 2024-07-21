@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { GuildEntity, readSettings, writeSettings } from '#lib/database';
 import { Events } from '#lib/types';
 import { toErrorCodeResult } from '#utils/common';
 import { getCodeStyle, getLogPrefix } from '#utils/functions';
@@ -23,11 +23,11 @@ export class UserListener extends Listener {
 		const result = await toErrorCodeResult(member.roles.add(roleId));
 		// If the role was not found or the bot can't give the role, remove it from the settings:
 		if (result.isErrAnd((code) => code === RESTJSONErrorCodes.UnknownRole || code === RESTJSONErrorCodes.MissingPermissions)) {
-			const key = initial //
-				? GuildSettings.Roles.Initial
+			const key: keyof GuildEntity = initial //
+				? 'rolesInitial'
 				: member.user.bot
-					? GuildSettings.Roles.InitialBots
-					: GuildSettings.Roles.InitialHumans;
+					? 'rolesInitialBots'
+					: 'rolesInitialHumans';
 			return writeSettings(member, [[key, null]]);
 		}
 

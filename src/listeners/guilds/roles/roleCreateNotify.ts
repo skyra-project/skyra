@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings, writeSettings } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
@@ -19,7 +19,7 @@ export class UserListener extends Listener<typeof Events.GuildRoleCreate> {
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
 		if (channel === undefined) {
-			await writeSettings(next, [[GuildSettings.Channels.Logs.RoleCreate, null]]);
+			await writeSettings(next, [['channelsLogsRoleCreate', null]]);
 			return;
 		}
 

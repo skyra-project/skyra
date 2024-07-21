@@ -1,5 +1,4 @@
 import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildEntity';
-import { GuildSettings } from '#lib/database/keys';
 import type { IBaseManager } from '#lib/database/settings/base/IBaseManager';
 import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
@@ -35,8 +34,7 @@ export class PermissionNodeManager implements IBaseManager {
 	}
 
 	public add(target: Role | GuildMember | User, command: string, action: PermissionNodeAction) {
-		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
-
+		const key: keyof GuildEntity = target instanceof Role ? 'permissionsRoles' : 'permissionsUsers';
 		const nodes = this.#settings[key];
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 
@@ -68,8 +66,7 @@ export class PermissionNodeManager implements IBaseManager {
 	}
 
 	public remove(target: Role | GuildMember | User, command: string, action: PermissionNodeAction) {
-		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
-
+		const key: keyof GuildEntity = target instanceof Role ? 'permissionsRoles' : 'permissionsUsers';
 		const nodes = this.#settings[key];
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
@@ -91,8 +88,7 @@ export class PermissionNodeManager implements IBaseManager {
 	}
 
 	public reset(target: Role | GuildMember | User) {
-		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
-
+		const key: keyof GuildEntity = target instanceof Role ? 'permissionsRoles' : 'permissionsUsers';
 		const nodes = this.#settings[key];
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 
@@ -104,7 +100,7 @@ export class PermissionNodeManager implements IBaseManager {
 	}
 
 	public refresh() {
-		const nodes = this.#settings[GuildSettings.Permissions.Roles];
+		const nodes = this.#settings.permissionsRoles;
 		this.#previous = nodes.slice();
 
 		if (nodes.length === 0) {
@@ -134,7 +130,7 @@ export class PermissionNodeManager implements IBaseManager {
 	}
 
 	public onPatch() {
-		const nodes = this.#settings[GuildSettings.Permissions.Roles];
+		const nodes = this.#settings.permissionsRoles;
 		if (!arrayStrictEquals(this.#previous, nodes)) this.refresh();
 	}
 

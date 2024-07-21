@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings, type ReactionRole } from '#lib/database';
+import { readSettings, writeSettings, type ReactionRole } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
@@ -39,7 +39,7 @@ export class UserCommand extends SkyraSubcommand {
 			};
 
 			await writeSettings(message.guild, (settings) => {
-				settings[GuildSettings.ReactionRoles].push(reactionRole);
+				settings.reactionRoles.push(reactionRole);
 			});
 
 			const content = args.t(LanguageKeys.Commands.Management.ManageReactionRolesAddChannel, {
@@ -64,7 +64,7 @@ export class UserCommand extends SkyraSubcommand {
 			role: role.id
 		};
 		await writeSettings(message.guild, (settings) => {
-			settings[GuildSettings.ReactionRoles].push(reactionRole);
+			settings.reactionRoles.push(reactionRole);
 		});
 
 		const url = `<https://discord.com/channels/${message.guild.id}/${reactionRole.channel}/${reactionRole.message}>`;
@@ -80,8 +80,7 @@ export class UserCommand extends SkyraSubcommand {
 		const messageId = await args.pick('snowflake');
 
 		const reactionRole = await writeSettings(message.guild, (settings) => {
-			const reactionRoles = settings[GuildSettings.ReactionRoles];
-
+			const { reactionRoles } = settings;
 			const reactionRoleIndex = reactionRoles.findIndex((entry) => (entry.message ?? entry.channel) === messageId && entry.role === role.id);
 
 			if (reactionRoleIndex === -1) this.error(LanguageKeys.Commands.Management.ManageReactionRolesRemoveNotExists);
@@ -105,8 +104,7 @@ export class UserCommand extends SkyraSubcommand {
 
 	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		await writeSettings(message.guild, (settings) => {
-			const reactionRoles = settings[GuildSettings.ReactionRoles];
-
+			const { reactionRoles } = settings;
 			if (reactionRoles.length === 0) {
 				this.error(LanguageKeys.Commands.Management.ManageReactionRolesResetEmpty);
 			}

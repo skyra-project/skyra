@@ -1,4 +1,4 @@
-import { GuildEntity, GuildSettings, readSettings, writeSettings, type UniqueRoleSet } from '#lib/database';
+import { GuildEntity, readSettings, writeSettings, type UniqueRoleSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
@@ -35,7 +35,7 @@ export class UserCommand extends SkyraSubcommand {
 		await writeSettings(message.guild, (settings) => {
 			// The set does exist so we want to only REMOVE provided roles from it
 			// Create a new array that we can use to overwrite the existing one in settings
-			settings[GuildSettings.Roles.UniqueRoleSets] = settings[GuildSettings.Roles.UniqueRoleSets].map((set) =>
+			settings.rolesUniqueRoleSets = settings.rolesUniqueRoleSets.map((set) =>
 				set.name === name ? { name, roles: set.roles.filter((id: string) => !roles.find((role) => role.id === id)) } : set
 			);
 		});
@@ -52,7 +52,7 @@ export class UserCommand extends SkyraSubcommand {
 		if (sets.length === 0) this.error(LanguageKeys.Commands.Admin.RoleSetResetEmpty);
 
 		if (!name) {
-			await writeSettings(message.guild, [[GuildSettings.Roles.UniqueRoleSets, []]]);
+			await writeSettings(message.guild, [['rolesUniqueRoleSets', []]]);
 			return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetResetAll));
 		}
 
@@ -60,7 +60,7 @@ export class UserCommand extends SkyraSubcommand {
 		if (arrayIndex === -1) this.error(LanguageKeys.Commands.Admin.RoleSetResetNotExists, { name });
 
 		await writeSettings(message.guild, (settings) => {
-			settings[GuildSettings.Roles.UniqueRoleSets].splice(arrayIndex, 1);
+			settings.rolesUniqueRoleSets.splice(arrayIndex, 1);
 		});
 
 		return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetResetGroup, { name }));
@@ -92,7 +92,7 @@ export class UserCommand extends SkyraSubcommand {
 			return { name, roles: newRoles };
 		});
 
-		await writeSettings(message.guild, [[GuildSettings.Roles.UniqueRoleSets, newSets]]);
+		await writeSettings(message.guild, [['rolesUniqueRoleSets', newSets]]);
 		return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetUpdated, { name }));
 	}
 
@@ -135,7 +135,7 @@ export class UserCommand extends SkyraSubcommand {
 		if (changed) {
 			// If after cleaning up, all sets end up empty, reset and return error:
 			if (list.length === 0) {
-				await writeSettings(message.guild, [[GuildSettings.Roles.UniqueRoleSets, []]]);
+				await writeSettings(message.guild, [['rolesUniqueRoleSets', []]]);
 				this.error(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
 			}
 
@@ -159,7 +159,7 @@ export class UserCommand extends SkyraSubcommand {
 
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
 		const created = await writeSettings(message.guild, (settings) => {
-			const allRoleSets = settings[GuildSettings.Roles.UniqueRoleSets];
+			const allRoleSets = settings.rolesUniqueRoleSets;
 			const roleSet = allRoleSets.some((set) => set.name === name);
 
 			// If it does not exist we need to create a brand new set
@@ -177,7 +177,7 @@ export class UserCommand extends SkyraSubcommand {
 
 				return { name, roles: finalRoles };
 			});
-			settings[GuildSettings.Roles.UniqueRoleSets] = sets;
+			settings.rolesUniqueRoleSets = sets;
 
 			return false;
 		});

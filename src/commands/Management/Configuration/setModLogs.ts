@@ -1,4 +1,3 @@
-import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ChannelConfigurationCommand } from '#lib/structures';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -7,6 +6,6 @@ import { ApplyOptions } from '@sapphire/decorators';
 	description: LanguageKeys.Commands.Management.SetModerationLogsDescription,
 	detailedDescription: LanguageKeys.Commands.Management.SetModerationLogsExtended,
 	responseKey: LanguageKeys.Commands.Management.SetModerationLogsSet,
-	settingsKey: GuildSettings.Channels.Logs.Moderation
+	settingsKey: 'channelsLogsModeration'
 })
 export class UserChannelConfigurationCommand extends ChannelConfigurationCommand {}

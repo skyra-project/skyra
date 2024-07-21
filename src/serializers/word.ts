@@ -1,4 +1,4 @@
-import { GuildEntity, GuildSettings, Serializer } from '#lib/database';
+import { GuildEntity, Serializer } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
 import type { Awaitable } from '@sapphire/utilities';
@@ -20,7 +20,7 @@ export class UserSerializer extends Serializer<string> {
 	}
 
 	private async hasWord(settings: GuildEntity, content: string) {
-		const words = settings[GuildSettings.AutoModeration.Filter.Raw];
+		const words = settings.selfmodFilterRaw;
 		if (words.includes(content)) return true;
 
 		const regExp = settings.wordFilterRegExp;

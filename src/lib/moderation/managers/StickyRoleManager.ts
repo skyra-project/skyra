@@ -1,5 +1,4 @@
 import type { StickyRole } from '#lib/database/entities';
-import { GuildSettings } from '#lib/database/keys';
 import { readSettings, writeSettings } from '#lib/database/settings';
 import { isNullish } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
@@ -46,11 +45,11 @@ export class StickyRoleManager {
 
 		// 3.0.b. Make a clone with the userId and the fixed roles array:
 		return writeSettings(this.#guild, (settings) => {
-			const index = settings[GuildSettings.StickyRoles].findIndex((entry) => entry.user === userId);
+			const index = settings.stickyRoles.findIndex((entry) => entry.user === userId);
 			if (index === -1) return [];
 
 			const clone: StickyRole = { user: userId, roles };
-			settings[GuildSettings.StickyRoles][index] = clone;
+			settings.stickyRoles[index] = clone;
 
 			// 4.0. Return the updated roles:
 			return clone.roles;
@@ -60,7 +59,7 @@ export class StickyRoleManager {
 	public add(userId: string, roleId: string): Promise<readonly string[]> {
 		return writeSettings(this.#guild, (settings) => {
 			// 0.0 Get all the entries
-			const entries = settings[GuildSettings.StickyRoles];
+			const entries = settings.stickyRoles;
 
 			// 1.0. Get the index for the entry:
 			const index = entries.findIndex((entry) => entry.user === userId);
@@ -88,7 +87,7 @@ export class StickyRoleManager {
 	public remove(userId: string, roleId: string): Promise<readonly string[]> {
 		return writeSettings(this.#guild, (settings) => {
 			// 0.0 Get all the entries
-			const entries = settings[GuildSettings.StickyRoles];
+			const entries = settings.stickyRoles;
 
 			// 1.0. Get the index for the entry:
 			const index = entries.findIndex((entry) => entry.user === userId);
@@ -116,7 +115,7 @@ export class StickyRoleManager {
 	public clear(userId: string): Promise<readonly string[]> {
 		return writeSettings(this.#guild, (settings) => {
 			// 0.0 Get all the entries
-			const entries = settings[GuildSettings.StickyRoles];
+			const entries = settings.stickyRoles;
 
 			// 1.0. Get the index for the entry:
 			const index = entries.findIndex((entry) => entry.user === userId);

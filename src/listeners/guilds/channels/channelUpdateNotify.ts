@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings, writeSettings } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
@@ -41,7 +41,7 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
 		if (isNullish(channel) || !canSendMessages(channel)) {
-			await writeSettings(next.guild, [[GuildSettings.Channels.Logs.ChannelUpdate, null]]);
+			await writeSettings(next.guild, [['channelsLogsChannelUpdate', null]]);
 			return;
 		}
 

@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -18,13 +18,13 @@ const enum CodeType {
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationInvites,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationInvitesWithMaximum,
-	keyEnabled: GuildSettings.AutoModeration.Invites.Enabled,
-	ignoredChannelsPath: GuildSettings.AutoModeration.Invites.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.AutoModeration.Invites.IgnoredRoles,
-	softPunishmentPath: GuildSettings.AutoModeration.Invites.SoftAction,
+	keyEnabled: 'selfmodInvitesEnabled',
+	ignoredChannelsPath: 'selfmodInvitesIgnoredChannels',
+	ignoredRolesPath: 'selfmodInvitesIgnoredRoles',
+	softPunishmentPath: 'selfmodInvitesSoftAction',
 	hardPunishmentPath: {
-		action: GuildSettings.AutoModeration.Invites.HardAction,
-		actionDuration: GuildSettings.AutoModeration.Invites.HardActionDuration,
+		action: 'selfmodInvitesHardAction',
+		actionDuration: 'selfmodInvitesHardActionDuration',
 		adder: 'invites'
 	}
 })

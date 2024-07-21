@@ -1,4 +1,4 @@
-import { GuildEntity, GuildSettings, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
+import { GuildEntity, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import { getT } from '#lib/i18n';
 import { ModerationActions } from '#lib/moderation/actions/index';
@@ -155,7 +155,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 			Events.GuildMessageLog,
 			message.guild,
 			logChannelId,
-			GuildSettings.Channels.Logs.Moderation,
+			'channelsLogsModeration',
 			this.onLogMessage.bind(this, message, language, value)
 		);
 	}
@@ -171,7 +171,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	}
 
 	private checkMessageChannel(settings: GuildEntity, channel: GuildTextBasedChannelTypes) {
-		const globalIgnore = settings[GuildSettings.AutoModeration.IgnoreChannels];
+		const globalIgnore = settings.selfmodIgnoreChannels;
 		if (globalIgnore.includes(channel.id)) return false;
 
 		const localIgnore = settings[this.ignoredChannelsPath] as readonly string[];

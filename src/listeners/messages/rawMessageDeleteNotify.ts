@@ -1,4 +1,4 @@
-import { GuildEntity, GuildSettings, readSettings } from '#lib/database';
+import { GuildEntity, readSettings } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
@@ -27,8 +27,8 @@ export class UserListener extends Listener {
 
 		const message = channel.messages.cache.get(data.id) as GuildMessage | undefined;
 
-		const key = GuildSettings.Channels.Logs[isNsfwChannel(channel) ? 'MessageDeleteNsfw' : 'MessageDelete'];
 		const settings = await readSettings(guild);
+		const key: keyof GuildEntity = isNsfwChannel(channel) ? 'channelsLogsMessageDeleteNsfw' : 'channelsLogsMessageDelete';
 		await getLogger(guild).send({
 			key,
 			channelId: settings[key],

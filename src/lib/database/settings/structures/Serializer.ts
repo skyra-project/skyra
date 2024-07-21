@@ -147,6 +147,36 @@ export namespace Serializer {
 	export type Options = AliasPiece.Options;
 	export type Args = SkyraArgs;
 	export type UpdateContext = SerializerUpdateContext;
+
+	export type Name =
+		| 'boolean'
+		| 'categoryOrTextChannel'
+		| 'guildTextChannel'
+		| 'guildVoiceChannel'
+		| 'guildCategoryChannel'
+		| 'command'
+		| 'commandAutoDelete'
+		| 'commandMatch'
+		| 'disabledCommandChannel'
+		| 'emoji'
+		| 'guild'
+		| 'invite'
+		| 'language'
+		| 'notAllowed'
+		| 'number'
+		| 'integer'
+		| 'float'
+		| 'permissionNode'
+		| 'reactionRole'
+		| 'role'
+		| 'snowflake'
+		| 'stickyRole'
+		| 'string'
+		| 'timespan'
+		| 'uniqueRoleSet'
+		| 'url'
+		| 'user'
+		| 'word';
 }
 
 export interface SerializerUpdateContext {

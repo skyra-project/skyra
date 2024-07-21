@@ -44,7 +44,7 @@ export class SchemaKey<K extends GuildDataKey = GuildDataKey> implements ISchema
 	/**
 	 * The type of the value this property accepts.
 	 */
-	public type: string;
+	public type: Serializer.Name;
 
 	/**
 	 * Whether or not this accepts multiple values.

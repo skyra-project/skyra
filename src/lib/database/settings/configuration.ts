@@ -30,196 +30,196 @@ export const Configuration = makeKeys({
 	},
 	disabledCommands: {
 		name: 'disabled-commands',
-		type: 'commandmatch',
+		type: 'commandMatch',
 		description: LanguageKeys.Settings.DisabledCommands,
 		maximum: 32,
 		array: true
 	},
 	permissionsUsers: {
-		type: 'permissionnode',
+		type: 'permissionNode',
 		name: 'permissions.users',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		array: true,
 		dashboardOnly: true
 	},
 	permissionsRoles: {
-		type: 'permissionnode',
+		type: 'permissionNode',
 		name: 'permissions.roles',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		array: true,
 		dashboardOnly: true
 	},
 	channelsMediaOnly: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.media-only',
 		description: LanguageKeys.Settings.Channels.MediaOnly,
 		array: true
 	},
 	channelsLogsModeration: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.moderation',
 		description: LanguageKeys.Settings.Channels.Logs.Moderation
 	},
 	channelsLogsImage: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.image',
 		description: LanguageKeys.Settings.Channels.Logs.Image
 	},
 	channelsLogsMemberAdd: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.member-add',
 		description: LanguageKeys.Settings.Channels.Logs.MemberAdd
 	},
 	channelsLogsMemberRemove: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.member-remove',
 		description: LanguageKeys.Settings.Channels.Logs.MemberRemove
 	},
 	channelsLogsMemberNickNameUpdate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.member-nickname-update',
 		description: LanguageKeys.Settings.Channels.Logs.MemberNickNameUpdate
 	},
 	channelsLogsMemberUserNameUpdate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.member-username-update',
 		description: LanguageKeys.Settings.Channels.Logs.MemberUserNameUpdate
 	},
 	channelsLogsMemberRolesUpdate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.member-roles-update',
 		description: LanguageKeys.Settings.Channels.Logs.MemberRoleUpdate
 	},
 	channelsLogsMessageDelete: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.message-delete',
 		description: LanguageKeys.Settings.Channels.Logs.MessageDelete
 	},
 	channelsLogsMessageDeleteNsfw: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.message-delete-nsfw',
 		description: LanguageKeys.Settings.Channels.Logs.MessageDeleteNsfw
 	},
 	channelsLogsMessageUpdate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.message-update',
 		description: LanguageKeys.Settings.Channels.Logs.MessageUpdate
 	},
 	channelsLogsMessageUpdateNsfw: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.message-update-nsfw',
 		description: LanguageKeys.Settings.Channels.Logs.MessageUpdateNsfw
 	},
 	channelsLogsPrune: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.prune',
 		description: LanguageKeys.Settings.Channels.Logs.Prune
 	},
 	channelsLogsReaction: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.reaction',
 		description: LanguageKeys.Settings.Channels.Logs.Reaction
 	},
 	channelsLogsRoleCreate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.role-create',
 		description: LanguageKeys.Settings.Channels.Logs.RoleCreate
 	},
 	channelsLogsRoleUpdate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.role-update',
 		description: LanguageKeys.Settings.Channels.Logs.RoleUpdate
 	},
 	channelsLogsRoleDelete: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.role-delete',
 		description: LanguageKeys.Settings.Channels.Logs.RoleDelete
 	},
 	channelsLogsChannelCreate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.channel-create',
 		description: LanguageKeys.Settings.Channels.Logs.ChannelCreate
 	},
 	channelsLogsChannelUpdate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.channel-update',
 		description: LanguageKeys.Settings.Channels.Logs.ChannelUpdate
 	},
 	channelsLogsChannelDelete: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.channel-delete',
 		description: LanguageKeys.Settings.Channels.Logs.ChannelDelete
 	},
 	channelsLogsEmojiCreate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.emoji-create',
 		description: LanguageKeys.Settings.Channels.Logs.EmojiCreate
 	},
 	channelsLogsEmojiUpdate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.emoji-update',
 		description: LanguageKeys.Settings.Channels.Logs.EmojiUpdate
 	},
 	channelsLogsEmojiDelete: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.emoji-delete',
 		description: LanguageKeys.Settings.Channels.Logs.EmojiDelete
 	},
 	channelsLogsServerUpdate: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.server-update',
 		description: LanguageKeys.Settings.Channels.Logs.ServerUpdate
 	},
 	channelsLogsVoiceChannel: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.logs.voice-activity',
 		description: LanguageKeys.Settings.Channels.Logs.VoiceActivity
 	},
 	channelsIgnoreAll: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.ignore.all',
 		description: LanguageKeys.Settings.Channels.Ignore.All,
 		array: true
 	},
 	channelsIgnoreMessageEdits: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.ignore.message-edit',
 		description: LanguageKeys.Settings.Channels.Ignore.MessageEdit,
 		array: true
 	},
 	channelsIgnoreMessageDeletes: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.ignore.message-delete',
 		description: LanguageKeys.Settings.Channels.Ignore.MessageDelete,
 		array: true
 	},
 	channelsIgnoreReactionAdds: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'channels.ignore.reaction-add',
 		description: LanguageKeys.Settings.Channels.Ignore.ReactionAdd,
 		array: true
 	},
 	channelsIgnoreVoiceActivities: {
-		type: 'voicechannel',
+		type: 'guildVoiceChannel',
 		name: 'channels.ignore.voice-activity',
 		description: LanguageKeys.Settings.Channels.Ignore.VoiceActivity,
 		array: true
 	},
 	commandAutoDelete: {
-		type: 'command-auto-delete',
+		type: 'notAllowed',
 		name: 'command-auto-delete',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		array: true,
 		dashboardOnly: true
 	},
 	disabledChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'disabled-channels',
 		description: LanguageKeys.Settings.DisabledChannels,
 		array: true
 	},
 	disabledCommandsChannels: {
-		type: 'disabled-command-channel',
+		type: 'notAllowed',
 		name: 'disabled-commands-channels',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		array: true,
@@ -256,7 +256,7 @@ export const Configuration = makeKeys({
 		description: LanguageKeys.Settings.EventsIncludeBots
 	},
 	messagesIgnoreChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'messages.ignore-channels',
 		description: LanguageKeys.Settings.MessagesIgnoreChannels,
 		array: true
@@ -303,26 +303,26 @@ export const Configuration = makeKeys({
 		array: true
 	},
 	messagesAutoDeleteIgnoredChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'messages.auto-delete.ignored-channels',
 		description: LanguageKeys.Settings.MessagesAutoDeleteIgnoredChannels,
 		array: true
 	},
 	messagesAutoDeleteIgnoredCommands: {
-		type: 'commandmatch',
+		type: 'commandMatch',
 		name: 'messages.auto-delete.ignored-commands',
 		description: LanguageKeys.Settings.MessagesAutoDeleteIgnoredCommands,
 		array: true
 	},
 	stickyRoles: {
-		type: 'sticky-role',
+		type: 'notAllowed',
 		name: 'sticky-roles',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		array: true,
 		dashboardOnly: true
 	},
 	reactionRoles: {
-		type: 'reaction-role',
+		type: 'notAllowed',
 		name: 'reaction-roles',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		array: true,
@@ -398,7 +398,7 @@ export const Configuration = makeKeys({
 		default: false
 	},
 	rolesUniqueRoleSets: {
-		type: 'unique-role-set',
+		type: 'notAllowed',
 		name: 'roles.unique-role-sets',
 		description: LanguageKeys.Settings.DashboardOnlyKey,
 		array: true,
@@ -417,7 +417,7 @@ export const Configuration = makeKeys({
 		array: true
 	},
 	selfmodAttachmentsIgnoredChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'selfmod.attachments.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodAttachmentsIgnoredChannels,
 		array: true
@@ -475,7 +475,7 @@ export const Configuration = makeKeys({
 		array: true
 	},
 	selfmodCapitalsIgnoredChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'selfmod.capitals.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodCapitalsIgnoredChannels,
 		array: true
@@ -555,7 +555,7 @@ export const Configuration = makeKeys({
 		array: true
 	},
 	selfmodLinksIgnoredChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'selfmod.links.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodLinksIgnoredChannels,
 		array: true
@@ -613,7 +613,7 @@ export const Configuration = makeKeys({
 		array: true
 	},
 	selfmodMessagesIgnoredChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'selfmod.messages.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodMessagesIgnoredChannels,
 		array: true
@@ -687,7 +687,7 @@ export const Configuration = makeKeys({
 		array: true
 	},
 	selfmodNewlinesIgnoredChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'selfmod.newlines.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodNewlinesIgnoredChannels,
 		array: true
@@ -765,7 +765,7 @@ export const Configuration = makeKeys({
 		array: true
 	},
 	selfmodInvitesIgnoredChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'selfmod.invites.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodInvitesIgnoredChannels,
 		array: true
@@ -830,7 +830,7 @@ export const Configuration = makeKeys({
 		array: true
 	},
 	selfmodFilterIgnoredChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'selfmod.filter.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodFilterIgnoredChannels,
 		array: true
@@ -888,7 +888,7 @@ export const Configuration = makeKeys({
 		array: true
 	},
 	selfmodReactionsIgnoredChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'selfmod.reactions.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodReactionsIgnoredChannels,
 		array: true
@@ -954,7 +954,7 @@ export const Configuration = makeKeys({
 		dashboardOnly: true
 	},
 	selfmodIgnoreChannels: {
-		type: 'textchannel',
+		type: 'guildTextChannel',
 		name: 'selfmod.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodIgnoreChannels,
 		array: true

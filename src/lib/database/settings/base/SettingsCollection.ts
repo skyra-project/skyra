@@ -15,32 +15,14 @@ export abstract class SettingsCollection<T extends IBaseEntity> extends Collecti
 		return super.delete(key);
 	}
 
-	public read(key: string): Promise<T>;
-	public async read<R>(key: string, cb?: keyof T | readonly (keyof T)[] | SettingsCollectionCallback<T, R>): Promise<any> {
+	public async read(key: string): Promise<T> {
 		const lock = this.acquireLock(key);
 		try {
 			// Acquire a read lock:
 			await lock.readLock();
 
 			// Fetch the entry:
-			const settings = this.get(key) ?? (await this.processFetch(key));
-
-			if (typeof cb === 'undefined') {
-				return settings;
-			}
-
-			// If a callback was given, call it:
-			if (typeof cb === 'function') {
-				return await cb(settings);
-			}
-
-			// If an array of keys was given, map all values:
-			if (Array.isArray(cb)) {
-				return cb.map((k: keyof T) => settings[k]);
-			}
-
-			// Else, retrieve the single value:
-			return settings[cb as keyof T];
+			return this.get(key) ?? (await this.processFetch(key));
 		} finally {
 			// Unlock the lock:
 			lock.unlock();

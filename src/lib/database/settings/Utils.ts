@@ -2,7 +2,7 @@ import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { SchemaGroup } from '#lib/database/settings/schema/SchemaGroup';
 import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
-import { getT } from '#lib/i18n';
+import type { GuildData } from '#lib/database/settings/types';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import { UserError } from '@sapphire/framework';
@@ -15,59 +15,52 @@ export function isSchemaKey(groupOrKey: ISchemaValue): groupOrKey is SchemaKey {
 	return groupOrKey.type !== 'Group';
 }
 
-export async function set(settings: GuildEntity, key: SchemaKey, args: SkyraArgs) {
+export async function set(settings: Readonly<GuildEntity>, key: SchemaKey, args: SkyraArgs): Promise<Partial<GuildData>> {
 	const parsed = await key.parse(settings, args);
-	if (key.array) {
-		const values = Reflect.get(settings, key.property) as any[];
-		const { serializer } = key;
-		const index = values.findIndex((value) => serializer.equals(value, parsed));
-		if (index === -1) values.push(parsed);
-		else values[index] = parsed;
-	} else {
-		const value = Reflect.get(settings, key.property);
-		const { serializer } = key;
-		if (serializer.equals(value, parsed)) {
-			throw new UserError({
-				identifier: LanguageKeys.Settings.Gateway.DuplicateValue,
-				context: {
-					path: key.name,
-					value: key.stringify(settings, args.t, parsed)
-				}
-			});
-		}
+	const { serializer } = key;
 
-		Reflect.set(settings, key.property, parsed);
+	if (key.array) {
+		const values = settings[key.property] as any[];
+		const index = values.findIndex((value) => serializer.equals(value, parsed));
+
+		return index === -1 //
+			? { [key.property]: values.concat(parsed) }
+			: { [key.property]: values.with(index, parsed) };
 	}
 
-	return getT(settings.language);
+	if (serializer.equals(settings[key.property], parsed)) {
+		throw new UserError({
+			identifier: LanguageKeys.Settings.Gateway.DuplicateValue,
+			context: {
+				path: key.name,
+				value: key.stringify(settings, args.t, parsed)
+			}
+		});
+	}
+
+	return { [key.property]: parsed };
 }
 
-export async function remove(settings: GuildEntity, key: SchemaKey, args: SkyraArgs) {
+export async function remove(settings: Readonly<GuildEntity>, key: SchemaKey, args: SkyraArgs): Promise<Partial<GuildData>> {
 	const parsed = await key.parse(settings, args);
 	if (key.array) {
-		const values = Reflect.get(settings, key.property) as any[];
 		const { serializer } = key;
+		const values = settings[key.property] as any[];
+
 		const index = values.findIndex((value) => serializer.equals(value, parsed));
 		if (index === -1) {
 			throw new UserError({
 				identifier: LanguageKeys.Settings.Gateway.MissingValue,
-				context: {
-					path: key.name,
-					value: key.stringify(settings, args.t, parsed)
-				}
+				context: { path: key.name, value: key.stringify(settings, args.t, parsed) }
 			});
 		}
 
-		values.splice(index, 1);
-	} else {
-		Reflect.set(settings, key.property, key.default);
+		return { [key.property]: values.toSpliced(index, 1) };
 	}
 
-	return getT(settings.language);
+	return { [key.property]: key.default };
 }
 
-export function reset(settings: GuildEntity, key: SchemaKey) {
-	const language = getT(settings.language);
-	Reflect.set(settings, key.property, key.default);
-	return language;
+export function reset(key: SchemaKey): Partial<GuildData> {
+	return { [key.property]: key.default };
 }

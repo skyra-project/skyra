@@ -37,9 +37,9 @@ export class UserCommand extends SkyraSubcommand {
 		}
 
 		const command = await args.pick('commandMatch', { owners: false });
-		await writeSettings(message.guild, (settings) => {
-			settings.permissionNodes.add(target, command, action);
-		});
+		await writeSettings(message.guild, (settings) => ({
+			[settings.permissionNodes.settingsPropertyFor(target)]: settings.permissionNodes.add(target, command, action)
+		}));
 
 		const content = args.t(LanguageKeys.Commands.Management.PermissionNodesAdd);
 		return send(message, content);
@@ -52,9 +52,9 @@ export class UserCommand extends SkyraSubcommand {
 
 		if (!this.checkPermissions(message, target)) this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
-		await writeSettings(message.guild, (settings) => {
-			settings.permissionNodes.remove(target, command, action);
-		});
+		await writeSettings(message.guild, (settings) => ({
+			[settings.permissionNodes.settingsPropertyFor(target)]: settings.permissionNodes.remove(target, command, action)
+		}));
 
 		const content = args.t(LanguageKeys.Commands.Management.PermissionNodesRemove);
 		return send(message, content);
@@ -65,9 +65,9 @@ export class UserCommand extends SkyraSubcommand {
 
 		if (!this.checkPermissions(message, target)) this.error(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
-		await writeSettings(message.guild, (settings) => {
-			settings.permissionNodes.reset(target);
-		});
+		await writeSettings(message.guild, (settings) => ({
+			[settings.permissionNodes.settingsPropertyFor(target)]: settings.permissionNodes.reset(target)
+		}));
 
 		const content = args.t(LanguageKeys.Commands.Management.PermissionNodesReset);
 		return send(message, content);

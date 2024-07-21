@@ -19,7 +19,7 @@ export class UserSerializer extends Serializer<string> {
 		return value === word && this.minOrMax(value, value.length, context).isOk();
 	}
 
-	private async hasWord(settings: GuildEntity, content: string) {
+	private async hasWord(settings: Readonly<GuildEntity>, content: string) {
 		const words = settings.selfmodFilterRaw;
 		if (words.includes(content)) return true;
 

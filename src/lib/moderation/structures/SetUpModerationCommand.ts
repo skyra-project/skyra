@@ -51,7 +51,7 @@ export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, Val
 		const t = getT(settings.language);
 		if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const role = (await this.askForRole(message, args, context)).unwrapRaw();
-			await writeSettings(message.guild, [[this.action.roleKey, role.id]]);
+			await writeSettings(message.guild, { [this.action.roleKey]: role.id });
 		} else if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 			await this.action.setup(message);
 

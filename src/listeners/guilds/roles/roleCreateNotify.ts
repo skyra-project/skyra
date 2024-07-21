@@ -19,7 +19,7 @@ export class UserListener extends Listener<typeof Events.GuildRoleCreate> {
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
 		if (channel === undefined) {
-			await writeSettings(next, [['channelsLogsRoleCreate', null]]);
+			await writeSettings(next, { channelsLogsRoleCreate: null });
 			return;
 		}
 

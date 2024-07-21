@@ -32,7 +32,7 @@ export class UserCommand extends SkyraCommand {
 			const result = await this.askForRole(message, args, context);
 			if (result.isOk()) {
 				const role = result.unwrap();
-				await writeSettings(message.guild, [['rolesMuted', role.id]]);
+				await writeSettings(message.guild, { rolesMuted: role.id });
 				if (canReact(message.channel)) return message.react(getEmojiReactionFormat(Emojis.GreenTickSerialized as SerializedEmoji));
 
 				const content = t(LanguageKeys.Commands.Admin.ConfUpdated, {

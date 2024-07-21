@@ -1,4 +1,4 @@
-import { readSettings, writeSettings, type GuildDataKey, type GuildDataValue, type GuildEntity } from '#lib/database';
+import { writeSettingsTransaction, type GuildDataKey, type GuildDataValue, type GuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { AutoModerationCommand } from '#lib/moderation';
@@ -49,31 +49,30 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 	public async chatInputRunAdd(interaction: AutoModerationCommand.Interaction) {
 		const word = this.#getWord(interaction);
 		const { guild } = interaction;
-		const settings = await readSettings(guild);
 
 		const t = getSupportedUserLanguageT(interaction);
-		if (await this.#hasWord(settings, word)) {
+		await using trx = await writeSettingsTransaction(guild);
+		if (await this.#hasWord(trx.settings, word)) {
 			return interaction.reply({ content: t(Root.WordAddFiltered, { word }), ephemeral: true });
 		}
 
-		const updated = settings.selfmodFilterRaw.concat(word);
-		await writeSettings(guild, [['selfmodFilterRaw', updated]]);
+		await trx.write({ selfmodFilterRaw: trx.settings.selfmodFilterRaw.concat(word) }).submit();
 		return interaction.reply({ content: t(Root.EditSuccess), ephemeral: true });
 	}
 
 	public async chatInputRunRemove(interaction: AutoModerationCommand.Interaction) {
 		const word = this.#getWord(interaction);
 		const { guild } = interaction;
-		const settings = await readSettings(guild);
 
 		const t = getSupportedUserLanguageT(interaction);
-		const index = settings.selfmodFilterRaw.indexOf(word);
+		await using trx = await writeSettingsTransaction(guild);
+
+		const index = trx.settings.selfmodFilterRaw.indexOf(word);
 		if (index === -1) {
 			return interaction.reply({ content: t(Root.WordRemoveNotFiltered, { word }), ephemeral: true });
 		}
 
-		const updated = settings.selfmodFilterRaw.toSpliced(index, 1);
-		await writeSettings(guild, [['selfmodFilterRaw', updated]]);
+		await trx.write({ selfmodFilterRaw: trx.settings.selfmodFilterRaw.toSpliced(index, 1) }).submit();
 		return interaction.reply({ content: t(Root.EditSuccess), ephemeral: true });
 	}
 
@@ -123,7 +122,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		return removeConfusables(interaction.options.getString('word', true).toLowerCase());
 	}
 
-	async #hasWord(settings: GuildEntity, word: string) {
+	async #hasWord(settings: Readonly<GuildEntity>, word: string) {
 		const words = settings.selfmodFilterRaw;
 		if (words.includes(word)) return true;
 

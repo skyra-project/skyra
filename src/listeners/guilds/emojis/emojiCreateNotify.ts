@@ -1,37 +1,33 @@
-import { readSettings, writeSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
+import { getLogger } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullish } from '@sapphire/utilities';
-import type { GuildEmoji, TextChannel } from 'discord.js';
+import type { GuildEmoji } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildEmojiCreate })
 export class UserListener extends Listener<typeof Events.GuildEmojiCreate> {
 	public async run(next: GuildEmoji) {
 		const settings = await readSettings(next.guild);
-		const channelId = settings.channelsLogsEmojiCreate;
-		if (isNullish(channelId)) return;
-
-		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
-		if (channel === undefined) {
-			await writeSettings(next.guild, [['channelsLogsEmojiCreate', null]]);
-			return;
-		}
-
-		const t = getT(settings.language);
-		const changes: string[] = [...this.getEmojiInformation(t, next)];
-		const embed = new EmbedBuilder()
-			.setColor(Colors.Green)
-			.setThumbnail(next.imageURL({ size: 256 }))
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
-			.setDescription(changes.join('\n'))
-			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiCreate) })
-			.setTimestamp();
-		await channel.send({ embeds: [embed] });
+		await getLogger(next.guild).send({
+			key: 'channelsLogsEmojiCreate',
+			channelId: settings.channelsLogsEmojiCreate,
+			makeMessage: () => {
+				const t = getT(settings.language);
+				const changes: string[] = [...this.getEmojiInformation(t, next)];
+				return new EmbedBuilder()
+					.setColor(Colors.Green)
+					.setThumbnail(next.imageURL({ size: 256 }))
+					.setAuthor({ name: `${next.name} (${next.id})`, iconURL: next.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
+					.setDescription(changes.join('\n'))
+					.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiCreate) })
+					.setTimestamp();
+			}
+		});
 	}
 
 	private *getEmojiInformation(t: TFunction, next: GuildEmoji) {

@@ -5,7 +5,15 @@ import { getCodeStyle, getLogPrefix } from '#utils/functions/pieces';
 import { EmbedBuilder } from '@discordjs/builders';
 import { container } from '@sapphire/framework';
 import { isFunction, isNullish, isNullishOrEmpty, type Awaitable, type Nullish } from '@sapphire/utilities';
-import { PermissionFlagsBits, RESTJSONErrorCodes, type Guild, type GuildBasedChannel, type MessageCreateOptions, type Snowflake } from 'discord.js';
+import {
+	PermissionFlagsBits,
+	RESTJSONErrorCodes,
+	type Guild,
+	type GuildBasedChannel,
+	type GuildTextBasedChannel,
+	type MessageCreateOptions,
+	type Snowflake
+} from 'discord.js';
 
 export class LoggerManager {
 	public readonly timeout = new TimeoutLoggerTypeManager(this);
@@ -48,7 +56,10 @@ export class LoggerManager {
 			return false;
 		}
 
-		const messageOptions = this.#resolveMessageOptions(await options.makeMessage());
+		const rawOptions = await options.makeMessage(channel);
+		if (rawOptions === null) return false;
+
+		const messageOptions = this.#resolveMessageOptions(rawOptions);
 
 		let requiredPermissions = PermissionFlagsBits.SendMessages | PermissionFlagsBits.ViewChannel;
 		if (!isNullishOrEmpty(messageOptions.embeds)) requiredPermissions |= PermissionFlagsBits.EmbedLinks;
@@ -68,7 +79,7 @@ export class LoggerManager {
 
 		// If the channel was not found, clear the settings:
 		if (code === RESTJSONErrorCodes.UnknownChannel) {
-			await writeSettings(this.guild, [[options.key, null]]);
+			await writeSettings(this.guild, { [options.key]: null });
 		} else {
 			this.#logError(code, options.channelId!, 'Failed to fetch channel');
 		}
@@ -82,7 +93,7 @@ export class LoggerManager {
 		return condition;
 	}
 
-	#resolveMessageOptions(options: LoggerManagerSendMessageOptions) {
+	#resolveMessageOptions(options: NonNullable<LoggerManagerSendMessageOptions>) {
 		if (Array.isArray(options)) return { embeds: options };
 		if (options instanceof EmbedBuilder) return { embeds: [options] };
 		return options;
@@ -110,7 +121,7 @@ export interface LoggerManagerSendOptions {
 	 * Makes the options for the message to send.
 	 * @returns The message options to send.
 	 */
-	makeMessage: () => Awaitable<LoggerManagerSendMessageOptions>;
+	makeMessage: (channel: GuildTextBasedChannel) => Awaitable<LoggerManagerSendMessageOptions>;
 	/**
 	 * The function to call when the log operation was aborted before calling
 	 * {@linkcode makeMessage}.
@@ -118,6 +129,6 @@ export interface LoggerManagerSendOptions {
 	onAbort?: () => void;
 }
 
-export type LoggerManagerSendMessageOptions = MessageCreateOptions | EmbedBuilder | EmbedBuilder[];
+export type LoggerManagerSendMessageOptions = MessageCreateOptions | EmbedBuilder | EmbedBuilder[] | null;
 
 const LogPrefix = getLogPrefix('LoggerManager');

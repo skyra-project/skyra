@@ -28,7 +28,8 @@ export class UserListener extends Listener {
 				: member.user.bot
 					? 'rolesInitialBots'
 					: 'rolesInitialHumans';
-			return writeSettings(member, [[key, null]]);
+			await writeSettings(member, { [key]: null });
+			return;
 		}
 
 		// In any other case, log the error as unexpected:

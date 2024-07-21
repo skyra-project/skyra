@@ -1,4 +1,4 @@
-import { GuildEntity, readSettings, writeSettings, type UniqueRoleSet } from '#lib/database';
+import { GuildEntity, readSettings, writeSettings, writeSettingsTransaction, type UniqueRoleSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
@@ -6,10 +6,12 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 
+const Root = LanguageKeys.Commands.Admin;
+
 @ApplyOptions<SkyraSubcommand.Options>({
 	aliases: ['rs'],
-	description: LanguageKeys.Commands.Admin.RoleSetDescription,
-	detailedDescription: LanguageKeys.Commands.Admin.RoleSetExtended,
+	description: Root.RoleSetDescription,
+	detailedDescription: Root.RoleSetExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: [CommandOptionsRunTypeEnum.GuildAny],
 	subcommands: [
@@ -32,15 +34,15 @@ export class UserCommand extends SkyraSubcommand {
 		const roles = await args.repeat('roleName');
 
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		await writeSettings(message.guild, (settings) => {
+		await writeSettings(message.guild, (settings) => ({
 			// The set does exist so we want to only REMOVE provided roles from it
 			// Create a new array that we can use to overwrite the existing one in settings
-			settings.rolesUniqueRoleSets = settings.rolesUniqueRoleSets.map((set) =>
+			rolesUniqueRoleSets: settings.rolesUniqueRoleSets.map((set) =>
 				set.name === name ? { name, roles: set.roles.filter((id: string) => !roles.find((role) => role.id === id)) } : set
-			);
-		});
+			)
+		}));
 
-		return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetRemoved, { name, roles: roles.map((role) => role.name) }));
+		return send(message, args.t(Root.RoleSetRemoved, { name, roles: roles.map((role) => role.name) }));
 	}
 
 	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
@@ -49,21 +51,21 @@ export class UserCommand extends SkyraSubcommand {
 			// Get all rolesets from settings and check if there is an existing set with the name provided by the user
 			this.#getUniqueRoleSets(message)
 		]);
-		if (sets.length === 0) this.error(LanguageKeys.Commands.Admin.RoleSetResetEmpty);
+		if (sets.length === 0) this.error(Root.RoleSetResetEmpty);
 
 		if (!name) {
-			await writeSettings(message.guild, [['rolesUniqueRoleSets', []]]);
-			return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetResetAll));
+			await writeSettings(message.guild, { rolesUniqueRoleSets: [] });
+			return send(message, args.t(Root.RoleSetResetAll));
 		}
 
 		const arrayIndex = sets.findIndex((set) => set.name === name);
-		if (arrayIndex === -1) this.error(LanguageKeys.Commands.Admin.RoleSetResetNotExists, { name });
+		if (arrayIndex === -1) this.error(Root.RoleSetResetNotExists, { name });
 
-		await writeSettings(message.guild, (settings) => {
-			settings.rolesUniqueRoleSets.splice(arrayIndex, 1);
+		await writeSettings(message.guild, {
+			rolesUniqueRoleSets: sets.toSpliced(arrayIndex, 1)
 		});
 
-		return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetResetGroup, { name }));
+		return send(message, args.t(Root.RoleSetResetGroup, { name }));
 	}
 
 	// This subcommand will run if a user doesn't type add or remove. The bot will then add AND remove based on whether that role is in the set already.
@@ -92,15 +94,15 @@ export class UserCommand extends SkyraSubcommand {
 			return { name, roles: newRoles };
 		});
 
-		await writeSettings(message.guild, [['rolesUniqueRoleSets', newSets]]);
-		return send(message, args.t(LanguageKeys.Commands.Admin.RoleSetUpdated, { name }));
+		await writeSettings(message.guild, { rolesUniqueRoleSets: newSets });
+		return send(message, args.t(Root.RoleSetUpdated, { name }));
 	}
 
 	// This subcommand will show the user a list of role sets and each role in that set.
 	public async list(message: GuildMessage, args: SkyraCommand.Args) {
 		// Get all rolesets from settings
 		const sets = await this.#getUniqueRoleSets(message);
-		if (sets.length === 0) this.error(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
+		if (sets.length === 0) this.error(Root.RoleSetNoRoleSets);
 
 		const list = await this.handleList(message, args, sets);
 		return send(message, list.join('\n'));
@@ -135,21 +137,23 @@ export class UserCommand extends SkyraSubcommand {
 		if (changed) {
 			// If after cleaning up, all sets end up empty, reset and return error:
 			if (list.length === 0) {
-				await writeSettings(message.guild, [['rolesUniqueRoleSets', []]]);
-				this.error(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
+				await writeSettings(message.guild, { rolesUniqueRoleSets: [] });
+				this.error(Root.RoleSetNoRoleSets);
 			}
 
 			// Else, clean up:
-			await writeSettings(message.guild, (settings) => this.cleanRoleSets(message, settings));
+			await writeSettings(message.guild, (settings) => ({
+				rolesUniqueRoleSets: this.cleanRoleSets(message, settings)
+			}));
 		}
 
 		return list;
 	}
 
-	private cleanRoleSets(message: GuildMessage, settings: GuildEntity) {
+	private cleanRoleSets(message: GuildMessage, settings: Readonly<GuildEntity>) {
 		const guildRoles = message.guild.roles.cache;
 
-		settings.rolesUniqueRoleSets = settings.rolesUniqueRoleSets
+		return settings.rolesUniqueRoleSets
 			.map((set) => ({ name: set.name, roles: set.roles.filter((role) => guildRoles.has(role)) }))
 			.filter((set) => set.roles.length > 0);
 	}
@@ -158,37 +162,27 @@ export class UserCommand extends SkyraSubcommand {
 		const roles = await args.repeat('roleName');
 
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		const created = await writeSettings(message.guild, (settings) => {
-			const allRoleSets = settings.rolesUniqueRoleSets;
-			const roleSet = allRoleSets.some((set) => set.name === name);
+		await using trx = await writeSettingsTransaction(message.guild);
 
-			// If it does not exist we need to create a brand new set
-			if (!roleSet) {
-				allRoleSets.push({ name, roles: roles.map((role) => role.id) });
-				return true;
-			}
+		const entries = trx.settings.rolesUniqueRoleSets;
+		const index = entries.findIndex((set) => set.name === name);
 
+		// If it does not exist we need to create a brand new set
+		if (index === -1) {
+			const rolesUniqueRoleSets = entries.concat({ name, roles: roles.map((role) => role.id) });
+			trx.write({ rolesUniqueRoleSets });
+		} else {
 			// The set does exist so we want to only ADD new roles in
 			// Create a new array that we can use to overwrite the existing one in settings
-			const sets = allRoleSets.map((set) => {
-				if (set.name !== name) return set;
-				const finalRoles = [...set.roles];
-				for (const role of roles) if (!finalRoles.includes(role.id)) finalRoles.push(role.id);
+			const entry = entries[index];
+			const rolesUniqueRoleSets = entries.with(index, { name, roles: entry.roles.concat(roles.map((role) => role.id)) });
+			trx.write({ rolesUniqueRoleSets });
+		}
+		await trx.submit();
 
-				return { name, roles: finalRoles };
-			});
-			settings.rolesUniqueRoleSets = sets;
-
-			return false;
-		});
-
-		return send(
-			message,
-			args.t(created ? LanguageKeys.Commands.Admin.RoleSetCreated : LanguageKeys.Commands.Admin.RoleSetAdded, {
-				name,
-				roles: roles.map((role) => role.name)
-			})
-		);
+		const created = index === -1;
+		const key = created ? Root.RoleSetCreated : Root.RoleSetAdded;
+		return send(message, args.t(key, { name, roles: roles.map((role) => role.name) }));
 	}
 
 	async #getUniqueRoleSets(message: GuildMessage) {

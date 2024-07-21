@@ -1,14 +1,14 @@
-import { readSettings, writeSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toChannelsArray } from '#utils/bits';
 import { differenceArray, differenceBitField, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
+import { getLogger } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullish } from '@sapphire/utilities';
 import {
 	GuildMFALevel,
 	type Guild,
@@ -17,8 +17,7 @@ import {
 	type GuildFeature,
 	type GuildPremiumTier,
 	type GuildVerificationLevel,
-	type SystemChannelFlagsBitField,
-	type TextChannel
+	type SystemChannelFlagsBitField
 } from 'discord.js';
 
 type ChannelFlags = Readonly<SystemChannelFlagsBitField>;
@@ -28,26 +27,22 @@ type Features = readonly `${GuildFeature}`[];
 export class UserListener extends Listener<typeof Events.GuildUpdate> {
 	public async run(previous: Guild, next: Guild) {
 		const settings = await readSettings(next);
-		const channelId = settings.channelsLogsServerUpdate;
-		if (isNullish(channelId)) return;
+		await getLogger(next).send({
+			key: 'channelsLogsServerUpdate',
+			channelId: settings.channelsLogsServerUpdate,
+			makeMessage: () => {
+				const t = getT(settings.language);
+				const changes: string[] = [...this.differenceGuild(t, previous, next)];
+				if (changes.length === 0) return null;
 
-		const channel = next.channels.cache.get(channelId) as TextChannel | undefined;
-		if (channel === undefined) {
-			await writeSettings(next, [['channelsLogsServerUpdate', null]]);
-			return;
-		}
-
-		const t = getT(settings.language);
-		const changes: string[] = [...this.differenceGuild(t, previous, next)];
-		if (changes.length === 0) return;
-
-		const embed = new EmbedBuilder()
-			.setColor(Colors.Yellow)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
-			.setDescription(changes.join('\n'))
-			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ServerUpdate) })
-			.setTimestamp();
-		await channel.send({ embeds: [embed] });
+				return new EmbedBuilder()
+					.setColor(Colors.Yellow)
+					.setAuthor({ name: `${next.name} (${next.id})`, iconURL: next.iconURL({ size: 64, extension: 'png' }) ?? undefined })
+					.setDescription(changes.join('\n'))
+					.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ServerUpdate) })
+					.setTimestamp();
+			}
+		});
 	}
 
 	private *differenceGuild(t: TFunction, previous: Guild, next: Guild) {

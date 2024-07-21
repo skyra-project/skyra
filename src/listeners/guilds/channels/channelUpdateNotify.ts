@@ -1,22 +1,16 @@
-import { readSettings, writeSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { seconds } from '#utils/common';
 import { differenceBitField, differenceMap } from '#utils/common/comparators';
 import { Colors, LongWidthSpace } from '#utils/constants';
+import { getLogger } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import {
-	canSendMessages,
-	isDMChannel,
-	isNsfwChannel,
-	type GuildBasedChannelTypes,
-	type NonThreadGuildBasedChannelTypes
-} from '@sapphire/discord.js-utilities';
+import { isDMChannel, isNsfwChannel, type GuildBasedChannelTypes, type NonThreadGuildBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullish } from '@sapphire/utilities';
 import {
 	ChannelType,
 	OverwriteType,
@@ -36,26 +30,22 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 		if (isDMChannel(next)) return;
 
 		const settings = await readSettings(next.guild);
-		const channelId = settings.channelsLogsChannelUpdate;
-		if (isNullish(channelId)) return;
+		await getLogger(next.guild).send({
+			key: 'channelsLogsChannelUpdate',
+			channelId: settings.channelsLogsChannelUpdate,
+			makeMessage: () => {
+				const t = getT(settings.language);
+				const changes: string[] = [...this.differenceChannel(t, previous as GuildBasedChannelTypes, next as GuildBasedChannelTypes)];
+				if (changes.length === 0) return null;
 
-		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
-		if (isNullish(channel) || !canSendMessages(channel)) {
-			await writeSettings(next.guild, [['channelsLogsChannelUpdate', null]]);
-			return;
-		}
-
-		const t = getT(settings.language);
-		const changes: string[] = [...this.differenceChannel(t, previous as GuildBasedChannelTypes, next as GuildBasedChannelTypes)];
-		if (changes.length === 0) return;
-
-		const embed = new EmbedBuilder()
-			.setColor(Colors.Yellow)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
-			.setDescription(changes.join('\n'))
-			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ChannelUpdate) })
-			.setTimestamp();
-		await channel.send({ embeds: [embed] });
+				return new EmbedBuilder()
+					.setColor(Colors.Yellow)
+					.setAuthor({ name: `${next.name} (${next.id})`, iconURL: next.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
+					.setDescription(changes.join('\n'))
+					.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ChannelUpdate) })
+					.setTimestamp();
+			}
+		});
 	}
 
 	private *differenceChannel(t: TFunction, previous: GuildBasedChannelTypes, next: GuildBasedChannelTypes) {

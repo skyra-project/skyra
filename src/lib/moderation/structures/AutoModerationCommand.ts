@@ -22,7 +22,7 @@ import { CommandOptionsRunTypeEnum, type ApplicationCommandRegistry } from '@sap
 import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, type Awaitable } from '@sapphire/utilities';
-import { PermissionFlagsBits, chatInputApplicationCommandMention, strikethrough, type Guild } from 'discord.js';
+import { chatInputApplicationCommandMention, PermissionFlagsBits, strikethrough, type Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.AutoModeration;
 const RootModeration = LanguageKeys.Moderation;
@@ -151,7 +151,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		if (!isNullish(valuePunishmentThreshold)) pairs.push([this.keyPunishmentThreshold, valuePunishmentThreshold]);
 		if (!isNullish(valuePunishmentThresholdDuration)) pairs.push([this.keyPunishmentThresholdPeriod, valuePunishmentThresholdDuration]);
 
-		await writeSettings(interaction.guild, pairs);
+		await writeSettings(interaction.guild, Object.fromEntries(pairs));
 
 		const t = getSupportedUserLanguageT(interaction);
 		const content = t(Root.EditSuccess);
@@ -160,7 +160,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 
 	public async chatInputRunReset(interaction: AutoModerationCommand.Interaction) {
 		const [key, value] = await this.resetGetKeyValuePair(interaction.guild, interaction.options.getString('key', true) as ResetKey);
-		await writeSettings(interaction.guild, [[key, value]]);
+		await writeSettings(interaction.guild, { [key]: value });
 
 		const t = getSupportedUserLanguageT(interaction);
 		const content = t(Root.EditSuccess);

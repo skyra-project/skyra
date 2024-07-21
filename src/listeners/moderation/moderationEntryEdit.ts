@@ -55,7 +55,7 @@ export class UserListener extends Listener {
 				RESTJSONErrorCodes.MissingPermissions
 			);
 		} catch (error) {
-			await writeSettings(entry.guild, [['channelsLogsModeration', null]]);
+			await writeSettings(entry.guild, { channelsLogsModeration: null });
 		}
 	}
 

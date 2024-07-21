@@ -1,61 +1,198 @@
-import type { GuildEntity } from '#lib/database/entities/GuildEntity';
-import type { SettingsCollectionCallback } from '#lib/database/settings/base/SettingsCollection';
-import { container } from '@sapphire/framework';
-import type { GuildResolvable } from 'discord.js';
+import { GuildEntity } from '#lib/database/entities/GuildEntity';
+import { container, type Awaitable } from '@sapphire/framework';
+import { RWLock } from 'async-rwlock';
+import { Collection, type GuildResolvable, type Snowflake } from 'discord.js';
 
-type K = keyof V;
-type V = GuildEntity;
+const cache = new Collection<string, GuildEntity>();
+const queue = new Collection<string, Promise<GuildEntity>>();
+const locks = new Collection<string, RWLock>();
 
-export function readSettings(guild: GuildResolvable) {
-	const resolved = container.client.guilds.resolveId(guild);
-	if (resolved === null) throw new TypeError(`Cannot resolve "guild" to a Guild instance.`);
-	return container.settings.guilds.read(resolved);
+export function deleteSettingsCached(guild: GuildResolvable) {
+	const id = resolveGuildId(guild);
+	locks.delete(id);
+	cache.delete(id);
 }
 
-export function writeSettings<K1 extends K>(guild: GuildResolvable, pairs: readonly [[K1, V[K1]]]): Promise<void>;
-export function writeSettings<K1 extends K, K2 extends K>(guild: GuildResolvable, pairs: readonly [[K1, V[K1]], [K2, V[K2]]]): Promise<void>;
-export function writeSettings<K1 extends K, K2 extends K, K3 extends K>(
+export async function readSettings(guild: GuildResolvable): Promise<GuildEntity> {
+	const id = resolveGuildId(guild);
+
+	const lock = locks.ensure(id, () => new RWLock());
+	try {
+		// Acquire a read lock:
+		await lock.readLock();
+
+		// Fetch the entry:
+		return cache.get(id) ?? (await processFetch(id));
+	} finally {
+		// Unlock the lock:
+		lock.unlock();
+	}
+}
+
+export function readSettingsCached(guild: GuildResolvable): GuildEntity | null {
+	return cache.get(resolveGuildId(guild)) ?? null;
+}
+
+export async function writeSettings(
 	guild: GuildResolvable,
-	pairs: readonly [[K1, V[K1]], [K2, V[K2]], [K3, V[K3]]]
-): Promise<void>;
-export function writeSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K>(
-	guild: GuildResolvable,
-	pairs: readonly [[K1, V[K1]], [K2, V[K2]], [K3, V[K3]], [K4, V[K4]]]
-): Promise<void>;
-export function writeSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K, K5 extends K>(
-	guild: GuildResolvable,
-	pairs: readonly [[K1, V[K1]], [K2, V[K2]], [K3, V[K3]], [K4, V[K4]], [K5, V[K5]]]
-): Promise<void>;
-export function writeSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K, K5 extends K, K6 extends K>(
-	guild: GuildResolvable,
-	pairs: readonly [[K1, V[K1]], [K2, V[K2]], [K3, V[K3]], [K4, V[K4]], [K5, V[K5]], [K6, V[K6]]]
-): Promise<void>;
-export function writeSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K, K5 extends K, K6 extends K, K7 extends K>(
-	guild: GuildResolvable,
-	pairs: readonly [[K1, V[K1]], [K2, V[K2]], [K3, V[K3]], [K4, V[K4]], [K5, V[K5]], [K6, V[K6]], [K7, V[K7]]]
-): Promise<void>;
-export function writeSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K, K5 extends K, K6 extends K, K7 extends K, K8 extends K>(
-	guild: GuildResolvable,
-	pairs: readonly [[K1, V[K1]], [K2, V[K2]], [K3, V[K3]], [K4, V[K4]], [K5, V[K5]], [K6, V[K6]], [K7, V[K7]], [K8, V[K8]]]
-): Promise<void>;
-export function writeSettings<
-	K1 extends K,
-	K2 extends K,
-	K3 extends K,
-	K4 extends K,
-	K5 extends K,
-	K6 extends K,
-	K7 extends K,
-	K8 extends K,
-	K9 extends K
->(
-	guild: GuildResolvable,
-	pairs: readonly [[K1, V[K1]], [K2, V[K2]], [K3, V[K3]], [K4, V[K4]], [K5, V[K5]], [K6, V[K6]], [K7, V[K7]], [K8, V[K8]], [K9, V[K9]]]
-): Promise<void>;
-export function writeSettings<KX extends K>(guild: GuildResolvable, pairs: readonly [KX, V[KX]][]): Promise<void>;
-export function writeSettings<R>(guild: GuildResolvable, cb: SettingsCollectionCallback<V, R>): Promise<R>;
-export function writeSettings(guild: GuildResolvable, paths: any) {
-	const resolved = container.client.guilds.resolveId(guild);
-	if (resolved === null) throw new TypeError(`Cannot resolve "guild" to a Guild instance.`);
-	return container.settings.guilds.write(resolved, paths);
+	data: Readonly<Partial<GuildEntity>> | ((settings: Readonly<GuildEntity>) => Awaitable<Readonly<Partial<GuildEntity>>>)
+) {
+	const id = resolveGuildId(guild);
+	const lock = locks.ensure(id, () => new RWLock());
+
+	// Acquire a write lock:
+	await lock.writeLock();
+
+	// Fetch the entry:
+	const settings = cache.get(id) ?? (await unlockOnThrow(processFetch(id), lock));
+
+	try {
+		if (typeof data === 'function') {
+			data = await data(settings);
+		}
+
+		Object.assign(settings, data);
+
+		// Now we save, and return undefined:
+		await settings.save();
+		return settings;
+	} catch (error) {
+		await tryReload(settings);
+		throw error;
+	} finally {
+		lock.unlock();
+	}
+}
+
+export async function writeSettingsTransaction(guild: GuildResolvable) {
+	const id = resolveGuildId(guild);
+	const lock = locks.ensure(id, () => new RWLock());
+
+	// Acquire a write lock:
+	await lock.writeLock();
+
+	// Fetch the entry:
+	const settings = cache.get(id) ?? (await unlockOnThrow(processFetch(id), lock));
+
+	return new Transaction(settings, lock);
+}
+
+export class Transaction {
+	#hasChanges = false;
+	#locking = true;
+
+	public constructor(
+		public readonly settings: Readonly<GuildEntity>,
+		private readonly lock: RWLock
+	) {}
+
+	public get hasChanges() {
+		return this.#hasChanges;
+	}
+
+	public get locking() {
+		return this.#locking;
+	}
+
+	public write(data: Readonly<Partial<GuildEntity>>) {
+		Object.assign(this.settings, data);
+		this.#hasChanges = true;
+		return this;
+	}
+
+	public async submit() {
+		if (!this.#hasChanges) {
+			throw new Error('Cannot submit a transaction without changes');
+		}
+
+		try {
+			await this.settings.save();
+			this.#hasChanges = false;
+		} catch (error) {
+			await tryReload(this.settings);
+			throw error;
+		} finally {
+			if (this.#locking) {
+				this.lock.unlock();
+				this.#locking = false;
+			}
+		}
+	}
+
+	public async abort() {
+		try {
+			await tryReload(this.settings);
+		} finally {
+			if (this.#locking) {
+				this.lock.unlock();
+				this.#locking = false;
+			}
+		}
+	}
+
+	public async dispose() {
+		if (!this.#hasChanges) {
+			await this.abort();
+		}
+
+		if (this.#locking) {
+			this.lock.unlock();
+			this.#locking = false;
+		}
+	}
+
+	public [Symbol.asyncDispose]() {
+		return this.dispose();
+	}
+}
+
+async function tryReload(entity: Readonly<GuildEntity>): Promise<void> {
+	try {
+		await entity.reload();
+	} catch (error) {
+		if (error instanceof Error && error.name === 'EntityNotFound') entity.resetAll();
+		else throw error;
+	}
+}
+
+async function unlockOnThrow(promise: Promise<GuildEntity>, lock: RWLock) {
+	try {
+		return await promise;
+	} catch (error) {
+		lock.unlock();
+		throw error;
+	}
+}
+
+async function processFetch(id: string): Promise<GuildEntity> {
+	const previous = queue.get(id);
+	if (previous) return previous;
+
+	try {
+		const promise = fetch(id);
+		queue.set(id, promise);
+		return await promise;
+	} finally {
+		queue.delete(id);
+	}
+}
+
+async function fetch(id: string): Promise<GuildEntity> {
+	const { guilds } = container.db;
+	const existing = await guilds.findOne({ where: { id } });
+	if (existing) {
+		cache.set(id, existing);
+		return existing;
+	}
+
+	const created = new GuildEntity();
+	created.id = id;
+	cache.set(id, created);
+	return created;
+}
+
+function resolveGuildId(guild: GuildResolvable): Snowflake {
+	const resolvedId = container.client.guilds.resolveId(guild);
+	if (resolvedId === null) throw new TypeError(`Cannot resolve "guild" to a Guild instance.`);
+	return resolvedId;
 }

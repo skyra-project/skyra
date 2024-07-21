@@ -18,11 +18,15 @@ type Node = Nodes[number];
 export class PermissionNodeManager implements IBaseManager {
 	private sorted = new Collection<string, PermissionsManagerNode>();
 
-	#settings: GuildEntity;
+	#settings: Readonly<GuildEntity>;
 	#previous: Nodes = [];
 
 	public constructor(settings: GuildEntity) {
 		this.#settings = settings;
+	}
+
+	public settingsPropertyFor(target: Role | GuildMember | User) {
+		return (target instanceof Role ? 'permissionsRoles' : 'permissionsUsers') satisfies keyof GuildEntity;
 	}
 
 	public run(member: GuildMember, command: SkyraCommand) {
@@ -33,9 +37,9 @@ export class PermissionNodeManager implements IBaseManager {
 		return this.sorted.has(roleId);
 	}
 
-	public add(target: Role | GuildMember | User, command: string, action: PermissionNodeAction) {
-		const key: keyof GuildEntity = target instanceof Role ? 'permissionsRoles' : 'permissionsUsers';
-		const nodes = this.#settings[key];
+	public add(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): PermissionsNode[] {
+		const key = this.settingsPropertyFor(target);
+		const nodes = this.#settings[key].slice();
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 
 		if (nodeIndex === -1) {
@@ -45,7 +49,7 @@ export class PermissionNodeManager implements IBaseManager {
 				deny: action === PermissionNodeAction.Deny ? [command] : []
 			};
 
-			this.#settings[key].push(node);
+			nodes.push(node);
 		} else {
 			const previous = nodes[nodeIndex];
 			if (
@@ -61,13 +65,15 @@ export class PermissionNodeManager implements IBaseManager {
 				deny: action === PermissionNodeAction.Deny ? previous.deny.concat(command) : previous.deny
 			};
 
-			this.#settings[key][nodeIndex] = node;
+			nodes[nodeIndex] = node;
 		}
+
+		return nodes;
 	}
 
-	public remove(target: Role | GuildMember | User, command: string, action: PermissionNodeAction) {
-		const key: keyof GuildEntity = target instanceof Role ? 'permissionsRoles' : 'permissionsUsers';
-		const nodes = this.#settings[key];
+	public remove(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): PermissionsNode[] {
+		const key = this.settingsPropertyFor(target);
+		const nodes = this.#settings[key].slice();
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesNodeNotExists });
@@ -77,18 +83,19 @@ export class PermissionNodeManager implements IBaseManager {
 		const commandIndex = previous[property].indexOf(command);
 		if (commandIndex === -1) throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesCommandNotExists });
 
-		const node: Nodes[number] = {
+		const node: PermissionsNode = {
 			id: target.id,
 			allow: 'allow' ? previous.allow.slice() : previous.allow,
 			deny: 'deny' ? previous.deny.slice() : previous.deny
 		};
 		node[property].splice(commandIndex, 1);
 
-		this.#settings[key].splice(nodeIndex, 1, node);
+		nodes.splice(nodeIndex, 1, node);
+		return nodes;
 	}
 
-	public reset(target: Role | GuildMember | User) {
-		const key: keyof GuildEntity = target instanceof Role ? 'permissionsRoles' : 'permissionsUsers';
+	public reset(target: Role | GuildMember | User): PermissionsNode[] {
+		const key = this.settingsPropertyFor(target);
 		const nodes = this.#settings[key];
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 
@@ -96,11 +103,11 @@ export class PermissionNodeManager implements IBaseManager {
 			throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesNodeNotExists, context: { target } });
 		}
 
-		this.#settings[key].splice(nodeIndex, 1);
+		return nodes.toSpliced(nodeIndex, 1);
 	}
 
 	public refresh() {
-		const nodes = this.#settings.permissionsRoles;
+		const nodes = this.#settings.permissionsRoles.slice();
 		this.#previous = nodes.slice();
 
 		if (nodes.length === 0) {
@@ -127,6 +134,8 @@ export class PermissionNodeManager implements IBaseManager {
 			const removedIndex = nodes.findIndex((element) => element.id === removedItem);
 			if (removedIndex !== -1) nodes.splice(removedIndex, 1);
 		}
+
+		return nodes;
 	}
 
 	public onPatch() {

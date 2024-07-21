@@ -1,4 +1,4 @@
-import { readSettings, writeSettings } from '#lib/database';
+import { readSettings, writeSettings, writeSettingsTransaction } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
@@ -105,11 +105,10 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 			...this.roleData,
 			reason: `[Role Setup] Authorized by ${message.author.username} (${message.author.id}).`
 		});
-		const t = await writeSettings(guild, (settings) => {
-			Reflect.set(settings, this.roleKey, role.id);
-			return getT(settings.language);
-		});
+		await using trx = await writeSettingsTransaction(guild);
+		await trx.write({ [this.roleKey]: role.id }).submit();
 
+		const t = getT(settings.language);
 		const manageableChannelCount = guild.channels.cache.reduce(
 			(acc, channel) => (!isThreadChannel(channel) && channel.manageable ? acc + 1 : acc),
 			0
@@ -380,7 +379,7 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 
 		const role = guild.roles.cache.get(roleId);
 		if (isNullish(role)) {
-			await writeSettings(guild, [[this.roleKey, null]]);
+			await writeSettings(guild, { [this.roleKey]: null });
 			throw new UserError({ identifier: Root.ActionRoleNotConfigured });
 		}
 

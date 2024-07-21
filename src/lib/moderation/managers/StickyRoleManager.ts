@@ -1,5 +1,5 @@
 import type { StickyRole } from '#lib/database/entities';
-import { readSettings, writeSettings } from '#lib/database/settings';
+import { readSettings, writeSettingsTransaction } from '#lib/database/settings';
 import { isNullish } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 
@@ -44,94 +44,89 @@ export class StickyRoleManager {
 		}
 
 		// 3.0.b. Make a clone with the userId and the fixed roles array:
-		return writeSettings(this.#guild, (settings) => {
-			const index = settings.stickyRoles.findIndex((entry) => entry.user === userId);
-			if (index === -1) return [];
+		await using trx = await writeSettingsTransaction(this.#guild);
 
-			const clone: StickyRole = { user: userId, roles };
-			settings.stickyRoles[index] = clone;
+		const index = settings.stickyRoles.findIndex((entry) => entry.user === userId);
+		if (index === -1) return [];
 
-			// 4.0. Return the updated roles:
-			return clone.roles;
-		});
+		const clone: StickyRole = { user: userId, roles };
+		await trx.write({ stickyRoles: settings.stickyRoles.with(index, clone) }).submit();
+
+		// 4.0. Return the updated roles:
+		return clone.roles;
 	}
 
-	public add(userId: string, roleId: string): Promise<readonly string[]> {
-		return writeSettings(this.#guild, (settings) => {
-			// 0.0 Get all the entries
-			const entries = settings.stickyRoles;
+	public async add(userId: string, roleId: string): Promise<readonly string[]> {
+		await using trx = await writeSettingsTransaction(this.#guild);
 
-			// 1.0. Get the index for the entry:
-			const index = entries.findIndex((entry) => entry.user === userId);
+		// 1.0. Get the index for the entry:
+		const entries = trx.settings.stickyRoles;
+		const index = entries.findIndex((entry) => entry.user === userId);
 
-			// 2.0. If the entry does not exist:
-			if (index === -1) {
-				// 3.0.a. Proceed to create a new sticky roles entry:
-				const entry: StickyRole = { user: userId, roles: [roleId] };
-				entries.push(entry);
-				return entry.roles;
-			}
+		// 2.0. If the entry does not exist:
+		if (index === -1) {
+			// 3.0.a. Proceed to create a new sticky roles entry:
+			const entry: StickyRole = { user: userId, roles: [roleId] };
+			entries.push(entry);
+			return entry.roles;
+		}
 
-			// 3.0.b. Otherwise read the previous entry and patch it by adding the role:
-			const entry = entries[index];
-			const roles = [...this.addRole(roleId, entry.roles)];
+		// 3. Get the entry and append the role:
+		const entry = entries[index];
+		const roles = [...this.addRole(roleId, entry.roles)];
 
+		// 4. Write the new roles to the settings:
+		await trx.write({ stickyRoles: entries.with(index, { user: entry.user, roles }) }).submit();
+
+		// 5. Return the updated roles:
+		return roles;
+	}
+
+	public async remove(userId: string, roleId: string): Promise<readonly string[]> {
+		await using trx = await writeSettingsTransaction(this.#guild);
+
+		const entries = trx.settings.stickyRoles;
+		// 1.0. Get the index for the entry:
+		const index = entries.findIndex((entry) => entry.user === userId);
+
+		// 1.1. If the index is negative, return empty array, as the entry does not exist:
+		if (index === -1) return [];
+
+		// 2.0. Read the previous entry and patch it by removing the role:
+		const entry = entries[index];
+		const roles = [...this.removeRole(roleId, entry.roles)];
+
+		if (roles.length === 0) {
+			// 3.1.a. Then delete the entry from the settings:
+			trx.write({ stickyRoles: entries.toSpliced(index, 1) });
+		} else {
 			// 3.1.b. Otherwise patch it:
-			entries[index] = { user: entry.user, roles };
+			trx.write({ stickyRoles: entries.with(index, { user: entry.user, roles }) });
+		}
+		await trx.submit();
 
-			// 4.0. Return the updated roles:
-			return entry.roles;
-		});
+		// 4.0. Return the updated roles:
+		return entry.roles;
 	}
 
-	public remove(userId: string, roleId: string): Promise<readonly string[]> {
-		return writeSettings(this.#guild, (settings) => {
-			// 0.0 Get all the entries
-			const entries = settings.stickyRoles;
+	public async clear(userId: string): Promise<readonly string[]> {
+		await using trx = await writeSettingsTransaction(this.#guild);
 
-			// 1.0. Get the index for the entry:
-			const index = entries.findIndex((entry) => entry.user === userId);
+		// 1.0. Get the index for the entry:
+		const entries = trx.settings.stickyRoles;
+		const index = entries.findIndex((entry) => entry.user === userId);
 
-			// 1.1. If the index is negative, return empty array, as the entry does not exist:
-			if (index === -1) return [];
+		// 1.1. If the index is negative, return empty array, as the entry does not exist:
+		if (index === -1) return [];
 
-			// 2.0. Read the previous entry and patch it by removing the role:
-			const entry = entries[index];
-			const roles = [...this.removeRole(roleId, entry.roles)];
+		// 2.0. Read the previous entry:
+		const entry = entries[index];
 
-			if (roles.length === 0) {
-				// 3.1.a. Then delete the entry from the settings:
-				entries.splice(index, 1);
-			} else {
-				// 3.1.b. Otherwise patch it:
-				entries[index] = { user: entry.user, roles };
-			}
+		// 3.0. Remove the entry from the settings:
+		await trx.write({ stickyRoles: entries.toSpliced(index, 1) }).submit();
 
-			// 4.0. Return the updated roles:
-			return entry.roles;
-		});
-	}
-
-	public clear(userId: string): Promise<readonly string[]> {
-		return writeSettings(this.#guild, (settings) => {
-			// 0.0 Get all the entries
-			const entries = settings.stickyRoles;
-
-			// 1.0. Get the index for the entry:
-			const index = entries.findIndex((entry) => entry.user === userId);
-
-			// 1.1. If the index is negative, return empty array, as the entry does not exist:
-			if (index === -1) return [];
-
-			// 2.0. Read the previous entry:
-			const entry = entries[index];
-
-			// 3.0. Remove the entry from the settings:
-			entries.splice(index, 1);
-
-			// 4.0. Return the previous roles:
-			return entry.roles;
-		});
+		// 4.0. Return the previous roles:
+		return entry.roles;
 	}
 
 	private *addRole(roleId: string, roleIds: readonly string[]) {

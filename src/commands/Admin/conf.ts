@@ -1,4 +1,4 @@
-import { configurableGroups, isSchemaGroup, isSchemaKey, readSettings, remove, reset, SchemaKey, set, writeSettings } from '#lib/database';
+import { configurableGroups, isSchemaGroup, isSchemaKey, readSettings, remove, reset, SchemaKey, set, writeSettingsTransaction } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SettingsMenu, SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -62,11 +62,11 @@ export class UserCommand extends SkyraSubcommand {
 
 	public async set(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [key, schemaKey] = await this.fetchKey(args);
-		const response = await writeSettings(message.guild, async (settings) => {
-			await set(settings, schemaKey, args);
-			return schemaKey.display(settings, args.t);
-		});
 
+		await using trx = await writeSettingsTransaction(message.guild);
+		await trx.write(await set(trx.settings, schemaKey, args)).submit();
+
+		const response = schemaKey.display(trx.settings, args.t);
 		return send(message, {
 			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response: this.getTextResponse(response) }),
 			allowedMentions: { users: [], roles: [] }
@@ -75,11 +75,11 @@ export class UserCommand extends SkyraSubcommand {
 
 	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [key, schemaKey] = await this.fetchKey(args);
-		const response = await writeSettings(message.guild, async (settings) => {
-			await remove(settings, schemaKey, args);
-			return schemaKey.display(settings, args.t);
-		});
 
+		await using trx = await writeSettingsTransaction(message.guild);
+		await trx.write(await remove(trx.settings, schemaKey, args)).submit();
+
+		const response = schemaKey.display(trx.settings, args.t);
 		return send(message, {
 			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response: this.getTextResponse(response) }),
 			allowedMentions: { users: [], roles: [] }
@@ -88,11 +88,11 @@ export class UserCommand extends SkyraSubcommand {
 
 	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [key, schemaKey] = await this.fetchKey(args);
-		const response = await writeSettings(message.guild, async (settings) => {
-			reset(settings, schemaKey);
-			return schemaKey.display(settings, args.t);
-		});
 
+		await using trx = await writeSettingsTransaction(message.guild);
+		await trx.write(reset(schemaKey)).submit();
+
+		const response = schemaKey.display(trx.settings, args.t);
 		return send(message, {
 			content: args.t(LanguageKeys.Commands.Admin.ConfReset, { key, value: response }),
 			allowedMentions: { users: [], roles: [] }

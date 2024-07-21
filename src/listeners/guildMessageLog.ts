@@ -16,7 +16,7 @@ export class UserListener extends Listener {
 
 		const channel = guild.channels.cache.get(logChannelId) as TextChannel;
 		if (!channel) {
-			await writeSettings(guild, [[key, null]]);
+			await writeSettings(guild, { [key]: null });
 			return;
 		}
 

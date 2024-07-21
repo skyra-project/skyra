@@ -46,7 +46,7 @@ export class UserListener extends Listener {
 		const { guild } = member;
 		const role = guild.roles.cache.get(mutedRoleId);
 		if (isNullish(role)) {
-			await writeSettings(member, [['rolesMuted', null]]);
+			await writeSettings(member, { rolesMuted: null });
 		} else {
 			const result = await toErrorCodeResult(member.roles.add(role));
 			await result.inspectErrAsync((code) => this.#handleMutedMemberAddRoleErr(guild, code));
@@ -59,7 +59,7 @@ export class UserListener extends Listener {
 
 		// The role was deleted, remove it from the settings:
 		if (code === RESTJSONErrorCodes.UnknownRole) {
-			await writeSettings(guild, [['rolesMuted', null]]);
+			await writeSettings(guild, { rolesMuted: null });
 			return;
 		}
 

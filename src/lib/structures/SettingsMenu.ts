@@ -1,18 +1,28 @@
-import { configurableGroups, isSchemaGroup, readSettings, remove, SchemaGroup, SchemaKey, set, writeSettings } from '#lib/database/settings';
+import {
+	configurableGroups,
+	isSchemaGroup,
+	readSettings,
+	remove,
+	reset,
+	SchemaGroup,
+	SchemaKey,
+	set,
+	writeSettingsTransaction
+} from '#lib/database/settings';
 import { api } from '#lib/discord/Api';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraArgs, type SkyraCommand } from '#lib/structures';
 import { Events, type GuildMessage } from '#lib/types';
+import { resolveError } from '#root/listeners/commands/_shared';
 import { floatPromise, minutes } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { deleteMessage } from '#utils/functions';
 import { LongLivingReactionCollector, type LLRCData } from '#utils/LongLivingReactionCollector';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
-import { container, type MessageCommand } from '@sapphire/framework';
+import { container, UserError, type MessageCommand } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { deepClone } from '@sapphire/utilities';
 import { DiscordAPIError, MessageCollector, RESTJSONErrorCodes } from 'discord.js';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
@@ -219,40 +229,31 @@ export class SettingsMenu {
 	private async tryUpdate(action: UpdateType, args: SkyraArgs | null = null, value: unknown = null) {
 		try {
 			const key = this.schema as SchemaKey;
-			const [oldValue, skipped] = await writeSettings(this.message.guild, async (settings) => {
-				const oldValue = deepClone(settings[key.property]);
+			await using trx = await writeSettingsTransaction(this.message.guild);
 
-				switch (action) {
-					case UpdateType.Set: {
-						this.t = await set(settings, key, args!);
-						break;
-					}
-					case UpdateType.Remove: {
-						this.t = await remove(settings, key, args!);
-						break;
-					}
-					case UpdateType.Reset: {
-						Reflect.set(settings, key.property, key.default);
-						this.t = getT(settings.language);
-						break;
-					}
-					case UpdateType.Replace: {
-						Reflect.set(settings, key.property, value);
-						this.t = getT(settings.language);
-						break;
-					}
+			this.t = getT(trx.settings.language);
+			this.oldValue = trx.settings[key.property];
+			switch (action) {
+				case UpdateType.Set: {
+					trx.write(await set(trx.settings, key, args!));
+					break;
 				}
-
-				return [oldValue, false];
-			});
-
-			if (skipped) {
-				this.errorMessage = this.t(LanguageKeys.Commands.Admin.ConfNochange, { key: key.name });
-			} else {
-				this.oldValue = oldValue;
+				case UpdateType.Remove: {
+					trx.write(await remove(trx.settings, key, args!));
+					break;
+				}
+				case UpdateType.Reset: {
+					trx.write(reset(key));
+					break;
+				}
+				case UpdateType.Replace: {
+					trx.write({ [key.property]: value });
+					break;
+				}
 			}
+			await trx.submit();
 		} catch (error) {
-			this.errorMessage = String(error);
+			this.errorMessage = resolveError(this.t, error as UserError | string);
 		}
 	}
 

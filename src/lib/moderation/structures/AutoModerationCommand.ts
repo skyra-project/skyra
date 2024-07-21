@@ -1,4 +1,14 @@
-import { configurableKeys, readSettings, writeSettings, type AdderKey, type GuildEntity, type GuildSettingsOfType } from '#lib/database';
+import {
+	configurableKeys,
+	GuildEntity,
+	readSettings,
+	writeSettings,
+	type AdderKey,
+	type GuildData,
+	type GuildDataKey,
+	type GuildDataValue,
+	type GuildSettingsOfType
+} from '#lib/database';
 import type { Adder } from '#lib/database/utils/Adder';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
@@ -131,7 +141,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			this.#punishmentThresholdDurationMaximum
 		);
 
-		const pairs: [keyof GuildEntity, GuildEntity[keyof GuildEntity]][] = [];
+		const pairs: [GuildDataKey, GuildDataValue][] = [];
 		if (!isNullish(valueEnabled)) pairs.push([this.keyEnabled, valueEnabled]);
 		if (!isNullish(valueOnInfraction)) pairs.push([this.keyOnInfraction, valueOnInfraction]);
 		if (!isNullish(valuePunishment)) pairs.push([this.keyPunishment, valuePunishment]);
@@ -155,7 +165,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		return interaction.reply({ content, ephemeral: true });
 	}
 
-	protected async resetGetKeyValuePair(guild: Guild, key: ResetKey): Promise<readonly [keyof GuildEntity, GuildEntity[keyof GuildEntity]]> {
+	protected async resetGetKeyValuePair(guild: Guild, key: ResetKey): Promise<readonly [GuildDataKey, GuildDataValue]> {
 		switch (key) {
 			case 'enabled':
 				return [this.keyEnabled, false];
@@ -178,13 +188,13 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		}
 	}
 
-	protected resetGetKeyValuePairFallback(guild: Guild, key: string): Awaitable<readonly [keyof GuildEntity, GuildEntity[keyof GuildEntity]]>;
+	protected resetGetKeyValuePairFallback(guild: Guild, key: string): Awaitable<readonly [GuildDataKey, GuildDataValue]>;
 	protected resetGetKeyValuePairFallback(): never {
 		throw new Error('Unreachable');
 	}
 
-	protected resetGetValue<const Key extends keyof GuildEntity>(key: Key): GuildEntity[Key] {
-		return configurableKeys.get(key)!.default as GuildEntity[Key];
+	protected resetGetValue<const Key extends GuildDataKey>(key: Key): GuildData[Key] {
+		return configurableKeys.get(key)!.default as GuildData[Key];
 	}
 
 	protected async resetGetOnInfractionFlags(guild: Guild, bit: number) {

@@ -47,7 +47,7 @@ export class UserCommand extends SkyraSubcommand {
 		const [name, sets] = await Promise.all([
 			args.pick('string').catch(() => null),
 			// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-			readSettings(message.guild, GuildSettings.Roles.UniqueRoleSets)
+			this.#getUniqueRoleSets(message)
 		]);
 		if (sets.length === 0) this.error(LanguageKeys.Commands.Admin.RoleSetResetEmpty);
 
@@ -71,7 +71,7 @@ export class UserCommand extends SkyraSubcommand {
 		const name = await args.pick('string');
 
 		// Get all role sets from settings and check if there is an existing set with the name provided by the user
-		const sets = await readSettings(message.guild, GuildSettings.Roles.UniqueRoleSets);
+		const sets = await this.#getUniqueRoleSets(message);
 		const set = sets.find((set) => set.name === name);
 
 		// If this role set does not exist we have to create it
@@ -99,7 +99,7 @@ export class UserCommand extends SkyraSubcommand {
 	// This subcommand will show the user a list of role sets and each role in that set.
 	public async list(message: GuildMessage, args: SkyraCommand.Args) {
 		// Get all rolesets from settings
-		const sets = await readSettings(message.guild, GuildSettings.Roles.UniqueRoleSets);
+		const sets = await this.#getUniqueRoleSets(message);
 		if (sets.length === 0) this.error(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
 
 		const list = await this.handleList(message, args, sets);
@@ -149,7 +149,7 @@ export class UserCommand extends SkyraSubcommand {
 	private cleanRoleSets(message: GuildMessage, settings: GuildEntity) {
 		const guildRoles = message.guild.roles.cache;
 
-		settings[GuildSettings.Roles.UniqueRoleSets] = settings[GuildSettings.Roles.UniqueRoleSets]
+		settings.rolesUniqueRoleSets = settings.rolesUniqueRoleSets
 			.map((set) => ({ name: set.name, roles: set.roles.filter((role) => guildRoles.has(role)) }))
 			.filter((set) => set.roles.length > 0);
 	}
@@ -189,5 +189,10 @@ export class UserCommand extends SkyraSubcommand {
 				roles: roles.map((role) => role.name)
 			})
 		);
+	}
+
+	async #getUniqueRoleSets(message: GuildMessage) {
+		const settings = await readSettings(message.guild);
+		return settings.rolesUniqueRoleSets;
 	}
 }

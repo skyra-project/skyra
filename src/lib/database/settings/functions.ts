@@ -6,54 +6,10 @@ import type { GuildResolvable } from 'discord.js';
 type K = keyof V;
 type V = GuildEntity;
 
-export function readSettings<K1 extends K>(guild: GuildResolvable, paths: readonly [K1]): Promise<[V[K1]]>;
-export function readSettings<K1 extends K, K2 extends K>(guild: GuildResolvable, paths: readonly [K1, K2]): Promise<[V[K1], V[K2]]>;
-export function readSettings<K1 extends K, K2 extends K, K3 extends K>(
-	guild: GuildResolvable,
-	paths: readonly [K1, K2, K3]
-): Promise<[V[K1], V[K2], V[K3]]>;
-export function readSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K>(
-	guild: GuildResolvable,
-	paths: readonly [K1, K2, K3, K4]
-): Promise<[V[K1], V[K2], V[K3], V[K4]]>;
-export function readSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K, K5 extends K>(
-	guild: GuildResolvable,
-	paths: readonly [K1, K2, K3, K4, K5]
-): Promise<[V[K1], V[K2], V[K3], V[K4], V[K5]]>;
-export function readSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K, K5 extends K, K6 extends K>(
-	guild: GuildResolvable,
-	paths: readonly [K1, K2, K3, K4, K5, K6]
-): Promise<[V[K1], V[K2], V[K3], V[K4], V[K5], V[K6]]>;
-export function readSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K, K5 extends K, K6 extends K, K7 extends K>(
-	guild: GuildResolvable,
-	paths: readonly [K1, K2, K3, K4, K5, K6, K7]
-): Promise<[V[K1], V[K2], V[K3], V[K4], V[K5], V[K6], V[K7]]>;
-export function readSettings<K1 extends K, K2 extends K, K3 extends K, K4 extends K, K5 extends K, K6 extends K, K7 extends K, K8 extends K>(
-	guild: GuildResolvable,
-	paths: readonly [K1, K2, K3, K4, K5, K6, K7, K8]
-): Promise<[V[K1], V[K2], V[K3], V[K4], V[K5], V[K6], V[K7], V[K8]]>;
-export function readSettings<
-	K1 extends K,
-	K2 extends K,
-	K3 extends K,
-	K4 extends K,
-	K5 extends K,
-	K6 extends K,
-	K7 extends K,
-	K8 extends K,
-	K9 extends K
->(
-	guild: GuildResolvable,
-	paths: readonly [K1, K2, K3, K4, K5, K6, K7, K8, K9]
-): Promise<[V[K1], V[K2], V[K3], V[K4], V[K5], V[K6], V[K7], V[K8], V[K9]]>;
-export function readSettings<KX extends K>(guild: GuildResolvable, paths: readonly KX[]): Promise<V[KX][]>;
-export function readSettings<K1 extends K>(guild: GuildResolvable, path: K1): Promise<V[K1]>;
-export function readSettings<R>(guild: GuildResolvable, cb: SettingsCollectionCallback<V, R>): Promise<R>;
-export function readSettings(guild: GuildResolvable): Promise<V>;
-export function readSettings(guild: GuildResolvable, paths?: any) {
+export function readSettings(guild: GuildResolvable) {
 	const resolved = container.client.guilds.resolveId(guild);
 	if (resolved === null) throw new TypeError(`Cannot resolve "guild" to a Guild instance.`);
-	return container.settings.guilds.read(resolved, paths);
+	return container.settings.guilds.read(resolved);
 }
 
 export function writeSettings<K1 extends K>(guild: GuildResolvable, pairs: readonly [[K1, V[K1]]]): Promise<void>;

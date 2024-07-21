@@ -11,10 +11,8 @@ import type { GuildEmoji, TextChannel } from 'discord.js';
 @ApplyOptions<Listener.Options>({ event: Events.GuildEmojiCreate })
 export class UserListener extends Listener<typeof Events.GuildEmojiCreate> {
 	public async run(next: GuildEmoji) {
-		const [channelId, t] = await readSettings(next.guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.EmojiCreate],
-			settings.getLanguage()
-		]);
+		const settings = await readSettings(next.guild);
+		const channelId = settings.channelsLogsEmojiCreate;
 		if (isNullish(channelId)) return;
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
@@ -23,6 +21,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiCreate> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const changes: string[] = [...this.getEmojiInformation(t, next)];
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Green)

@@ -34,10 +34,8 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 	public async run(previous: Channel, next: Channel) {
 		if (isDMChannel(next)) return;
 
-		const [channelId, t] = await readSettings(next.guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.ChannelUpdate],
-			settings.getLanguage()
-		]);
+		const settings = await readSettings(next.guild);
+		const channelId = settings.channelsLogsChannelUpdate;
 		if (isNullish(channelId)) return;
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
@@ -46,6 +44,7 @@ export class UserListener extends Listener<typeof Events.ChannelUpdate> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const changes: string[] = [...this.differenceChannel(t, previous as GuildBasedChannelTypes, next as GuildBasedChannelTypes)];
 		if (changes.length === 0) return;
 

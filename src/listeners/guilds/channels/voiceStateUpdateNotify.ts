@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { GuildEntity, readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
 import { getLogger } from '#utils/functions';
@@ -19,19 +19,13 @@ export class UserListener extends Listener<typeof Events.VoiceStateUpdate> {
 		const nextChannel = next.channel;
 		const user = await this.container.client.users.fetch(next.id);
 
-		const [t, targetChannelId, ...settings] = await readSettings(next.guild, (settings) => [
-			settings.getLanguage(),
-			settings[GuildSettings.Channels.Logs.VoiceChannel],
-			settings[GuildSettings.Events.IncludeBots],
-			settings[GuildSettings.Channels.Ignore.VoiceActivity],
-			settings[GuildSettings.Channels.Ignore.All]
-		]);
-
+		const settings = await readSettings(next.guild);
 		await getLogger(next.guild).send({
-			key: GuildSettings.Channels.Logs.VoiceChannel,
-			channelId: targetChannelId,
-			condition: () => this.onCondition(oldChannel, nextChannel, user, ...settings),
+			key: 'channelsLogsVoiceChannel',
+			channelId: settings.channelsLogsVoiceChannel,
+			condition: () => this.onCondition(oldChannel, nextChannel, user, settings),
 			makeMessage: () => {
+				const t = settings.getLanguage();
 				const { description, color } = this.render(t, oldChannel, nextChannel);
 				return new EmbedBuilder() //
 					.setAuthor(getFullEmbedAuthor(user))
@@ -43,16 +37,12 @@ export class UserListener extends Listener<typeof Events.VoiceStateUpdate> {
 		});
 	}
 
-	private onCondition(
-		old: VoiceBasedChannel | null,
-		next: VoiceBasedChannel | null,
-		user: User,
-		includeBots: boolean,
-		ignoredChannels: readonly Snowflake[],
-		ignoredAll: readonly Snowflake[]
-	) {
+	private onCondition(old: VoiceBasedChannel | null, next: VoiceBasedChannel | null, user: User, settings: GuildEntity) {
 		// If includeBots is false, and the user is a bot, return false
-		if (!includeBots && user.bot) return false;
+		if (!settings.eventsIncludeBots && user.bot) return false;
+
+		const ignoredChannels = settings.channelsIgnoreVoiceActivities;
+		const ignoredAll = settings.channelsIgnoreAll;
 		// Assume in all conditions that old !== next, as checked earlier.
 		// If the old channel is null, the user joined a channel, check if `next` is ignored:
 		if (old === null) return this.onConditionSingleChannel(next!, ignoredChannels, ignoredAll);

@@ -31,7 +31,8 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 		const content = getContent(message);
 		if (content === null) return null;
 
-		const regExp = await readSettings(message.guild, (settings) => settings.wordFilterRegExp);
+		const settings = await readSettings(message.guild);
+		const regExp = settings.wordFilterRegExp;
 		if (regExp === null) return null;
 
 		const result = await this.container.workers.send({ type: IncomingType.RunRegExp, regExp, content }, 500);

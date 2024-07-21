@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getAction, type ActionByType, type GetContextType } from '#lib/moderation/actions';
 import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
@@ -88,11 +88,7 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		const processed = [] as Array<{ log: ModerationManager.Entry; target: User }>;
 		const errored = [] as Array<{ error: Error | string; target: User }>;
 
-		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason] = await readSettings(message.guild, [
-			GuildSettings.Messages.ModerationAutoDelete,
-			GuildSettings.Messages.ModerationMessageDisplay,
-			GuildSettings.Messages.ModerationReasonDisplay
-		]);
+		const settings = await readSettings(message.guild);
 
 		const { targets, ...handledRaw } = resolved;
 		for (const target of new Set(targets)) {
@@ -113,14 +109,15 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		}
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
+		const shouldAutoDelete = settings.messagesModerationAutoDelete;
 		if (shouldAutoDelete) {
 			if (message.deletable) floatPromise(deleteMessage(message));
 		}
 
-		if (shouldDisplayMessage) {
+		if (settings.messagesModerationMessageDisplay) {
 			const output: string[] = [];
 			if (processed.length) {
-				const reason = shouldDisplayReason ? processed[0].log.reason! : null;
+				const reason = settings.messagesModerationReasonDisplay ? processed[0].log.reason! : null;
 				const sorted = processed.sort((a, b) => asc(a.log.id, b.log.id));
 				const cases = sorted.map(({ log }) => log.id);
 				const users = sorted.map(({ target }) => `\`${getTag(target)}\``);
@@ -296,18 +293,14 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 		target: User,
 		context?: GetContextType<Type>
 	): Promise<ModerationAction.Data<GetContextType<Type>>> {
-		const [nameDisplay, enabledDM] = await readSettings(message.guild, [
-			GuildSettings.Messages.ModeratorNameDisplay,
-			GuildSettings.Messages.ModerationDM
-		]);
-
+		const settings = await readSettings(message.guild);
 		return {
-			moderator: args.getFlags('no-author') ? null : args.getFlags('authored') || nameDisplay ? message.author : null,
+			moderator: args.getFlags('no-author') ? null : args.getFlags('authored') || settings.messagesModeratorNameDisplay ? message.author : null,
 			sendDirectMessage:
 				// --no-dm disables
 				!args.getFlags('no-dm') &&
 				// --dm and enabledDM enable
-				(args.getFlags('dm') || enabledDM) &&
+				(args.getFlags('dm') || settings.messagesModerationDm) &&
 				// user settings
 				(await this.container.db.fetchModerationDirectMessageEnabled(target.id)),
 			context

@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { Events } from '#lib/types';
 import { resolveEmojiId } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -13,13 +13,12 @@ export class UserListener extends Listener {
 		if (!isGuildBasedChannel(channel)) return;
 
 		const emojiId = resolveEmojiId(data.emoji);
-		const roleEntry = await readSettings(channel.guild, (settings) =>
-			settings[GuildSettings.ReactionRoles].find(
-				(entry) =>
-					resolveEmojiId(entry.emoji) === emojiId &&
-					entry.channel === data.channel_id &&
-					(entry.message ? entry.message === data.message_id : true)
-			)
+		const settings = await readSettings(channel.guild);
+		const roleEntry = settings.reactionRoles.find(
+			(entry) =>
+				resolveEmojiId(entry.emoji) === emojiId &&
+				entry.channel === data.channel_id &&
+				(entry.message ? entry.message === data.message_id : true)
 		);
 		if (!roleEntry) return;
 

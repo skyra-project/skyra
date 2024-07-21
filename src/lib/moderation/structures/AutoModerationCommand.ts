@@ -124,8 +124,10 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	}
 
 	public async chatInputRunEdit(interaction: AutoModerationCommand.Interaction) {
+		const settings = await readSettings(interaction.guild);
+
 		const valueEnabled = interaction.options.getBoolean('enabled');
-		const valueOnInfraction = this.#getInfraction(interaction, await readSettings(interaction.guild, this.keyOnInfraction));
+		const valueOnInfraction = this.#getInfraction(interaction, settings[this.keyOnInfraction]);
 		const valuePunishment = interaction.options.getInteger('punishment');
 		const valuePunishmentDuration = this.#getDuration(
 			interaction,
@@ -198,7 +200,8 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	}
 
 	protected async resetGetOnInfractionFlags(guild: Guild, bit: number) {
-		const bitfield = await readSettings(guild, this.keyOnInfraction);
+		const settings = await readSettings(guild);
+		const bitfield = settings[this.keyOnInfraction];
 		return AutoModerationOnInfraction.difference(bitfield, bit);
 	}
 

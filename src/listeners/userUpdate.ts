@@ -26,17 +26,15 @@ export class UserListener extends Listener {
 	}
 
 	private async processGuild(guild: Guild, user: User, previous: string, next: string) {
-		const [logChannelId, language] = await readSettings(guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.MemberUserNameUpdate],
-			settings.getLanguage()
-		]);
+		const settings = await readSettings(guild);
+		const logChannelId = settings.channelsLogsMemberUserNameUpdate;
+		if (!logChannelId) return;
 
-		if (logChannelId) {
-			// Send the Username log
-			this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, GuildSettings.Channels.Logs.MemberUserNameUpdate, () =>
-				this.buildEmbed(user, language, this.getNameDescription(language, previous, next), LanguageKeys.Events.Guilds.Members.UsernameUpdate)
-			);
-		}
+		// Send the Username log
+		const t = settings.getLanguage();
+		this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, GuildSettings.Channels.Logs.MemberUserNameUpdate, () =>
+			this.buildEmbed(user, t, this.getNameDescription(t, previous, next), LanguageKeys.Events.Guilds.Members.UsernameUpdate)
+		);
 	}
 
 	private getNameDescription(t: TFunction, previousName: string | null, nextName: string | null) {

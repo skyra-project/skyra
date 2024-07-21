@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { DMMessage, GuildMessage } from '#lib/types';
 import { isModerator, sendLocalizedMessage } from '#utils/functions';
@@ -17,13 +17,10 @@ export default class extends Listener<typeof Events.MentionPrefixOnly> {
 	}
 
 	private async guild(message: GuildMessage) {
-		const [prefix, disabled, t] = await readSettings(message.guild, (settings) => [
-			settings[GuildSettings.Prefix],
-			settings[GuildSettings.DisabledChannels],
-			settings.getLanguage()
-		]);
+		const settings = await readSettings(message.guild);
+		if (settings.disabledChannels.includes(message.channel.id) && !(await isModerator(message.member))) return;
 
-		if (disabled.includes(message.channel.id) && !(await isModerator(message.member))) return;
-		return send(message, t(LanguageKeys.Misc.PrefixReminder, { prefix }));
+		const t = settings.getLanguage();
+		return send(message, t(LanguageKeys.Misc.PrefixReminder, { prefix: settings.prefix }));
 	}
 }

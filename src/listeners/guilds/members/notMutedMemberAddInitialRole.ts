@@ -13,12 +13,10 @@ export class UserListener extends Listener {
 		// If the bot cannot manage roles, do not proceed:
 		if (!this.canGiveRoles(member)) return;
 
-		const [initial, initialHumans, initialBots] = await readSettings(member, [
-			GuildSettings.Roles.Initial,
-			GuildSettings.Roles.InitialHumans,
-			GuildSettings.Roles.InitialBots
-		]);
-
+		const settings = await readSettings(member);
+		const initial = settings.rolesInitial;
+		const initialHumans = settings.rolesInitialHumans;
+		const initialBots = settings.rolesInitialBots;
 		const roleId = initial ?? (member.user.bot ? initialBots : initialHumans);
 		if (!roleId) return;
 

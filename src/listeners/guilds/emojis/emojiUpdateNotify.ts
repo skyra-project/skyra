@@ -12,10 +12,8 @@ import type { GuildEmoji, TextChannel } from 'discord.js';
 @ApplyOptions<Listener.Options>({ event: Events.GuildEmojiUpdate })
 export class UserListener extends Listener<typeof Events.GuildEmojiUpdate> {
 	public async run(previous: GuildEmoji, next: GuildEmoji) {
-		const [channelId, t] = await readSettings(next.guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.EmojiUpdate],
-			settings.getLanguage()
-		]);
+		const settings = await readSettings(next.guild);
+		const channelId = settings.channelsLogsEmojiUpdate;
 		if (isNullish(channelId)) return;
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
@@ -24,6 +22,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiUpdate> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const changes: string[] = [...this.differenceEmoji(t, previous, next)];
 		if (changes.length === 0) return;
 

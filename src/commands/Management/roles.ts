@@ -21,15 +21,9 @@ import { EmbedBuilder, PermissionFlagsBits, type Role } from 'discord.js';
 )
 export class UserPaginatedMessageCommand extends SkyraCommand {
 	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
-		const [rolesPublic, allRoleSets, rolesRemoveInitial, rolesInitial, rolesInitialHumans, rolesInitialBots] = await readSettings(message.guild, [
-			GuildSettings.Roles.Public,
-			GuildSettings.Roles.UniqueRoleSets,
-			GuildSettings.Roles.RemoveInitial,
-			GuildSettings.Roles.Initial,
-			GuildSettings.Roles.InitialHumans,
-			GuildSettings.Roles.InitialBots
-		]);
+		const settings = await readSettings(message.guild);
 
+		const { rolesPublic } = settings;
 		if (!rolesPublic.length) this.error(LanguageKeys.Commands.Management.RolesListEmpty);
 
 		// If no argument was provided then show the list of available roles
@@ -63,7 +57,7 @@ export class UserPaginatedMessageCommand extends SkyraCommand {
 				memberRoles.add(role.id);
 				addedRoles.push(role.name);
 
-				for (const set of allRoleSets) {
+				for (const set of settings.rolesUniqueRoleSets) {
 					// If the set does not have the role being added skip to next set
 					if (!set.roles.includes(role.id)) continue;
 
@@ -83,9 +77,9 @@ export class UserPaginatedMessageCommand extends SkyraCommand {
 			}
 		}
 
-		const actualInitialRole = rolesInitial ?? (message.author.bot ? rolesInitialBots : rolesInitialHumans);
+		const actualInitialRole = settings.rolesInitial ?? (message.author.bot ? settings.rolesInitialBots : settings.rolesInitialHumans);
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
-		if (actualInitialRole && rolesRemoveInitial && addedRoles.length) {
+		if (actualInitialRole && settings.rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
 			if (!message.guild.roles.cache.has(actualInitialRole)) {
 				await writeSettings(message.guild, [[GuildSettings.Roles.Initial, null]]).catch((error) => this.container.logger.fatal(error));

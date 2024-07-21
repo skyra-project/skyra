@@ -13,7 +13,8 @@ import type { Role, TextChannel } from 'discord.js';
 @ApplyOptions<Listener.Options>({ event: Events.GuildRoleUpdate })
 export class UserListener extends Listener<typeof Events.GuildRoleUpdate> {
 	public async run(previous: Role, next: Role) {
-		const [channelId, t] = await readSettings(next, (settings) => [settings[GuildSettings.Channels.Logs.RoleUpdate], settings.getLanguage()]);
+		const settings = await readSettings(next);
+		const channelId = settings.channelsLogsRoleUpdate;
 		if (isNullish(channelId)) return;
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
@@ -22,6 +23,7 @@ export class UserListener extends Listener<typeof Events.GuildRoleUpdate> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const changes: string[] = [...this.differenceRole(t, previous, next)];
 		if (changes.length === 0) return;
 

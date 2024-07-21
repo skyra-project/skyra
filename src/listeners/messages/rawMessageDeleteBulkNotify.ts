@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -36,22 +36,16 @@ export class UserListener extends Listener {
 		const messages = data.ids.map((id) => ({ id, message: channel.messages.cache.get(id) ?? null }) as BulkMessageEntry);
 		const contextPromise = logger.prune.wait(data.channel_id);
 
-		const [ignoredChannels, logChannelId, ignoredDeletes, ignoredAll, t] = await readSettings(guild, (settings) => [
-			settings[GuildSettings.Messages.IgnoreChannels],
-			settings[GuildSettings.Channels.Logs.Prune],
-			settings[GuildSettings.Channels.Ignore.MessageDelete],
-			settings[GuildSettings.Channels.Ignore.All],
-			settings.getLanguage()
-		]);
-
+		const settings = await readSettings(guild);
 		await logger.send({
-			key: GuildSettings.Channels.Logs.Prune,
-			channelId: logChannelId,
+			key: 'channelsLogsPrune',
+			channelId: settings.channelsLogsPrune,
 			condition: () =>
-				!ignoredChannels.some((id) => id === channel.id || channel.parentId === id) ||
-				!ignoredDeletes.some((id) => id === channel.id && channel.parentId === id) ||
-				!ignoredAll.some((id) => id === channel.id || channel.parentId === id),
+				!settings.messagesIgnoreChannels.some((id) => id === channel.id || channel.parentId === id) ||
+				!settings.channelsIgnoreMessageDeletes.some((id) => id === channel.id && channel.parentId === id) ||
+				!settings.channelsIgnoreAll.some((id) => id === channel.id || channel.parentId === id),
 			makeMessage: async () => {
+				const t = settings.getLanguage();
 				const context = await contextPromise;
 				const description = context
 					? t(LanguageKeys.Events.Messages.MessageDeleteBulk, {

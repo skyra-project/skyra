@@ -1,4 +1,4 @@
-import { GuildSettings, ResponseType, Task, readSettings, type PartialResponseValue } from '#lib/database';
+import { ResponseType, Task, readSettings, type PartialResponseValue } from '#lib/database';
 import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
 import { getModeration } from '#utils/functions';
 import type { SchemaKeys } from '#utils/moderationConstants';
@@ -33,11 +33,10 @@ export abstract class ModerationTask<T = unknown> extends Task {
 		targetId: Snowflake,
 		context?: ContextType
 	): Promise<ModerationAction.Data<ContextType>> {
+		const settings = await readSettings(guild);
 		return {
 			moderator: null,
-			sendDirectMessage:
-				(await readSettings(guild, GuildSettings.Messages.ModerationDM)) &&
-				(await this.container.db.fetchModerationDirectMessageEnabled(targetId)),
+			sendDirectMessage: settings.messagesModerationDm && (await this.container.db.fetchModerationDirectMessageEnabled(targetId)),
 			context
 		};
 	}

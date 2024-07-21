@@ -120,7 +120,8 @@ export class UserCommand extends SkyraSubcommand {
 
 	@RequiresClientPermissions(PermissionFlagsBits.EmbedLinks)
 	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
-		const reactionRoles = await readSettings(message.guild, GuildSettings.ReactionRoles);
+		const settings = await readSettings(message.guild);
+		const { reactionRoles } = settings;
 		if (reactionRoles.length === 0) {
 			this.error(LanguageKeys.Commands.Management.ManageReactionRolesShowEmpty);
 		}

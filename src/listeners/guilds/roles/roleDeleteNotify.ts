@@ -10,7 +10,8 @@ import type { Role, TextChannel } from 'discord.js';
 @ApplyOptions<Listener.Options>({ event: Events.GuildRoleDelete })
 export class UserListener extends Listener<typeof Events.GuildRoleDelete> {
 	public async run(role: Role) {
-		const [channelId, t] = await readSettings(role, (settings) => [settings[GuildSettings.Channels.Logs.RoleDelete], settings.getLanguage()]);
+		const settings = await readSettings(role);
+		const channelId = settings.channelsLogsRoleDelete;
 		if (isNullish(channelId)) return;
 
 		const channel = role.guild.channels.cache.get(channelId) as TextChannel | undefined;
@@ -19,6 +20,7 @@ export class UserListener extends Listener<typeof Events.GuildRoleDelete> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Red)
 			.setAuthor({ name: `${role.name} (${role.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })

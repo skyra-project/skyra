@@ -10,10 +10,8 @@ import type { GuildEmoji, TextChannel } from 'discord.js';
 @ApplyOptions<Listener.Options>({ event: Events.GuildEmojiDelete })
 export class UserListener extends Listener<typeof Events.GuildEmojiDelete> {
 	public async run(next: GuildEmoji) {
-		const [channelId, t] = await readSettings(next.guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.EmojiDelete],
-			settings.getLanguage()
-		]);
+		const settings = await readSettings(next.guild);
+		const channelId = settings.channelsLogsEmojiDelete;
 		if (isNullish(channelId)) return;
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
@@ -22,6 +20,7 @@ export class UserListener extends Listener<typeof Events.GuildEmojiDelete> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Red)
 			.setThumbnail(next.imageURL({ size: 256 }))

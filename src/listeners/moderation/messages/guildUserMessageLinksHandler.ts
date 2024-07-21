@@ -33,7 +33,8 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 
 		let match: RegExpExecArray | null = null;
 
-		const allowed = await readSettings(message.guild, GuildSettings.AutoModeration.Links.Allowed);
+		const settings = await readSettings(message.guild);
+		const allowed = settings.selfmodLinksAllowed;
 		while ((match = this.kRegExp.exec(message.content)) !== null) {
 			const { hostname } = match.groups!;
 			if (this.kAllowedDomains.test(hostname)) continue;

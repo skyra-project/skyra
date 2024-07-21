@@ -13,10 +13,8 @@ type GuildBasedChannel = TextChannel | VoiceChannel | CategoryChannel | NewsChan
 @ApplyOptions<Listener.Options>({ event: Events.ChannelDelete })
 export class UserListener extends Listener<typeof Events.ChannelDelete> {
 	public async run(next: GuildBasedChannel) {
-		const [channelId, t] = await readSettings(next.guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.ChannelDelete],
-			settings.getLanguage()
-		]);
+		const settings = await readSettings(next.guild);
+		const channelId = settings.channelsLogsChannelDelete;
 		if (isNullish(channelId)) return;
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
@@ -25,6 +23,7 @@ export class UserListener extends Listener<typeof Events.ChannelDelete> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const changes = [...this.getChannelInformation(t, next)];
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Red)

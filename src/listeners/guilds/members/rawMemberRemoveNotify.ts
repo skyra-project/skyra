@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { seconds } from '#utils/common';
@@ -13,16 +13,17 @@ import { isNullish } from '@sapphire/utilities';
 import type { GatewayGuildMemberRemoveDispatchData, Guild, GuildMember } from 'discord.js';
 
 const Root = LanguageKeys.Events.Guilds.Members;
-const ChannelSettingsKey = GuildSettings.Channels.Logs.MemberRemove;
 
 @ApplyOptions<Listener.Options>({ event: Events.RawMemberRemove })
 export class UserListener extends Listener {
 	public async run(guild: Guild, member: GuildMember | null, { user }: GatewayGuildMemberRemoveDispatchData) {
-		const [t, targetChannelId] = await readSettings(guild, (settings) => [settings.getLanguage(), settings[ChannelSettingsKey]]);
+		const settings = await readSettings(guild);
+		const targetChannelId = settings.channelsLogsMemberRemove;
 		if (isNullish(targetChannelId)) return;
 
 		const isModerationAction = await this.isModerationAction(guild, user);
 
+		const t = settings.getLanguage();
 		const footer = isModerationAction.kicked
 			? t(Root.GuildMemberKicked)
 			: isModerationAction.banned
@@ -33,7 +34,7 @@ export class UserListener extends Listener {
 
 		const joinedTimestamp = this.processJoinedTimestamp(member);
 		await getLogger(guild).send({
-			key: ChannelSettingsKey,
+			key: 'channelsLogsMemberRemove',
 			channelId: targetChannelId,
 			makeMessage: () => {
 				const key = joinedTimestamp === -1 ? Root.GuildMemberRemoveDescription : Root.GuildMemberRemoveDescriptionWithJoinedAt;

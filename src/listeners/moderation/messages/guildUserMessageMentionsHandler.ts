@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { Events, type GuildMessage } from '#lib/types';
 import { isModerator } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -11,14 +11,9 @@ export class UserListener extends Listener {
 		if (!isNullishOrZero(message.editedTimestamp)) return;
 		if (await isModerator(message.member)) return;
 
-		const [enabled, globalIgnore, alerts, ratelimits] = await readSettings(message.guild, (settings) => [
-			settings[GuildSettings.AutoModeration.NoMentionSpam.Enabled],
-			settings[GuildSettings.AutoModeration.IgnoreChannels],
-			settings[GuildSettings.AutoModeration.NoMentionSpam.Alerts],
-			settings.nms
-		]);
-		if (!enabled) return;
-		if (globalIgnore.includes(message.channel.id)) return;
+		const settings = await readSettings(message.guild);
+		if (!settings.noMentionSpamEnabled) return;
+		if (settings.selfmodIgnoreChannels.includes(message.channel.id)) return;
 
 		const mentions =
 			message.mentions.users.reduce((acc, user) => (user.bot || user === message.author ? acc : acc + 1), 0) +
@@ -27,14 +22,14 @@ export class UserListener extends Listener {
 
 		if (mentions === 0) return;
 
-		const rateLimit = ratelimits.acquire(message.author.id);
+		const rateLimit = settings.nms.acquire(message.author.id);
 
 		try {
 			for (let i = 0; i < mentions; i++) rateLimit.consume();
 			// Reset time, don't let them relax
 			rateLimit.resetTime();
 			// eslint-disable-next-line @typescript-eslint/dot-notation
-			if (alerts && rateLimit['remaining'] / rateLimit.remaining <= 0.2) {
+			if (settings.noMentionSpamAlerts && rateLimit['remaining'] / rateLimit.remaining <= 0.2) {
 				message.client.emit(Events.MentionSpamWarning, message);
 			}
 		} catch (err) {

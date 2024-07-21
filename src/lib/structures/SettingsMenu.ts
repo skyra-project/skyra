@@ -84,12 +84,11 @@ export class SettingsMenu {
 			description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderAtPiece, { path: this.schema.name }));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 
-			const [value, serialized, language] = await readSettings(this.message.guild, (settings) => {
-				const language = settings.getLanguage();
-				const key = this.schema as SchemaKey;
-				return [settings[key.property], key.display(settings, language), language];
-			});
-			this.t = language;
+			const settings = await readSettings(this.message.guild);
+
+			this.t = settings.getLanguage();
+			const value = settings[this.schema.property];
+			const serialized = this.schema.display(settings, this.t);
 			description.push(t(this.schema.description), '', t(LanguageKeys.Commands.Admin.ConfMenuRenderUpdate));
 			if (this.schema.array && (value as unknown[]).length) description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderRemove));
 			if (this.updatedValue) description.push(t(LanguageKeys.Commands.Admin.ConfMenuRenderReset));

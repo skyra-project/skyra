@@ -40,15 +40,12 @@ export class UserCommand extends SkyraSubcommand {
 		const schemaValue = configurableGroups.getPathString(key.toLowerCase());
 		if (schemaValue === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 
-		const output = await readSettings(message.guild, (settings) => {
-			return schemaValue.display(settings, args.t);
-		});
+		const settings = await readSettings(message.guild);
+		const output = schemaValue.display(settings, args.t);
 
 		if (isSchemaKey(schemaValue)) {
-			return send(message, {
-				content: args.t(LanguageKeys.Commands.Admin.ConfGet, { key: schemaValue.name, value: output }),
-				allowedMentions: { users: [], roles: [] }
-			});
+			const content = args.t(LanguageKeys.Commands.Admin.ConfGet, { key: schemaValue.name, value: output });
+			return send(message, { content, allowedMentions: { users: [], roles: [] } });
 		}
 
 		const title = key

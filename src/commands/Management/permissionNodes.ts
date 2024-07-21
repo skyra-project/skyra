@@ -85,7 +85,8 @@ export class UserCommand extends SkyraSubcommand {
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		const nodes = await readSettings(message.guild, key);
+		const settings = await readSettings(message.guild);
+		const nodes = settings[key];
 		const node = nodes.find((n) => n.id === target.id);
 		if (typeof node === 'undefined') this.error(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
@@ -93,9 +94,12 @@ export class UserCommand extends SkyraSubcommand {
 	}
 
 	private async showAll(message: GuildMessage, args: SkyraSubcommand.Args) {
-		const [users, roles] = await readSettings(message.guild, [GuildSettings.Permissions.Users, GuildSettings.Permissions.Roles]);
-		const [fUsers, fRoles] = await Promise.all([this.formatPermissionNodes(args, users, false), this.formatPermissionNodes(args, roles, true)]);
-		const total = fUsers.concat(fRoles);
+		const settings = await readSettings(message.guild);
+		const [users, roles] = await Promise.all([
+			this.formatPermissionNodes(args, settings.permissionsUsers, false),
+			this.formatPermissionNodes(args, settings.permissionsRoles, true)
+		]);
+		const total = users.concat(roles);
 		if (total.length === 0) this.error(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
 		return total.join('\n\n');

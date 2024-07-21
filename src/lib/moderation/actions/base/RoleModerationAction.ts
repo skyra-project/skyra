@@ -77,7 +77,8 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 	}
 
 	public override async isActive(guild: Guild, userId: Snowflake) {
-		const roleId = await readSettings(guild, this.roleKey);
+		const settings = await readSettings(guild);
+		const roleId = settings[this.roleKey];
 		if (isNullish(roleId)) return false;
 
 		const member = await resolveOnErrorCodes(guild.members.fetch(userId), RESTJSONErrorCodes.UnknownMember);
@@ -94,7 +95,8 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 	 */
 	public async setup(message: GuildMessage) {
 		const { guild } = message;
-		const roleId = await readSettings(guild, this.roleKey);
+		const settings = await readSettings(guild);
+		const roleId = settings[this.roleKey];
 		if (roleId && guild.roles.cache.has(roleId)) throw new UserError({ identifier: Root.ActionSetupMuteExists });
 		if (guild.roles.cache.size >= GuildLimits.MaximumRoles) throw new UserError({ identifier: Root.ActionSetupTooManyRoles });
 
@@ -371,7 +373,8 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 	 * @throws If the role is not configured or if it is a managed role.
 	 */
 	async #fetchRole(guild: Guild) {
-		const roleId = await readSettings(guild, this.roleKey);
+		const settings = await readSettings(guild);
+		const roleId = settings[this.roleKey];
 		if (isNullish(roleId)) throw new UserError({ identifier: Root.ActionRoleNotConfigured });
 
 		const role = guild.roles.cache.get(roleId);

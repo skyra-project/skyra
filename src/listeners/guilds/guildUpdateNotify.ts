@@ -26,10 +26,8 @@ type Features = readonly `${GuildFeature}`[];
 @ApplyOptions<Listener.Options>({ event: Events.GuildUpdate })
 export class UserListener extends Listener<typeof Events.GuildUpdate> {
 	public async run(previous: Guild, next: Guild) {
-		const [channelId, t] = await readSettings(next, (settings) => [
-			settings[GuildSettings.Channels.Logs.ServerUpdate], //
-			settings.getLanguage()
-		]);
+		const settings = await readSettings(next);
+		const channelId = settings.channelsLogsServerUpdate;
 		if (isNullish(channelId)) return;
 
 		const channel = next.channels.cache.get(channelId) as TextChannel | undefined;
@@ -38,6 +36,7 @@ export class UserListener extends Listener<typeof Events.GuildUpdate> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const changes: string[] = [...this.differenceGuild(t, previous, next)];
 		if (changes.length === 0) return;
 

@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -28,14 +28,11 @@ export class UserListener extends Listener {
 		// If the message was edited, do not repost:
 		if (message.editedTimestamp) return;
 
-		const key = GuildSettings.Channels.Logs.Image;
-		const [logChannelId, ignoredChannels, t] = await readSettings(message.guild, (settings) => [
-			settings[key],
-			settings[GuildSettings.Channels.Ignore.All],
-			settings.getLanguage()
-		]);
-		if (isNullish(logChannelId) || ignoredChannels.includes(message.channel.id)) return;
+		const settings = await readSettings(message.guild);
+		const logChannelId = settings.channelsLogsImage;
+		if (isNullish(logChannelId) || settings.channelsIgnoreAll.includes(message.channel.id)) return;
 
+		const t = settings.getLanguage();
 		for (const attachment of this.getAttachments(message)) {
 			const dimensions = this.getDimensions(attachment.width, attachment.height);
 
@@ -66,7 +63,7 @@ export class UserListener extends Listener {
 				const buffer = Buffer.from(await (await result.blob()).arrayBuffer());
 				const filename = `image${extname(url.pathname)}`;
 
-				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, key, (): MessageCreateOptions => {
+				this.container.client.emit(Events.GuildMessageLog, message.guild, logChannelId, 'channelsLogsImage', (): MessageCreateOptions => {
 					const embed = new EmbedBuilder()
 						.setColor(Colors.Yellow)
 						.setAuthor(getFullEmbedAuthor(message.author, message.url))

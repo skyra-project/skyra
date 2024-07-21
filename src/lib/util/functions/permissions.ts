@@ -5,12 +5,18 @@ import { OWNERS } from '#root/config';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import { GuildMember, PermissionFlagsBits } from 'discord.js';
 
-export function isModerator(member: GuildMember) {
-	return isGuildOwner(member) || readSettings(member, (settings) => checkModerator(member, settings) || checkAdministrator(member, settings));
+export async function isModerator(member: GuildMember) {
+	if (isGuildOwner(member)) return true;
+
+	const settings = await readSettings(member);
+	return checkModerator(member, settings) || checkAdministrator(member, settings);
 }
 
-export function isAdmin(member: GuildMember) {
-	return isGuildOwner(member) || readSettings(member, (settings) => checkAdministrator(member, settings));
+export async function isAdmin(member: GuildMember) {
+	if (isGuildOwner(member)) return true;
+
+	const settings = await readSettings(member);
+	return checkAdministrator(member, settings);
 }
 
 export function isGuildOwner(member: GuildMember) {

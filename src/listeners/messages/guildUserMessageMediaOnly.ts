@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { Events, type GuildMessage } from '#lib/types';
 import { deleteMessage, isModerator } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -8,7 +8,8 @@ import { Listener } from '@sapphire/framework';
 @ApplyOptions<Listener.Options>({ event: Events.GuildUserMessage })
 export class UserListener extends Listener {
 	public async run(message: GuildMessage) {
-		const channels = await readSettings(message.guild, GuildSettings.Channels.MediaOnly);
+		const settings = await readSettings(message.guild);
+		const channels = settings.channelsMediaOnly;
 
 		// If the message is not set up as media-only, skip:
 		if (!channels.includes(message.channel.id)) return;

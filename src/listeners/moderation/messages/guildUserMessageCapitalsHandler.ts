@@ -30,12 +30,8 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	protected async preProcess(message: GuildMessage): Promise<1 | null> {
 		if (message.content.length === 0) return null;
 
-		const [minimumCapitals, maximumCapitals] = await readSettings(message.guild, [
-			GuildSettings.AutoModeration.Capitals.Minimum,
-			GuildSettings.AutoModeration.Capitals.Maximum
-		]);
-
-		if (message.content.length < minimumCapitals) return null;
+		const settings = await readSettings(message.guild);
+		if (message.content.length < settings.selfmodCapitalsMinimum) return null;
 
 		let length = 0;
 		let count = 0;
@@ -47,7 +43,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 		}
 
 		const percentage = (count / length) * 100;
-		return percentage >= maximumCapitals ? 1 : null;
+		return percentage >= settings.selfmodCapitalsMaximum ? 1 : null;
 	}
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: number) {

@@ -6,13 +6,20 @@ import { Events } from '#lib/types';
 import type { LLRCData } from '#utils/LongLivingReactionCollector';
 import { floatPromise, seconds } from '#utils/common';
 import { Colors } from '#utils/constants';
-import { deleteMessage, getCustomEmojiUrl, getEmojiReactionFormat, getEncodedTwemoji, getTwemojiUrl, type SerializedEmoji } from '#utils/functions';
+import {
+	deleteMessage,
+	getCustomEmojiUrl,
+	getEmojiReactionFormat,
+	getEncodedTwemoji,
+	getTwemojiUrl,
+	isModerator,
+	type SerializedEmoji
+} from '#utils/functions';
 import { getFullEmbedAuthor } from '#utils/util';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
-import { hasAtLeastOneKeyInMap, type Nullish } from '@sapphire/utilities';
-import { PermissionFlagsBits, type GuildMember } from 'discord.js';
+import type { Nullish } from '@sapphire/utilities';
 
 type ArgumentType = [data: LLRCData, reaction: SerializedEmoji, channelId: string | Nullish, blockedReactions: string[]];
 
@@ -27,30 +34,26 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 	};
 
 	public async run(data: LLRCData, emoji: SerializedEmoji) {
-		const [enabled, blockedReactions, logChannelId, ignoredChannels, softAction, hardAction, adder] = await readSettings(
-			data.guild,
-			(settings) => [
-				settings[GuildSettings.AutoModeration.Reactions.Enabled],
-				settings[GuildSettings.AutoModeration.Reactions.Blocked],
-				settings[GuildSettings.Channels.Logs.Moderation],
-				settings[GuildSettings.Channels.Ignore.ReactionAdd],
-				settings[GuildSettings.AutoModeration.Reactions.SoftAction],
-				settings[GuildSettings.AutoModeration.Reactions.HardAction],
-				settings.adders[this.hardPunishmentPath.adder]
-			]
-		);
+		const settings = await readSettings(data.guild);
+		const blockedReactions = settings.selfmodReactionsBlocked;
+		const logChannelId = settings.channelsLogsModeration;
 
-		if (!enabled || blockedReactions.length === 0 || ignoredChannels.includes(data.channel.id)) return;
+		if (!settings.selfmodReactionsEnabled || blockedReactions.length === 0 || settings.channelsIgnoreReactionAdds.includes(data.channel.id)) {
+			return;
+		}
 
 		const member = await data.guild.members.fetch(data.userId);
-		if (member.user.bot || (await this.hasPermissions(member))) return;
+		if (member.user.bot || (await isModerator(member))) return;
 
 		const args = [data, emoji, logChannelId, blockedReactions] as const;
 		const preProcessed = this.preProcess(args);
 		if (preProcessed === null) return;
 
+		const softAction = settings.selfmodReactionsSoftAction;
+		const hardAction = settings.selfmodReactionsHardAction;
 		this.processSoftPunishment(args, preProcessed, AutoModerationOnInfraction.resolve(softAction));
 
+		const adder = settings.adders[this.hardPunishmentPath.adder];
 		if (!adder) return this.processHardPunishment(data.guild, data.userId, hardAction);
 
 		try {
@@ -101,10 +104,5 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 			GuildSettings.Channels.Logs.Moderation,
 			this.onLogMessage.bind(this, args)
 		);
-	}
-
-	private async hasPermissions(member: GuildMember) {
-		const roles = await readSettings(member, GuildSettings.Roles.Moderator);
-		return roles.length === 0 ? member.permissions.has(PermissionFlagsBits.BanMembers) : hasAtLeastOneKeyInMap(member.roles.cache, roles);
 	}
 }

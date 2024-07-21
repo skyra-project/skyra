@@ -44,7 +44,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	}
 
 	protected async onWarning(guild: Guild, userId: string) {
-		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
+		const duration = await this.#getPunishmentActionDuration(guild);
 		await this.createActionAndSend(guild, () =>
 			ModerationActions.warning.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.', duration })
 		);
@@ -57,8 +57,9 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	}
 
 	protected async onTimeout(guild: Guild, userId: string) {
-		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
+		const duration = await this.#getPunishmentActionDuration(guild);
 		if (isNullishOrZero(duration)) return;
+
 		await this.createActionAndSend(guild, () =>
 			ModerationActions.timeout.apply(guild, {
 				user: userId,
@@ -69,7 +70,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	}
 
 	protected async onMute(guild: Guild, userId: string) {
-		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
+		const duration = await this.#getPunishmentActionDuration(guild);
 		await this.createActionAndSend(guild, () =>
 			ModerationActions.mute.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.', duration })
 		);
@@ -86,8 +87,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	}
 
 	protected async onBan(guild: Guild, userId: string) {
-		const duration = await readSettings(guild, this.hardPunishmentPath.actionDuration);
-
+		const duration = await this.#getPunishmentActionDuration(guild);
 		await this.createActionAndSend(guild, () =>
 			ModerationActions.ban.apply(guild, { user: userId, reason: '[Auto-Moderation] Threshold Reached.', duration })
 		);
@@ -107,6 +107,11 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 	protected abstract onDelete(args: Readonly<V>, value: T): unknown;
 	protected abstract onAlert(args: Readonly<V>, value: T): unknown;
 	protected abstract onLogMessage(args: Readonly<V>, value: T): Awaitable<EmbedBuilder>;
+
+	async #getPunishmentActionDuration(guild: Guild) {
+		const settings = await readSettings(guild);
+		return settings[this.hardPunishmentPath.actionDuration];
+	}
 }
 
 export namespace ModerationListener {

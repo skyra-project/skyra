@@ -15,64 +15,6 @@ export abstract class SettingsCollection<T extends IBaseEntity> extends Collecti
 		return super.delete(key);
 	}
 
-	public read<K1 extends keyof T>(key: string, paths: readonly [K1]): Promise<[T[K1]]>;
-	public read<K1 extends keyof T, K2 extends keyof T>(key: string, paths: readonly [K1, K2]): Promise<[T[K1], T[K2]]>;
-	public read<K1 extends keyof T, K2 extends keyof T, K3 extends keyof T>(
-		key: string,
-		paths: readonly [K1, K2, K3]
-	): Promise<[T[K1], T[K2], T[K3]]>;
-
-	public read<K1 extends keyof T, K2 extends keyof T, K3 extends keyof T, K4 extends keyof T>(
-		key: string,
-		paths: readonly [K1, K2, K3, K4]
-	): Promise<[T[K1], T[K2], T[K3], T[K4]]>;
-
-	public read<K1 extends keyof T, K2 extends keyof T, K3 extends keyof T, K4 extends keyof T, K5 extends keyof T>(
-		key: string,
-		paths: readonly [K1, K2, K3, K4, K5]
-	): Promise<[T[K1], T[K2], T[K3], T[K4], T[K5]]>;
-
-	public read<K1 extends keyof T, K2 extends keyof T, K3 extends keyof T, K4 extends keyof T, K5 extends keyof T, K6 extends keyof T>(
-		key: string,
-		paths: readonly [K1, K2, K3, K4, K5, K6]
-	): Promise<[T[K1], T[K2], T[K3], T[K4], T[K5], T[K6]]>;
-
-	public read<
-		K1 extends keyof T,
-		K2 extends keyof T,
-		K3 extends keyof T,
-		K4 extends keyof T,
-		K5 extends keyof T,
-		K6 extends keyof T,
-		K7 extends keyof T
-	>(key: string, paths: readonly [K1, K2, K3, K4, K5, K6, K7]): Promise<[T[K1], T[K2], T[K3], T[K4], T[K5], T[K6], T[K7]]>;
-
-	public read<
-		K1 extends keyof T,
-		K2 extends keyof T,
-		K3 extends keyof T,
-		K4 extends keyof T,
-		K5 extends keyof T,
-		K6 extends keyof T,
-		K7 extends keyof T,
-		K8 extends keyof T
-	>(key: string, paths: readonly [K1, K2, K3, K4, K5, K6, K7, K8]): Promise<[T[K1], T[K2], T[K3], T[K4], T[K5], T[K6], T[K7], T[K8]]>;
-
-	public read<
-		K1 extends keyof T,
-		K2 extends keyof T,
-		K3 extends keyof T,
-		K4 extends keyof T,
-		K5 extends keyof T,
-		K6 extends keyof T,
-		K7 extends keyof T,
-		K8 extends keyof T,
-		K9 extends keyof T
-	>(key: string, paths: readonly [K1, K2, K3, K4, K5, K6, K7, K8, K9]): Promise<[T[K1], T[K2], T[K3], T[K4], T[K5], T[K6], T[K7], T[K8], T[K9]]>;
-
-	public read<K extends keyof T>(key: string, paths: readonly K[]): Promise<T[K][]>;
-	public read<K extends keyof T>(key: string, path: K): Promise<T[K]>;
-	public read<R>(key: string, cb: SettingsCollectionCallback<T, R>): Promise<R>;
 	public read(key: string): Promise<T>;
 	public async read<R>(key: string, cb?: keyof T | readonly (keyof T)[] | SettingsCollectionCallback<T, R>): Promise<any> {
 		const lock = this.acquireLock(key);

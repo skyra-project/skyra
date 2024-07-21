@@ -22,10 +22,8 @@ import {
 @ApplyOptions<Listener.Options>({ event: Events.ChannelCreate })
 export class UserListener extends Listener<typeof Events.ChannelCreate> {
 	public async run(next: GuildChannel) {
-		const [channelId, t] = await readSettings(next.guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.ChannelCreate],
-			settings.getLanguage()
-		]);
+		const settings = await readSettings(next.guild);
+		const channelId = settings.channelsLogsChannelCreate;
 		if (isNullish(channelId)) return;
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
@@ -34,6 +32,7 @@ export class UserListener extends Listener<typeof Events.ChannelCreate> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const changes: string[] = [...this.getChannelInformation(t, next)];
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Green)

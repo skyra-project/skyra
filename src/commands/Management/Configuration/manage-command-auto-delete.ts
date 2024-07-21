@@ -65,7 +65,9 @@ export class UserCommand extends SkyraSubcommand {
 	}
 
 	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
-		const commandAutoDelete = await readSettings(message.guild, GuildSettings.CommandAutoDelete);
+		const settings = await readSettings(message.guild);
+
+		const { commandAutoDelete } = settings;
 		if (!commandAutoDelete.length) this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
 
 		const list: string[] = [];

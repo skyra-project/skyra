@@ -78,13 +78,10 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 	}
 
 	private async fetchIfAllowedInvite(message: GuildMessage, code: string) {
-		const [ignoredCodes, ignoredGuilds] = await readSettings(message.guild, [
-			GuildSettings.AutoModeration.Invites.IgnoredCodes,
-			GuildSettings.AutoModeration.Invites.IgnoredGuilds
-		]);
+		const settings = await readSettings(message.guild);
 
 		// Ignored codes take short-circuit.
-		if (ignoredCodes.includes(code)) return true;
+		if (settings.selfmodInvitesIgnoredCodes.includes(code)) return true;
 
 		const data = await message.client.invites.fetch(code);
 
@@ -98,7 +95,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 		if (data.guildId === message.guild.id) return true;
 
 		// Invites from white-listed guilds should be allowed.
-		if (ignoredGuilds.includes(data.guildId)) return true;
+		if (settings.selfmodInvitesIgnoredGuilds.includes(data.guildId)) return true;
 
 		// Any other invite should not be allowed.
 		return false;

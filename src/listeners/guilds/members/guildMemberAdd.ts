@@ -12,7 +12,6 @@ import { isNullish, type Nullish } from '@sapphire/utilities';
 import { Guild, PermissionFlagsBits, RESTJSONErrorCodes, TimestampStyles, time, type GuildMember, type Snowflake } from 'discord.js';
 
 const Root = LanguageKeys.Events.Guilds.Members;
-const ChannelSettingsKey = GuildSettings.Channels.Logs.MemberAdd;
 
 export class UserListener extends Listener {
 	public async run(member: GuildMember) {
@@ -27,14 +26,12 @@ export class UserListener extends Listener {
 		if (stickyRoles.length === 0) return false;
 
 		// Handle the case the user is muted
-		const [t, targetChannelId, mutedRoleId] = await readSettings(member, (settings) => [
-			settings.getLanguage(),
-			settings[ChannelSettingsKey],
-			settings[GuildSettings.Roles.Muted]
-		]);
+		const settings = await readSettings(member);
+		const mutedRoleId = settings[GuildSettings.Roles.Muted];
+		const targetChannelId = settings.channelsLogsMemberAdd;
 		if (mutedRoleId && stickyRoles.includes(mutedRoleId)) {
 			void this.#handleMutedMemberAddRole(member, mutedRoleId);
-			void this.#handleMutedMemberNotify(t, member, targetChannelId);
+			void this.#handleMutedMemberNotify(settings.getLanguage(), member, targetChannelId);
 
 			return true;
 		}
@@ -71,7 +68,7 @@ export class UserListener extends Listener {
 
 	async #handleMutedMemberNotify(t: TFunction, member: GuildMember, targetChannelId: Snowflake | Nullish) {
 		await getLogger(member.guild).send({
-			key: ChannelSettingsKey,
+			key: 'channelsLogsMemberAdd',
 			channelId: targetChannelId,
 			makeMessage: () => {
 				const { user } = member;

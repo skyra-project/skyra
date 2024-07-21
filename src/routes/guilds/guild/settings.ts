@@ -30,7 +30,8 @@ export class UserRoute extends Route {
 
 		if (!(await canManage(guild, member))) return response.error(HttpCodes.Forbidden);
 
-		return readSettings(guild, (settings) => response.json(settings));
+		const settings = await readSettings(guild);
+		return response.json(settings);
 	}
 
 	@authenticated()

@@ -16,8 +16,8 @@ export class StickyRoleManager {
 	}
 
 	public async get(userId: string): Promise<readonly string[]> {
-		const entries = await readSettings(this.#guild, GuildSettings.StickyRoles);
-		return entries.find((entry) => entry.user === userId)?.roles ?? [];
+		const settings = await readSettings(this.#guild);
+		return settings.stickyRoles.find((entry) => entry.user === userId)?.roles ?? [];
 	}
 
 	public async has(userId: string, roleId: string): Promise<boolean> {
@@ -27,8 +27,8 @@ export class StickyRoleManager {
 
 	public async fetch(userId: string): Promise<readonly string[]> {
 		// 1.0. If the entry does not exist, return empty array
-		const entries = await readSettings(this.#guild, GuildSettings.StickyRoles);
-		const entry = entries.find((entry) => entry.user === userId);
+		const settings = await readSettings(this.#guild);
+		const entry = settings.stickyRoles.find((entry) => entry.user === userId);
 		if (isNullish(entry)) return [];
 
 		// 2.0. Read the entry and clean the roles:

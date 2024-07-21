@@ -35,7 +35,8 @@ export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, Val
 
 	protected async inhibit(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.RunContext) {
 		// If the command messageRun is not this one (potentially help command) or the guild is null, return with no error.
-		const [roleId, t] = await readSettings(message.guild, (settings) => [settings[this.action.roleKey], settings.getLanguage()]);
+		const settings = await readSettings(message.guild);
+		const roleId = settings[this.action.roleKey];
 
 		// Verify for role existence.
 		const role = (roleId && message.guild.roles.cache.get(roleId)) ?? null;
@@ -46,6 +47,7 @@ export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, Val
 			this.error(LanguageKeys.Commands.Moderation.RestrictLowlevel);
 		}
 
+		const t = settings.getLanguage();
 		if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const role = (await this.askForRole(message, args, context)).unwrapRaw();
 			await writeSettings(message.guild, [[this.action.roleKey, role.id]]);

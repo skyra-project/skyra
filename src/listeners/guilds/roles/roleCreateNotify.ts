@@ -12,7 +12,8 @@ import type { Role, TextChannel } from 'discord.js';
 @ApplyOptions<Listener.Options>({ event: Events.GuildRoleCreate })
 export class UserListener extends Listener<typeof Events.GuildRoleCreate> {
 	public async run(next: Role) {
-		const [channelId, t] = await readSettings(next, (settings) => [settings[GuildSettings.Channels.Logs.RoleCreate], settings.getLanguage()]);
+		const settings = await readSettings(next);
+		const channelId = settings.channelsLogsRoleCreate;
 		if (isNullish(channelId)) return;
 
 		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
@@ -21,6 +22,7 @@ export class UserListener extends Listener<typeof Events.GuildRoleCreate> {
 			return;
 		}
 
+		const t = settings.getLanguage();
 		const changes: string[] = [...this.getRoleInformation(t, next)];
 		const embed = new EmbedBuilder()
 			.setColor(Colors.Green)

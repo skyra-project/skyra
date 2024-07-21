@@ -1151,14 +1151,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/instrumentation@npm:5.16.1":
-  version: 5.16.1
-  resolution: "@prisma/instrumentation@npm:5.16.1"
+"@prisma/instrumentation@npm:5.17.0":
+  version: 5.17.0
+  resolution: "@prisma/instrumentation@npm:5.17.0"
   dependencies:
     "@opentelemetry/api": "npm:^1.8"
     "@opentelemetry/instrumentation": "npm:^0.49 || ^0.50 || ^0.51 || ^0.52.0"
     "@opentelemetry/sdk-trace-base": "npm:^1.22"
-  checksum: 10/46fd8e8e8e515b74042e22ac35761226aaa25c12d77c6031dc7207780d5496bfcf08db47cbf4aee94a9adfc3629adf33b3fd15688bb7d120a420e519db5abca1
+  checksum: 10/9462fc0e78e828abd538ea6ece3354d020c7f0de4858fb628b40e1b475c010f43de591cc8587db6034a5ab2f47688b3a54ad023821b5508da4f02dd57e70c683
   languageName: node
   linkType: hard
 
@@ -1545,19 +1545,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:8.17.0":
-  version: 8.17.0
-  resolution: "@sentry/core@npm:8.17.0"
+"@sentry/core@npm:8.19.0":
+  version: 8.19.0
+  resolution: "@sentry/core@npm:8.19.0"
   dependencies:
-    "@sentry/types": "npm:8.17.0"
-    "@sentry/utils": "npm:8.17.0"
-  checksum: 10/e7222f144a78f3cb49e3932fb14024bed10a1c577543764d7d6949364cafe1f8542c6ca62b389454ee65fb0cf4004f9770a2fbc317400a52659c8462f7d289ad
+    "@sentry/types": "npm:8.19.0"
+    "@sentry/utils": "npm:8.19.0"
+  checksum: 10/708ef5abd81a9ab5288a4b258411e78591a7fec4854fc582c34f087fce62f5cd74e1086fbbc27a9f55da77d113dde137fbf9649f5b7df3d1a22886850702adbd
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^8.17.0":
-  version: 8.17.0
-  resolution: "@sentry/node@npm:8.17.0"
+"@sentry/node@npm:^8.19.0":
+  version: 8.19.0
+  resolution: "@sentry/node@npm:8.19.0"
   dependencies:
     "@opentelemetry/api": "npm:^1.9.0"
     "@opentelemetry/context-async-hooks": "npm:^1.25.1"
@@ -1581,49 +1581,49 @@ __metadata:
     "@opentelemetry/resources": "npm:^1.25.1"
     "@opentelemetry/sdk-trace-base": "npm:^1.25.1"
     "@opentelemetry/semantic-conventions": "npm:^1.25.1"
-    "@prisma/instrumentation": "npm:5.16.1"
-    "@sentry/core": "npm:8.17.0"
-    "@sentry/opentelemetry": "npm:8.17.0"
-    "@sentry/types": "npm:8.17.0"
-    "@sentry/utils": "npm:8.17.0"
+    "@prisma/instrumentation": "npm:5.17.0"
+    "@sentry/core": "npm:8.19.0"
+    "@sentry/opentelemetry": "npm:8.19.0"
+    "@sentry/types": "npm:8.19.0"
+    "@sentry/utils": "npm:8.19.0"
     opentelemetry-instrumentation-fetch-node: "npm:1.2.3"
   dependenciesMeta:
     opentelemetry-instrumentation-fetch-node:
       optional: true
-  checksum: 10/461211b9a3f1f9756bea1b775a419b2ab1cec1ddc63b595cd3d9fc7c5a25061dc88a81887703b09008e337ceeb2c12084a97835d284f5b790226f0db47e42872
+  checksum: 10/087af557a7e76d0a751256468fc500db4dc45d6d358f56ce221e974bba3cb0929173731048ee28675c822e0dbad5767ba00d2affb1e00c6205faf9446b7aa7c8
   languageName: node
   linkType: hard
 
-"@sentry/opentelemetry@npm:8.17.0":
-  version: 8.17.0
-  resolution: "@sentry/opentelemetry@npm:8.17.0"
+"@sentry/opentelemetry@npm:8.19.0":
+  version: 8.19.0
+  resolution: "@sentry/opentelemetry@npm:8.19.0"
   dependencies:
-    "@sentry/core": "npm:8.17.0"
-    "@sentry/types": "npm:8.17.0"
-    "@sentry/utils": "npm:8.17.0"
+    "@sentry/core": "npm:8.19.0"
+    "@sentry/types": "npm:8.19.0"
+    "@sentry/utils": "npm:8.19.0"
   peerDependencies:
     "@opentelemetry/api": ^1.9.0
     "@opentelemetry/core": ^1.25.1
     "@opentelemetry/instrumentation": ^0.52.1
     "@opentelemetry/sdk-trace-base": ^1.25.1
     "@opentelemetry/semantic-conventions": ^1.25.1
-  checksum: 10/700ed4caf343c42148b00029e322e19930e65e66a0258a226e4abc0eeeb96599d413e0b208f06b4d8633b232325d6cb704286e6768a81674f5cf19567d87e741
+  checksum: 10/05c21ef3979dabdb9e9627e43e98c2710055c86c708a7df397fa56542197ed0edc95c684e78a2b302b0d6bc2f795e0eb7c93b8857655fb69427a1fa6a1761411
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:8.17.0":
-  version: 8.17.0
-  resolution: "@sentry/types@npm:8.17.0"
-  checksum: 10/52990f093760c15b7f84cabdb949cf25b4fe9486d2a723533613dc54322b13e18639d2e1696d94c352aad41a11529574d2afd2cb75a072e2afb7a0aa76694ad6
+"@sentry/types@npm:8.19.0":
+  version: 8.19.0
+  resolution: "@sentry/types@npm:8.19.0"
+  checksum: 10/8812f7394c6c031197abc04d80e5b5b3693742dc065b877c535a9ceb538aabd60ee27fc2b13824e2b8fc264819868109bbd4de3642fd1c7bf30d304fb0c21aa9
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:8.17.0":
-  version: 8.17.0
-  resolution: "@sentry/utils@npm:8.17.0"
+"@sentry/utils@npm:8.19.0":
+  version: 8.19.0
+  resolution: "@sentry/utils@npm:8.19.0"
   dependencies:
-    "@sentry/types": "npm:8.17.0"
-  checksum: 10/895cb1a94e17e6e521ae8fa0168f79b9f3120bd1b0255c6e7a311d16dd7fb8e78f17536b72b325364fe32e55a16042a875dcdb2d032833b2b6b18f01e93fe67f
+    "@sentry/types": "npm:8.19.0"
+  checksum: 10/abd507e5b37c7753534865f74a1a622fdbe2d71cfa61fd009703f4c9c90634fb6d26e3b2f8e09904631d4692e3735de451ed914c505c31700a6f5504a61e649e
   languageName: node
   linkType: hard
 
@@ -3877,12 +3877,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^5.1.3":
-  version: 5.1.3
-  resolution: "eslint-plugin-prettier@npm:5.1.3"
+"eslint-plugin-prettier@npm:^5.1.3, eslint-plugin-prettier@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "eslint-plugin-prettier@npm:5.2.1"
   dependencies:
     prettier-linter-helpers: "npm:^1.0.0"
-    synckit: "npm:^0.8.6"
+    synckit: "npm:^0.9.1"
   peerDependencies:
     "@types/eslint": ">=8.0.0"
     eslint: ">=8.0.0"
@@ -3893,7 +3893,7 @@ __metadata:
       optional: true
     eslint-config-prettier:
       optional: true
-  checksum: 10/4f26a30444adc61ed692cdb5a9f7e8d9f5794f0917151051e66755ce032a08c3cc72c8b5d56101412e90f6d77035bd8194ea8731e9c16aacdd5ae345a8dae188
+  checksum: 10/10ddf68215237e327af09a47adab4c63f3885fda4fb28c4c42d1fc5f47d8a0cc45df6484799360ff1417a0aa3c77c3aaac49d7e9dfd145557b17e2d7ecc2a27c
   languageName: node
   linkType: hard
 
@@ -7425,7 +7425,7 @@ __metadata:
     "@sapphire/time-utilities": "npm:^1.7.12"
     "@sapphire/ts-config": "npm:^5.0.1"
     "@sapphire/utilities": "npm:^3.16.2"
-    "@sentry/node": "npm:^8.17.0"
+    "@sentry/node": "npm:^8.19.0"
     "@skyra/ai": "npm:^1.2.0"
     "@skyra/char": "npm:^1.0.3"
     "@skyra/env-utilities": "npm:^1.3.0"
@@ -7449,7 +7449,7 @@ __metadata:
     discord.js: "npm:^14.15.3"
     eslint: "npm:^8.57.0"
     eslint-config-prettier: "npm:^9.1.0"
-    eslint-plugin-prettier: "npm:^5.1.3"
+    eslint-plugin-prettier: "npm:^5.2.1"
     he: "npm:^1.2.0"
     lint-staged: "npm:^15.2.7"
     pg: "npm:^8.12.0"
@@ -7803,13 +7803,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"synckit@npm:^0.8.6":
-  version: 0.8.8
-  resolution: "synckit@npm:0.8.8"
+"synckit@npm:^0.9.1":
+  version: 0.9.1
+  resolution: "synckit@npm:0.9.1"
   dependencies:
     "@pkgr/core": "npm:^0.1.0"
     tslib: "npm:^2.6.2"
-  checksum: 10/2864a5c3e689ad5b991bebbd8a583c5682c4fa08a4f39986b510b6b5d160c08fc3672444069f8f96ed6a9d12772879c674c1f61e728573eadfa90af40a765b74
+  checksum: 10/bff3903976baf8b699b5483228116d70223781a93b17c70e685c277ee960cdfd1a09cb5a741e6a9ec35e2428f14f4664baec41ccc99a598f267608b2a54f529b
   languageName: node
   linkType: hard
 

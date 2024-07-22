@@ -106,13 +106,13 @@ export class PermissionNodeManager implements IBaseManager {
 		return nodes.toSpliced(nodeIndex, 1);
 	}
 
-	public refresh() {
+	public refresh(): PermissionsNode[] {
 		const nodes = this.#settings.permissionsRoles.slice();
 		this.#previous = nodes.slice();
 
 		if (nodes.length === 0) {
 			this.sorted.clear();
-			return;
+			return nodes;
 		}
 
 		// Generate sorted data and detect useless nodes to remove

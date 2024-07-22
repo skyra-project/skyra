@@ -37,7 +37,7 @@ function stringifyErrorException(t: TFunction, error: Error): string {
 	if (error instanceof DiscordAPIError) return stringifyDiscordAPIError(t, error);
 	if (error instanceof HTTPError) return stringifyHTTPError(t, error);
 	if (error instanceof AggregateError) return error.errors.map((value) => stringifyError(t, value)).join('\n');
-	if (error instanceof SuppressedError) return stringifyError(t, error.error);
+	if (error instanceof SuppressedError) return stringifyError(t, error.suppressed);
 	return error.message;
 }
 

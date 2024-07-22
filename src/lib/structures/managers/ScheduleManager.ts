@@ -19,7 +19,7 @@ export class ScheduleManager {
 	}
 
 	public async add(taskId: string, timeResolvable: TimeResolvable, options: ScheduleManagerAddOptions = {}) {
-		if (!container.settings.tasks.has(taskId)) throw new Error(`The task '${taskId}' does not exist.`);
+		if (!container.stores.get('tasks').has(taskId)) throw new Error(`The task '${taskId}' does not exist.`);
 
 		const [time, cron] = this._resolveTime(timeResolvable);
 		const entry = new ScheduleEntity();

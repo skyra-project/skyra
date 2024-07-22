@@ -8,6 +8,5 @@ export class SerializerStore extends AliasStore<Serializer<unknown>, 'serializer
 	 */
 	public constructor() {
 		super(Serializer, { name: 'serializers' });
-		this.container.client.stores.register(this);
 	}
 }

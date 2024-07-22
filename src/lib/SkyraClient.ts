@@ -1,4 +1,4 @@
-import { SettingsManager } from '#lib/database';
+import { SerializerStore, TaskStore } from '#lib/database';
 import { readSettings } from '#lib/database/settings/functions';
 import { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import { WorkerManager } from '#lib/moderation/workers/WorkerManager';
@@ -50,9 +50,11 @@ export class SkyraClient extends SapphireClient {
 	public constructor() {
 		super(CLIENT_OPTIONS);
 
+		container.stores.register(new SerializerStore());
+		container.stores.register(new TaskStore());
+
 		// Workers
 		container.workers = new WorkerManager();
-		container.settings = new SettingsManager();
 
 		// Analytics
 		this.schedules = new ScheduleManager();

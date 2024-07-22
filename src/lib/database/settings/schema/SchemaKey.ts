@@ -86,7 +86,7 @@ export class SchemaKey<K extends GuildDataKey = GuildDataKey> implements ISchema
 	}
 
 	public get serializer(): Serializer<Readonly<GuildEntity>[K]> {
-		const value = container.settings.serializers.get(this.type);
+		const value = container.stores.get('serializers').get(this.type);
 		if (typeof value === 'undefined') throw new Error(`The serializer for '${this.type}' does not exist.`);
 		return value as Serializer<Readonly<GuildEntity>[K]>;
 	}

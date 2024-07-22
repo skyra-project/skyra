@@ -7,19 +7,21 @@ import { codeBlock, isNullish, toTitleCase } from '@sapphire/utilities';
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
-export class SchemaGroup extends AliasedCollection<string, ISchemaValue> implements ISchemaValue {
+export class SchemaGroup extends AliasedCollection<string, SchemaGroup | SchemaKey> implements ISchemaValue {
+	public readonly key: string;
 	public readonly parent: SchemaGroup | null;
 	public readonly name: string;
 	public readonly dashboardOnly = false;
 	public readonly type = 'Group';
 
-	public constructor(name = 'Root', parent: SchemaGroup | null = null) {
+	public constructor(key: string, name = 'Root', parent: SchemaGroup | null = null) {
 		super();
+		this.key = key;
 		this.name = name;
 		this.parent = parent;
 	}
 
-	public override set(key: string, value: ISchemaValue) {
+	public override set(key: string, value: SchemaGroup | SchemaKey) {
 		// Add auto-alias:
 		if (key.includes('-')) {
 			this.aliases.set(key.replaceAll('-', ''), value);
@@ -43,7 +45,7 @@ export class SchemaGroup extends AliasedCollection<string, ISchemaValue> impleme
 			throw new Error(`You cannot add '${key}' to a non-group entry.`);
 		}
 
-		const group = new SchemaGroup(`${this.name} / ${toTitleCase(key)}`, this);
+		const group = new SchemaGroup(key, `${this.name} / ${toTitleCase(key)}`, this);
 		group.add(tail as NonEmptyArray<string>, value);
 		this.set(key, group);
 		return group;
@@ -61,7 +63,7 @@ export class SchemaGroup extends AliasedCollection<string, ISchemaValue> impleme
 		}
 	}
 
-	public getPathArray([key, ...tail]: NonEmptyArray<string>): ISchemaValue | null {
+	public getPathArray([key, ...tail]: NonEmptyArray<string>): SchemaGroup | SchemaKey | null {
 		if (tail.length === 0) {
 			return key === '' || key === '.' ? this : (this.get(key) ?? null);
 		}
@@ -72,7 +74,7 @@ export class SchemaGroup extends AliasedCollection<string, ISchemaValue> impleme
 		return null;
 	}
 
-	public getPathString(key: string): ISchemaValue | null {
+	public getPathString(key: string): SchemaGroup | SchemaKey | null {
 		return this.getPathArray(key.split('.') as NonEmptyArray<string>);
 	}
 

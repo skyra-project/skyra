@@ -1,4 +1,3 @@
-import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationManagerEntry } from '#lib/moderation/managers/ModerationManagerEntry';
@@ -67,7 +66,8 @@ export class ModerationManager {
 	 * The channel where messages have to be sent.
 	 */
 	public async fetchChannel() {
-		const channelId = await readSettings(this.guild, GuildSettings.Channels.Logs.Moderation);
+		const settings = await readSettings(this.guild);
+		const channelId = settings.channelsLogsModeration;
 		if (isNullish(channelId)) return null;
 		return (this.guild.channels.cache.get(channelId) ?? null) as GuildTextBasedChannelTypes | null;
 	}

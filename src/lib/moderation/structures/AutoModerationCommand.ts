@@ -22,7 +22,7 @@ import { CommandOptionsRunTypeEnum, type ApplicationCommandRegistry } from '@sap
 import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, type Awaitable } from '@sapphire/utilities';
-import { PermissionFlagsBits, chatInputApplicationCommandMention, strikethrough, type Guild } from 'discord.js';
+import { chatInputApplicationCommandMention, PermissionFlagsBits, strikethrough, type Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.AutoModeration;
 const RootModeration = LanguageKeys.Moderation;
@@ -124,8 +124,10 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	}
 
 	public async chatInputRunEdit(interaction: AutoModerationCommand.Interaction) {
+		const settings = await readSettings(interaction.guild);
+
 		const valueEnabled = interaction.options.getBoolean('enabled');
-		const valueOnInfraction = this.#getInfraction(interaction, await readSettings(interaction.guild, this.keyOnInfraction));
+		const valueOnInfraction = this.#getInfraction(interaction, settings[this.keyOnInfraction]);
 		const valuePunishment = interaction.options.getInteger('punishment');
 		const valuePunishmentDuration = this.#getDuration(
 			interaction,
@@ -149,7 +151,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		if (!isNullish(valuePunishmentThreshold)) pairs.push([this.keyPunishmentThreshold, valuePunishmentThreshold]);
 		if (!isNullish(valuePunishmentThresholdDuration)) pairs.push([this.keyPunishmentThresholdPeriod, valuePunishmentThresholdDuration]);
 
-		await writeSettings(interaction.guild, pairs);
+		await writeSettings(interaction.guild, Object.fromEntries(pairs));
 
 		const t = getSupportedUserLanguageT(interaction);
 		const content = t(Root.EditSuccess);
@@ -158,7 +160,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 
 	public async chatInputRunReset(interaction: AutoModerationCommand.Interaction) {
 		const [key, value] = await this.resetGetKeyValuePair(interaction.guild, interaction.options.getString('key', true) as ResetKey);
-		await writeSettings(interaction.guild, [[key, value]]);
+		await writeSettings(interaction.guild, { [key]: value });
 
 		const t = getSupportedUserLanguageT(interaction);
 		const content = t(Root.EditSuccess);
@@ -198,7 +200,8 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	}
 
 	protected async resetGetOnInfractionFlags(guild: Guild, bit: number) {
-		const bitfield = await readSettings(guild, this.keyOnInfraction);
+		const settings = await readSettings(guild);
+		const bitfield = settings[this.keyOnInfraction];
 		return AutoModerationOnInfraction.difference(bitfield, bit);
 	}
 

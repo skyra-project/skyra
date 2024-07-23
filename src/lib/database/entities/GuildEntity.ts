@@ -4,11 +4,9 @@ import { AdderManager } from '#lib/database/settings/structures/AdderManager';
 import { PermissionNodeManager } from '#lib/database/settings/structures/PermissionNodeManager';
 import type { GuildData } from '#lib/database/settings/types';
 import { kBigIntTransformer } from '#lib/database/utils/Transformers';
-import { getT } from '#lib/i18n/translate';
 import { create } from '#utils/Security/RegexCreator';
 import type { SerializedEmoji } from '#utils/functions';
 import { container } from '@sapphire/framework';
-import type { TFunction } from '@sapphire/plugin-i18next';
 import { RateLimitManager } from '@sapphire/ratelimits';
 import { arrayStrictEquals, type PickByValue } from '@sapphire/utilities';
 import type { LocaleString } from 'discord.js';
@@ -492,13 +490,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 
 	public get guild() {
 		return container.client.guilds.cache.get(this.id)!;
-	}
-
-	/**
-	 * Gets the [[Language]] for this entity.
-	 */
-	public getLanguage(): TFunction {
-		return getT(this.language);
 	}
 
 	/**

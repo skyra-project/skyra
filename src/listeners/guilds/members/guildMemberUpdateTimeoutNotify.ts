@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { ModerationActions } from '#lib/moderation';
 import { Events } from '#lib/types';
 import { getLogger, getModeration } from '#utils/functions';
@@ -26,7 +26,8 @@ export class UserListener extends Listener {
 		const contextPromise = logger.timeout.wait(user.id, controller.signal);
 
 		// If the guild doesn't have manual logging enabled, skip:
-		const manualLoggingEnabled = await readSettings(guild, GuildSettings.Events.Timeout);
+		const settings = await readSettings(guild);
+		const manualLoggingEnabled = settings.eventsTimeout;
 		if (!manualLoggingEnabled) {
 			controller.abort();
 			return;

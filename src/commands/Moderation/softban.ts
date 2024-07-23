@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -22,8 +22,8 @@ type ValueType = Unlock | null;
 })
 export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
 	public override async preHandle(message: GuildMessage) {
-		const [banAdd, banRemove] = await readSettings(message.guild, [GuildSettings.Events.BanAdd, GuildSettings.Events.BanRemove]);
-		return banAdd || banRemove ? { unlock: getModeration(message.guild).createLock() } : null;
+		const settings = await readSettings(message.guild);
+		return settings.eventsBanAdd || settings.eventsBanRemove ? { unlock: getModeration(message.guild).createLock() } : null;
 	}
 
 	public override getHandleDataContext(_message: GuildMessage, context: ModerationCommand.HandlerParameters<ValueType>) {

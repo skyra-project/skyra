@@ -1,40 +1,36 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { differenceMap } from '#utils/common/comparators';
 import { Colors } from '#utils/constants';
+import { getLogger } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullish } from '@sapphire/utilities';
-import type { GuildEmoji, TextChannel } from 'discord.js';
+import type { GuildEmoji } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildEmojiUpdate })
 export class UserListener extends Listener<typeof Events.GuildEmojiUpdate> {
 	public async run(previous: GuildEmoji, next: GuildEmoji) {
-		const [channelId, t] = await readSettings(next.guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.EmojiUpdate],
-			settings.getLanguage()
-		]);
-		if (isNullish(channelId)) return;
+		const settings = await readSettings(next.guild);
+		await getLogger(next.guild).send({
+			key: 'channelsLogsEmojiUpdate',
+			channelId: settings.channelsLogsEmojiUpdate,
+			makeMessage: () => {
+				const t = getT(settings.language);
+				const changes: string[] = [...this.differenceEmoji(t, previous, next)];
+				if (changes.length === 0) return null;
 
-		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
-		if (channel === undefined) {
-			await writeSettings(next.guild, [[GuildSettings.Channels.Logs.EmojiUpdate, null]]);
-			return;
-		}
-
-		const changes: string[] = [...this.differenceEmoji(t, previous, next)];
-		if (changes.length === 0) return;
-
-		const embed = new EmbedBuilder()
-			.setColor(Colors.Yellow)
-			.setThumbnail(next.imageURL({ size: 256 }))
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
-			.setDescription(changes.join('\n'))
-			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiUpdate) })
-			.setTimestamp();
-		await channel.send({ embeds: [embed] });
+				return new EmbedBuilder()
+					.setColor(Colors.Yellow)
+					.setThumbnail(next.imageURL({ size: 256 }))
+					.setAuthor({ name: `${next.name} (${next.id})`, iconURL: next.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
+					.setDescription(changes.join('\n'))
+					.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.EmojiUpdate) })
+					.setTimestamp();
+			}
+		});
 	}
 
 	private *differenceEmoji(t: TFunction, previous: GuildEmoji, next: GuildEmoji) {

@@ -1,4 +1,5 @@
 import { readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { RoleTypeVariation } from '#lib/moderation';
 import { ModerationCommand } from '#lib/moderation/structures/ModerationCommand';
@@ -35,7 +36,8 @@ export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, Val
 
 	protected async inhibit(message: GuildMessage, args: ModerationCommand.Args, context: ModerationCommand.RunContext) {
 		// If the command messageRun is not this one (potentially help command) or the guild is null, return with no error.
-		const [roleId, t] = await readSettings(message.guild, (settings) => [settings[this.action.roleKey], settings.getLanguage()]);
+		const settings = await readSettings(message.guild);
+		const roleId = settings[this.action.roleKey];
 
 		// Verify for role existence.
 		const role = (roleId && message.guild.roles.cache.get(roleId)) ?? null;
@@ -46,9 +48,10 @@ export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, Val
 			this.error(LanguageKeys.Commands.Moderation.RestrictLowlevel);
 		}
 
+		const t = getT(settings.language);
 		if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const role = (await this.askForRole(message, args, context)).unwrapRaw();
-			await writeSettings(message.guild, [[this.action.roleKey, role.id]]);
+			await writeSettings(message.guild, { [this.action.roleKey]: role.id });
 		} else if (await promptConfirmation(message, t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 			await this.action.setup(message);
 

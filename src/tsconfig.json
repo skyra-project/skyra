@@ -27,6 +27,7 @@
 			"#lib/setup": ["lib/setup/index.js"],
 			"#lib/types": ["lib/types/index.js"],
 			"#lib/i18n/languageKeys": ["lib/i18n/languageKeys/index.js"],
+			"#lib/i18n": ["lib/i18n/index.js"],
 			"#lib/*": ["lib/*"],
 			"#languages": ["languages/index.js"],
 			"#root/*": ["*"]

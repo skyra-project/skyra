@@ -1,4 +1,5 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { seconds } from '#utils/common';
@@ -11,16 +12,17 @@ import { Listener } from '@sapphire/framework';
 import type { GuildMember } from 'discord.js';
 
 const Root = LanguageKeys.Events.Guilds.Members;
-const ChannelSettingsKey = GuildSettings.Channels.Logs.MemberAdd;
 
 @ApplyOptions<Listener.Options>({ event: Events.NotMutedMemberAdd })
 export class UserListener extends Listener {
 	public async run(member: GuildMember) {
-		const [t, logChannelId] = await readSettings(member, (settings) => [settings.getLanguage(), settings[ChannelSettingsKey]]);
+		const settings = await readSettings(member);
+		const logChannelId = settings.channelsLogsMemberAdd;
 		await getLogger(member.guild).send({
-			key: ChannelSettingsKey,
+			key: 'channelsLogsMemberAdd',
 			channelId: logChannelId,
 			makeMessage: () => {
+				const t = getT(settings.language);
 				const { user } = member;
 				const description = t(Root.GuildMemberAddDescription, {
 					user: getUserMentionWithFlagsString(user.flags?.bitfield ?? 0, user.id),

@@ -7,7 +7,7 @@ import { objectEntries } from '@sapphire/utilities';
 import { Collection } from 'discord.js';
 
 export const configurableKeys = new Collection<GuildDataKey, SchemaKey>();
-export const configurableGroups = new SchemaGroup();
+export const configurableGroups = new SchemaGroup('::ROOT::');
 
 export const Configuration = makeKeys({
 	prefix: {
@@ -993,9 +993,13 @@ function makeKeys(record: Record<GuildDataKey, ConfigurableKeyOptions>): Record<
 }
 
 function makeKey(property: GuildDataKey, options: ConfigurableKeyOptions) {
+	const name = options.name ?? property;
+	const parts = name.split('.') as NonEmptyArray<string>;
+
 	const value = new SchemaKey({
 		...options,
-		name: options.name ?? property,
+		key: parts.at(-1)!,
+		name,
 		property,
 		array: options.array ?? false,
 		inclusive: options.inclusive ?? true,
@@ -1012,5 +1016,8 @@ function makeKey(property: GuildDataKey, options: ConfigurableKeyOptions) {
 }
 
 interface ConfigurableKeyOptions
-	extends Omit<ConfigurableKeyValueOptions, 'property' | 'name' | 'array' | 'inclusive' | 'minimum' | 'maximum' | 'default' | 'dashboardOnly'>,
+	extends Omit<
+			ConfigurableKeyValueOptions,
+			'key' | 'property' | 'name' | 'array' | 'inclusive' | 'minimum' | 'maximum' | 'default' | 'dashboardOnly'
+		>,
 		Partial<Pick<ConfigurableKeyValueOptions, 'name' | 'array' | 'inclusive' | 'minimum' | 'maximum' | 'default' | 'dashboardOnly'>> {}

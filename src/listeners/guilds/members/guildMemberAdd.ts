@@ -1,4 +1,5 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings, writeSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { seconds, toErrorCodeResult } from '#utils/common';
@@ -12,7 +13,6 @@ import { isNullish, type Nullish } from '@sapphire/utilities';
 import { Guild, PermissionFlagsBits, RESTJSONErrorCodes, TimestampStyles, time, type GuildMember, type Snowflake } from 'discord.js';
 
 const Root = LanguageKeys.Events.Guilds.Members;
-const ChannelSettingsKey = GuildSettings.Channels.Logs.MemberAdd;
 
 export class UserListener extends Listener {
 	public async run(member: GuildMember) {
@@ -27,14 +27,12 @@ export class UserListener extends Listener {
 		if (stickyRoles.length === 0) return false;
 
 		// Handle the case the user is muted
-		const [t, targetChannelId, mutedRoleId] = await readSettings(member, (settings) => [
-			settings.getLanguage(),
-			settings[ChannelSettingsKey],
-			settings[GuildSettings.Roles.Muted]
-		]);
+		const settings = await readSettings(member);
+		const mutedRoleId = settings.rolesMuted;
+		const targetChannelId = settings.channelsLogsMemberAdd;
 		if (mutedRoleId && stickyRoles.includes(mutedRoleId)) {
 			void this.#handleMutedMemberAddRole(member, mutedRoleId);
-			void this.#handleMutedMemberNotify(t, member, targetChannelId);
+			void this.#handleMutedMemberNotify(getT(settings.language), member, targetChannelId);
 
 			return true;
 		}
@@ -48,7 +46,7 @@ export class UserListener extends Listener {
 		const { guild } = member;
 		const role = guild.roles.cache.get(mutedRoleId);
 		if (isNullish(role)) {
-			await writeSettings(member, [[GuildSettings.Roles.Muted, null]]);
+			await writeSettings(member, { rolesMuted: null });
 		} else {
 			const result = await toErrorCodeResult(member.roles.add(role));
 			await result.inspectErrAsync((code) => this.#handleMutedMemberAddRoleErr(guild, code));
@@ -61,7 +59,7 @@ export class UserListener extends Listener {
 
 		// The role was deleted, remove it from the settings:
 		if (code === RESTJSONErrorCodes.UnknownRole) {
-			await writeSettings(guild, [[GuildSettings.Roles.Muted, null]]);
+			await writeSettings(guild, { rolesMuted: null });
 			return;
 		}
 
@@ -71,7 +69,7 @@ export class UserListener extends Listener {
 
 	async #handleMutedMemberNotify(t: TFunction, member: GuildMember, targetChannelId: Snowflake | Nullish) {
 		await getLogger(member.guild).send({
-			key: ChannelSettingsKey,
+			key: 'channelsLogsMemberAdd',
 			channelId: targetChannelId,
 			makeMessage: () => {
 				const { user } = member;

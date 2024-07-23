@@ -1,4 +1,5 @@
-import { readSettings, writeSettings } from '#lib/database';
+import { readSettings, writeSettings, writeSettingsTransaction } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
 import type { GuildMessage } from '#lib/types';
@@ -77,7 +78,8 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 	}
 
 	public override async isActive(guild: Guild, userId: Snowflake) {
-		const roleId = await readSettings(guild, this.roleKey);
+		const settings = await readSettings(guild);
+		const roleId = settings[this.roleKey];
 		if (isNullish(roleId)) return false;
 
 		const member = await resolveOnErrorCodes(guild.members.fetch(userId), RESTJSONErrorCodes.UnknownMember);
@@ -94,7 +96,8 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 	 */
 	public async setup(message: GuildMessage) {
 		const { guild } = message;
-		const roleId = await readSettings(guild, this.roleKey);
+		const settings = await readSettings(guild);
+		const roleId = settings[this.roleKey];
 		if (roleId && guild.roles.cache.has(roleId)) throw new UserError({ identifier: Root.ActionSetupMuteExists });
 		if (guild.roles.cache.size >= GuildLimits.MaximumRoles) throw new UserError({ identifier: Root.ActionSetupTooManyRoles });
 
@@ -102,11 +105,10 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 			...this.roleData,
 			reason: `[Role Setup] Authorized by ${message.author.username} (${message.author.id}).`
 		});
-		const t = await writeSettings(guild, (settings) => {
-			Reflect.set(settings, this.roleKey, role.id);
-			return settings.getLanguage();
-		});
+		await using trx = await writeSettingsTransaction(guild);
+		await trx.write({ [this.roleKey]: role.id }).submit();
 
+		const t = getT(settings.language);
 		const manageableChannelCount = guild.channels.cache.reduce(
 			(acc, channel) => (!isThreadChannel(channel) && channel.manageable ? acc + 1 : acc),
 			0
@@ -371,12 +373,13 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 	 * @throws If the role is not configured or if it is a managed role.
 	 */
 	async #fetchRole(guild: Guild) {
-		const roleId = await readSettings(guild, this.roleKey);
+		const settings = await readSettings(guild);
+		const roleId = settings[this.roleKey];
 		if (isNullish(roleId)) throw new UserError({ identifier: Root.ActionRoleNotConfigured });
 
 		const role = guild.roles.cache.get(roleId);
 		if (isNullish(role)) {
-			await writeSettings(guild, [[this.roleKey, null]]);
+			await writeSettings(guild, { [this.roleKey]: null });
 			throw new UserError({ identifier: Root.ActionRoleNotConfigured });
 		}
 

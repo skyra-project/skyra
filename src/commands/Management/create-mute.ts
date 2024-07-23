@@ -1,4 +1,4 @@
-import { GuildSettings, writeSettings } from '#lib/database';
+import { writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationActions } from '#lib/moderation';
 import { SkyraCommand } from '#lib/structures';
@@ -32,11 +32,11 @@ export class UserCommand extends SkyraCommand {
 			const result = await this.askForRole(message, args, context);
 			if (result.isOk()) {
 				const role = result.unwrap();
-				await writeSettings(message.guild, [[GuildSettings.Roles.Muted, role.id]]);
+				await writeSettings(message.guild, { rolesMuted: role.id });
 				if (canReact(message.channel)) return message.react(getEmojiReactionFormat(Emojis.GreenTickSerialized as SerializedEmoji));
 
 				const content = t(LanguageKeys.Commands.Admin.ConfUpdated, {
-					key: GuildSettings.Roles.Muted,
+					key: 'rolesMuted',
 					response: role.name
 				});
 				return send(message, content);

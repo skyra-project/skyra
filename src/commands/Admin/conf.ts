@@ -1,4 +1,4 @@
-import { configurableGroups, isSchemaGroup, isSchemaKey, readSettings, remove, reset, SchemaKey, set, writeSettings } from '#lib/database';
+import { configurableGroups, isSchemaKey, readSettings, remove, reset, SchemaKey, set, writeSettingsTransaction } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SettingsMenu, SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -7,10 +7,9 @@ import { isValidCustomEmoji, isValidSerializedTwemoji, isValidTwemoji } from '#l
 import { inlineCode } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
-import { filter } from '@sapphire/iterator-utilities/filter';
-import { map } from '@sapphire/iterator-utilities/map';
+import { filter, map, toArray } from '@sapphire/iterator-utilities';
 import { send } from '@sapphire/plugin-editable-commands';
-import { toTitleCase } from '@sapphire/utilities';
+import { isNullish, toTitleCase } from '@sapphire/utilities';
 import { PermissionFlagsBits } from 'discord.js';
 
 @ApplyOptions<SkyraSubcommand.Options>({
@@ -40,15 +39,12 @@ export class UserCommand extends SkyraSubcommand {
 		const schemaValue = configurableGroups.getPathString(key.toLowerCase());
 		if (schemaValue === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 
-		const output = await readSettings(message.guild, (settings) => {
-			return schemaValue.display(settings, args.t);
-		});
+		const settings = await readSettings(message.guild);
+		const output = schemaValue.display(settings, args.t);
 
 		if (isSchemaKey(schemaValue)) {
-			return send(message, {
-				content: args.t(LanguageKeys.Commands.Admin.ConfGet, { key: schemaValue.name, value: output }),
-				allowedMentions: { users: [], roles: [] }
-			});
+			const content = args.t(LanguageKeys.Commands.Admin.ConfGet, { key: schemaValue.name, value: output });
+			return send(message, { content, allowedMentions: { users: [], roles: [] } });
 		}
 
 		const title = key
@@ -64,64 +60,64 @@ export class UserCommand extends SkyraSubcommand {
 	}
 
 	public async set(message: GuildMessage, args: SkyraSubcommand.Args) {
-		const [key, schemaKey] = await this.fetchKey(args);
-		const response = await writeSettings(message.guild, async (settings) => {
-			await set(settings, schemaKey, args);
-			return schemaKey.display(settings, args.t);
-		});
+		const [key, schemaKey] = await this.#fetchKey(args);
 
+		await using trx = await writeSettingsTransaction(message.guild);
+		await trx.write(await set(trx.settings, schemaKey, args)).submit();
+
+		const response = schemaKey.display(trx.settings, args.t);
 		return send(message, {
-			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response: this.getTextResponse(response) }),
+			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response: this.#getTextResponse(response) }),
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
 
 	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
-		const [key, schemaKey] = await this.fetchKey(args);
-		const response = await writeSettings(message.guild, async (settings) => {
-			await remove(settings, schemaKey, args);
-			return schemaKey.display(settings, args.t);
-		});
+		const [key, schemaKey] = await this.#fetchKey(args);
 
+		await using trx = await writeSettingsTransaction(message.guild);
+		await trx.write(await remove(trx.settings, schemaKey, args)).submit();
+
+		const response = schemaKey.display(trx.settings, args.t);
 		return send(message, {
-			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response: this.getTextResponse(response) }),
+			content: args.t(LanguageKeys.Commands.Admin.ConfUpdated, { key, response: this.#getTextResponse(response) }),
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
 
 	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
-		const [key, schemaKey] = await this.fetchKey(args);
-		const response = await writeSettings(message.guild, async (settings) => {
-			reset(settings, schemaKey);
-			return schemaKey.display(settings, args.t);
-		});
+		const [key, schemaKey] = await this.#fetchKey(args);
 
+		await using trx = await writeSettingsTransaction(message.guild);
+		await trx.write(reset(schemaKey)).submit();
+
+		const response = schemaKey.display(trx.settings, args.t);
 		return send(message, {
 			content: args.t(LanguageKeys.Commands.Admin.ConfReset, { key, value: response }),
 			allowedMentions: { users: [], roles: [] }
 		});
 	}
 
-	private getTextResponse(response: string) {
+	#getTextResponse(response: string) {
 		return isValidCustomEmoji(response) || isValidSerializedTwemoji(response) || isValidTwemoji(response) ? response : inlineCode(response);
 	}
 
-	private async fetchKey(args: SkyraSubcommand.Args) {
+	async #fetchKey(args: SkyraSubcommand.Args) {
 		const key = await args.pick('string');
+
 		const value = configurableGroups.getPathString(key.toLowerCase());
-		if (value === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
-		if (value.dashboardOnly) this.error(LanguageKeys.Commands.Admin.ConfDashboardOnlyKey, { key });
-		if (isSchemaGroup(value)) {
-			this.error(LanguageKeys.Settings.Gateway.ChooseKey, {
-				keys: [
-					...map(
-						filter(value.childValues(), (value) => !value.dashboardOnly),
-						(value) => `\`${value.name}\``
-					)
-				]
-			});
+		if (isNullish(value) || value.dashboardOnly) {
+			this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 		}
 
-		return [value.name, value as SchemaKey] as const;
+		if (isSchemaKey(value)) {
+			return [value.name, value as SchemaKey] as const;
+		}
+
+		const keys = map(
+			filter(value.childValues(), (value) => !value.dashboardOnly),
+			(value) => inlineCode(value.name)
+		);
+		this.error(LanguageKeys.Settings.Gateway.ChooseKey, { keys: toArray(keys) });
 	}
 }

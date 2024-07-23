@@ -83,7 +83,7 @@ export class ScheduleEntity extends BaseEntity {
 	}
 
 	public get task() {
-		return container.settings.tasks.get(this.taskId) ?? null;
+		return container.stores.get('tasks').get(this.taskId) ?? null;
 	}
 
 	public get running() {

@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -15,19 +15,20 @@ const NEW_LINE = '\n';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationNewLine,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationNewLineWithMaximum,
-	keyEnabled: GuildSettings.AutoModeration.NewLines.Enabled,
-	ignoredChannelsPath: GuildSettings.AutoModeration.NewLines.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.AutoModeration.NewLines.IgnoredRoles,
-	softPunishmentPath: GuildSettings.AutoModeration.NewLines.SoftAction,
+	keyEnabled: 'selfmodNewlinesEnabled',
+	ignoredChannelsPath: 'selfmodNewlinesIgnoredChannels',
+	ignoredRolesPath: 'selfmodNewlinesIgnoredRoles',
+	softPunishmentPath: 'selfmodNewlinesSoftAction',
 	hardPunishmentPath: {
-		action: GuildSettings.AutoModeration.NewLines.HardAction,
-		actionDuration: GuildSettings.AutoModeration.NewLines.HardActionDuration,
+		action: 'selfmodNewlinesHardAction',
+		actionDuration: 'selfmodNewlinesHardActionDuration',
 		adder: 'newlines'
 	}
 })
 export class UserModerationMessageListener extends ModerationMessageListener {
 	protected async preProcess(message: GuildMessage): Promise<1 | null> {
-		const threshold = await readSettings(message.guild, GuildSettings.AutoModeration.NewLines.Maximum);
+		const settings = await readSettings(message.guild);
+		const threshold = settings.selfmodNewlinesMaximum;
 		if (threshold === 0) return null;
 
 		const content = getContent(message);

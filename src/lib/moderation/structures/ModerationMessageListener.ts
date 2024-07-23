@@ -1,5 +1,6 @@
-import { GuildEntity, GuildSettings, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
+import { GuildEntity, readSettings, type AdderKey, type GuildSettingsOfType } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
+import { getT } from '#lib/i18n';
 import { ModerationActions } from '#lib/moderation/actions/index';
 import { AutoModerationOnInfraction, AutoModerationPunishment } from '#lib/moderation/structures/AutoModerationOnInfraction';
 import { Events, type GuildMessage, type TypedFT, type TypedT } from '#lib/types';
@@ -42,23 +43,23 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
 
-		const [logChannelId, filter, adder, language] = await readSettings(message.guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.Moderation],
-			settings[this.softPunishmentPath],
-			settings.adders[this.hardPunishmentPath.adder],
-			settings.getLanguage()
-		]);
-		this.processSoftPunishment(message, logChannelId, language, filter, preProcessed);
+		const settings = await readSettings(message.guild);
+
+		const logChannelId = settings.channelsLogsModeration;
+		const filter = settings[this.softPunishmentPath];
+		const t = getT(settings.language);
+		this.processSoftPunishment(message, logChannelId, t, filter, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;
 
-		if (!adder) return this.processHardPunishment(message, language, 0, 0);
+		const adder = settings.adders[this.hardPunishmentPath.adder];
+		if (!adder) return this.processHardPunishment(message, t, 0, 0);
 
 		const points = typeof preProcessed === 'number' ? preProcessed : 1;
 		try {
 			adder.add(message.author.id, points);
 		} catch (error) {
-			await this.processHardPunishment(message, language, (error as AdderError).amount, adder.maximum);
+			await this.processHardPunishment(message, t, (error as AdderError).amount, adder.maximum);
 		}
 	}
 
@@ -77,7 +78,9 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	}
 
 	protected async processHardPunishment(message: GuildMessage, language: TFunction, points: number, maximum: number) {
-		const [action, duration] = await readSettings(message.guild, [this.hardPunishmentPath.action, this.hardPunishmentPath.actionDuration]);
+		const settings = await readSettings(message.guild);
+		const action = settings[this.hardPunishmentPath.action];
+		const duration = settings[this.hardPunishmentPath.actionDuration];
 		switch (action) {
 			case AutoModerationPunishment.Warning:
 				await this.onWarning(message, language, points, maximum, duration);
@@ -152,7 +155,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 			Events.GuildMessageLog,
 			message.guild,
 			logChannelId,
-			GuildSettings.Channels.Logs.Moderation,
+			'channelsLogsModeration',
 			this.onLogMessage.bind(this, message, language, value)
 		);
 	}
@@ -162,16 +165,13 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	protected abstract onAlert(message: GuildMessage, language: TFunction, value: T): Awaitable<unknown>;
 	protected abstract onLogMessage(message: GuildMessage, language: TFunction, value: T): Awaitable<EmbedBuilder>;
 
-	private checkPreRun(message: GuildMessage) {
-		return readSettings(
-			message.guild,
-			(settings) =>
-				settings[this.keyEnabled] && this.checkMessageChannel(settings, message.channel) && this.checkMemberRoles(settings, message.member)
-		);
+	private async checkPreRun(message: GuildMessage) {
+		const settings = await readSettings(message.guild);
+		return settings[this.keyEnabled] && this.checkMessageChannel(settings, message.channel) && this.checkMemberRoles(settings, message.member);
 	}
 
 	private checkMessageChannel(settings: GuildEntity, channel: GuildTextBasedChannelTypes) {
-		const globalIgnore = settings[GuildSettings.AutoModeration.IgnoreChannels];
+		const globalIgnore = settings.selfmodIgnoreChannels;
 		if (globalIgnore.includes(channel.id)) return false;
 
 		const localIgnore = settings[this.ignoredChannelsPath] as readonly string[];

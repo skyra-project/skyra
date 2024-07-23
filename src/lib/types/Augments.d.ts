@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { DbSet, GuildSettingsOfType, SerializerStore, SettingsManager, TaskStore } from '#lib/database';
+import type { DbSet, GuildSettingsOfType, SerializerStore, TaskStore } from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
@@ -47,7 +47,6 @@ declare module '@sapphire/pieces' {
 		api?: API;
 		db: DbSet;
 		schedule: ScheduleManager;
-		settings: SettingsManager;
 		workers: WorkerManager;
 	}
 

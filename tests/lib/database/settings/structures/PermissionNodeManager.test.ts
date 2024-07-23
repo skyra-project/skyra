@@ -1,7 +1,7 @@
 import { GuildEntity, PermissionNodeAction, type PermissionsNode } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { UserError } from '@sapphire/framework';
-import type { Guild } from 'discord.js';
+import type { Guild, GuildMember, Role, User } from 'discord.js';
 import { fail } from 'node:assert';
 import { createGuild, createGuildMember, createRole, createUser, roleData } from '../../../../mocks/MockInstances.js';
 
@@ -26,20 +26,29 @@ describe('PermissionNodeManager', () => {
 		});
 	});
 
+	function apply(target: User | GuildMember | Role, nodes: PermissionsNode[]) {
+		Object.assign(entity, { [entity.permissionNodes.settingsPropertyFor(target)]: nodes });
+	}
+
 	describe('add', () => {
+		function add(target: User | GuildMember | Role, command: string, action: PermissionNodeAction) {
+			const nodes = entity.permissionNodes.add(target, command, action);
+			apply(target, nodes);
+		}
+
 		describe('user', () => {
 			const user = createUser();
 
 			test('GIVEN an User with no node THEN creates new one', () => {
-				entity.permissionNodes.add(user, 'ping', PermissionNodeAction.Allow);
+				add(user, 'ping', PermissionNodeAction.Allow);
 
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([]);
 				expect(entity.permissionsUsers).toEqual<PermissionsNode[]>([{ id: user.id, allow: ['ping'], deny: [] }]);
 			});
 
 			test('GIVEN an User with a node THEN modifies existing one', () => {
-				entity.permissionNodes.add(user, 'ping', PermissionNodeAction.Allow);
-				entity.permissionNodes.add(user, 'balance', PermissionNodeAction.Allow);
+				add(user, 'ping', PermissionNodeAction.Allow);
+				add(user, 'balance', PermissionNodeAction.Allow);
 
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([]);
 				expect(entity.permissionsUsers).toEqual<PermissionsNode[]>([{ id: user.id, allow: ['ping', 'balance'], deny: [] }]);
@@ -47,20 +56,18 @@ describe('PermissionNodeManager', () => {
 		});
 
 		describe('member', () => {
-			test('GIVEN a GuildMember with no node THEN creates new one', () => {
-				const member = createGuildMember({}, guild);
+			const member = createGuildMember({}, guild);
 
-				entity.permissionNodes.add(member, 'ping', PermissionNodeAction.Deny);
+			test('GIVEN a GuildMember with no node THEN creates new one', () => {
+				add(member, 'ping', PermissionNodeAction.Deny);
 
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([]);
 				expect(entity.permissionsUsers).toEqual<PermissionsNode[]>([{ id: member.id, allow: [], deny: ['ping'] }]);
 			});
 
 			test('GIVEN a GuildMember with a node THEN modifies existing one', () => {
-				const member = createGuildMember({}, guild);
-
-				entity.permissionNodes.add(member, 'ping', PermissionNodeAction.Deny);
-				entity.permissionNodes.add(member, 'balance', PermissionNodeAction.Deny);
+				add(member, 'ping', PermissionNodeAction.Deny);
+				add(member, 'balance', PermissionNodeAction.Deny);
 
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([]);
 				expect(entity.permissionsUsers).toEqual<PermissionsNode[]>([{ id: member.id, allow: [], deny: ['ping', 'balance'] }]);
@@ -70,7 +77,7 @@ describe('PermissionNodeManager', () => {
 		describe('role', () => {
 			test('GIVEN a Role with no node THEN creates new one', () => {
 				const role = guild.roles.cache.get(roleData.id)!;
-				entity.permissionNodes.add(role, 'ping', PermissionNodeAction.Allow);
+				add(role, 'ping', PermissionNodeAction.Allow);
 
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([{ id: role.id, allow: ['ping'], deny: [] }]);
 				expect(entity.permissionsUsers).toEqual<PermissionsNode[]>([]);
@@ -78,8 +85,8 @@ describe('PermissionNodeManager', () => {
 
 			test('GIVEN a Role with a node THEN modifies existing one', () => {
 				const role = guild.roles.cache.get(roleData.id)!;
-				entity.permissionNodes.add(role, 'ping', PermissionNodeAction.Allow);
-				entity.permissionNodes.add(role, 'balance', PermissionNodeAction.Deny);
+				add(role, 'ping', PermissionNodeAction.Allow);
+				add(role, 'balance', PermissionNodeAction.Deny);
 
 				expect(entity.permissionsRoles).toEqual<PermissionsNode[]>([{ id: role.id, allow: ['ping'], deny: ['balance'] }]);
 				expect(entity.permissionsUsers).toEqual<PermissionsNode[]>([]);
@@ -88,12 +95,17 @@ describe('PermissionNodeManager', () => {
 	});
 
 	describe('reset', () => {
+		function reset(target: User | GuildMember | Role) {
+			const nodes = entity.permissionNodes.reset(target);
+			apply(target, nodes);
+		}
+
 		describe('user', () => {
 			const user = createUser();
 
 			test('GIVEN an empty node THEN throws error', () => {
 				try {
-					entity.permissionNodes.reset(user);
+					reset(user);
 					fail();
 				} catch (error: unknown) {
 					const casted = error as UserError;
@@ -110,7 +122,7 @@ describe('PermissionNodeManager', () => {
 				const member = createGuildMember({}, guild);
 
 				try {
-					entity.permissionNodes.reset(member);
+					reset(member);
 					fail();
 				} catch (error: unknown) {
 					const casted = error as UserError;
@@ -126,7 +138,7 @@ describe('PermissionNodeManager', () => {
 			test('GIVEN an empty node THEN throws error', () => {
 				const role = createGuildMember({}, guild);
 				try {
-					entity.permissionNodes.reset(role);
+					reset(role);
 					fail();
 				} catch (error: unknown) {
 					const casted = error as UserError;
@@ -157,7 +169,7 @@ describe('PermissionNodeManager', () => {
 			entity.permissionsRoles.push({ id: roleDeveloper.id, allow: ['ping'], deny: [] });
 			entity.permissionsRoles.push({ id: roleContributor.id, allow: [], deny: ['ping'] });
 
-			entity.permissionNodes.refresh();
+			entity.permissionsRoles = entity.permissionNodes.refresh();
 
 			const sorted = [...getSorted().entries()];
 			expect(sorted.length).toBe(4);

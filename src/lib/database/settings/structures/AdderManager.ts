@@ -1,5 +1,4 @@
 import type { GuildEntity } from '#lib/database/entities/GuildEntity';
-import { GuildSettings } from '#lib/database/keys';
 import type { IBaseManager } from '#lib/database/settings/base/IBaseManager';
 import { Adder } from '#lib/database/utils/Adder';
 import { isNullishOrZero, type Nullish } from '@sapphire/utilities';
@@ -25,81 +24,35 @@ export class AdderManager implements IBaseManager {
 	public refresh(): void {
 		const settings = this.#settings;
 		this.attachments = this.makeAdder(
-			settings[GuildSettings.AutoModeration.Attachments.ThresholdMaximum], //
-			settings[GuildSettings.AutoModeration.Attachments.ThresholdDuration]
+			settings.selfmodAttachmentsThresholdMaximum, //
+			settings.selfmodAttachmentsThresholdDuration
 		);
-		this.capitals = this.makeAdder(
-			settings[GuildSettings.AutoModeration.Capitals.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Capitals.ThresholdDuration]
-		);
+		this.capitals = this.makeAdder(settings.selfmodCapitalsThresholdMaximum, settings.selfmodCapitalsThresholdDuration);
 		this.links = this.makeAdder(
-			settings[GuildSettings.AutoModeration.Links.ThresholdMaximum], //
-			settings[GuildSettings.AutoModeration.Links.ThresholdDuration]
+			settings.selfmodLinksThresholdMaximum, //
+			settings.selfmodLinksThresholdDuration
 		);
-		this.messages = this.makeAdder(
-			settings[GuildSettings.AutoModeration.Messages.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Messages.ThresholdDuration]
-		);
-		this.newlines = this.makeAdder(
-			settings[GuildSettings.AutoModeration.NewLines.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.NewLines.ThresholdDuration]
-		);
-		this.invites = this.makeAdder(
-			settings[GuildSettings.AutoModeration.Invites.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Invites.ThresholdDuration]
-		);
-		this.words = this.makeAdder(
-			settings[GuildSettings.AutoModeration.Filter.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Filter.ThresholdDuration]
-		);
-		this.reactions = this.makeAdder(
-			settings[GuildSettings.AutoModeration.Reactions.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Reactions.ThresholdDuration]
-		);
+		this.messages = this.makeAdder(settings.selfmodMessagesThresholdMaximum, settings.selfmodMessagesThresholdDuration);
+		this.newlines = this.makeAdder(settings.selfmodNewlinesThresholdMaximum, settings.selfmodNewlinesThresholdDuration);
+		this.invites = this.makeAdder(settings.selfmodInvitesThresholdMaximum, settings.selfmodInvitesThresholdDuration);
+		this.words = this.makeAdder(settings.selfmodFilterThresholdMaximum, settings.selfmodFilterThresholdDuration);
+		this.reactions = this.makeAdder(settings.selfmodReactionsThresholdMaximum, settings.selfmodReactionsThresholdDuration);
 	}
 
 	public onPatch(): void {
 		const settings = this.#settings;
 		this.attachments = this.updateAdder(
 			this.attachments,
-			settings[GuildSettings.AutoModeration.Attachments.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Attachments.ThresholdDuration]
+			settings.selfmodAttachmentsThresholdMaximum,
+			settings.selfmodAttachmentsThresholdDuration
 		);
-		this.capitals = this.updateAdder(
-			this.capitals,
-			settings[GuildSettings.AutoModeration.Capitals.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Capitals.ThresholdDuration]
-		);
-		this.links = this.updateAdder(
-			this.links,
-			settings[GuildSettings.AutoModeration.Links.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Links.ThresholdDuration]
-		);
-		this.messages = this.updateAdder(
-			this.messages,
-			settings[GuildSettings.AutoModeration.Messages.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Messages.ThresholdDuration]
-		);
-		this.newlines = this.updateAdder(
-			this.newlines,
-			settings[GuildSettings.AutoModeration.NewLines.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.NewLines.ThresholdDuration]
-		);
-		this.invites = this.updateAdder(
-			this.invites,
-			settings[GuildSettings.AutoModeration.Invites.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Invites.ThresholdDuration]
-		);
-		this.words = this.updateAdder(
-			this.words,
-			settings[GuildSettings.AutoModeration.Filter.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Filter.ThresholdDuration]
-		);
-		this.reactions = this.updateAdder(
-			this.reactions,
-			settings[GuildSettings.AutoModeration.Reactions.ThresholdMaximum],
-			settings[GuildSettings.AutoModeration.Reactions.ThresholdDuration]
-		);
+		this.capitals = this.updateAdder(this.capitals, settings.selfmodCapitalsThresholdMaximum, settings.selfmodCapitalsThresholdDuration);
+		this.links = this.updateAdder(this.links, settings.selfmodLinksThresholdMaximum, settings.selfmodLinksThresholdDuration);
+		this.messages = this.updateAdder(this.messages, settings.selfmodMessagesThresholdMaximum, settings.selfmodMessagesThresholdDuration);
+		this.newlines = this.updateAdder(this.newlines, settings.selfmodNewlinesThresholdMaximum, settings.selfmodNewlinesThresholdDuration);
+		this.invites = this.updateAdder(this.invites, settings.selfmodInvitesThresholdMaximum, settings.selfmodInvitesThresholdDuration);
+		this.words = this.updateAdder(this.words, settings.selfmodFilterThresholdMaximum, settings.selfmodFilterThresholdDuration);
+		this.reactions = this.updateAdder(this.reactions, settings.selfmodReactionsThresholdMaximum, settings.selfmodReactionsThresholdDuration);
 	}
 
 	public onRemove(): void {

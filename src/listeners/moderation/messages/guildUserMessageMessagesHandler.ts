@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -13,13 +13,13 @@ import type { TextChannel } from 'discord.js';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationMessages,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationMessagesWithMaximum,
-	keyEnabled: GuildSettings.AutoModeration.Messages.Enabled,
-	ignoredChannelsPath: GuildSettings.AutoModeration.Messages.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.AutoModeration.Messages.IgnoredRoles,
-	softPunishmentPath: GuildSettings.AutoModeration.Messages.SoftAction,
+	keyEnabled: 'selfmodMessagesEnabled',
+	ignoredChannelsPath: 'selfmodMessagesIgnoredChannels',
+	ignoredRolesPath: 'selfmodMessagesIgnoredRoles',
+	softPunishmentPath: 'selfmodMessagesSoftAction',
 	hardPunishmentPath: {
-		action: GuildSettings.AutoModeration.Messages.HardAction,
-		actionDuration: GuildSettings.AutoModeration.Messages.HardActionDuration,
+		action: 'selfmodMessagesHardAction',
+		actionDuration: 'selfmodMessagesHardActionDuration',
 		adder: 'messages'
 	}
 })
@@ -28,10 +28,8 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 
 	protected async preProcess(message: GuildMessage): Promise<1 | null> {
 		// Retrieve the threshold
-		const [threshold, queueSize] = await readSettings(message.guild, [
-			GuildSettings.AutoModeration.Messages.Maximum,
-			GuildSettings.AutoModeration.Messages.QueueSize
-		]);
+		const settings = await readSettings(message.guild);
+		const threshold = settings.selfmodMessagesMaximum;
 		if (threshold === 0) return null;
 
 		// Retrieve the content
@@ -40,7 +38,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 
 		// Retrieve the contents, then update them to add the new content to the FILO queue.
 		const contents = this.getContents(message);
-		const count = this.updateContents(contents, content.toLowerCase(), queueSize);
+		const count = this.updateContents(contents, content.toLowerCase(), settings.selfmodMessagesQueueSize);
 
 		// If count is bigger than threshold
 		// - return `count`

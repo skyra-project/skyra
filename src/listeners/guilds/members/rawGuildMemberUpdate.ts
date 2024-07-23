@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
 import { floatPromise } from '#utils/common';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -34,7 +34,8 @@ export class UserListener extends Listener {
 	private async handleRoleSets(guild: Guild, data: GatewayData) {
 		// Handle unique role sets
 		let hasMultipleRolesInOneSet = false;
-		const allRoleSets = await readSettings(guild, GuildSettings.Roles.UniqueRoleSets);
+		const settings = await readSettings(guild);
+		const allRoleSets = settings.rolesUniqueRoleSets;
 
 		// First check if the user has multiple roles from a set
 		for (const set of allRoleSets) {

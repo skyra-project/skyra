@@ -1,5 +1,5 @@
 import type { GuildSettingsOfType } from '#lib/database';
-import { writeSettings } from '#lib/database/settings';
+import { writeSettingsTransaction } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures/commands/SkyraCommand';
 import { PermissionLevels, type GuildMessage, type TypedFT } from '#lib/types';
@@ -27,15 +27,12 @@ export abstract class ChannelConfigurationCommand extends SkyraCommand {
 	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick(ChannelConfigurationCommand.hereOrTextChannelResolver);
 
-		await writeSettings(message.guild, (settings) => {
-			// If it's the same value, throw:
-			if (settings[this.settingsKey] === channel.id) {
-				this.error(LanguageKeys.Misc.ConfigurationEquals);
-			}
+		await using trx = await writeSettingsTransaction(message.guild);
+		if (trx.settings[this.settingsKey] === channel.id) {
+			this.error(LanguageKeys.Misc.ConfigurationEquals);
+		}
 
-			// Else set the new value:
-			Reflect.set(settings, this.settingsKey, channel.id);
-		});
+		await trx.write({ [this.settingsKey]: channel.id }).submit();
 
 		const content = args.t(this.responseKey, { channel: channel.toString() });
 		return send(message, content);

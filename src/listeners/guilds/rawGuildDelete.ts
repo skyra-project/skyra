@@ -1,12 +1,13 @@
+import { deleteSettingsCached } from '#lib/database';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
-import { GatewayDispatchEvents, type GatewayGuildDeleteDispatch } from 'discord.js';
+import { GatewayDispatchEvents, type GatewayGuildDeleteDispatchData } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.GuildDelete, emitter: 'ws' })
 export class UserListener extends Listener {
-	public run(data: GatewayGuildDeleteDispatch['d']) {
+	public run(data: GatewayGuildDeleteDispatchData) {
 		if (data.unavailable) return;
 
-		this.container.settings.guilds.delete(data.id);
+		deleteSettingsCached(data.id);
 	}
 }

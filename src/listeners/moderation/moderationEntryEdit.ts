@@ -1,4 +1,4 @@
-import { GuildSettings, ScheduleEntity, writeSettings } from '#lib/database';
+import { ScheduleEntity, writeSettings } from '#lib/database';
 import type { ModerationManager } from '#lib/moderation';
 import { getEmbed, getUndoTaskName } from '#lib/moderation/common';
 import type { GuildMessage } from '#lib/types';
@@ -55,7 +55,7 @@ export class UserListener extends Listener {
 				RESTJSONErrorCodes.MissingPermissions
 			);
 		} catch (error) {
-			await writeSettings(entry.guild, [[GuildSettings.Channels.Logs.Moderation, null]]);
+			await writeSettings(entry.guild, { channelsLogsModeration: null });
 		}
 	}
 

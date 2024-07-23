@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationCommand } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -20,9 +20,8 @@ type ValueType = Unlock | null;
 })
 export class UserModerationCommand extends ModerationCommand<Type, ValueType> {
 	protected override async preHandle(message: GuildMessage) {
-		return (await readSettings(message.guild, GuildSettings.Channels.Logs.MemberRemove))
-			? { unlock: getModeration(message.guild).createLock() }
-			: null;
+		const settings = await readSettings(message.guild);
+		return settings.channelsLogsMemberRemove ? { unlock: getModeration(message.guild).createLock() } : null;
 	}
 
 	protected override postHandle(_message: GuildMessage, { preHandled }: ModerationCommand.PostHandleParameters<ValueType>) {

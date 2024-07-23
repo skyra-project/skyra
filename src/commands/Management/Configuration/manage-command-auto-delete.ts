@@ -1,4 +1,4 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings, writeSettings, writeSettingsTransaction, type CommandAutoDelete } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
@@ -27,14 +27,15 @@ export class UserCommand extends SkyraSubcommand {
 		const channel = await args.pick('textChannelName');
 		const time = await args.pick('timespan', { minimum: seconds(1), maximum: minutes(2) });
 
-		await writeSettings(message.guild, (settings) => {
-			const commandAutoDelete = settings[GuildSettings.CommandAutoDelete];
-			const index = commandAutoDelete.findIndex(([id]) => id === channel.id);
-			const value: readonly [string, number] = [channel.id, time];
+		await using trx = await writeSettingsTransaction(message.guild);
+		const index = trx.settings.commandAutoDelete.findIndex(([id]) => id === channel.id);
+		const value: CommandAutoDelete = [channel.id, time];
 
-			if (index === -1) commandAutoDelete.push(value);
-			else commandAutoDelete[index] = value;
-		});
+		const commandAutoDelete =
+			index === -1 //
+				? trx.settings.commandAutoDelete.concat(value)
+				: trx.settings.commandAutoDelete.with(index, value);
+		await trx.write({ commandAutoDelete }).submit();
 
 		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, { channel: channel.toString(), time });
 		return send(message, content);
@@ -42,30 +43,31 @@ export class UserCommand extends SkyraSubcommand {
 
 	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const channel = await args.pick('textChannelName');
-		await writeSettings(message.guild, (settings) => {
-			const commandAutoDelete = settings[GuildSettings.CommandAutoDelete];
-			const index = commandAutoDelete.findIndex(([id]) => id === channel.id);
 
-			if (index === -1) {
-				this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemoveNotSet, { channel: channel.toString() });
-			}
+		await using trx = await writeSettingsTransaction(message.guild);
+		const index = trx.settings.commandAutoDelete.findIndex(([id]) => id === channel.id);
+		if (index === -1) {
+			this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemoveNotSet, { channel: channel.toString() });
+		}
 
-			commandAutoDelete.splice(index, 1);
-		});
+		const commandAutoDelete = trx.settings.commandAutoDelete.toSpliced(index, 1);
+		await trx.write({ commandAutoDelete }).submit();
 
 		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemove, { channel: channel.toString() });
 		return send(message, content);
 	}
 
 	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
-		await writeSettings(message.guild, [[GuildSettings.CommandAutoDelete, []]]);
+		await writeSettings(message.guild, { commandAutoDelete: [] });
 
 		const content = args.t(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset);
 		return send(message, content);
 	}
 
 	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
-		const commandAutoDelete = await readSettings(message.guild, GuildSettings.CommandAutoDelete);
+		const settings = await readSettings(message.guild);
+
+		const { commandAutoDelete } = settings;
 		if (!commandAutoDelete.length) this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
 
 		const list: string[] = [];

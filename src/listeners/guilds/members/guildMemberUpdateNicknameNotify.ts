@@ -1,4 +1,5 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -13,8 +14,8 @@ import type { GuildMember } from 'discord.js';
 @ApplyOptions<Listener.Options>({ event: Events.GuildMemberUpdate })
 export class UserListener extends Listener {
 	public async run(previous: GuildMember, next: GuildMember) {
-		const key = GuildSettings.Channels.Logs.MemberNickNameUpdate;
-		const [logChannelId, t] = await readSettings(next, (settings) => [settings[key], settings.getLanguage()]);
+		const settings = await readSettings(next);
+		const logChannelId = settings.channelsLogsMemberNickNameUpdate;
 		if (isNullish(logChannelId)) return;
 
 		// Send the Nickname log
@@ -22,7 +23,8 @@ export class UserListener extends Listener {
 		const nextNickname = next.nickname;
 		const { user } = next;
 		if (prevNickname !== nextNickname) {
-			this.container.client.emit(Events.GuildMessageLog, next.guild, logChannelId, key, () =>
+			const t = getT(settings.language);
+			this.container.client.emit(Events.GuildMessageLog, next.guild, logChannelId, 'channelsLogsMemberNickNameUpdate', () =>
 				new EmbedBuilder()
 					.setColor(Colors.Yellow)
 					.setAuthor(getFullEmbedAuthor(user))

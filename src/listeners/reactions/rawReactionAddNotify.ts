@@ -1,5 +1,6 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import { api } from '#lib/discord/Api';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import type { LLRCData, LLRCDataEmoji } from '#utils/LongLivingReactionCollector';
@@ -42,28 +43,21 @@ export class UserListener extends Listener {
 		// If the bot cannot fetch messages, do not proceed:
 		if (!this.#canFetchMessages(data.channel)) return;
 
-		const [t, targetChannelId, allowedEmojis, twemojiEnabled, ignoreChannels, ignoreReactionAdd, ignoreAllEvents] = await readSettings(
-			data.guild,
-			(settings) => [
-				settings.getLanguage(),
-				settings[GuildSettings.Channels.Logs.Reaction],
-				settings[GuildSettings.AutoModeration.Reactions.Allowed],
-				settings[GuildSettings.Events.IncludeTwemoji],
-				settings[GuildSettings.Messages.IgnoreChannels],
-				settings[GuildSettings.Channels.Ignore.ReactionAdd],
-				settings[GuildSettings.Channels.Ignore.All]
-			]
-		);
+		const settings = await readSettings(data.guild);
+		const t = getT(settings.language);
+		const allowedEmojis = settings.selfmodReactionsAllowed;
 
 		const emojiId = getEmojiId(emoji);
 		if (allowedEmojis.some((allowedEmoji) => getEmojiId(allowedEmoji) === emojiId)) return;
 
-		this.container.client.emit(Events.ReactionBlocked, data, emoji);
-		if (isNullish(targetChannelId) || (!twemojiEnabled && data.emoji.id === null)) return;
+		const targetChannelId = settings.channelsLogsReaction;
 
-		if (ignoreChannels.includes(data.channel.id)) return;
-		if (ignoreReactionAdd.some((id) => id === data.channel.id || data.channel.parentId === id)) return;
-		if (ignoreAllEvents.some((id) => id === data.channel.id || data.channel.parentId === id)) return;
+		this.container.client.emit(Events.ReactionBlocked, data, emoji);
+		if (isNullish(targetChannelId) || (!settings.eventsTwemojiReactions && data.emoji.id === null)) return;
+
+		if (settings.messagesIgnoreChannels.includes(data.channel.id)) return;
+		if (settings.channelsIgnoreReactionAdds.some((id) => id === data.channel.id || data.channel.parentId === id)) return;
+		if (settings.channelsIgnoreAll.some((id) => id === data.channel.id || data.channel.parentId === id)) return;
 
 		const count = await this.#retrieveCount(data, emoji);
 		if (isNullish(count) || count > 1) return;
@@ -72,7 +66,7 @@ export class UserListener extends Listener {
 		if (user.bot) return;
 
 		await getLogger(data.guild).send({
-			key: GuildSettings.Channels.Logs.Reaction,
+			key: 'channelsLogsReaction',
 			channelId: targetChannelId,
 			makeMessage: () =>
 				new EmbedBuilder()

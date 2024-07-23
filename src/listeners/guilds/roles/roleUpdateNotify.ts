@@ -1,37 +1,36 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { differenceBitField } from '#utils/common/comparators';
 import { Colors } from '#utils/constants';
+import { getLogger } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullish } from '@sapphire/utilities';
-import type { Role, TextChannel } from 'discord.js';
+import type { Role } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: Events.GuildRoleUpdate })
 export class UserListener extends Listener<typeof Events.GuildRoleUpdate> {
 	public async run(previous: Role, next: Role) {
-		const [channelId, t] = await readSettings(next, (settings) => [settings[GuildSettings.Channels.Logs.RoleUpdate], settings.getLanguage()]);
-		if (isNullish(channelId)) return;
+		const settings = await readSettings(next);
+		await getLogger(next.guild).send({
+			key: 'channelsLogsRoleUpdate',
+			channelId: settings.channelsLogsRoleUpdate,
+			makeMessage: () => {
+				const t = getT(settings.language);
+				const changes: string[] = [...this.differenceRole(t, previous, next)];
+				if (changes.length === 0) return null;
 
-		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
-		if (channel === undefined) {
-			await writeSettings(next, [[GuildSettings.Channels.Logs.RoleUpdate, null]]);
-			return;
-		}
-
-		const changes: string[] = [...this.differenceRole(t, previous, next)];
-		if (changes.length === 0) return;
-
-		const embed = new EmbedBuilder()
-			.setColor(Colors.Yellow)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
-			.setDescription(changes.join('\n'))
-			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.RoleUpdate) })
-			.setTimestamp();
-		await channel.send({ embeds: [embed] });
+				return new EmbedBuilder()
+					.setColor(Colors.Yellow)
+					.setAuthor({ name: `${next.name} (${next.id})`, iconURL: next.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
+					.setDescription(changes.join('\n'))
+					.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.RoleUpdate) })
+					.setTimestamp();
+			}
+		});
 	}
 
 	private *differenceRole(t: TFunction, previous: Role, next: Role) {

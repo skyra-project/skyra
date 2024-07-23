@@ -1,5 +1,4 @@
 import { transformOauthGuildsAndUser } from '#lib/api/utils';
-import { GuildSettings } from '#lib/database/keys';
 import { readSettings } from '#lib/database/settings';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#lib/games/TriviaManager';
 import { getHandler } from '#root/languages/index';
@@ -180,9 +179,9 @@ function parseInternationalizationOptions(): InternationalizationOptions {
 		defaultMissingKey: 'default',
 		defaultNS: 'globals',
 		defaultLanguageDirectory: LANGUAGE_ROOT,
-		fetchLanguage: ({ guild }) => {
+		fetchLanguage: async ({ guild }) => {
 			if (!guild) return 'en-US';
-			return readSettings(guild, GuildSettings.Language);
+			return (await readSettings(guild)).language;
 		},
 		formatters: parseInternationalizationFormatters(),
 		i18next: (_: string[], languages: string[]) => ({

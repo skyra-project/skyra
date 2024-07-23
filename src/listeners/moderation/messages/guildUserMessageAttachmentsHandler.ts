@@ -1,4 +1,3 @@
-import { GuildSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { ModerationMessageListener } from '#lib/moderation';
 import type { GuildMessage } from '#lib/types';
@@ -13,13 +12,13 @@ import type { TextChannel } from 'discord.js';
 @ApplyOptions<ModerationMessageListener.Options>({
 	reasonLanguageKey: LanguageKeys.Events.Moderation.Messages.ModerationAttachments,
 	reasonLanguageKeyWithMaximum: LanguageKeys.Events.Moderation.Messages.ModerationAttachmentsWithMaximum,
-	keyEnabled: GuildSettings.AutoModeration.Attachments.Enabled,
-	ignoredChannelsPath: GuildSettings.AutoModeration.Attachments.IgnoredChannels,
-	ignoredRolesPath: GuildSettings.AutoModeration.Attachments.IgnoredRoles,
-	softPunishmentPath: GuildSettings.AutoModeration.Attachments.SoftAction,
+	keyEnabled: 'selfmodAttachmentsEnabled',
+	ignoredChannelsPath: 'selfmodAttachmentsIgnoredChannels',
+	ignoredRolesPath: 'selfmodAttachmentsIgnoredRoles',
+	softPunishmentPath: 'selfmodAttachmentsSoftAction',
 	hardPunishmentPath: {
-		action: GuildSettings.AutoModeration.Attachments.HardAction,
-		actionDuration: GuildSettings.AutoModeration.Attachments.HardActionDuration,
+		action: 'selfmodAttachmentsHardAction',
+		actionDuration: 'selfmodAttachmentsHardActionDuration',
 		adder: 'attachments'
 	}
 })

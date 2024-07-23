@@ -3,12 +3,13 @@ import {
 	configurableKeys,
 	isSchemaKey,
 	readSettings,
-	writeSettings,
+	writeSettingsTransaction,
 	type GuildDataKey,
 	type GuildDataValue,
 	type GuildEntity,
 	type Serializer
 } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { seconds } from '#utils/common';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -30,7 +31,8 @@ export class UserRoute extends Route {
 
 		if (!(await canManage(guild, member))) return response.error(HttpCodes.Forbidden);
 
-		return readSettings(guild, (settings) => response.json(settings));
+		const settings = await readSettings(guild);
+		return response.json(settings);
 	}
 
 	@authenticated()
@@ -52,17 +54,11 @@ export class UserRoute extends Route {
 
 		const entries = requestBody.data;
 		try {
-			const settings = await writeSettings(guild, async (settings) => {
-				const pairs = await this.validateAll(settings, guild, entries);
+			await using trx = await writeSettingsTransaction(guild);
+			const data = await this.validateAll(trx.settings, guild, entries);
+			await trx.write(Object.fromEntries(data)).submit();
 
-				for (const [key, value] of pairs) {
-					Reflect.set(settings, key, value);
-				}
-
-				return settings.toJSON();
-			});
-
-			return response.status(HttpCodes.OK).json(settings);
+			return response.status(HttpCodes.OK).json(trx.settings.toJSON());
 		} catch (errors) {
 			return response.status(HttpCodes.BadRequest).json(errors);
 		}
@@ -93,11 +89,11 @@ export class UserRoute extends Route {
 		return Promise.all(value.map((value) => serializer.isValid(value, ctx)));
 	}
 
-	private async validateAll(entity: GuildEntity, guild: Guild, pairs: readonly [GuildDataKey, GuildDataValue][]) {
+	private async validateAll(entity: Readonly<GuildEntity>, guild: Guild, pairs: readonly [GuildDataKey, GuildDataValue][]) {
 		const context: PartialSerializerUpdateContext = {
 			entity,
 			guild,
-			t: entity.getLanguage()
+			t: getT(entity.language)
 		};
 
 		const errors: string[] = [];

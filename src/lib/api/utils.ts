@@ -1,6 +1,5 @@
 import { flattenGuild } from '#lib/api/ApiTransformers';
 import type { OauthFlattenedGuild, PartialOauthFlattenedGuild, TransformedLoginData } from '#lib/api/types';
-import * as GuildSettings from '#lib/database/keys/settings/All';
 import { readSettings } from '#lib/database/settings';
 import type { SkyraCommand } from '#lib/structures';
 import { PermissionsBits } from '#lib/util/bits';
@@ -71,9 +70,11 @@ export function ratelimit(time: number, limit = 1, auth = false) {
 export async function canManage(guild: Guild, member: GuildMember): Promise<boolean> {
 	if (guild.ownerId === member.id) return true;
 
-	const [roles, pnodes] = await readSettings(guild, (settings) => [settings[GuildSettings.Roles.Admin], settings.permissionNodes]);
-
-	return isAdmin(member, roles) && (pnodes.run(member, container.stores.get('commands').get('conf') as SkyraCommand) ?? true);
+	const settings = await readSettings(guild);
+	return (
+		isAdmin(member, settings.rolesAdmin) &&
+		(settings.permissionNodes.run(member, container.stores.get('commands').get('conf') as SkyraCommand) ?? true)
+	);
 }
 
 async function getManageable(id: string, oauthGuild: RESTAPIPartialCurrentUserGuild, guild: Guild | undefined): Promise<boolean> {

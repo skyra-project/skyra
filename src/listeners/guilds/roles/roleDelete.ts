@@ -1,54 +1,57 @@
-import { writeSettings } from '#lib/database';
+import { writeSettingsTransaction, type StickyRole, type UniqueRoleSet } from '#lib/database';
 import { Listener } from '@sapphire/framework';
+import { filter, map, toArray } from '@sapphire/iterator-utilities';
 import type { Role } from 'discord.js';
 
 export class UserListener extends Listener {
-	public run(role: Role) {
+	public async run(role: Role) {
 		if (!role.guild.available) return;
 
-		return writeSettings(role, (settings) => {
-			for (const stickyRole of settings.stickyRoles) {
-				stickyRole.roles = stickyRole.roles.filter((srr) => srr !== role.id);
-			}
+		await using trx = await writeSettingsTransaction(role);
 
-			settings.stickyRoles = settings.stickyRoles.filter((sr) => Boolean(sr.roles.length));
+		trx.write({ stickyRoles: this.#filterStickyRoles(trx.settings.stickyRoles, role) });
+		trx.write({ rolesUniqueRoleSets: this.#filterUniqueRoleSets(trx.settings.rolesUniqueRoleSets, role) });
 
-			for (const uniqueRoleSet of settings.rolesUniqueRoleSets) {
-				uniqueRoleSet.roles = uniqueRoleSet.roles.filter((urs) => urs !== role.id);
-			}
+		trx.write({ reactionRoles: trx.settings.reactionRoles.filter((rr) => rr.role !== role.id) });
+		trx.write({ rolesModerator: trx.settings.rolesModerator.filter((rm) => rm !== role.id) });
+		trx.write({ rolesAdmin: trx.settings.rolesAdmin.filter((rm) => rm !== role.id) });
+		trx.write({ rolesPublic: trx.settings.rolesPublic.filter((rm) => rm !== role.id) });
 
-			settings.rolesUniqueRoleSets = settings.rolesUniqueRoleSets.filter((sr) => Boolean(sr.roles.length));
+		trx.write({ selfmodAttachmentsIgnoredRoles: trx.settings.selfmodAttachmentsIgnoredRoles.filter((rm) => rm !== role.id) });
+		trx.write({ selfmodCapitalsIgnoredRoles: trx.settings.selfmodCapitalsIgnoredRoles.filter((rm) => rm !== role.id) });
+		trx.write({ selfmodLinksIgnoredRoles: trx.settings.selfmodLinksIgnoredRoles.filter((rm) => rm !== role.id) });
+		trx.write({ selfmodMessagesIgnoredRoles: trx.settings.selfmodMessagesIgnoredRoles.filter((rm) => rm !== role.id) });
+		trx.write({ selfmodNewlinesIgnoredRoles: trx.settings.selfmodNewlinesIgnoredRoles.filter((rm) => rm !== role.id) });
+		trx.write({ selfmodInvitesIgnoredRoles: trx.settings.selfmodInvitesIgnoredRoles.filter((rm) => rm !== role.id) });
+		trx.write({ selfmodFilterIgnoredRoles: trx.settings.selfmodFilterIgnoredRoles.filter((rm) => rm !== role.id) });
+		trx.write({ selfmodReactionsIgnoredRoles: trx.settings.selfmodReactionsIgnoredRoles.filter((rm) => rm !== role.id) });
 
-			settings.reactionRoles = settings.reactionRoles.filter((rr) => rr.role !== role.id);
-			settings.rolesModerator = settings.rolesModerator.filter((rm) => rm !== role.id);
-			settings.rolesAdmin = settings.rolesAdmin.filter((rm) => rm !== role.id);
-			settings.rolesPublic = settings.rolesPublic.filter((rm) => rm !== role.id);
+		if (trx.settings.rolesInitial === role.id) trx.write({ rolesInitial: null });
+		if (trx.settings.rolesInitialHumans === role.id) trx.write({ rolesInitialHumans: null });
+		if (trx.settings.rolesInitialBots === role.id) trx.write({ rolesInitialBots: null });
+		if (trx.settings.rolesMuted === role.id) trx.write({ rolesMuted: null });
+		if (trx.settings.rolesRestrictedReaction === role.id) trx.write({ rolesRestrictedReaction: null });
+		if (trx.settings.rolesRestrictedEmbed === role.id) trx.write({ rolesRestrictedEmbed: null });
+		if (trx.settings.rolesRestrictedEmoji === role.id) trx.write({ rolesRestrictedEmoji: null });
+		if (trx.settings.rolesRestrictedAttachment === role.id) trx.write({ rolesRestrictedAttachment: null });
+		if (trx.settings.rolesRestrictedVoice === role.id) trx.write({ rolesRestrictedVoice: null });
 
-			settings.selfmodAttachmentsIgnoredRoles = settings.selfmodAttachmentsIgnoredRoles.filter((rm) => rm !== role.id);
-			settings.selfmodCapitalsIgnoredRoles = settings.selfmodCapitalsIgnoredRoles.filter((rm) => rm !== role.id);
-			settings.selfmodLinksIgnoredRoles = settings.selfmodLinksIgnoredRoles.filter((rm) => rm !== role.id);
-			settings.selfmodMessagesIgnoredRoles = settings.selfmodMessagesIgnoredRoles.filter((rm) => rm !== role.id);
-			settings.selfmodNewlinesIgnoredRoles = settings.selfmodNewlinesIgnoredRoles.filter((rm) => rm !== role.id);
-			settings.selfmodInvitesIgnoredRoles = settings.selfmodInvitesIgnoredRoles.filter((rm) => rm !== role.id);
-			settings.selfmodFilterIgnoredRoles = settings.selfmodFilterIgnoredRoles.filter((rm) => rm !== role.id);
-			settings.selfmodReactionsIgnoredRoles = settings.selfmodReactionsIgnoredRoles.filter((rm) => rm !== role.id);
+		if (trx.settings.permissionNodes.has(role.id)) {
+			trx.write({ permissionsRoles: trx.settings.permissionNodes.refresh() });
+		}
 
-			if (settings.rolesInitial === role.id) settings.rolesInitial = null;
-			if (settings.rolesInitialHumans === role.id) settings.rolesInitialHumans = null;
-			if (settings.rolesInitialBots === role.id) settings.rolesInitialBots = null;
-			if (settings.rolesMuted === role.id) settings.rolesMuted = null;
+		await trx.submit();
+	}
 
-			if (settings.rolesRestrictedReaction === role.id) settings.rolesRestrictedReaction = null;
-			if (settings.rolesRestrictedEmbed === role.id) settings.rolesRestrictedEmbed = null;
+	#filterStickyRoles(roles: readonly StickyRole[], role: Role) {
+		const mapped = map(roles, (entry): StickyRole => ({ user: entry.user, roles: entry.roles.filter((srr) => srr !== role.id) }));
+		const filtered = filter(mapped, (entry) => entry.roles.length > 0);
+		return toArray(filtered);
+	}
 
-			if (settings.rolesRestrictedEmoji === role.id) settings.rolesRestrictedEmoji = null;
-			if (settings.rolesRestrictedAttachment === role.id) settings.rolesRestrictedAttachment = null;
-
-			if (settings.rolesRestrictedVoice === role.id) settings.rolesRestrictedVoice = null;
-
-			if (this.container.settings.guilds.get(role.guild.id)?.permissionNodes.has(role.id)) {
-				settings.permissionNodes.refresh();
-			}
-		});
+	#filterUniqueRoleSets(roles: readonly UniqueRoleSet[], role: Role) {
+		const mapped = map(roles, (entry): UniqueRoleSet => ({ name: entry.name, roles: entry.roles.filter((urs) => urs !== role.id) }));
+		const filtered = filter(mapped, (entry) => entry.roles.length > 0);
+		return toArray(filtered);
 	}
 }

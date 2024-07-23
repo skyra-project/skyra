@@ -1,4 +1,4 @@
-import { CommandMatcher, GuildSettings, readSettings } from '#lib/database';
+import { CommandMatcher, readSettings } from '#lib/database';
 import { Events, type GuildMessage } from '#lib/types';
 import { deleteMessage, getCommand } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -20,20 +20,17 @@ export class UserListener extends Listener<Events.MessageDeleteBulk> {
 		// If the auto-delete behavior cannot be customized, delete all:
 		if (!this.canBeCustomized(first)) return this.deleteAll(messages);
 
-		const [ignoredAll, ignoredChannels, ignoredCommands, ignoredRoles] = await readSettings(first.guild, [
-			GuildSettings.Messages.AutoDelete.IgnoredAll,
-			GuildSettings.Messages.AutoDelete.IgnoredChannels,
-			GuildSettings.Messages.AutoDelete.IgnoredCommands,
-			GuildSettings.Messages.AutoDelete.IgnoredRoles
-		]);
+		const settings = await readSettings(first.guild);
 
 		// If auto-delete is disabled globally, skip all:
-		if (ignoredAll) return;
+		if (settings.messagesAutoDeleteIgnoredAll) return;
 
 		// If the channel is ignored, skip all:
-		if (ignoredChannels.includes(first.channel.id)) return;
+		if (settings.messagesAutoDeleteIgnoredChannels.includes(first.channel.id)) return;
 
 		// If the auto-delete behavior is not changed, delete all:
+		const ignoredCommands = settings.messagesAutoDeleteIgnoredCommands;
+		const ignoredRoles = settings.messagesAutoDeleteIgnoredRoles;
 		if (ignoredCommands.length === 0 && ignoredRoles.length === 0) return this.deleteAll(messages);
 
 		for (const message of messages.values()) {

@@ -1,14 +1,15 @@
-import { GuildSettings, readSettings, writeSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { toPermissionsArray } from '#utils/bits';
 import { seconds } from '#utils/common';
 import { Colors, LongWidthSpace } from '#utils/constants';
+import { getLogger } from '#utils/functions';
 import { EmbedBuilder } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { isNsfwChannel } from '@sapphire/discord.js-utilities';
 import { Events, Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
-import { isNullish } from '@sapphire/utilities';
 import {
 	ChannelType,
 	OverwriteType,
@@ -21,27 +22,25 @@ import {
 
 @ApplyOptions<Listener.Options>({ event: Events.ChannelCreate })
 export class UserListener extends Listener<typeof Events.ChannelCreate> {
-	public async run(next: GuildChannel) {
-		const [channelId, t] = await readSettings(next.guild, (settings) => [
-			settings[GuildSettings.Channels.Logs.ChannelCreate],
-			settings.getLanguage()
-		]);
-		if (isNullish(channelId)) return;
-
-		const channel = next.guild.channels.cache.get(channelId) as TextChannel | undefined;
-		if (channel === undefined) {
-			await writeSettings(next.guild, [[GuildSettings.Channels.Logs.ChannelCreate, null]]);
-			return;
-		}
-
-		const changes: string[] = [...this.getChannelInformation(t, next)];
-		const embed = new EmbedBuilder()
-			.setColor(Colors.Green)
-			.setAuthor({ name: `${next.name} (${next.id})`, iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined })
-			.setDescription(changes.join('\n'))
-			.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ChannelCreate) })
-			.setTimestamp();
-		await channel.send({ embeds: [embed] });
+	public async run(channel: GuildChannel) {
+		const settings = await readSettings(channel.guild);
+		await getLogger(channel.guild).send({
+			key: 'channelsLogsChannelCreate',
+			channelId: settings.channelsLogsChannelCreate,
+			makeMessage: () => {
+				const t = getT(settings.language);
+				const changes: string[] = [...this.getChannelInformation(t, channel)];
+				return new EmbedBuilder()
+					.setColor(Colors.Green)
+					.setAuthor({
+						name: `${channel.name} (${channel.id})`,
+						iconURL: channel.guild.iconURL({ size: 64, extension: 'png' }) ?? undefined
+					})
+					.setDescription(changes.join('\n'))
+					.setFooter({ text: t(LanguageKeys.Events.Guilds.Logs.ChannelCreate) })
+					.setTimestamp();
+			}
+		});
 	}
 
 	private *getChannelInformation(t: TFunction, channel: GuildChannel) {

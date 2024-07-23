@@ -1,4 +1,5 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { GuildEntity, readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { type GuildMessage } from '#lib/types';
 import { escapeMarkdown } from '#utils/External/escapeMarkdown';
@@ -18,8 +19,7 @@ import {
 	strikethrough,
 	type APIUser,
 	type GatewayMessageUpdateDispatchData,
-	type GuildTextBasedChannel,
-	type Snowflake
+	type GuildTextBasedChannel
 } from 'discord.js';
 
 @ApplyOptions<Listener.Options>({ event: GatewayDispatchEvents.MessageUpdate, emitter: 'ws' })
@@ -38,22 +38,14 @@ export class UserListener extends Listener {
 		const currentContent = data.content ?? '';
 		if ((cachedMessage && cachedMessage.content === currentContent) || data.webhook_id || !data.author) return;
 
-		const key = GuildSettings.Channels.Logs[isNsfwChannel(channel) ? 'MessageUpdateNsfw' : 'MessageUpdate'];
-		const [t, logChannelId, ...settings] = await readSettings(guild, (settings) => [
-			settings.getLanguage(),
-			settings[key],
-			settings[GuildSettings.Events.UnknownMessages],
-			settings[GuildSettings.Events.IncludeBots],
-			settings[GuildSettings.Messages.IgnoreChannels],
-			settings[GuildSettings.Channels.Ignore.MessageEdit],
-			settings[GuildSettings.Channels.Ignore.All]
-		]);
-
+		const key: keyof GuildEntity = isNsfwChannel(channel) ? 'channelsLogsMessageUpdateNsfw' : 'channelsLogsMessageUpdate';
+		const settings = await readSettings(guild);
 		await getLogger(guild).send({
 			key,
-			channelId: logChannelId,
-			condition: () => this.onCondition(cachedMessage, channel, data.author!, ...settings),
+			channelId: settings[key],
+			condition: () => this.onCondition(cachedMessage, channel, data.author!, settings),
 			makeMessage: () => {
+				const t = getT(settings.language);
 				const embed = new EmbedBuilder()
 					.setColor(Colors.Amber)
 					.setAuthor(getFullEmbedAuthor(data.author!, messageLink(data.channel_id, data.id)))
@@ -71,26 +63,17 @@ export class UserListener extends Listener {
 		});
 	}
 
-	private onCondition(
-		cachedMessage: GuildMessage | undefined,
-		channel: GuildTextBasedChannel,
-		author: APIUser,
-		allowUnknownMessages: boolean,
-		includeBots: boolean,
-		ignoredChannels: readonly Snowflake[],
-		ignoredEdits: readonly Snowflake[],
-		ignoredAll: readonly Snowflake[]
-	) {
+	private onCondition(cachedMessage: GuildMessage | undefined, channel: GuildTextBasedChannel, author: APIUser, settings: GuildEntity) {
 		// If includeBots is false, and the message author is a bot, return false
-		if (!includeBots && author.bot) return false;
+		if (!settings.eventsIncludeBots && author.bot) return false;
 		// If allowUnknownMessages is false, and the message is nullish, return false
-		if (!allowUnknownMessages && isNullish(cachedMessage)) return false;
+		if (!settings.eventsUnknownMessages && isNullish(cachedMessage)) return false;
 		// If the channel is in the ignoredChannels array, return false
-		if (ignoredChannels.includes(channel.id)) return false;
+		if (settings.messagesIgnoreChannels.includes(channel.id)) return false;
 		// If the channel or its parent is in the ignoredEdits array, return false
-		if (ignoredEdits.some((id) => id === channel.id || channel.parentId === id)) return false;
+		if (settings.channelsIgnoreMessageEdits.some((id) => id === channel.id || channel.parentId === id)) return false;
 		// If the channel or its parent is in the ignoredAll array, return false
-		if (ignoredAll.some((id) => id === channel.id || channel.parentId === id)) return false;
+		if (settings.channelsIgnoreAll.some((id) => id === channel.id || channel.parentId === id)) return false;
 		// All checks passed, return true
 		return true;
 	}

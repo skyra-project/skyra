@@ -1,4 +1,4 @@
-import { GuildSettings, SettingsManager } from '#lib/database';
+import { SerializerStore, TaskStore } from '#lib/database';
 import { readSettings } from '#lib/database/settings/functions';
 import { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import { WorkerManager } from '#lib/moderation/workers/WorkerManager';
@@ -50,9 +50,11 @@ export class SkyraClient extends SapphireClient {
 	public constructor() {
 		super(CLIENT_OPTIONS);
 
+		container.stores.register(new SerializerStore());
+		container.stores.register(new TaskStore());
+
 		// Workers
 		container.workers = new WorkerManager();
-		container.settings = new SettingsManager();
 
 		// Analytics
 		this.schedules = new ScheduleManager();
@@ -80,8 +82,10 @@ export class SkyraClient extends SapphireClient {
 	 * Retrieves the prefix for the guild.
 	 * @param message The message that gives context.
 	 */
-	public override fetchPrefix = (message: Message) => {
-		if (isGuildMessage(message)) return readSettings(message.guild, GuildSettings.Prefix);
+	public override fetchPrefix = async (message: Message) => {
+		if (isGuildMessage(message)) {
+			return (await readSettings(message.guild)).prefix;
+		}
 		return [process.env.CLIENT_PREFIX, ''] as readonly string[];
 	};
 
@@ -89,7 +93,7 @@ export class SkyraClient extends SapphireClient {
 	 * Retrieves the language key for the message.
 	 * @param message The message that gives context.
 	 */
-	public fetchLanguage = (message: InternationalizationContext) => {
-		return message.guild ? readSettings(message.guild, GuildSettings.Language) : 'en-US';
+	public fetchLanguage = async (message: InternationalizationContext) => {
+		return message.guild ? (await readSettings(message.guild)).language : 'en-US';
 	};
 }

@@ -1,4 +1,5 @@
-import { GuildSettings, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
+import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events } from '#lib/types';
 import { Colors } from '#utils/constants';
@@ -13,8 +14,8 @@ import type { GuildMember } from 'discord.js';
 @ApplyOptions<Listener.Options>({ event: Events.GuildMemberUpdate })
 export class UserListener extends Listener {
 	public async run(previous: GuildMember, next: GuildMember) {
-		const key = GuildSettings.Channels.Logs.MemberRoleUpdate;
-		const [logChannelId, t] = await readSettings(next, (settings) => [settings[key], settings.getLanguage()]);
+		const settings = await readSettings(next);
+		const logChannelId = settings.channelsLogsMemberRolesUpdate;
 		if (isNullish(logChannelId)) return;
 
 		// Retrieve whether or not role logs should be sent from Guild Settings and
@@ -39,7 +40,8 @@ export class UserListener extends Listener {
 		const { user } = next;
 
 		// Set the Role change log
-		this.container.client.emit(Events.GuildMessageLog, next.guild, logChannelId, key, () =>
+		const t = getT(settings.language);
+		this.container.client.emit(Events.GuildMessageLog, next.guild, logChannelId, 'channelsLogsMemberRolesUpdate', () =>
 			new EmbedBuilder()
 				.setColor(Colors.Yellow)
 				.setAuthor(getFullEmbedAuthor(user))

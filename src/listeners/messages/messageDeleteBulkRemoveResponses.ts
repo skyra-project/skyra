@@ -49,7 +49,7 @@ export class UserListener extends Listener<Events.MessageDeleteBulk> {
 		return message.guild !== null;
 	}
 
-	private shouldBeIgnored(message: GuildMessage, ignoredCommands: string[], ignoredRoles: string[]): boolean {
+	private shouldBeIgnored(message: GuildMessage, ignoredCommands: readonly string[], ignoredRoles: readonly string[]): boolean {
 		// Check for ignored roles:
 		if (hasAtLeastOneKeyInMap(message.member.roles.cache, ignoredRoles)) return true;
 

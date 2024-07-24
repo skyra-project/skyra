@@ -6,7 +6,7 @@ import {
 	writeSettingsTransaction,
 	type GuildDataKey,
 	type GuildDataValue,
-	type GuildEntity,
+	type ReadonlyGuildEntity,
 	type Serializer
 } from '#lib/database';
 import { getT } from '#lib/i18n';
@@ -89,7 +89,7 @@ export class UserRoute extends Route {
 		return Promise.all(value.map((value) => serializer.isValid(value, ctx)));
 	}
 
-	private async validateAll(entity: Readonly<GuildEntity>, guild: Guild, pairs: readonly [GuildDataKey, GuildDataValue][]) {
+	private async validateAll(entity: ReadonlyGuildEntity, guild: Guild, pairs: readonly [GuildDataKey, GuildDataValue][]) {
 		const context: PartialSerializerUpdateContext = {
 			entity,
 			guild,

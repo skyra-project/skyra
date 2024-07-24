@@ -75,7 +75,7 @@
 		"@sapphire/snowflake": "^3.5.3",
 		"@sapphire/stopwatch": "^1.5.2",
 		"@sapphire/time-utilities": "^1.7.12",
-		"@sapphire/utilities": "^3.16.2",
+		"@sapphire/utilities": "^3.17.0",
 		"@sentry/node": "^8.19.0",
 		"@skyra/ai": "^1.2.0",
 		"@skyra/char": "^1.0.3",

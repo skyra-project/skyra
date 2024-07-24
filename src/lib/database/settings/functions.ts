@@ -1,4 +1,5 @@
 import { GuildEntity } from '#lib/database/entities/GuildEntity';
+import type { ReadonlyGuildData, ReadonlyGuildEntity } from '#lib/database/settings/types';
 import { container, type Awaitable } from '@sapphire/framework';
 import { RWLock } from 'async-rwlock';
 import { Collection, type GuildResolvable, type Snowflake } from 'discord.js';
@@ -13,7 +14,7 @@ export function deleteSettingsCached(guild: GuildResolvable) {
 	cache.delete(id);
 }
 
-export async function readSettings(guild: GuildResolvable): Promise<GuildEntity> {
+export async function readSettings(guild: GuildResolvable): Promise<ReadonlyGuildEntity> {
 	const id = resolveGuildId(guild);
 
 	const lock = locks.ensure(id, () => new RWLock());
@@ -29,13 +30,13 @@ export async function readSettings(guild: GuildResolvable): Promise<GuildEntity>
 	}
 }
 
-export function readSettingsCached(guild: GuildResolvable): GuildEntity | null {
+export function readSettingsCached(guild: GuildResolvable): ReadonlyGuildEntity | null {
 	return cache.get(resolveGuildId(guild)) ?? null;
 }
 
 export async function writeSettings(
 	guild: GuildResolvable,
-	data: Readonly<Partial<GuildEntity>> | ((settings: Readonly<GuildEntity>) => Awaitable<Readonly<Partial<GuildEntity>>>)
+	data: Partial<ReadonlyGuildEntity> | ((settings: ReadonlyGuildEntity) => Awaitable<Partial<ReadonlyGuildEntity>>)
 ) {
 	const id = resolveGuildId(guild);
 	const lock = locks.ensure(id, () => new RWLock());
@@ -82,7 +83,7 @@ export class Transaction {
 	#locking = true;
 
 	public constructor(
-		public readonly settings: Readonly<GuildEntity>,
+		public readonly settings: ReadonlyGuildEntity,
 		private readonly lock: RWLock
 	) {}
 
@@ -94,7 +95,7 @@ export class Transaction {
 		return this.#locking;
 	}
 
-	public write(data: Readonly<Partial<GuildEntity>>) {
+	public write(data: Partial<ReadonlyGuildData>) {
 		Object.assign(this.settings, data);
 		this.#hasChanges = true;
 		return this;
@@ -146,7 +147,7 @@ export class Transaction {
 	}
 }
 
-async function tryReload(entity: Readonly<GuildEntity>): Promise<void> {
+async function tryReload(entity: ReadonlyGuildEntity): Promise<void> {
 	try {
 		await entity.reload();
 	} catch (error) {

@@ -1,13 +1,13 @@
 import {
 	configurableKeys,
-	GuildEntity,
 	readSettings,
 	writeSettings,
 	type AdderKey,
 	type GuildData,
 	type GuildDataKey,
 	type GuildDataValue,
-	type GuildSettingsOfType
+	type GuildSettingsOfType,
+	type ReadonlyGuildEntity
 } from '#lib/database';
 import type { Adder } from '#lib/database/utils/Adder';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
@@ -211,7 +211,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			.setTitle(t(Root.ShowDisabled));
 	}
 
-	protected showEnabled(t: TFunction, settings: GuildEntity) {
+	protected showEnabled(t: TFunction, settings: ReadonlyGuildEntity) {
 		const embed = new EmbedBuilder() //
 			.setColor(Colors.Green)
 			.setTitle(t(Root.ShowEnabled))

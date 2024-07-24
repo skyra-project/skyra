@@ -67,7 +67,8 @@ export class StickyRoleManager {
 		if (index === -1) {
 			// 3.0.a. Proceed to create a new sticky roles entry:
 			const entry: StickyRole = { user: userId, roles: [roleId] };
-			entries.push(entry);
+			await trx.write({ stickyRoles: entries.concat(entry) }).submit();
+
 			return entry.roles;
 		}
 

@@ -1,5 +1,5 @@
-import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { IBaseManager } from '#lib/database/settings/base/IBaseManager';
+import type { ReadonlyGuildEntity } from '#lib/database/settings/types';
 import { Adder } from '#lib/database/utils/Adder';
 import { isNullishOrZero, type Nullish } from '@sapphire/utilities';
 
@@ -15,9 +15,9 @@ export class AdderManager implements IBaseManager {
 	public words: Adder<string> | null = null;
 	public reactions: Adder<string> | null = null;
 
-	#settings: GuildEntity;
+	#settings: ReadonlyGuildEntity;
 
-	public constructor(settings: GuildEntity) {
+	public constructor(settings: ReadonlyGuildEntity) {
 		this.#settings = settings;
 	}
 

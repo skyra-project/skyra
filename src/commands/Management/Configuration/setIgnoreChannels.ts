@@ -20,7 +20,7 @@ export class UserCommand extends SkyraCommand {
 		await using trx = await writeSettingsTransaction(message.guild);
 
 		const index = trx.settings.disabledChannels.indexOf(channel.id);
-		const disabledChannels = index === -1 ? trx.settings.disabledChannels.concat(channel.id) : trx.settings.disabledChannels.splice(index, 1);
+		const disabledChannels = index === -1 ? trx.settings.disabledChannels.concat(channel.id) : trx.settings.disabledChannels.toSpliced(index, 1);
 		await trx.write({ disabledChannels }).submit();
 
 		const added = index === -1;

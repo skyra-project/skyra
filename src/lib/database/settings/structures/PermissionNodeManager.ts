@@ -13,12 +13,12 @@ export const enum PermissionNodeAction {
 }
 
 type Nodes = readonly PermissionsNode[];
-type Node = Nodes[number];
+type Node = PermissionsNode;
 
 export class PermissionNodeManager implements IBaseManager {
 	private sorted = new Collection<string, PermissionsManagerNode>();
 
-	#settings: Readonly<GuildEntity>;
+	#settings: GuildEntity;
 	#previous: Nodes = [];
 
 	public constructor(settings: GuildEntity) {
@@ -37,11 +37,10 @@ export class PermissionNodeManager implements IBaseManager {
 		return this.sorted.has(roleId);
 	}
 
-	public add(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): PermissionsNode[] {
-		const key = this.settingsPropertyFor(target);
-		const nodes = this.#settings[key].slice();
-		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
+	public add(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): readonly PermissionsNode[] {
+		const nodes = this.#getPermissionNodes(target).slice();
 
+		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) {
 			const node: Node = {
 				id: target.id,
@@ -71,9 +70,8 @@ export class PermissionNodeManager implements IBaseManager {
 		return nodes;
 	}
 
-	public remove(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): PermissionsNode[] {
-		const key = this.settingsPropertyFor(target);
-		const nodes = this.#settings[key].slice();
+	public remove(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): readonly PermissionsNode[] {
+		const nodes = this.#getPermissionNodes(target).slice();
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesNodeNotExists });
@@ -94,11 +92,10 @@ export class PermissionNodeManager implements IBaseManager {
 		return nodes;
 	}
 
-	public reset(target: Role | GuildMember | User): PermissionsNode[] {
-		const key = this.settingsPropertyFor(target);
-		const nodes = this.#settings[key];
-		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
+	public reset(target: Role | GuildMember | User): readonly PermissionsNode[] {
+		const nodes = this.#getPermissionNodes(target).slice();
 
+		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) {
 			throw new UserError({ identifier: LanguageKeys.Commands.Management.PermissionNodesNodeNotExists, context: { target } });
 		}
@@ -106,7 +103,7 @@ export class PermissionNodeManager implements IBaseManager {
 		return nodes.toSpliced(nodeIndex, 1);
 	}
 
-	public refresh(): PermissionsNode[] {
+	public refresh(): readonly PermissionsNode[] {
 		const nodes = this.#settings.permissionsRoles.slice();
 		this.#previous = nodes.slice();
 
@@ -233,6 +230,11 @@ export class PermissionNodeManager implements IBaseManager {
 			default:
 				throw new Error('Unreachable');
 		}
+	}
+
+	#getPermissionNodes(target: Role | GuildMember | User): readonly PermissionsNode[] {
+		const key = this.settingsPropertyFor(target);
+		return this.#settings[key];
 	}
 }
 

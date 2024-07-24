@@ -1,5 +1,5 @@
-import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
+import type { ReadonlyGuildEntity } from '#lib/database/settings/types';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { translate } from '#lib/i18n/translate';
 import type { SkyraArgs } from '#lib/structures';
@@ -181,7 +181,7 @@ export namespace Serializer {
 
 export interface SerializerUpdateContext {
 	entry: SchemaKey;
-	entity: Readonly<GuildEntity>;
+	entity: ReadonlyGuildEntity;
 	guild: Guild;
 	t: TFunction;
 }

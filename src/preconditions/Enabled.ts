@@ -1,4 +1,4 @@
-import { CommandMatcher, GuildEntity, readSettings } from '#lib/database';
+import { CommandMatcher, readSettings, type ReadonlyGuildEntity } from '#lib/database';
 import type { SkyraCommand } from '#lib/structures';
 import { isModerator } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -61,7 +61,7 @@ export class UserPrecondition extends AllFlowsPrecondition {
 		return this.runDM(command, context);
 	}
 
-	private checkGuildDisabled(settings: GuildEntity, channelId: string, command: SkyraCommand) {
+	private checkGuildDisabled(settings: ReadonlyGuildEntity, channelId: string, command: SkyraCommand) {
 		if (settings.disabledCommands.includes(channelId)) return true;
 		if (CommandMatcher.matchAny(settings.disabledCommands, command)) return true;
 

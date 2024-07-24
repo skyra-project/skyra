@@ -70,6 +70,7 @@ export class V57MigrateReactionRolesAndTriggers1633184279614 implements Migratio
 				const emojiId = parts.at(-1)!;
 				const emojiAnimated = parts.at(0);
 
+				// @ts-expect-error writing readonly property
 				reaction.emoji = `${emojiAnimated}${emojiId}` as SerializedEmoji;
 			}
 
@@ -117,6 +118,7 @@ export class V57MigrateReactionRolesAndTriggers1633184279614 implements Migratio
 				const emojiId = reaction.emoji.slice(1);
 				const emojiAnimated = reaction.emoji.at(0) === 'a';
 
+				// @ts-expect-error writing readonly property
 				reaction.emoji = `${emojiAnimated ? 'a' : ''}:_:${emojiId}` as SerializedEmoji;
 			}
 

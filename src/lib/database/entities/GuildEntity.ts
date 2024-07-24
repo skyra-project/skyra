@@ -30,10 +30,10 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	public disabledCommands: string[] = [];
 
 	@Column('jsonb', { name: 'permissions.users', default: () => "'[]'::JSONB" })
-	public permissionsUsers: PermissionsNode[] = [];
+	public permissionsUsers: readonly PermissionsNode[] = [];
 
 	@Column('jsonb', { name: 'permissions.roles', default: () => "'[]'::JSONB" })
-	public permissionsRoles: PermissionsNode[] = [];
+	public permissionsRoles: readonly PermissionsNode[] = [];
 
 	@Column('varchar', { name: 'channels.media-only', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsMediaOnly: string[] = [];
@@ -476,7 +476,7 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	/**
 	 * The anti-spam adders used to control spam
 	 */
-	public readonly adders = new AdderManager(this);
+	public readonly adders: AdderManager = new AdderManager(this);
 	public readonly permissionNodes = new PermissionNodeManager(this);
 
 	public wordFilterRegExp: RegExp | null = null;
@@ -541,39 +541,31 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 export type GuildSettingsOfType<T> = PickByValue<GuildData, T>;
 
 export interface PermissionsNode {
-	allow: string[];
-
-	deny: string[];
-
-	id: string;
+	readonly allow: string[];
+	readonly deny: string[];
+	readonly id: string;
 }
 
 export type CommandAutoDelete = readonly [string, number];
 
 export interface DisabledCommandChannel {
-	channel: string;
-
-	commands: string[];
+	readonly channel: string;
+	readonly commands: readonly string[];
 }
 
 export interface StickyRole {
-	roles: string[];
-
-	user: string;
+	readonly roles: readonly string[];
+	readonly user: string;
 }
 
 export interface ReactionRole {
-	channel: string;
-
-	emoji: SerializedEmoji;
-
-	message: string | null;
-
-	role: string;
+	readonly channel: string;
+	readonly emoji: SerializedEmoji;
+	readonly message: string | null;
+	readonly role: string;
 }
 
 export interface UniqueRoleSet {
-	name: string;
-
-	roles: readonly string[];
+	readonly name: string;
+	readonly roles: readonly string[];
 }

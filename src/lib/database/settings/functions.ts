@@ -1,4 +1,6 @@
 import { GuildEntity } from '#lib/database/entities/GuildEntity';
+import { deleteSettingsContext, getSettingsContext, updateSettingsContext } from '#lib/database/settings/context/functions';
+import type { AdderKey } from '#lib/database/settings/structures/AdderManager';
 import type { GuildData, ReadonlyGuildData, ReadonlyGuildEntity } from '#lib/database/settings/types';
 import { container, type Awaitable } from '@sapphire/framework';
 import { objectKeys } from '@sapphire/utilities';
@@ -13,6 +15,7 @@ export function deleteSettingsCached(guild: GuildResolvable) {
 	const id = resolveGuildId(guild);
 	locks.delete(id);
 	cache.delete(id);
+	deleteSettingsContext(id);
 }
 
 export async function readSettings(guild: GuildResolvable): Promise<ReadonlyGuildEntity> {
@@ -29,6 +32,22 @@ export async function readSettings(guild: GuildResolvable): Promise<ReadonlyGuil
 		// Unlock the lock:
 		lock.unlock();
 	}
+}
+
+export function readSettingsAdder(settings: ReadonlyGuildEntity, key: AdderKey) {
+	return getSettingsContext(settings).adders[key];
+}
+
+export function readSettingsPermissionNodes(settings: ReadonlyGuildEntity) {
+	return getSettingsContext(settings).permissionNodes;
+}
+
+export function readSettingsNoMentionSpam(settings: ReadonlyGuildEntity) {
+	return getSettingsContext(settings).noMentionSpam;
+}
+
+export function readSettingsWordFilterRegExp(settings: ReadonlyGuildEntity) {
+	return getSettingsContext(settings).wordFilterRegExp;
 }
 
 export function readSettingsCached(guild: GuildResolvable): ReadonlyGuildEntity | null {
@@ -94,7 +113,9 @@ export class Transaction {
 		try {
 			Object.assign(this.settings, this.#changes);
 			await this.settings.save();
+
 			this.#hasChanges = false;
+			updateSettingsContext(this.settings, this.#changes);
 		} catch (error) {
 			Object.assign(this.settings, original);
 			throw error;
@@ -153,7 +174,9 @@ async function processFetch(id: string): Promise<GuildEntity> {
 	try {
 		const promise = fetch(id);
 		queue.set(id, promise);
-		return await promise;
+		const value = await promise;
+		getSettingsContext(value);
+		return value;
 	} finally {
 		queue.delete(id);
 	}

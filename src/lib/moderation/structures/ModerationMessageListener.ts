@@ -1,4 +1,4 @@
-import { readSettings, type AdderKey, type GuildSettingsOfType, type ReadonlyGuildEntity } from '#lib/database';
+import { readSettings, readSettingsAdder, type AdderKey, type GuildSettingsOfType, type ReadonlyGuildEntity } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import { getT } from '#lib/i18n';
 import { ModerationActions } from '#lib/moderation/actions/index';
@@ -52,7 +52,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 		if (this.hardPunishmentPath === null) return;
 
-		const adder = settings.adders[this.hardPunishmentPath.adder];
+		const adder = readSettingsAdder(settings, this.hardPunishmentPath.adder);
 		if (!adder) return this.processHardPunishment(message, t, 0, 0);
 
 		const points = typeof preProcessed === 'number' ? preProcessed : 1;

@@ -12,7 +12,6 @@
 		"#utils/resolvers": "./dist/lib/util/resolvers/index.js",
 		"#utils/*": "./dist/lib/util/*.js",
 		"#lib/database/entities": "./dist/lib/database/entities/index.js",
-		"#lib/database/keys": "./dist/lib/database/keys/index.js",
 		"#lib/database/settings": "./dist/lib/database/settings/index.js",
 		"#lib/database": "./dist/lib/database/index.js",
 		"#lib/discord": "./dist/lib/discord/index.js",

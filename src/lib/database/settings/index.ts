@@ -1,5 +1,5 @@
-export * from '#lib/database/settings/base/IBaseManager';
 export * from '#lib/database/settings/configuration';
+export * from '#lib/database/settings/context/functions';
 export * from '#lib/database/settings/functions';
 export * from '#lib/database/settings/schema/SchemaGroup';
 export * from '#lib/database/settings/schema/SchemaKey';

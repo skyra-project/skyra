@@ -1,15 +1,9 @@
-import { configurableKeys } from '#lib/database/settings/configuration';
-import { AdderManager } from '#lib/database/settings/structures/AdderManager';
-import { PermissionNodeManager } from '#lib/database/settings/structures/PermissionNodeManager';
 import type { GuildData } from '#lib/database/settings/types';
 import { kBigIntTransformer } from '#lib/database/utils/Transformers';
-import { create } from '#utils/Security/RegexCreator';
 import type { SerializedEmoji } from '#utils/functions';
-import { container } from '@sapphire/framework';
-import { RateLimitManager } from '@sapphire/ratelimits';
-import { arrayStrictEquals, type PickByValue } from '@sapphire/utilities';
+import { type PickByValue } from '@sapphire/utilities';
 import type { LocaleString } from 'discord.js';
-import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('guilds', { schema: 'public' })
 export class GuildEntity extends BaseEntity {
@@ -471,68 +465,13 @@ export class GuildEntity extends BaseEntity {
 
 	@Column('integer', { name: 'no-mention-spam.time-period', default: 8 })
 	public noMentionSpamTimePeriod = 8;
-
-	/**
-	 * The anti-spam adders used to control spam
-	 */
-	public readonly adders: AdderManager = new AdderManager(this);
-	public readonly permissionNodes = new PermissionNodeManager(this);
-
-	public wordFilterRegExp: RegExp | null = null;
-
-	/**
-	 * The ratelimit management for the no-mention-spam behavior
-	 */
-	public nms: RateLimitManager = null!;
-
-	#words: readonly string[] = [];
-
-	public get guild() {
-		return container.client.guilds.cache.get(this.id)!;
-	}
-
-	/**
-	 * Gets the bare representation of the entity.
-	 */
-	public toJSON(): GuildData {
-		return Object.fromEntries(configurableKeys.map((v) => [v.property, this[v.property] ?? v.default])) as GuildData;
-	}
-
-	@AfterLoad()
-	protected entityLoad() {
-		this.adders.refresh();
-		this.permissionNodes.refresh();
-		this.nms = new RateLimitManager(this.noMentionSpamTimePeriod * 1000, this.noMentionSpamMentionsAllowed);
-		this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'gi') : null;
-		this.#words = this.selfmodFilterRaw.slice();
-	}
-
-	@AfterInsert()
-	@AfterUpdate()
-	protected entityUpdate() {
-		this.adders.refresh();
-		this.permissionNodes.onPatch();
-
-		if (!arrayStrictEquals(this.#words, this.selfmodFilterRaw)) {
-			this.#words = this.selfmodFilterRaw.slice();
-			this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'gi') : null;
-		}
-	}
-
-	@AfterRemove()
-	protected entityRemove() {
-		this.adders.onRemove();
-		this.permissionNodes.onRemove();
-		this.wordFilterRegExp = null;
-		this.#words = [];
-	}
 }
 
 export type GuildSettingsOfType<T> = PickByValue<GuildData, T>;
 
 export interface PermissionsNode {
-	readonly allow: string[];
-	readonly deny: string[];
+	readonly allow: readonly string[];
+	readonly deny: readonly string[];
 	readonly id: string;
 }
 

@@ -6,7 +6,9 @@ import { years } from '#utils/common';
 import { objectEntries } from '@sapphire/utilities';
 import { Collection } from 'discord.js';
 
-export const configurableKeys = new Collection<GuildDataKey, SchemaKey>();
+export type SchemaDataKey = Exclude<GuildDataKey, 'id'>;
+
+export const configurableKeys = new Collection<SchemaDataKey, SchemaKey>();
 export const configurableGroups = new SchemaGroup('::ROOT::');
 
 export const Configuration = makeKeys({
@@ -987,12 +989,12 @@ export const Configuration = makeKeys({
 	}
 });
 
-function makeKeys(record: Record<GuildDataKey, ConfigurableKeyOptions>): Record<GuildDataKey, SchemaKey> {
+function makeKeys(record: Record<SchemaDataKey, ConfigurableKeyOptions>): Record<SchemaDataKey, SchemaKey> {
 	const entries = objectEntries(record).map(([key, value]) => [key, makeKey(key, value)] as const);
-	return Object.fromEntries(entries) as Record<GuildDataKey, SchemaKey>;
+	return Object.fromEntries(entries) as Record<SchemaDataKey, SchemaKey>;
 }
 
-function makeKey(property: GuildDataKey, options: ConfigurableKeyOptions) {
+function makeKey(property: SchemaDataKey, options: ConfigurableKeyOptions) {
 	const name = options.name ?? property;
 	const parts = name.split('.') as NonEmptyArray<string>;
 

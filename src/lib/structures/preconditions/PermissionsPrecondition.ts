@@ -1,4 +1,4 @@
-import { readSettings } from '#lib/database/settings';
+import { readSettings, readSettingsPermissionNodes } from '#lib/database/settings';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
@@ -22,7 +22,7 @@ export abstract class PermissionsPrecondition extends AllFlowsPrecondition {
 		// If it should skip, go directly to handle:
 		if (await this.shouldRun(message, command)) {
 			const settings = await readSettings(message.guild);
-			const nodes = settings.permissionNodes;
+			const nodes = readSettingsPermissionNodes(settings);
 			const result = nodes.run(message.member, command);
 			if (result) return this.ok();
 			if (result === false) return this.error({ identifier: LanguageKeys.Preconditions.PermissionNodes });

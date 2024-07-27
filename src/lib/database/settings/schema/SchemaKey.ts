@@ -5,6 +5,7 @@ import type { GuildDataKey, ReadonlyGuildEntity } from '#lib/database/settings/t
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import type { TypedT } from '#lib/types';
+import { resolveGuild } from '#utils/functions';
 import { container } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullish } from '@sapphire/utilities';
@@ -127,7 +128,7 @@ export class SchemaKey<K extends GuildDataKey = GuildDataKey> implements ISchema
 	public getContext(settings: ReadonlyGuildEntity, language: TFunction): Serializer.UpdateContext {
 		return {
 			entity: settings,
-			guild: settings.guild,
+			guild: resolveGuild(settings.id),
 			t: language,
 			entry: this
 		} satisfies Serializer.UpdateContext;

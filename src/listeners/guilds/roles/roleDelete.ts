@@ -1,4 +1,4 @@
-import { writeSettingsTransaction, type StickyRole, type UniqueRoleSet } from '#lib/database';
+import { readSettingsPermissionNodes, writeSettingsTransaction, type StickyRole, type UniqueRoleSet } from '#lib/database';
 import { Listener } from '@sapphire/framework';
 import { filter, map, toArray } from '@sapphire/iterator-utilities';
 import type { Role } from 'discord.js';
@@ -36,8 +36,9 @@ export class UserListener extends Listener {
 		if (trx.settings.rolesRestrictedAttachment === role.id) trx.write({ rolesRestrictedAttachment: null });
 		if (trx.settings.rolesRestrictedVoice === role.id) trx.write({ rolesRestrictedVoice: null });
 
-		if (trx.settings.permissionNodes.has(role.id)) {
-			trx.write({ permissionsRoles: trx.settings.permissionNodes.refresh() });
+		const permissionNodes = readSettingsPermissionNodes(trx.settings);
+		if (permissionNodes.has(role.id)) {
+			trx.write({ permissionsRoles: permissionNodes.refresh(trx.settings) });
 		}
 
 		await trx.submit();

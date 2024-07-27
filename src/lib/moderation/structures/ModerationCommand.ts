@@ -56,7 +56,7 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 	 */
 	protected readonly requiredDuration: boolean;
 
-	protected constructor(context: ModerationCommand.Context, options: ModerationCommand.Options<Type>) {
+	protected constructor(context: ModerationCommand.LoaderContext, options: ModerationCommand.Options<Type>) {
 		super(context, {
 			cooldownDelay: seconds(5),
 			flags: ['no-author', 'authored', 'no-dm', 'dm'],
@@ -383,7 +383,7 @@ export namespace ModerationCommand {
 	}
 
 	export type Args = SkyraCommand.Args;
-	export type Context = SkyraCommand.LoaderContext;
+	export type LoaderContext = SkyraCommand.LoaderContext;
 	export type RunContext = SkyraCommand.RunContext;
 
 	export interface Parameters {

@@ -22,7 +22,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 	private readonly reasonLanguageKey: TypedT<string>;
 	private readonly reasonLanguageKeyWithMaximum: TypedFT<{ amount: number; maximum: number }, string>;
 
-	public constructor(context: ModerationMessageListener.Context, options: ModerationMessageListener.Options) {
+	public constructor(context: ModerationMessageListener.LoaderContext, options: ModerationMessageListener.Options) {
 		super(context, { ...options, event: Events.GuildUserMessage });
 
 		this.keyEnabled = options.keyEnabled;
@@ -212,5 +212,5 @@ export namespace ModerationMessageListener {
 		reasonLanguageKeyWithMaximum: TypedFT<{ amount: number; maximum: number }, string>;
 	}
 	export type JSON = Listener.JSON;
-	export type Context = Listener.Context;
+	export type LoaderContext = Listener.LoaderContext;
 }

@@ -6,7 +6,7 @@ import { envParseBoolean } from '@skyra/env-utilities';
 export abstract class AnalyticsListener extends Listener {
 	public tags: [Tags, string][] = [];
 
-	public constructor(context: Listener.Context, options?: AnalyticsListener.Options) {
+	public constructor(context: Listener.LoaderContext, options?: AnalyticsListener.Options) {
 		super(context, { ...options, enabled: envParseBoolean('INFLUX_ENABLED') });
 	}
 

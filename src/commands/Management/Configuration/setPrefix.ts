@@ -17,7 +17,7 @@ export class UserCommand extends SkyraCommand {
 	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const prefix = await args.pick('string', { minimum: 1, maximum: 10 });
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 
 		// If it's the same value, throw:
 		if (trx.settings.prefix === prefix) {

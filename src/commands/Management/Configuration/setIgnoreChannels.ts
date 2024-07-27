@@ -17,7 +17,7 @@ export class UserCommand extends SkyraCommand {
 	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
 		const channel = await args.pick(UserCommand.hereOrTextChannelResolver);
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 
 		const index = trx.settings.disabledChannels.indexOf(channel.id);
 		const disabledChannels = index === -1 ? trx.settings.disabledChannels.concat(channel.id) : trx.settings.disabledChannels.toSpliced(index, 1);

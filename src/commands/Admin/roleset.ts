@@ -162,7 +162,7 @@ export class UserCommand extends SkyraSubcommand {
 		const roles = await args.repeat('roleName');
 
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 
 		const entries = trx.settings.rolesUniqueRoleSets;
 		const index = entries.findIndex((set) => set.name === name);

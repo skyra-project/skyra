@@ -81,7 +81,7 @@ export class UserCommand extends SkyraSubcommand {
 		const role = await args.pick('roleName');
 		const messageId = await args.pick('snowflake');
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 		const index = trx.settings.reactionRoles.findIndex((entry) => (entry.message ?? entry.channel) === messageId && entry.role === role.id);
 		if (index === -1) this.error(LanguageKeys.Commands.Management.ManageReactionRolesRemoveNotExists);
 

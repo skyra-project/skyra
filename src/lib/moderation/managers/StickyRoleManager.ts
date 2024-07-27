@@ -44,7 +44,7 @@ export class StickyRoleManager {
 		}
 
 		// 3.0.b. Make a clone with the userId and the fixed roles array:
-		await using trx = await writeSettingsTransaction(this.#guild);
+		using trx = await writeSettingsTransaction(this.#guild);
 
 		const index = settings.stickyRoles.findIndex((entry) => entry.user === userId);
 		if (index === -1) return [];
@@ -57,7 +57,7 @@ export class StickyRoleManager {
 	}
 
 	public async add(userId: string, roleId: string): Promise<readonly string[]> {
-		await using trx = await writeSettingsTransaction(this.#guild);
+		using trx = await writeSettingsTransaction(this.#guild);
 
 		// 1.0. Get the index for the entry:
 		const entries = trx.settings.stickyRoles;
@@ -84,7 +84,7 @@ export class StickyRoleManager {
 	}
 
 	public async remove(userId: string, roleId: string): Promise<readonly string[]> {
-		await using trx = await writeSettingsTransaction(this.#guild);
+		using trx = await writeSettingsTransaction(this.#guild);
 
 		const entries = trx.settings.stickyRoles;
 		// 1.0. Get the index for the entry:
@@ -111,7 +111,7 @@ export class StickyRoleManager {
 	}
 
 	public async clear(userId: string): Promise<readonly string[]> {
-		await using trx = await writeSettingsTransaction(this.#guild);
+		using trx = await writeSettingsTransaction(this.#guild);
 
 		// 1.0. Get the index for the entry:
 		const entries = trx.settings.stickyRoles;

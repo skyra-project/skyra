@@ -54,7 +54,7 @@ export class UserRoute extends Route {
 
 		const entries = requestBody.data;
 		try {
-			await using trx = await writeSettingsTransaction(guild);
+			using trx = await writeSettingsTransaction(guild);
 			const data = await this.validateAll(trx.settings, guild, entries);
 			await trx.write(Object.fromEntries(data)).submit();
 

@@ -1,6 +1,7 @@
 import { GuildEntity } from '#lib/database/entities/GuildEntity';
-import type { ReadonlyGuildData, ReadonlyGuildEntity } from '#lib/database/settings/types';
+import type { GuildData, ReadonlyGuildData, ReadonlyGuildEntity } from '#lib/database/settings/types';
 import { container, type Awaitable } from '@sapphire/framework';
+import { objectKeys } from '@sapphire/utilities';
 import { RWLock } from 'async-rwlock';
 import { Collection, type GuildResolvable, type Snowflake } from 'discord.js';
 
@@ -38,31 +39,13 @@ export async function writeSettings(
 	guild: GuildResolvable,
 	data: Partial<ReadonlyGuildEntity> | ((settings: ReadonlyGuildEntity) => Awaitable<Partial<ReadonlyGuildEntity>>)
 ) {
-	const id = resolveGuildId(guild);
-	const lock = locks.ensure(id, () => new RWLock());
+	using trx = await writeSettingsTransaction(guild);
 
-	// Acquire a write lock:
-	await lock.writeLock();
-
-	// Fetch the entry:
-	const settings = cache.get(id) ?? (await unlockOnThrow(processFetch(id), lock));
-
-	try {
-		if (typeof data === 'function') {
-			data = await data(settings);
-		}
-
-		Object.assign(settings, data);
-
-		// Now we save, and return undefined:
-		await settings.save();
-		return settings;
-	} catch (error) {
-		await tryReload(settings);
-		throw error;
-	} finally {
-		lock.unlock();
+	if (typeof data === 'function') {
+		data = await data(trx.settings);
 	}
+
+	await trx.write(data).submit();
 }
 
 export async function writeSettingsTransaction(guild: GuildResolvable) {
@@ -79,6 +62,7 @@ export async function writeSettingsTransaction(guild: GuildResolvable) {
 }
 
 export class Transaction {
+	#changes = Object.create(null) as Partial<ReadonlyGuildData>;
 	#hasChanges = false;
 	#locking = true;
 
@@ -96,7 +80,7 @@ export class Transaction {
 	}
 
 	public write(data: Partial<ReadonlyGuildData>) {
-		Object.assign(this.settings, data);
+		Object.assign(this.#changes, data);
 		this.#hasChanges = true;
 		return this;
 	}
@@ -106,13 +90,17 @@ export class Transaction {
 			throw new Error('Cannot submit a transaction without changes');
 		}
 
+		const original = this.#getOriginalValues();
 		try {
+			Object.assign(this.settings, this.#changes);
 			await this.settings.save();
 			this.#hasChanges = false;
 		} catch (error) {
-			await tryReload(this.settings);
+			Object.assign(this.settings, original);
 			throw error;
 		} finally {
+			this.#changes = Object.create(null);
+
 			if (this.#locking) {
 				this.lock.unlock();
 				this.#locking = false;
@@ -120,39 +108,32 @@ export class Transaction {
 		}
 	}
 
-	public async abort() {
-		try {
-			await tryReload(this.settings);
-		} finally {
-			if (this.#locking) {
-				this.lock.unlock();
-				this.#locking = false;
-			}
-		}
-	}
-
-	public async dispose() {
-		if (!this.#hasChanges) {
-			await this.abort();
-		}
-
+	public abort() {
 		if (this.#locking) {
 			this.lock.unlock();
 			this.#locking = false;
 		}
 	}
 
-	public [Symbol.asyncDispose]() {
+	public dispose() {
+		if (this.#locking) {
+			this.lock.unlock();
+			this.#locking = false;
+		}
+	}
+
+	public [Symbol.dispose]() {
 		return this.dispose();
 	}
-}
 
-async function tryReload(entity: ReadonlyGuildEntity): Promise<void> {
-	try {
-		await entity.reload();
-	} catch (error) {
-		if (error instanceof Error && error.name === 'EntityNotFound') entity.resetAll();
-		else throw error;
+	#getOriginalValues() {
+		const data = Object.assign(Object.create(null), this.#changes) as Partial<GuildData>;
+		for (const key of objectKeys(data)) {
+			// @ts-expect-error Complex types
+			data[key] = this.settings[key];
+		}
+
+		return data;
 	}
 }
 

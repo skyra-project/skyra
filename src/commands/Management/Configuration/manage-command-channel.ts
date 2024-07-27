@@ -24,7 +24,7 @@ export class UserCommand extends SkyraSubcommand {
 		const channel = await args.pick('textChannelName');
 		const command = await args.pick('command');
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 
 		const index = trx.settings.disabledCommandsChannels.findIndex((entry) => entry.channel === channel.id);
 		if (index === -1) {
@@ -55,7 +55,7 @@ export class UserCommand extends SkyraSubcommand {
 		const channel = await args.pick('textChannelName');
 		const command = await args.pick('command');
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 
 		const index = trx.settings.disabledCommandsChannels.findIndex((entry) => entry.channel === channel.id);
 		if (index === -1) {
@@ -81,7 +81,7 @@ export class UserCommand extends SkyraSubcommand {
 	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const channel = await args.pick('textChannelName');
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 
 		const index = trx.settings.disabledCommandsChannels.findIndex((entry) => entry.channel === channel.id);
 		if (index === -1) {

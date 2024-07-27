@@ -1,4 +1,3 @@
-import type { IBaseEntity } from '#lib/database/settings/base/IBaseEntity';
 import { configurableKeys } from '#lib/database/settings/configuration';
 import { AdderManager } from '#lib/database/settings/structures/AdderManager';
 import { PermissionNodeManager } from '#lib/database/settings/structures/PermissionNodeManager';
@@ -13,7 +12,7 @@ import type { LocaleString } from 'discord.js';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('guilds', { schema: 'public' })
-export class GuildEntity extends BaseEntity implements IBaseEntity {
+export class GuildEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { name: 'id', length: 19 })
 	public id!: string;
 
@@ -497,15 +496,6 @@ export class GuildEntity extends BaseEntity implements IBaseEntity {
 	 */
 	public toJSON(): GuildData {
 		return Object.fromEntries(configurableKeys.map((v) => [v.property, this[v.property] ?? v.default])) as GuildData;
-	}
-
-	public resetAll(): this {
-		for (const value of configurableKeys.values()) {
-			Reflect.set(this, value.property, value.default);
-		}
-
-		this.entityRemove();
-		return this;
 	}
 
 	@AfterLoad()

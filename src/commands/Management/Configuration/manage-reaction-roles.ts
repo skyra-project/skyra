@@ -1,12 +1,14 @@
 import { readSettings, writeSettings, writeSettingsTransaction, type ReactionRole } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
+import { SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { minutes } from '#utils/common';
 import { getEmojiString, getEmojiTextFormat } from '#utils/functions';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
 import { getColor, sendLoadingMessage } from '#utils/util';
 import { channelMention, hideLinkEmbed, hyperlink, roleMention } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
+import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
@@ -113,10 +115,11 @@ export class UserCommand extends SkyraSubcommand {
 
 		const response = await sendLoadingMessage(message, args.t);
 
-		const display = new SkyraPaginatedMessage({
+		const display = new PaginatedMessage({
 			template: new EmbedBuilder().setColor(getColor(message))
 		});
 
+		display.setIdle(minutes(5));
 		for (const bulk of chunk(reactionRoles, 15)) {
 			const serialized = bulk.map((value) => this.format(value, message.guild)).join('\n');
 			display.addPageEmbed((embed) => embed.setDescription(serialized));

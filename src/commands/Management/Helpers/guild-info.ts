@@ -1,12 +1,12 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
-import { seconds } from '#utils/common';
+import { minutes, seconds } from '#utils/common';
 import { ZeroWidthSpace } from '#utils/constants';
 import { getColor, getTag } from '#utils/util';
-import { TimestampStyles, time } from '@discordjs/builders';
+import { time, TimestampStyles } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel } from '@sapphire/discord.js-utilities';
+import { isCategoryChannel, isNewsChannel, isStageChannel, isTextChannel, isVoiceChannel, PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { chunk } from '@sapphire/utilities';
@@ -39,15 +39,16 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { embeds: [embed] });
 	}
 
-	private async buildDisplay(args: SkyraCommand.Args, roles: Role[], color: number): Promise<SkyraPaginatedMessage> {
+	private async buildDisplay(args: SkyraCommand.Args, roles: Role[], color: number): Promise<PaginatedMessage> {
 		const guild = args.message.guild!;
-		const display = new SkyraPaginatedMessage({
+		const display = new PaginatedMessage({
 			template: new EmbedBuilder() //
 				.setColor(color)
 				.setThumbnail(guild.iconURL({ size: 256, extension: 'png' })!)
 				.setTitle(`${guild.name} [${guild.id}]`)
 		});
 
+		display.setIdle(minutes(5));
 		display.addPageEmbed(await this.getSummary(args, roles, color));
 		if (guild.icon) display.addPageEmbed(this.getIcon(args, color));
 		if (guild.banner) display.addPageEmbed(this.getBanner(args, color));

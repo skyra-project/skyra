@@ -1,4 +1,4 @@
-import { GuildEntity, readSettings } from '#lib/database';
+import { readSettings, type ReadonlyGuildEntity } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
@@ -38,7 +38,7 @@ export class UserListener extends Listener<typeof Events.VoiceStateUpdate> {
 		});
 	}
 
-	private onCondition(old: VoiceBasedChannel | null, next: VoiceBasedChannel | null, user: User, settings: GuildEntity) {
+	private onCondition(old: VoiceBasedChannel | null, next: VoiceBasedChannel | null, user: User, settings: ReadonlyGuildEntity) {
 		// If includeBots is false, and the user is a bot, return false
 		if (!settings.eventsIncludeBots && user.bot) return false;
 

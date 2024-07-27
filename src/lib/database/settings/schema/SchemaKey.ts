@@ -1,8 +1,7 @@
-import type { GuildEntity } from '#lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { SchemaGroup } from '#lib/database/settings/schema/SchemaGroup';
 import type { Serializer } from '#lib/database/settings/structures/Serializer';
-import type { GuildDataKey } from '#lib/database/settings/types';
+import type { GuildDataKey, ReadonlyGuildEntity } from '#lib/database/settings/types';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import type { TypedT } from '#lib/types';
@@ -85,13 +84,13 @@ export class SchemaKey<K extends GuildDataKey = GuildDataKey> implements ISchema
 		this.dashboardOnly = options.dashboardOnly ?? false;
 	}
 
-	public get serializer(): Serializer<Readonly<GuildEntity>[K]> {
+	public get serializer(): Serializer<ReadonlyGuildEntity[K]> {
 		const value = container.stores.get('serializers').get(this.type);
 		if (typeof value === 'undefined') throw new Error(`The serializer for '${this.type}' does not exist.`);
-		return value as Serializer<Readonly<GuildEntity>[K]>;
+		return value as Serializer<ReadonlyGuildEntity[K]>;
 	}
 
-	public async parse(settings: Readonly<GuildEntity>, args: SkyraArgs): Promise<Readonly<GuildEntity>[K]> {
+	public async parse(settings: ReadonlyGuildEntity, args: SkyraArgs): Promise<ReadonlyGuildEntity[K]> {
 		const { serializer } = this;
 		const context = this.getContext(settings, args.t);
 
@@ -104,13 +103,13 @@ export class SchemaKey<K extends GuildDataKey = GuildDataKey> implements ISchema
 		});
 	}
 
-	public stringify(settings: Readonly<GuildEntity>, t: TFunction, value: GuildEntity[K]): string {
+	public stringify(settings: ReadonlyGuildEntity, t: TFunction, value: ReadonlyGuildEntity[K]): string {
 		const { serializer } = this;
 		const context = this.getContext(settings, t);
 		return serializer.stringify(value, context);
 	}
 
-	public display(settings: Readonly<GuildEntity>, t: TFunction): string {
+	public display(settings: ReadonlyGuildEntity, t: TFunction): string {
 		const { serializer } = this;
 		const context = this.getContext(settings, t);
 
@@ -125,7 +124,7 @@ export class SchemaKey<K extends GuildDataKey = GuildDataKey> implements ISchema
 		return isNullish(value) ? t(LanguageKeys.Commands.Admin.ConfSettingNotSet) : serializer.stringify(value, context);
 	}
 
-	public getContext(settings: Readonly<GuildEntity>, language: TFunction): Serializer.UpdateContext {
+	public getContext(settings: ReadonlyGuildEntity, language: TFunction): Serializer.UpdateContext {
 		return {
 			entity: settings,
 			guild: settings.guild,

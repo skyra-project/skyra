@@ -1,5 +1,4 @@
-import type { GuildEntity } from '#lib/database/entities';
-import { readSettings } from '#lib/database/settings';
+import { readSettings, type ReadonlyGuildEntity } from '#lib/database/settings';
 import { OWNERS } from '#root/config';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import { GuildMember, PermissionFlagsBits } from 'discord.js';
@@ -26,12 +25,12 @@ export function isOwner(member: GuildMember) {
 	return OWNERS.includes(member.id);
 }
 
-function checkModerator(member: GuildMember, settings: GuildEntity) {
+function checkModerator(member: GuildMember, settings: ReadonlyGuildEntity) {
 	const roles = settings.rolesModerator;
 	return roles.length === 0 ? member.permissions.has(PermissionFlagsBits.BanMembers) : hasAtLeastOneKeyInMap(member.roles.cache, roles);
 }
 
-function checkAdministrator(member: GuildMember, settings: GuildEntity) {
+function checkAdministrator(member: GuildMember, settings: ReadonlyGuildEntity) {
 	const roles = settings.rolesAdmin;
 	return roles.length === 0 ? member.permissions.has(PermissionFlagsBits.ManageGuild) : hasAtLeastOneKeyInMap(member.roles.cache, roles);
 }

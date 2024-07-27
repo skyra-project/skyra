@@ -1,4 +1,4 @@
-import { writeSettingsTransaction, type GuildDataKey, type GuildDataValue, type GuildEntity } from '#lib/database';
+import { writeSettingsTransaction, type GuildDataKey, type GuildDataValue, type ReadonlyGuildEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { AutoModerationCommand } from '#lib/moderation';
@@ -76,7 +76,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		return interaction.reply({ content: t(Root.EditSuccess), ephemeral: true });
 	}
 
-	protected override showEnabled(t: TFunction, settings: GuildEntity) {
+	protected override showEnabled(t: TFunction, settings: ReadonlyGuildEntity) {
 		const embed = super.showEnabled(t, settings);
 
 		const words = settings.selfmodFilterRaw;
@@ -122,7 +122,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		return removeConfusables(interaction.options.getString('word', true).toLowerCase());
 	}
 
-	async #hasWord(settings: Readonly<GuildEntity>, word: string) {
+	async #hasWord(settings: ReadonlyGuildEntity, word: string) {
 		const words = settings.selfmodFilterRaw;
 		if (words.includes(word)) return true;
 

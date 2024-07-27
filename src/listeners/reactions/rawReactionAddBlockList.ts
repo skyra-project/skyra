@@ -21,7 +21,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { fetchT, resolveKey } from '@sapphire/plugin-i18next';
 import type { Nullish } from '@sapphire/utilities';
 
-type ArgumentType = [data: LLRCData, reaction: SerializedEmoji, channelId: string | Nullish, blockedReactions: string[]];
+type ArgumentType = [data: LLRCData, reaction: SerializedEmoji, channelId: string | Nullish, blockedReactions: readonly string[]];
 
 @ApplyOptions<ModerationListener.Options>({ event: Events.RawReactionAdd })
 export class UserModerationEvent extends ModerationListener<ArgumentType, unknown> {

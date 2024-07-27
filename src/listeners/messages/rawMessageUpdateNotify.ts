@@ -1,4 +1,4 @@
-import { GuildEntity, readSettings } from '#lib/database';
+import { readSettings, type GuildDataKey, type ReadonlyGuildEntity } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { type GuildMessage } from '#lib/types';
@@ -38,7 +38,7 @@ export class UserListener extends Listener {
 		const currentContent = data.content ?? '';
 		if ((cachedMessage && cachedMessage.content === currentContent) || data.webhook_id || !data.author) return;
 
-		const key: keyof GuildEntity = isNsfwChannel(channel) ? 'channelsLogsMessageUpdateNsfw' : 'channelsLogsMessageUpdate';
+		const key: GuildDataKey = isNsfwChannel(channel) ? 'channelsLogsMessageUpdateNsfw' : 'channelsLogsMessageUpdate';
 		const settings = await readSettings(guild);
 		await getLogger(guild).send({
 			key,
@@ -63,7 +63,7 @@ export class UserListener extends Listener {
 		});
 	}
 
-	private onCondition(cachedMessage: GuildMessage | undefined, channel: GuildTextBasedChannel, author: APIUser, settings: GuildEntity) {
+	private onCondition(cachedMessage: GuildMessage | undefined, channel: GuildTextBasedChannel, author: APIUser, settings: ReadonlyGuildEntity) {
 		// If includeBots is false, and the message author is a bot, return false
 		if (!settings.eventsIncludeBots && author.bot) return false;
 		// If allowUnknownMessages is false, and the message is nullish, return false

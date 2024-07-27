@@ -7,7 +7,7 @@ export class UserListener extends Listener {
 	public async run(role: Role) {
 		if (!role.guild.available) return;
 
-		await using trx = await writeSettingsTransaction(role);
+		using trx = await writeSettingsTransaction(role);
 
 		trx.write({ stickyRoles: this.#filterStickyRoles(trx.settings.stickyRoles, role) });
 		trx.write({ rolesUniqueRoleSets: this.#filterUniqueRoleSets(trx.settings.rolesUniqueRoleSets, role) });

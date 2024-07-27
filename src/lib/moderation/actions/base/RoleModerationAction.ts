@@ -105,7 +105,7 @@ export abstract class RoleModerationAction<ContextType = never, Type extends Typ
 			...this.roleData,
 			reason: `[Role Setup] Authorized by ${message.author.username} (${message.author.id}).`
 		});
-		await using trx = await writeSettingsTransaction(guild);
+		using trx = await writeSettingsTransaction(guild);
 		await trx.write({ [this.roleKey]: role.id }).submit();
 
 		const t = getT(settings.language);

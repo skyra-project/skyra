@@ -273,7 +273,7 @@ export class SettingsMenu {
 	private async tryUpdate(action: UpdateType, args: SkyraArgs | null = null, value: unknown = null) {
 		try {
 			const key = this.schema as SchemaKey;
-			await using trx = await writeSettingsTransaction(this.message.guild);
+			using trx = await writeSettingsTransaction(this.message.guild);
 
 			this.t = getT(trx.settings.language);
 			this.oldValue = trx.settings[key.property];

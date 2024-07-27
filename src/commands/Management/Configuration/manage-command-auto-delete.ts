@@ -27,7 +27,7 @@ export class UserCommand extends SkyraSubcommand {
 		const channel = await args.pick('textChannelName');
 		const time = await args.pick('timespan', { minimum: seconds(1), maximum: minutes(2) });
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 		const index = trx.settings.commandAutoDelete.findIndex(([id]) => id === channel.id);
 		const value: CommandAutoDelete = [channel.id, time];
 
@@ -44,7 +44,7 @@ export class UserCommand extends SkyraSubcommand {
 	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const channel = await args.pick('textChannelName');
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 		const index = trx.settings.commandAutoDelete.findIndex(([id]) => id === channel.id);
 		if (index === -1) {
 			this.error(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemoveNotSet, { channel: channel.toString() });

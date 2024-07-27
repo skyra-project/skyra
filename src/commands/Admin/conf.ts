@@ -62,7 +62,7 @@ export class UserCommand extends SkyraSubcommand {
 	public async set(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [key, schemaKey] = await this.#fetchKey(args);
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 		await trx.write(await set(trx.settings, schemaKey, args)).submit();
 
 		const response = schemaKey.display(trx.settings, args.t);
@@ -75,7 +75,7 @@ export class UserCommand extends SkyraSubcommand {
 	public async remove(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [key, schemaKey] = await this.#fetchKey(args);
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 		await trx.write(await remove(trx.settings, schemaKey, args)).submit();
 
 		const response = schemaKey.display(trx.settings, args.t);
@@ -88,7 +88,7 @@ export class UserCommand extends SkyraSubcommand {
 	public async reset(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const [key, schemaKey] = await this.#fetchKey(args);
 
-		await using trx = await writeSettingsTransaction(message.guild);
+		using trx = await writeSettingsTransaction(message.guild);
 		await trx.write(reset(schemaKey)).submit();
 
 		const response = schemaKey.display(trx.settings, args.t);

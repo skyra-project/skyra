@@ -51,7 +51,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		const { guild } = interaction;
 
 		const t = getSupportedUserLanguageT(interaction);
-		await using trx = await writeSettingsTransaction(guild);
+		using trx = await writeSettingsTransaction(guild);
 		if (await this.#hasWord(trx.settings, word)) {
 			return interaction.reply({ content: t(Root.WordAddFiltered, { word }), ephemeral: true });
 		}
@@ -65,7 +65,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		const { guild } = interaction;
 
 		const t = getSupportedUserLanguageT(interaction);
-		await using trx = await writeSettingsTransaction(guild);
+		using trx = await writeSettingsTransaction(guild);
 
 		const index = trx.settings.selfmodFilterRaw.indexOf(word);
 		if (index === -1) {

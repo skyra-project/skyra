@@ -1,4 +1,3 @@
-export * from '#lib/database/settings/base/IBaseEntity';
 export * from '#lib/database/settings/base/IBaseManager';
 export * from '#lib/database/settings/configuration';
 export * from '#lib/database/settings/functions';

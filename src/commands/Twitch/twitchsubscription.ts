@@ -1,15 +1,22 @@
 import { GuildSubscriptionEntity, TwitchSubscriptionEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
-import { PermissionLevels, TwitchEventSubTypes, type GuildMessage, type TwitchHelixUsersSearchResult } from '#lib/types';
+import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { channelMention } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
-import { Args, CommandOptionsRunTypeEnum, container } from '@sapphire/framework';
+import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { chunk, isNullish, isNullishOrEmpty } from '@sapphire/utilities';
 import { envIsDefined } from '@skyra/env-utilities';
+import {
+	addEventSubscription,
+	fetchUsers,
+	removeEventSubscription,
+	TwitchEventSubTypes,
+	type TwitchHelixUsersSearchResult
+} from '@skyra/twitch-helpers';
 import { EmbedBuilder, PermissionFlagsBits, type Guild } from 'discord.js';
 
 @ApplyOptions<SkyraSubcommand.Options>({
@@ -67,12 +74,12 @@ export class UserCommand extends SkyraSubcommand {
 			guildSubscription.subscription = streamerForType;
 		} else {
 			// Subscribe to the streamer on the Twitch API, returning the ID of the subscription
-			const subscriptionId = await this.container.client.twitch.subscriptionsStreamHandle(streamer.id, subscriptionType);
+			const subscription = await addEventSubscription(streamer.id, subscriptionType);
 			const twitchSubscriptionEntity = new TwitchSubscriptionEntity();
 
 			twitchSubscriptionEntity.streamerId = streamer.id;
 			twitchSubscriptionEntity.subscriptionType = subscriptionType;
-			twitchSubscriptionEntity.subscriptionId = subscriptionId;
+			twitchSubscriptionEntity.subscriptionId = subscription.id;
 
 			guildSubscription.subscription = twitchSubscriptionEntity;
 		}
@@ -237,7 +244,7 @@ export class UserCommand extends SkyraSubcommand {
 		// (i.e. different channels, different subscription types)
 		const streamerIds = new Set([...guildSubscriptions.map((guildSubscription) => guildSubscription.subscription.streamerId)]);
 
-		const profiles = await this.container.client.twitch.fetchUsers(streamerIds, []);
+		const profiles = (await fetchUsers({ ids: streamerIds })).unwrapRaw();
 		const names = new Map<string, string>();
 		for (const profile of profiles.data) names.set(profile.id, profile.display_name);
 
@@ -275,7 +282,7 @@ export class UserCommand extends SkyraSubcommand {
 
 		if (subscription.guildSubscription.length === 0) {
 			await Promise.all([
-				this.container.client.twitch.removeSubscription(subscription.subscriptionId), //
+				removeEventSubscription(subscription.subscriptionId), //
 				subscription.remove()
 			]);
 		}
@@ -302,7 +309,7 @@ export class UserCommand extends SkyraSubcommand {
 			// If the subscription has no servers then remove it
 			if (subscription.guildSubscription.length === 0) {
 				await Promise.all([
-					this.container.client.twitch.removeSubscription(subscription.subscriptionId), //
+					removeEventSubscription(subscription.subscriptionId), //
 					subscription.remove()
 				]);
 			}
@@ -328,7 +335,7 @@ export class UserCommand extends SkyraSubcommand {
 
 	private static streamer = Args.make<TwitchHelixUsersSearchResult>(async (parameter, { argument }) => {
 		try {
-			const { data } = await container.client.twitch.fetchUsers([], [parameter]);
+			const { data } = (await fetchUsers({ logins: [parameter] })).unwrapRaw();
 			if (data.length > 0) return Args.ok(data[0]);
 			return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Twitch.TwitchSubscriptionStreamerNotFound });
 		} catch {

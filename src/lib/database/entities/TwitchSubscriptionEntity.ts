@@ -1,5 +1,5 @@
 import { GuildSubscriptionEntity } from '#lib/database/entities/GuildSubscriptionEntity';
-import { TwitchEventSubTypes } from '#lib/types';
+import { TwitchEventSubTypes } from '@skyra/twitch-helpers';
 import { BaseEntity, Column, Entity, Index, OneToMany, PrimaryGeneratedColumn, type Relation } from 'typeorm';
 
 @Index(['streamerId', 'subscriptionType'], { unique: true })

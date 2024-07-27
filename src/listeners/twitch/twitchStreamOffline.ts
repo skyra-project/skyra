@@ -1,6 +1,7 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { Events, TwitchEventSubTypes, type TwitchEventSubEvent } from '#lib/types';
+import { Events } from '#lib/types';
 import { floatPromise } from '#utils/common';
+import { streamNotificationDrip } from '#utils/twitch';
 import { extractDetailedMentions } from '#utils/util';
 import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -9,6 +10,7 @@ import { Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty } from '@sapphire/utilities';
+import { TwitchEventSubTypes, type TwitchEventSubEvent } from '@skyra/twitch-helpers';
 
 @ApplyOptions<Listener.Options>({
 	event: Events.TwitchStreamOffline
@@ -29,11 +31,7 @@ export class UserListener extends Listener<Events.TwitchStreamOffline> {
 		if (twitchSubscription) {
 			// Iterate over all the guilds that are subscribed to this streamer and subscription type
 			for (const guildSubscription of twitchSubscription.guildSubscription) {
-				if (
-					this.container.client.twitch.streamNotificationDrip(
-						`${twitchSubscription.streamerId}-${guildSubscription.channelId}-${TwitchEventSubTypes.StreamOffline}`
-					)
-				) {
+				if (streamNotificationDrip(`${twitchSubscription.streamerId}-${guildSubscription.channelId}-${TwitchEventSubTypes.StreamOffline}`)) {
 					continue;
 				}
 

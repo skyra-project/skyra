@@ -6,16 +6,15 @@ import type { AnalyticsData, InviteCodeValidEntry, InviteStore, ScheduleManager,
 import type { Events } from '#lib/types';
 import type { TwitchStreamStatus } from '#lib/types/AnalyticsSchema';
 import type { TaskErrorPayload } from '#lib/types/Internals';
-import type { TwitchEventSubEvent, TwitchEventSubOnlineEvent } from '#lib/types/Twitch';
 import type { TypedFT, TypedT } from '#lib/types/Utils';
 import type { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
-import type { Twitch } from '#utils/Notifications/Twitch';
 import type { EmojiObject } from '#utils/functions';
 import type { EmbedBuilder } from '@discordjs/builders';
 import type { API } from '@discordjs/core/http-only';
 import type { Piece, Store } from '@sapphire/framework';
 import type { Awaitable, Nullish } from '@sapphire/utilities';
 import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utilities';
+import type { TwitchEventSubEvent, TwitchEventSubOnlineEvent } from '@skyra/twitch-helpers';
 import type { Guild, GuildChannel, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
 
 declare module 'discord.js' {
@@ -26,7 +25,6 @@ declare module 'discord.js' {
 		readonly invites: InviteStore;
 		readonly llrCollectors: Set<LongLivingReactionCollector>;
 		readonly schedules: ScheduleManager;
-		readonly twitch: Twitch;
 		readonly version: string;
 		readonly webhookError: WebhookClient | null;
 	}

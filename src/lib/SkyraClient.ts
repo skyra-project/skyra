@@ -4,7 +4,6 @@ import { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import { AnalyticsData, InviteStore, ScheduleManager } from '#lib/structures';
 import type { LongLivingReactionCollector } from '#lib/util/LongLivingReactionCollector';
-import { Twitch } from '#lib/util/Notifications/Twitch';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';
 import { Enumerable } from '@sapphire/decorators';
@@ -43,9 +42,6 @@ export class SkyraClient extends SapphireClient {
 
 	@Enumerable(false)
 	public override llrCollectors = new Set<LongLivingReactionCollector>();
-
-	@Enumerable(false)
-	public override twitch = new Twitch();
 
 	public constructor() {
 		super(CLIENT_OPTIONS);

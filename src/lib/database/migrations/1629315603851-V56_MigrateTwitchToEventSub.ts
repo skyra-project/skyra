@@ -1,10 +1,7 @@
-import { Twitch } from '#lib/util/Notifications/Twitch';
+import { addEventSubscription, TwitchEventSubTypes } from '@skyra/twitch-helpers';
 import { Table, TableColumn, TableForeignKey, TableUnique, type MigrationInterface, type QueryRunner } from 'typeorm';
-import { TwitchEventSubTypes } from '#lib/types/Twitch';
 
 export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterface {
-	private twitch = new Twitch();
-
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.query(
 			/* sql */ `CREATE TYPE "public"."twitch_subscriptions_subscription_type_enum" AS ENUM('stream.online', 'stream.offline');`
@@ -142,11 +139,11 @@ export class V56MigrateTwitchToEventSub1629315603851 implements MigrationInterfa
 		let id = 1;
 
 		for (const streamer of allStreamerIds) {
-			const subscriptionId = await this.twitch.subscriptionsStreamHandle(streamer, TwitchEventSubTypes.StreamOnline);
+			const subscription = await addEventSubscription(streamer, TwitchEventSubTypes.StreamOnline);
 			streamerIdSubscriptionIdMap.set(streamer, {
 				id,
 				streamer_id: streamer,
-				subscription_id: subscriptionId,
+				subscription_id: subscription.id,
 				subscription_type: TwitchEventSubTypes.StreamOnline
 			});
 

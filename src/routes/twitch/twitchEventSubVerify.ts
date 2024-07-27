@@ -1,8 +1,9 @@
-import { Events, TwitchEventSubTypes, TwitchStreamStatus, type TwitchEventSubVerificationMessage } from '#lib/types';
+import { Events, TwitchStreamStatus } from '#lib/types';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
+import { methods, Route, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 import { isObject } from '@sapphire/utilities';
+import { checkSignature, TwitchEventSubTypes, type TwitchEventSubVerificationMessage } from '@skyra/twitch-helpers';
 
 @ApplyOptions<Route.Options>({ route: 'twitch/event_sub_verify' })
 export class UserRoute extends Route {
@@ -32,10 +33,8 @@ export class UserRoute extends Route {
 		// Split the algorithm from the signature
 		const [algorithm, signature] = twitchEventSubMessageSignature.toString().split('=', 2);
 
-		const { client } = this.container;
-
 		// Verify the signature
-		if (!client.twitch.checkSignature(algorithm, signature, twitchEventSubMessage)) {
+		if (!checkSignature(algorithm, signature, twitchEventSubMessage)) {
 			return response.forbidden('Invalid Hub signature');
 		}
 
@@ -52,6 +51,7 @@ export class UserRoute extends Route {
 		// If there is an event then this is an online or offline notification
 		// If there is no event this is an endpoint verification request
 		if (event) {
+			const { client } = this.container;
 			if (type === TwitchEventSubTypes.StreamOnline) {
 				client.emit(Events.TwitchStreamHookedAnalytics, TwitchStreamStatus.Online);
 				client.emit(Events.TwitchStreamOnline, event);

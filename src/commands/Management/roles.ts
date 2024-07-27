@@ -1,9 +1,11 @@
 import { readSettings, writeSettings } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraPaginatedMessage } from '#lib/structures';
+import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
+import { minutes } from '#utils/common';
 import { getColor, sendLoadingMessage } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
+import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
@@ -124,12 +126,13 @@ export class UserPaginatedMessageCommand extends SkyraCommand {
 		// would filter and remove them all, causing this to be empty.
 		if (!roles.length) this.error(LanguageKeys.Commands.Management.RolesListEmpty);
 
-		const display = new SkyraPaginatedMessage({
+		const display = new PaginatedMessage({
 			template: new EmbedBuilder() //
 				.setColor(getColor(message))
 				.setTitle(t(LanguageKeys.Commands.Management.RolesListTitle))
 		});
 
+		display.setIdle(minutes(5));
 		for (const page of chunk(roles, 10)) {
 			display.addPageEmbed((embed) => embed.setDescription(page.join('\n')));
 		}

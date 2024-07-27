@@ -1,10 +1,12 @@
 import { GuildSubscriptionEntity, TwitchSubscriptionEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { SkyraCommand, SkyraPaginatedMessage, SkyraSubcommand } from '#lib/structures';
+import { SkyraCommand, SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
+import { minutes } from '#utils/common';
 import { getColor, getFullEmbedAuthor, sendLoadingMessage } from '#utils/util';
 import { channelMention } from '@discordjs/builders';
 import { ApplyOptions, RequiresClientPermissions } from '@sapphire/decorators';
+import { PaginatedMessage } from '@sapphire/discord.js-utilities';
 import { Args, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
@@ -198,12 +200,13 @@ export class UserCommand extends SkyraSubcommand {
 
 		// Create the pages and the URD to display them.
 		const pages = chunk(lines, 10);
-		const display = new SkyraPaginatedMessage({
+		const display = new PaginatedMessage({
 			template: new EmbedBuilder() //
 				.setAuthor(getFullEmbedAuthor(message.author))
 				.setColor(getColor(message))
 		});
 
+		display.setIdle(minutes(5));
 		for (const page of pages) display.addPageEmbed((embed) => embed.setDescription(page.join('\n')));
 
 		// Start the display and return the message.

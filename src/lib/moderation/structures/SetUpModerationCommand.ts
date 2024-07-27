@@ -10,7 +10,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { PermissionFlagsBits, type Role } from 'discord.js';
 
 export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, ValueType> extends ModerationCommand<Type, ValueType> {
-	public constructor(context: ModerationCommand.Context, options: SetUpModerationCommand.Options<Type>) {
+	public constructor(context: ModerationCommand.LoaderContext, options: SetUpModerationCommand.Options<Type>) {
 		super(context, {
 			requiredClientPermissions: [PermissionFlagsBits.ManageRoles],
 			requiredMember: true,
@@ -77,7 +77,7 @@ export namespace SetUpModerationCommand {
 	export type Options<Type extends RoleTypeVariation> = ModerationCommand.Options<Type>;
 
 	export type Args = ModerationCommand.Args;
-	export type Context = ModerationCommand.Context;
+	export type LoaderContext = ModerationCommand.LoaderContext;
 	export type RunContext = ModerationCommand.RunContext;
 
 	export type Parameters = ModerationCommand.Parameters;

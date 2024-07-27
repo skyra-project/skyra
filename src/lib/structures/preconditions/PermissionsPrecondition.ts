@@ -42,7 +42,11 @@ export abstract class PermissionsPrecondition extends AllFlowsPrecondition {
 		return this.ok();
 	}
 
-	public abstract handle(message: GuildMessage, command: SkyraCommand, context: PermissionsPrecondition.Context): PermissionsPrecondition.Result;
+	public abstract handle(
+		message: GuildMessage,
+		command: SkyraCommand,
+		context: PermissionsPrecondition.LoaderContext
+	): PermissionsPrecondition.Result;
 
 	private async shouldRun(message: GuildMessage, command: SkyraCommand) {
 		// Guarded commands cannot be modified:
@@ -59,7 +63,7 @@ export abstract class PermissionsPrecondition extends AllFlowsPrecondition {
 }
 
 export namespace PermissionsPrecondition {
-	export type Context = Precondition.Context;
+	export type LoaderContext = Precondition.Context;
 	export type Result = Precondition.Result;
 	export type AsyncResult = Precondition.AsyncResult;
 	export interface Options extends PreconditionOptions {

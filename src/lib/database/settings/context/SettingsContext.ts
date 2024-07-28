@@ -38,7 +38,7 @@ export class SettingsContext {
 		this.#adders.onPatch(settings);
 
 		if (!isNullish(data.permissionsRoles) || !isNullish(data.permissionsUsers)) {
-			this.#permissionNodes.onPatch(settings);
+			this.#permissionNodes.refresh(settings);
 		}
 
 		if (!isNullish(data.noMentionSpamTimePeriod) || !isNullish(data.noMentionSpamMentionsAllowed)) {

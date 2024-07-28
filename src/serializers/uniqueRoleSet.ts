@@ -1,6 +1,6 @@
 import { Serializer, type UniqueRoleSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
-import { resolveGuild } from '#utils/functions';
+import { resolveGuild } from '#utils/common';
 import { isObject, type Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<UniqueRoleSet> {

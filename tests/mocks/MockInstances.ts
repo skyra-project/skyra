@@ -22,7 +22,6 @@ import {
 	type APIRole,
 	type APIUser
 } from 'discord.js';
-import { resolve } from 'node:path';
 
 export const client = new SapphireClient(CLIENT_OPTIONS);
 
@@ -168,15 +167,10 @@ class Command extends SkyraCommand {
 }
 addCommand(
 	new Command(
+		{ name: 'ping', path: '::virtual::', store: commands, root: '::virtual::' },
 		{
-			name: 'ping',
-			path: resolve('/home/skyra/commands/General/Chat Bot Info/ping.js'),
-			store: commands,
-			root: '/home/skyra/commands'
-		},
-		{
-			description: LanguageKeys.Commands.General.PingDescription,
-			detailedDescription: LanguageKeys.Commands.General.PingExtended,
+			description: LanguageKeys.Commands.General.V7Description,
+			detailedDescription: LanguageKeys.Commands.General.V7Extended,
 			aliases: ['pong'],
 			fullCategory: ['General']
 		}
@@ -185,12 +179,7 @@ addCommand(
 
 addCommand(
 	new Command(
-		{
-			name: 'balance',
-			path: resolve('/home/skyra/commands/admin/conf.js'),
-			store: commands,
-			root: '/home/skyra/commands'
-		},
+		{ name: 'balance', path: '::virtual::', store: commands, root: '::virtual::' },
 		{
 			description: LanguageKeys.Commands.Admin.ConfDescription,
 			detailedDescription: LanguageKeys.Commands.Admin.ConfExtended,
@@ -202,12 +191,7 @@ addCommand(
 
 addCommand(
 	new Command(
-		{
-			name: 'define',
-			path: resolve('/home/skyra/commands/Tools/Dictionary/define.js'),
-			store: commands,
-			root: '/home/skyra/commands'
-		},
+		{ name: 'define', path: '::virtual::', store: commands, root: '::virtual::' },
 		{
 			description: LanguageKeys.Commands.Tools.AvatarDescription,
 			detailedDescription: LanguageKeys.Commands.Tools.AvatarExtended,

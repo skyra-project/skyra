@@ -3,7 +3,7 @@ import type { ReadonlyGuildData } from '#lib/database/settings/types';
 import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
-import { resolveGuild } from '#utils/functions';
+import { resolveGuild } from '#utils/common';
 import { UserError } from '@sapphire/framework';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import { Collection, Role, type GuildMember, type User } from 'discord.js';
@@ -17,9 +17,9 @@ type Nodes = readonly PermissionsNode[];
 type Node = PermissionsNode;
 
 export class PermissionNodeManager {
-	#sorted = new Collection<string, PermissionsManagerNode>();
-	#cachedRawPermissionRoles: Nodes = [];
-	#cachedRawPermissionUsers: Nodes = [];
+	private sorted = new Collection<string, PermissionsManagerNode>();
+	#cachedRawPermissionRoles: readonly PermissionsNode[] = [];
+	#cachedRawPermissionUsers: readonly PermissionsNode[] = [];
 
 	public constructor(settings: ReadonlyGuildData) {
 		this.refresh(settings);
@@ -34,11 +34,11 @@ export class PermissionNodeManager {
 	}
 
 	public has(roleId: string) {
-		return this.#sorted.has(roleId);
+		return this.sorted.has(roleId);
 	}
 
 	public add(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): readonly PermissionsNode[] {
-		const nodes = this.#getPermissionNodes(target).slice();
+		const nodes = this.#getPermissionNodes(target);
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) {
@@ -48,30 +48,28 @@ export class PermissionNodeManager {
 				deny: action === PermissionNodeAction.Deny ? [command] : []
 			};
 
-			nodes.push(node);
-		} else {
-			const previous = nodes[nodeIndex];
-			if (
-				(action === PermissionNodeAction.Allow && previous.allow.includes(command)) ||
-				(action === PermissionNodeAction.Deny && previous.deny.includes(command))
-			) {
-				throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, context: { command } });
-			}
-
-			const node: Node = {
-				id: target.id,
-				allow: action === PermissionNodeAction.Allow ? previous.allow.concat(command) : previous.allow,
-				deny: action === PermissionNodeAction.Deny ? previous.deny.concat(command) : previous.deny
-			};
-
-			nodes[nodeIndex] = node;
+			return nodes.concat(node);
 		}
 
-		return nodes;
+		const previous = nodes[nodeIndex];
+		if (
+			(action === PermissionNodeAction.Allow && previous.allow.includes(command)) ||
+			(action === PermissionNodeAction.Deny && previous.deny.includes(command))
+		) {
+			throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, context: { command } });
+		}
+
+		const node: Node = {
+			id: target.id,
+			allow: action === PermissionNodeAction.Allow ? previous.allow.concat(command) : previous.allow,
+			deny: action === PermissionNodeAction.Deny ? previous.deny.concat(command) : previous.deny
+		};
+
+		return nodes.with(nodeIndex, node);
 	}
 
 	public remove(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): readonly PermissionsNode[] {
-		const nodes = this.#getPermissionNodes(target).slice();
+		const nodes = this.#getPermissionNodes(target);
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) {
@@ -91,12 +89,13 @@ export class PermissionNodeManager {
 			deny: 'deny' ? previous.deny.toSpliced(commandIndex, 1) : previous.deny
 		};
 
-		nodes.splice(nodeIndex, 1, node);
-		return nodes;
+		return node.allow.length === 0 && node.deny.length === 0 //
+			? nodes.toSpliced(nodeIndex, 1)
+			: nodes.with(nodeIndex, node);
 	}
 
 	public reset(target: Role | GuildMember | User): readonly PermissionsNode[] {
-		const nodes = this.#getPermissionNodes(target).slice();
+		const nodes = this.#getPermissionNodes(target);
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) {
@@ -107,12 +106,12 @@ export class PermissionNodeManager {
 	}
 
 	public refresh(settings: ReadonlyGuildData): readonly PermissionsNode[] {
-		const nodes = settings.permissionsRoles.slice();
-		this.#cachedRawPermissionRoles = nodes.slice();
+		const nodes = settings.permissionsRoles;
+		this.#cachedRawPermissionRoles = nodes;
 		this.#cachedRawPermissionUsers = settings.permissionsUsers;
 
 		if (nodes.length === 0) {
-			this.#sorted.clear();
+			this.sorted.clear();
 			return nodes;
 		}
 
@@ -128,15 +127,20 @@ export class PermissionNodeManager {
 			});
 		}
 
-		this.#sorted = sorted;
+		this.sorted = sorted;
+
+		let copy: PermissionsNode[] | null = null;
 
 		// Delete redundant entries
 		for (const removedItem of pendingToRemove) {
 			const removedIndex = nodes.findIndex((element) => element.id === removedItem);
-			if (removedIndex !== -1) nodes.splice(removedIndex, 1);
+			if (removedIndex !== -1) {
+				copy ??= nodes.slice();
+				copy.splice(removedIndex, 1);
+			}
 		}
 
-		return nodes;
+		return copy ?? nodes;
 	}
 
 	public onPatch(settings: ReadonlyGuildData) {
@@ -161,7 +165,7 @@ export class PermissionNodeManager {
 		const roles = member.roles.cache;
 
 		// Assume sorted data
-		for (const [id, node] of this.#sorted.entries()) {
+		for (const [id, node] of this.sorted.entries()) {
 			if (!roles.has(id)) continue;
 			if (matchAny(node.allow, command)) return true;
 			if (matchAny(node.deny, command)) return false;

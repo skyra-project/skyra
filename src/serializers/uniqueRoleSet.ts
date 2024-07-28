@@ -1,5 +1,6 @@
 import { Serializer, type UniqueRoleSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import { resolveGuild } from '#utils/common';
 import { isObject, type Awaitable } from '@sapphire/utilities';
 
 export class UserSerializer extends Serializer<UniqueRoleSet> {
@@ -26,7 +27,8 @@ export class UserSerializer extends Serializer<UniqueRoleSet> {
 		throw t(LanguageKeys.Serializers.UniqueRoleSetInvalid);
 	}
 
-	public override stringify(value: UniqueRoleSet, { t, entity: { guild } }: Serializer.UpdateContext) {
+	public override stringify(value: UniqueRoleSet, { t, entity }: Serializer.UpdateContext) {
+		const guild = resolveGuild(entity.id);
 		return `[${value.name} -> \`${value.roles
 			.map((role) => guild.roles.cache.get(role)?.name ?? t(LanguageKeys.Serializers.UnknownRole))
 			.join('` | `')}\`]`;

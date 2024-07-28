@@ -1,4 +1,4 @@
-import { readSettings } from '#lib/database';
+import { readSettings, readSettingsNoMentionSpam } from '#lib/database';
 import { Events, type GuildMessage } from '#lib/types';
 import { isModerator } from '#utils/functions';
 import { ApplyOptions } from '@sapphire/decorators';
@@ -22,7 +22,8 @@ export class UserListener extends Listener {
 
 		if (mentions === 0) return;
 
-		const rateLimit = settings.nms.acquire(message.author.id);
+		const ctx = readSettingsNoMentionSpam(settings);
+		const rateLimit = ctx.acquire(message.author.id);
 
 		try {
 			for (let i = 0; i < mentions; i++) rateLimit.consume();

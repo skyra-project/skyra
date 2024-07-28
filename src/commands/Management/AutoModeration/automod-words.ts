@@ -1,4 +1,10 @@
-import { writeSettingsTransaction, type GuildDataKey, type GuildDataValue, type ReadonlyGuildEntity } from '#lib/database';
+import {
+	readSettingsWordFilterRegExp,
+	writeSettingsTransaction,
+	type GuildDataValue,
+	type ReadonlyGuildEntity,
+	type SchemaDataKey
+} from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { getSupportedUserLanguageT } from '#lib/i18n/translate';
 import { AutoModerationCommand } from '#lib/moderation';
@@ -113,7 +119,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 			.addStringOption((option) => applyLocalizedBuilder(option, Root.OptionsWord).setRequired(true).setMinLength(2).setMaxLength(32));
 	}
 
-	protected override resetGetKeyValuePairFallback(guild: Guild, key: string): Awaitable<readonly [GuildDataKey, GuildDataValue]> {
+	protected override resetGetKeyValuePairFallback(guild: Guild, key: string): Awaitable<readonly [SchemaDataKey, GuildDataValue]> {
 		if (key === 'words') return ['selfmodFilterRaw', []];
 		return super.resetGetKeyValuePairFallback(guild, key);
 	}
@@ -126,7 +132,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		const words = settings.selfmodFilterRaw;
 		if (words.includes(word)) return true;
 
-		const regExp = settings.wordFilterRegExp;
+		const regExp = readSettingsWordFilterRegExp(settings);
 		if (regExp === null) return false;
 
 		try {

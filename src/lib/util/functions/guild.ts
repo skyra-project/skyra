@@ -1,6 +1,6 @@
 import { LoggerManager, ModerationManager, StickyRoleManager } from '#lib/moderation/managers';
+import { resolveGuild } from '#utils/common';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
-import { container } from '@sapphire/framework';
 import type { Guild, GuildResolvable } from 'discord.js';
 
 interface GuildUtilities {
@@ -35,11 +35,4 @@ export const getStickyRoles = getProperty('stickyRoles');
 
 function getProperty<K extends keyof GuildUtilities>(property: K) {
 	return (resolvable: GuildResolvable): GuildUtilities[K] => getGuildUtilities(resolvable)[property];
-}
-
-function resolveGuild(resolvable: GuildResolvable): Guild {
-	const guild = container.client.guilds.resolve(resolvable);
-	if (guild === null) throw new TypeError(`${resolvable} resolved to null.`);
-
-	return guild;
 }

@@ -1,4 +1,4 @@
-import { readSettings } from '#lib/database';
+import { readSettings, readSettingsNoMentionSpam } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Events, type GuildMessage } from '#lib/types';
@@ -20,7 +20,9 @@ export class UserListener extends Listener {
 			await message.channel
 				.send(t(LanguageKeys.Events.NoMentionSpam.Message, { userId: message.author.id, userTag: getTag(message.author) }))
 				.catch((error) => this.container.client.emit(Events.Error, error));
-			settings.nms.delete(message.author.id);
+
+			const ctx = readSettingsNoMentionSpam(settings);
+			ctx.delete(message.author.id);
 
 			const threshold = settings.noMentionSpamMentionsAllowed;
 			const reason = t(LanguageKeys.Events.NoMentionSpam.ModerationLog, { threshold });

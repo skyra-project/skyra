@@ -1,4 +1,4 @@
-import { GuildEntity, PermissionNodeAction, type PermissionsNode } from '#lib/database';
+import { GuildEntity, PermissionNodeAction, PermissionNodeManager, type PermissionsNode } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { UserError } from '@sapphire/framework';
 import type { Guild, GuildMember, Role, User } from 'discord.js';
@@ -8,31 +8,42 @@ import { createGuild, createGuildMember, createRole, createUser, roleData } from
 describe('PermissionNodeManager', () => {
 	let guild: Guild;
 	let entity: GuildEntity;
+	let ctx: PermissionNodeManager | null;
 
 	beforeEach(() => {
 		guild = createGuild();
 		entity = new GuildEntity();
 		entity.id = guild.id;
+		ctx = null;
 	});
 
+	function readSettingsPermissionNodes() {
+		return (ctx ??= new PermissionNodeManager(entity));
+	}
+
 	function getSorted() {
+		const ctx = readSettingsPermissionNodes();
 		// eslint-disable-next-line @typescript-eslint/dot-notation
-		return entity.permissionNodes['sorted'];
+		return ctx['sorted'];
 	}
 
 	describe('has', () => {
 		test('GIVEN a guild with no roles THEN returns false', () => {
-			expect(entity.permissionNodes.has('1')).toBe(false);
+			const ctx = readSettingsPermissionNodes();
+			expect(ctx.has('1')).toBe(false);
 		});
 	});
 
-	function apply(target: User | GuildMember | Role, nodes: PermissionsNode[]) {
-		Object.assign(entity, { [entity.permissionNodes.settingsPropertyFor(target)]: nodes });
+	function apply(target: User | GuildMember | Role, nodes: readonly PermissionsNode[]) {
+		const ctx = readSettingsPermissionNodes();
+		Object.assign(entity, { [ctx.settingsPropertyFor(target)]: nodes });
+		ctx.refresh(entity);
 	}
 
 	describe('add', () => {
 		function add(target: User | GuildMember | Role, command: string, action: PermissionNodeAction) {
-			const nodes = entity.permissionNodes.add(target, command, action);
+			const ctx = readSettingsPermissionNodes();
+			const nodes = ctx.add(target, command, action);
 			apply(target, nodes);
 		}
 
@@ -96,7 +107,8 @@ describe('PermissionNodeManager', () => {
 
 	describe('reset', () => {
 		function reset(target: User | GuildMember | Role) {
-			const nodes = entity.permissionNodes.reset(target);
+			const ctx = readSettingsPermissionNodes();
+			const nodes = ctx.reset(target);
 			apply(target, nodes);
 		}
 
@@ -153,7 +165,8 @@ describe('PermissionNodeManager', () => {
 
 	describe('refresh', () => {
 		test('GIVEN no roles THEN returns early', () => {
-			entity.permissionNodes.refresh();
+			const ctx = readSettingsPermissionNodes();
+			ctx.refresh(entity);
 
 			expect(getSorted().size).toBe(0);
 		});
@@ -164,12 +177,15 @@ describe('PermissionNodeManager', () => {
 			const roleContributor = createRole({ id: '635547552229490708', name: 'Contributor', position: 18 }, guild);
 			const roleAlumni = createRole({ id: '541743369081192451', name: 'Alumni', position: 11 }, guild);
 
-			entity.permissionsRoles.push({ id: roleModerator.id, allow: ['balance'], deny: [] });
-			entity.permissionsRoles.push({ id: roleAlumni.id, allow: [], deny: ['balance'] });
-			entity.permissionsRoles.push({ id: roleDeveloper.id, allow: ['ping'], deny: [] });
-			entity.permissionsRoles.push({ id: roleContributor.id, allow: [], deny: ['ping'] });
+			entity.permissionsRoles = [
+				{ id: roleModerator.id, allow: ['balance'], deny: [] },
+				{ id: roleAlumni.id, allow: [], deny: ['balance'] },
+				{ id: roleDeveloper.id, allow: ['ping'], deny: [] },
+				{ id: roleContributor.id, allow: [], deny: ['ping'] }
+			];
 
-			entity.permissionsRoles = entity.permissionNodes.refresh();
+			const ctx = readSettingsPermissionNodes();
+			entity.permissionsRoles = ctx.refresh(entity);
 
 			const sorted = [...getSorted().entries()];
 			expect(sorted.length).toBe(4);

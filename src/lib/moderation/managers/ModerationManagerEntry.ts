@@ -1,7 +1,7 @@
-import type { ModerationEntity, ScheduleEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { minutes } from '#utils/common';
 import { SchemaKeys, TypeMetadata, type TypeVariation } from '#utils/moderationConstants';
+import type { Schedule } from '@prisma/client';
 import { UserError, container } from '@sapphire/framework';
 import { isNullishOrZero } from '@sapphire/utilities';
 import type { Guild, Snowflake, User } from 'discord.js';
@@ -272,7 +272,7 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 		};
 	}
 
-	#isMatchingTask(task: ScheduleEntity) {
+	#isMatchingTask(task: Schedule) {
 		return (
 			typeof task.data === 'object' &&
 			task.data !== null &&
@@ -281,7 +281,8 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 		);
 	}
 
-	#setDuration(duration: number | null) {
+	#setDuration(duration: bigint | number | null) {
+		if (typeof duration === 'bigint') duration = Number(duration);
 		if (isNullishOrZero(duration)) {
 			this.duration = null;
 			this.metadata &= ~TypeMetadata.Temporary;
@@ -316,7 +317,7 @@ export namespace ModerationManagerEntry {
 	export interface Data<Type extends TypeVariation = TypeVariation> {
 		id: number;
 		createdAt: number;
-		duration: number | null;
+		duration: bigint | number | null;
 		extraData: ExtraData<Type>;
 		guild: Guild;
 		moderator: User | Snowflake;

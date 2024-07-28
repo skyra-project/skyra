@@ -1,20 +1,15 @@
-import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildEntity';
-import type { ReadonlyGuildData } from '#lib/database/settings/types';
+import type { PermissionsNode, ReadonlyGuildData } from '#lib/database/settings/types';
 import { matchAny } from '#lib/database/utils/matchers/Command';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraCommand } from '#lib/structures';
 import { resolveGuild } from '#utils/common';
 import { UserError } from '@sapphire/framework';
-import { arrayStrictEquals } from '@sapphire/utilities';
 import { Collection, Role, type GuildMember, type User } from 'discord.js';
 
 export const enum PermissionNodeAction {
 	Allow,
 	Deny
 }
-
-type Nodes = readonly PermissionsNode[];
-type Node = PermissionsNode;
 
 export class PermissionNodeManager {
 	private sorted = new Collection<string, PermissionsManagerNode>();
@@ -26,7 +21,7 @@ export class PermissionNodeManager {
 	}
 
 	public settingsPropertyFor(target: Role | GuildMember | User) {
-		return (target instanceof Role ? 'permissionsRoles' : 'permissionsUsers') satisfies keyof GuildEntity;
+		return (target instanceof Role ? 'permissionsRoles' : 'permissionsUsers') satisfies keyof ReadonlyGuildData;
 	}
 
 	public run(member: GuildMember, command: SkyraCommand) {
@@ -42,7 +37,7 @@ export class PermissionNodeManager {
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) {
-			const node: Node = {
+			const node: PermissionsNode = {
 				id: target.id,
 				allow: action === PermissionNodeAction.Allow ? [command] : [],
 				deny: action === PermissionNodeAction.Deny ? [command] : []
@@ -59,7 +54,7 @@ export class PermissionNodeManager {
 			throw new UserError({ identifier: LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, context: { command } });
 		}
 
-		const node: Node = {
+		const node: PermissionsNode = {
 			id: target.id,
 			allow: action === PermissionNodeAction.Allow ? previous.allow.concat(command) : previous.allow,
 			deny: action === PermissionNodeAction.Deny ? previous.deny.concat(command) : previous.deny
@@ -143,11 +138,6 @@ export class PermissionNodeManager {
 		return copy ?? nodes;
 	}
 
-	public onPatch(settings: ReadonlyGuildData) {
-		if (!arrayStrictEquals(this.#cachedRawPermissionRoles, settings.permissionsRoles)) this.refresh(settings);
-		this.#cachedRawPermissionUsers = settings.permissionsUsers;
-	}
-
 	private runUser(member: GuildMember, command: SkyraCommand) {
 		// Assume sorted data
 		const permissionNodeRoles = this.#cachedRawPermissionUsers;
@@ -174,7 +164,7 @@ export class PermissionNodeManager {
 		return null;
 	}
 
-	private generateSorted(settings: ReadonlyGuildData, nodes: Nodes) {
+	private generateSorted(settings: ReadonlyGuildData, nodes: readonly PermissionsNode[]) {
 		const { pendingToRemove, sortedRoles } = this.getSortedRoles(settings, nodes);
 
 		const sortedNodes: PermissionsNode[] = [];

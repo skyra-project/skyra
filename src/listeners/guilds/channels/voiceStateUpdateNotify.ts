@@ -1,4 +1,4 @@
-import { readSettings, type ReadonlyGuildEntity } from '#lib/database';
+import { readSettings, type ReadonlyGuildData } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { Colors } from '#utils/constants';
@@ -38,11 +38,11 @@ export class UserListener extends Listener<typeof Events.VoiceStateUpdate> {
 		});
 	}
 
-	private onCondition(old: VoiceBasedChannel | null, next: VoiceBasedChannel | null, user: User, settings: ReadonlyGuildEntity) {
+	private onCondition(old: VoiceBasedChannel | null, next: VoiceBasedChannel | null, user: User, settings: ReadonlyGuildData) {
 		// If includeBots is false, and the user is a bot, return false
 		if (!settings.eventsIncludeBots && user.bot) return false;
 
-		const ignoredChannels = settings.channelsIgnoreVoiceActivities;
+		const ignoredChannels = settings.channelsIgnoreVoiceActivity;
 		const ignoredAll = settings.channelsIgnoreAll;
 		// Assume in all conditions that old !== next, as checked earlier.
 		// If the old channel is null, the user joined a channel, check if `next` is ignored:

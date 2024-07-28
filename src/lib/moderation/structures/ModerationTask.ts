@@ -1,4 +1,4 @@
-import { ResponseType, Task, readSettings, type PartialResponseValue } from '#lib/database';
+import { Task, readSettings } from '#lib/database';
 import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
 import { getModeration } from '#utils/functions';
 import type { SchemaKeys } from '#utils/moderationConstants';
@@ -6,14 +6,14 @@ import { isNullish } from '@sapphire/utilities';
 import type { Guild, Snowflake } from 'discord.js';
 
 export abstract class ModerationTask<T = unknown> extends Task {
-	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
+	public async run(data: ModerationData<T>): Promise<Task.PartialResponseValue> {
 		const guild = this.container.client.guilds.cache.get(data.guildID);
 		// If the guild is not available, cancel the task.
-		if (isNullish(guild)) return { type: ResponseType.Ignore };
+		if (isNullish(guild)) return { type: Task.ResponseType.Ignore };
 
 		// If the guild is not available, re-schedule the task by creating
 		// another with the same data but happening 20 seconds later.
-		if (!guild.available) return { type: ResponseType.Delay, value: 20000 };
+		if (!guild.available) return { type: Task.ResponseType.Delay, value: 20000 };
 
 		// Run the abstract handle function.
 		try {
@@ -25,7 +25,7 @@ export abstract class ModerationTask<T = unknown> extends Task {
 		// Mark the moderation entry as complete.
 		await getModeration(guild).complete(data.caseID);
 
-		return { type: ResponseType.Finished };
+		return { type: Task.ResponseType.Finished };
 	}
 
 	protected async getActionData<ContextType = never>(
@@ -36,7 +36,7 @@ export abstract class ModerationTask<T = unknown> extends Task {
 		const settings = await readSettings(guild);
 		return {
 			moderator: null,
-			sendDirectMessage: settings.messagesModerationDm && (await this.container.db.fetchModerationDirectMessageEnabled(targetId)),
+			sendDirectMessage: settings.messagesModerationDm && (await this.container.prisma.user.fetchModerationDirectMessageEnabled(targetId)),
 			context
 		};
 	}

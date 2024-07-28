@@ -10,8 +10,6 @@
 			"#utils/functions": ["lib/util/functions/index.js"],
 			"#utils/resolvers": ["lib/util/resolvers/index.js"],
 			"#utils/*": ["lib/util/*"],
-			"#lib/database/entities": ["lib/database/entities/index.js"],
-			"#lib/database/keys": ["lib/database/keys/index.js"],
 			"#lib/database/settings": ["lib/database/settings/index.js"],
 			"#lib/database": ["lib/database/index.js"],
 			"#lib/discord": ["lib/discord/index.js"],

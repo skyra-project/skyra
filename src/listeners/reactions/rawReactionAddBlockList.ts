@@ -38,7 +38,7 @@ export class UserModerationEvent extends ModerationListener<ArgumentType, unknow
 		const blockedReactions = settings.selfmodReactionsBlocked;
 		const logChannelId = settings.channelsLogsModeration;
 
-		if (!settings.selfmodReactionsEnabled || blockedReactions.length === 0 || settings.channelsIgnoreReactionAdds.includes(data.channel.id)) {
+		if (!settings.selfmodReactionsEnabled || blockedReactions.length === 0 || settings.channelsIgnoreReactionAdd.includes(data.channel.id)) {
 			return;
 		}
 

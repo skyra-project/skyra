@@ -47,13 +47,15 @@ export class UserCommand extends SkyraSubcommand {
 			this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionAddMessageForOfflineRequired);
 		}
 
-		const { twitchSubscriptions, guildSubscriptions } = this.container.db;
+		const { prisma } = this.container;
 
 		// Get a potential pre-existing subscription for this streamer and subscriptionType
-		const streamerForType = await twitchSubscriptions.findOne({
+		const streamerForType = await prisma.twitchSubscription.findFirst({
 			where: { streamerId: streamer.id, subscriptionType }
 		});
-		const guildSubscriptionsForGuild = await guildSubscriptions.find({ where: { guildId: message.guild.id, channelId: channel.id } });
+		const guildSubscriptionsForGuild = await prisma.guildSubscription.findMany({
+			where: { guildId: message.guild.id, channelId: channel.id }
+		});
 
 		// Check if there is already a subscription for the given streamer, subscription type, and channel:
 		const alreadyHasEntry = guildSubscriptionsForGuild.some(
@@ -270,14 +272,10 @@ export class UserCommand extends SkyraSubcommand {
 	}
 
 	private async removeSubscription(subscriptionId: string) {
-		const { twitchSubscriptions } = this.container.db;
-
 		// Get all subscriptions for the provided streamer and subscription type
-		const subscription = await twitchSubscriptions.findOne({
-			relations: ['guildSubscription'],
-			where: {
-				subscriptionId
-			}
+		const subscription = await this.container.prisma.twitchSubscription.findFirst({
+			where: { subscriptionId },
+			include: { guildSubscription: true }
 		});
 
 		// If there are no subscriptions for that streamer and subscription type then return
@@ -286,22 +284,18 @@ export class UserCommand extends SkyraSubcommand {
 		if (subscription.guildSubscription.length === 0) {
 			await Promise.all([
 				removeEventSubscription(subscription.subscriptionId), //
-				subscription.remove()
+				await this.container.prisma.twitchSubscription.delete({ where: { id: subscription.id } })
 			]);
 		}
 	}
 
 	private async resetSubscriptions(streamer: TwitchHelixUsersSearchResult | null) {
-		const { twitchSubscriptions } = this.container.db;
-
 		// Get all subscriptions
-		const subscriptions = await twitchSubscriptions.find({
-			relations: ['guildSubscription'],
+		const subscriptions = await this.container.prisma.twitchSubscription.findMany({
 			...(!isNullish(streamer) && {
-				where: {
-					streamerId: streamer.id
-				}
-			})
+				where: { streamerId: streamer.id }
+			}),
+			include: { guildSubscription: true }
 		});
 
 		// If there are no subscriptions then return
@@ -313,17 +307,15 @@ export class UserCommand extends SkyraSubcommand {
 			if (subscription.guildSubscription.length === 0) {
 				await Promise.all([
 					removeEventSubscription(subscription.subscriptionId), //
-					subscription.remove()
+					await this.container.prisma.twitchSubscription.delete({ where: { id: subscription.id } })
 				]);
 			}
 		}
 	}
 
 	private async getGuildSubscriptions(guild: Guild): Promise<GuildSubscriptionEntity[]> {
-		const { guildSubscriptions } = this.container.db;
-
 		// Get all subscriptions for the current server and channel combination
-		const guildSubscriptionForGuild = await guildSubscriptions.find({ where: { guildId: guild.id } });
+		const guildSubscriptionForGuild = await this.container.prisma.guildSubscription.findMany({ where: { guildId: guild.id } });
 
 		if (guildSubscriptionForGuild.length === 0) {
 			this.error(LanguageKeys.Commands.Twitch.TwitchSubscriptionNoSubscriptions);

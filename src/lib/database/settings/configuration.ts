@@ -77,12 +77,12 @@ export const Configuration = makeKeys({
 		name: 'channels.logs.member-remove',
 		description: LanguageKeys.Settings.Channels.Logs.MemberRemove
 	},
-	channelsLogsMemberNickNameUpdate: {
+	channelsLogsMemberNicknameUpdate: {
 		type: 'guildTextChannel',
 		name: 'channels.logs.member-nickname-update',
 		description: LanguageKeys.Settings.Channels.Logs.MemberNickNameUpdate
 	},
-	channelsLogsMemberUserNameUpdate: {
+	channelsLogsMemberUsernameUpdate: {
 		type: 'guildTextChannel',
 		name: 'channels.logs.member-username-update',
 		description: LanguageKeys.Settings.Channels.Logs.MemberUserNameUpdate
@@ -183,25 +183,25 @@ export const Configuration = makeKeys({
 		description: LanguageKeys.Settings.Channels.Ignore.All,
 		array: true
 	},
-	channelsIgnoreMessageEdits: {
+	channelsIgnoreMessageEdit: {
 		type: 'guildTextChannel',
 		name: 'channels.ignore.message-edit',
 		description: LanguageKeys.Settings.Channels.Ignore.MessageEdit,
 		array: true
 	},
-	channelsIgnoreMessageDeletes: {
+	channelsIgnoreMessageDelete: {
 		type: 'guildTextChannel',
 		name: 'channels.ignore.message-delete',
 		description: LanguageKeys.Settings.Channels.Ignore.MessageDelete,
 		array: true
 	},
-	channelsIgnoreReactionAdds: {
+	channelsIgnoreReactionAdd: {
 		type: 'guildTextChannel',
 		name: 'channels.ignore.reaction-add',
 		description: LanguageKeys.Settings.Channels.Ignore.ReactionAdd,
 		array: true
 	},
-	channelsIgnoreVoiceActivities: {
+	channelsIgnoreVoiceActivity: {
 		type: 'guildVoiceChannel',
 		name: 'channels.ignore.voice-activity',
 		description: LanguageKeys.Settings.Channels.Ignore.VoiceActivity,
@@ -955,7 +955,7 @@ export const Configuration = makeKeys({
 		default: 60000,
 		dashboardOnly: true
 	},
-	selfmodIgnoreChannels: {
+	selfmodIgnoredChannels: {
 		type: 'guildTextChannel',
 		name: 'selfmod.ignored-channels',
 		description: LanguageKeys.Settings.SelfmodIgnoreChannels,

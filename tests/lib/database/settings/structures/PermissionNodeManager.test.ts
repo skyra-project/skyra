@@ -4,10 +4,11 @@ import { UserError } from '@sapphire/framework';
 import type { Guild, GuildMember, Role, User } from 'discord.js';
 import { fail } from 'node:assert';
 import { createGuild, createGuildMember, createRole, createUser, roleData } from '../../../../mocks/MockInstances.js';
+import { GuildData } from '#lib/database/settings';
 
 describe('PermissionNodeManager', () => {
 	let guild: Guild;
-	let entity: GuildEntity;
+	let entity: GuildData;
 	let ctx: PermissionNodeManager | null;
 
 	beforeEach(() => {

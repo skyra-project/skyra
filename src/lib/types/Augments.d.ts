@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { DbSet, GuildSettingsOfType, SerializerStore, TaskStore } from '#lib/database';
+import type {
+	CommandAutoDelete,
+	DisabledCommandChannel,
+	GuildSettingsOfType,
+	PermissionsNode,
+	ReactionRole,
+	SerializerStore,
+	StickyRole,
+	TaskStore,
+	UniqueRoleSet
+} from '#lib/database';
 import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { WorkerManager } from '#lib/moderation/workers/WorkerManager';
 import type { AnalyticsData, InviteCodeValidEntry, InviteStore, ScheduleManager, SkyraCommand } from '#lib/structures';
@@ -16,6 +26,17 @@ import type { Awaitable, Nullish } from '@sapphire/utilities';
 import type { ArrayString, BooleanString, IntegerString } from '@skyra/env-utilities';
 import type { TwitchEventSubEvent, TwitchEventSubOnlineEvent } from '@skyra/twitch-helpers';
 import type { Guild, GuildChannel, NewsChannel, Role, Snowflake, TextChannel, User } from 'discord.js';
+
+declare global {
+	namespace PrismaJson {
+		export type PermissionNodeEntries = PermissionsNode[];
+		export type CommandAutoDeleteEntries = CommandAutoDelete[];
+		export type DisabledCommandChannelEntries = DisabledCommandChannel[];
+		export type StickyRoleEntries = StickyRole[];
+		export type ReactionRoleEntries = ReactionRole[];
+		export type UniqueRoleSetEntries = UniqueRoleSet[];
+	}
+}
 
 declare module 'discord.js' {
 	interface Client {
@@ -43,7 +64,6 @@ declare module 'discord.js' {
 declare module '@sapphire/pieces' {
 	interface Container {
 		api?: API;
-		db: DbSet;
 		schedule: ScheduleManager;
 		workers: WorkerManager;
 	}
@@ -144,13 +164,6 @@ declare module '@skyra/env-utilities' {
 
 		TWITCH_CALLBACK: string;
 
-		PGSQL_DATABASE_NAME: string;
-		PGSQL_DATABASE_PASSWORD: string;
-		PGSQL_DATABASE_USER: string;
-		PGSQL_DATABASE_PORT: IntegerString;
-		PGSQL_DATABASE_HOST: string;
-		TYPEORM_DEBUG_LOGS: BooleanString;
-
 		INFLUX_ENABLED: BooleanString;
 		INFLUX_URL: string;
 		INFLUX_TOKEN: string;
@@ -173,5 +186,7 @@ declare module '@skyra/env-utilities' {
 		TWITCH_CLIENT_ID: string;
 		TWITCH_EVENTSUB_SECRET: string;
 		TWITCH_TOKEN: string;
+
+		DATABASE_URL: string;
 	}
 }

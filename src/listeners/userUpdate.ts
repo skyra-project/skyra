@@ -28,12 +28,12 @@ export class UserListener extends Listener {
 
 	private async processGuild(guild: Guild, user: User, previous: string, next: string) {
 		const settings = await readSettings(guild);
-		const logChannelId = settings.channelsLogsMemberUserNameUpdate;
+		const logChannelId = settings.channelsLogsMemberUsernameUpdate;
 		if (!logChannelId) return;
 
 		// Send the Username log
 		const t = getT(settings.language);
-		this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, 'channelsLogsMemberUserNameUpdate', () =>
+		this.container.client.emit(Events.GuildMessageLog, guild, logChannelId, 'channelsLogsMemberUsernameUpdate', () =>
 			this.buildEmbed(user, t, this.getNameDescription(t, previous, next), LanguageKeys.Events.Guilds.Members.UsernameUpdate)
 		);
 	}

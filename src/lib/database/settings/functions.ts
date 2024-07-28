@@ -1,14 +1,13 @@
-import { GuildEntity } from '#lib/database/entities/GuildEntity';
 import { deleteSettingsContext, getSettingsContext, updateSettingsContext } from '#lib/database/settings/context/functions';
 import type { AdderKey } from '#lib/database/settings/structures/AdderManager';
-import type { GuildData, ReadonlyGuildData, ReadonlyGuildEntity } from '#lib/database/settings/types';
+import type { GuildData, ReadonlyGuildData } from '#lib/database/settings/types';
 import { container, type Awaitable } from '@sapphire/framework';
-import { objectKeys } from '@sapphire/utilities';
 import { RWLock } from 'async-rwlock';
 import { Collection, type GuildResolvable, type Snowflake } from 'discord.js';
+import { DefaultGuildSettings } from './constants.js';
 
-const cache = new Collection<string, GuildEntity>();
-const queue = new Collection<string, Promise<GuildEntity>>();
+const cache = new Collection<string, GuildData>();
+const queue = new Collection<string, Promise<GuildData>>();
 const locks = new Collection<string, RWLock>();
 
 export function deleteSettingsCached(guild: GuildResolvable) {
@@ -18,7 +17,7 @@ export function deleteSettingsCached(guild: GuildResolvable) {
 	deleteSettingsContext(id);
 }
 
-export async function readSettings(guild: GuildResolvable): Promise<ReadonlyGuildEntity> {
+export async function readSettings(guild: GuildResolvable): Promise<ReadonlyGuildData> {
 	const id = resolveGuildId(guild);
 
 	const lock = locks.ensure(id, () => new RWLock());
@@ -34,29 +33,29 @@ export async function readSettings(guild: GuildResolvable): Promise<ReadonlyGuil
 	}
 }
 
-export function readSettingsAdder(settings: ReadonlyGuildEntity, key: AdderKey) {
+export function readSettingsAdder(settings: ReadonlyGuildData, key: AdderKey) {
 	return getSettingsContext(settings).adders[key];
 }
 
-export function readSettingsPermissionNodes(settings: ReadonlyGuildEntity) {
+export function readSettingsPermissionNodes(settings: ReadonlyGuildData) {
 	return getSettingsContext(settings).permissionNodes;
 }
 
-export function readSettingsNoMentionSpam(settings: ReadonlyGuildEntity) {
+export function readSettingsNoMentionSpam(settings: ReadonlyGuildData) {
 	return getSettingsContext(settings).noMentionSpam;
 }
 
-export function readSettingsWordFilterRegExp(settings: ReadonlyGuildEntity) {
+export function readSettingsWordFilterRegExp(settings: ReadonlyGuildData) {
 	return getSettingsContext(settings).wordFilterRegExp;
 }
 
-export function readSettingsCached(guild: GuildResolvable): ReadonlyGuildEntity | null {
+export function readSettingsCached(guild: GuildResolvable): ReadonlyGuildData | null {
 	return cache.get(resolveGuildId(guild)) ?? null;
 }
 
 export async function writeSettings(
 	guild: GuildResolvable,
-	data: Partial<ReadonlyGuildEntity> | ((settings: ReadonlyGuildEntity) => Awaitable<Partial<ReadonlyGuildEntity>>)
+	data: Partial<ReadonlyGuildData> | ((settings: ReadonlyGuildData) => Awaitable<Partial<ReadonlyGuildData>>)
 ) {
 	using trx = await writeSettingsTransaction(guild);
 
@@ -86,7 +85,7 @@ export class Transaction {
 	#locking = true;
 
 	public constructor(
-		public readonly settings: ReadonlyGuildEntity,
+		public readonly settings: ReadonlyGuildData,
 		private readonly lock: RWLock
 	) {}
 
@@ -109,15 +108,17 @@ export class Transaction {
 			throw new Error('Cannot submit a transaction without changes');
 		}
 
-		const original = this.#getOriginalValues();
 		try {
-			Object.assign(this.settings, this.#changes);
-			await this.settings.save();
+			await container.prisma.guild.update({
+				where: { id: this.settings.id },
+				// @ts-expect-error readonly
+				data: this.#changes
+			});
 
+			Object.assign(this.settings, this.#changes);
 			this.#hasChanges = false;
 			updateSettingsContext(this.settings, this.#changes);
 		} catch (error) {
-			Object.assign(this.settings, original);
 			throw error;
 		} finally {
 			this.#changes = Object.create(null);
@@ -146,19 +147,9 @@ export class Transaction {
 	public [Symbol.dispose]() {
 		return this.dispose();
 	}
-
-	#getOriginalValues() {
-		const data = Object.assign(Object.create(null), this.#changes) as Partial<GuildData>;
-		for (const key of objectKeys(data)) {
-			// @ts-expect-error Complex types
-			data[key] = this.settings[key];
-		}
-
-		return data;
-	}
 }
 
-async function unlockOnThrow(promise: Promise<GuildEntity>, lock: RWLock) {
+async function unlockOnThrow(promise: Promise<ReadonlyGuildData>, lock: RWLock) {
 	try {
 		return await promise;
 	} catch (error) {
@@ -167,7 +158,7 @@ async function unlockOnThrow(promise: Promise<GuildEntity>, lock: RWLock) {
 	}
 }
 
-async function processFetch(id: string): Promise<GuildEntity> {
+async function processFetch(id: string): Promise<ReadonlyGuildData> {
 	const previous = queue.get(id);
 	if (previous) return previous;
 
@@ -182,16 +173,17 @@ async function processFetch(id: string): Promise<GuildEntity> {
 	}
 }
 
-async function fetch(id: string): Promise<GuildEntity> {
-	const { guilds } = container.db;
-	const existing = await guilds.findOne({ where: { id } });
+async function fetch(id: string): Promise<GuildData> {
+	const { guild } = container.prisma;
+	const existing = await guild.findUnique({ where: { id } });
 	if (existing) {
 		cache.set(id, existing);
 		return existing;
 	}
 
-	const created = new GuildEntity();
-	created.id = id;
+	const created = Object.create(DefaultGuildSettings, {
+		id: { value: id, writable: false, configurable: false, enumerable: true }
+	}) as GuildData;
 	cache.set(id, created);
 	return created;
 }

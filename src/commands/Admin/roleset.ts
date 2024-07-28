@@ -1,4 +1,4 @@
-import { readSettings, writeSettings, writeSettingsTransaction, type ReadonlyGuildEntity, type UniqueRoleSet } from '#lib/database';
+import { readSettings, writeSettings, writeSettingsTransaction, type ReadonlyGuildData, type UniqueRoleSet } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand, SkyraSubcommand } from '#lib/structures';
 import { PermissionLevels, type GuildMessage } from '#lib/types';
@@ -150,7 +150,7 @@ export class UserCommand extends SkyraSubcommand {
 		return list;
 	}
 
-	private cleanRoleSets(message: GuildMessage, settings: ReadonlyGuildEntity) {
+	private cleanRoleSets(message: GuildMessage, settings: ReadonlyGuildData) {
 		const guildRoles = message.guild.roles.cache;
 
 		return settings.rolesUniqueRoleSets

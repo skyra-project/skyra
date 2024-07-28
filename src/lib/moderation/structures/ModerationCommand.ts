@@ -302,7 +302,7 @@ export abstract class ModerationCommand<Type extends TypeVariation, ValueType> e
 				// --dm and enabledDM enable
 				(args.getFlags('dm') || settings.messagesModerationDm) &&
 				// user settings
-				(await this.container.db.fetchModerationDirectMessageEnabled(target.id)),
+				(await this.container.prisma.user.fetchModerationDirectMessageEnabled(target.id)),
 			context
 		};
 	}

@@ -43,7 +43,7 @@ export class UserListener extends Listener {
 			channelId: settings.channelsLogsPrune,
 			condition: () =>
 				!settings.messagesIgnoreChannels.some((id) => id === channel.id || channel.parentId === id) ||
-				!settings.channelsIgnoreMessageDeletes.some((id) => id === channel.id && channel.parentId === id) ||
+				!settings.channelsIgnoreMessageDelete.some((id) => id === channel.id && channel.parentId === id) ||
 				!settings.channelsIgnoreAll.some((id) => id === channel.id || channel.parentId === id),
 			makeMessage: async () => {
 				const t = getT(settings.language);

@@ -1,4 +1,4 @@
-import { ResponseType, ScheduleEntity, type ResponseValue } from '#lib/database/entities';
+import { Task } from '#lib/database';
 import { container } from '@sapphire/framework';
 import { Cron } from '@sapphire/time-utilities';
 
@@ -66,7 +66,7 @@ export class ScheduleManager {
 		if (this.queue.length) {
 			// Process the active tasks, they're sorted by the time they end
 			const now = Date.now();
-			const execute: Promise<ResponseValue>[] = [];
+			const execute: Promise<Task.ResponseValue>[] = [];
 			for (const entry of this.queue) {
 				if (entry.time.getTime() > now) break;
 				execute.push(entry.run());
@@ -93,7 +93,7 @@ export class ScheduleManager {
 		if (index !== -1) this.queue.splice(index, 1);
 	}
 
-	private async _handleResponses(responses: readonly ResponseValue[]) {
+	private async _handleResponses(responses: readonly Task.ResponseValue[]) {
 		const { connection } = container.db;
 		const queryRunner = connection.createQueryRunner();
 		await queryRunner.connect();
@@ -107,21 +107,21 @@ export class ScheduleManager {
 				response.entry.pause();
 
 				switch (response.type) {
-					case ResponseType.Delay: {
+					case Task.ResponseType.Delay: {
 						response.entry.time = new Date(response.entry.time.getTime() + response.value);
 						updated.push(response.entry);
 						await queryRunner.manager.save(response.entry);
 						continue;
 					}
-					case ResponseType.Finished: {
+					case Task.ResponseType.Finished: {
 						removed.push(response.entry);
 						await queryRunner.manager.remove(response.entry);
 						continue;
 					}
-					case ResponseType.Ignore: {
+					case Task.ResponseType.Ignore: {
 						continue;
 					}
-					case ResponseType.Update: {
+					case Task.ResponseType.Update: {
 						response.entry.time = response.value;
 						updated.push(response.entry);
 						await queryRunner.manager.save(response.entry);

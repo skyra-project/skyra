@@ -1,4 +1,4 @@
-import { ResponseType, Task, type PartialResponseValue } from '#lib/database';
+import { Task } from '#lib/database';
 import { Events } from '#lib/types';
 import { FetchResultTypes, QueryError, fetch } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';
@@ -17,19 +17,19 @@ enum Lists {
 }
 
 export class UserTask extends Task {
-	public async run(): Promise<PartialResponseValue | null> {
+	public async run(): Promise<Task.PartialResponseValue | null> {
 		const { client, logger } = this.container;
 
 		// If the websocket isn't ready, delay the execution by 30 seconds:
 		if (client.ws.status !== Status.Ready) {
-			return { type: ResponseType.Delay, value: 30000 };
+			return { type: Task.ResponseType.Delay, value: 30000 };
 		}
 
 		const rawGuilds = client.guilds.cache.size;
 		const rawUsers = client.guilds.cache.reduce((acc, val) => acc + (val.memberCount ?? 0), 0);
 
 		this.processAnalytics(rawGuilds, rawUsers);
-		if (this.container.client.dev) return { type: ResponseType.Finished };
+		if (this.container.client.dev) return { type: Task.ResponseType.Finished };
 
 		const guilds = rawGuilds.toString();
 		const users = rawUsers.toString();

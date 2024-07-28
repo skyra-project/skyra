@@ -1,4 +1,3 @@
-import { DbSet } from '#lib/database';
 import '#lib/setup';
 
 import { SkyraClient } from '#lib/SkyraClient';
@@ -9,36 +8,29 @@ import { envIsDefined, envParseString } from '@skyra/env-utilities';
 
 const client = new SkyraClient();
 
-async function main() {
-	// Load in Sentry for error logging
-	if (envIsDefined('SENTRY_URL')) {
-		Sentry.init({
-			dsn: envParseString('SENTRY_URL'),
-			integrations: [
-				Sentry.consoleIntegration(),
-				Sentry.functionToStringIntegration(),
-				Sentry.linkedErrorsIntegration(),
-				Sentry.modulesIntegration(),
-				Sentry.onUncaughtExceptionIntegration(),
-				Sentry.onUnhandledRejectionIntegration(),
-				Sentry.httpIntegration({ breadcrumbs: true }),
-				Sentry.postgresIntegration(),
-				Sentry.rewriteFramesIntegration({ root: rootFolder })
-			]
-		});
-	}
-
-	try {
-		// Connect to the Database
-		container.db = await DbSet.connect();
-
-		// Login to the Discord gateway
-		await client.login();
-	} catch (error) {
-		container.logger.error(error);
-		await client.destroy();
-		process.exit(1);
-	}
+// Load in Sentry for error logging
+if (envIsDefined('SENTRY_URL')) {
+	Sentry.init({
+		dsn: envParseString('SENTRY_URL'),
+		integrations: [
+			Sentry.consoleIntegration(),
+			Sentry.functionToStringIntegration(),
+			Sentry.linkedErrorsIntegration(),
+			Sentry.modulesIntegration(),
+			Sentry.onUncaughtExceptionIntegration(),
+			Sentry.onUnhandledRejectionIntegration(),
+			Sentry.httpIntegration({ breadcrumbs: true }),
+			Sentry.postgresIntegration(),
+			Sentry.rewriteFramesIntegration({ root: rootFolder })
+		]
+	});
 }
 
-main().catch(container.logger.error.bind(container.logger));
+try {
+	// Login to the Discord gateway
+	await client.login();
+} catch (error) {
+	container.logger.error(error);
+	await client.destroy();
+	process.exit(1);
+}

@@ -1,4 +1,4 @@
-import { readSettings, type GuildDataKey, type ReadonlyGuildEntity } from '#lib/database';
+import { readSettings, type GuildDataKey, type ReadonlyGuildData } from '#lib/database';
 import { getT } from '#lib/i18n';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { GuildMessage } from '#lib/types';
@@ -56,7 +56,7 @@ export class UserListener extends Listener {
 		});
 	}
 
-	private onCondition(message: GuildMessage | undefined, channel: GuildTextBasedChannel, settings: ReadonlyGuildEntity) {
+	private onCondition(message: GuildMessage | undefined, channel: GuildTextBasedChannel, settings: ReadonlyGuildData) {
 		// If includeBots is false, and the message author is a bot, return false
 		if (!settings.eventsIncludeBots && message?.author.bot) return false;
 		// If allowUnknownMessages is false, and the message is nullish, return false
@@ -64,7 +64,7 @@ export class UserListener extends Listener {
 		// If the channel is in the ignoredChannels array, return false
 		if (settings.messagesIgnoreChannels.includes(channel.id)) return false;
 		// If the channel or its parent is in the ignoredDeletes array, return false
-		if (settings.channelsIgnoreMessageDeletes.some((id) => id === channel.id || channel.parentId === id)) return false;
+		if (settings.channelsIgnoreMessageDelete.some((id) => id === channel.id || channel.parentId === id)) return false;
 		// If the channel or its parent is in the ignoredAll array, return false
 		if (settings.channelsIgnoreAll.some((id) => id === channel.id || channel.parentId === id)) return false;
 		// All checks passed, return true

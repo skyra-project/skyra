@@ -1,10 +1,10 @@
+import { getDefaultGuildSettings } from '#lib/database/settings/constants';
 import { deleteSettingsContext, getSettingsContext, updateSettingsContext } from '#lib/database/settings/context/functions';
 import type { AdderKey } from '#lib/database/settings/structures/AdderManager';
 import type { GuildData, ReadonlyGuildData } from '#lib/database/settings/types';
 import { container, type Awaitable } from '@sapphire/framework';
 import { RWLock } from 'async-rwlock';
 import { Collection, type GuildResolvable, type Snowflake } from 'discord.js';
-import { DefaultGuildSettings } from './constants.js';
 
 const cache = new Collection<string, GuildData>();
 const queue = new Collection<string, Promise<GuildData>>();
@@ -181,7 +181,7 @@ async function fetch(id: string): Promise<GuildData> {
 		return existing;
 	}
 
-	const created = Object.create(DefaultGuildSettings, {
+	const created = Object.create(getDefaultGuildSettings(), {
 		id: { value: id, writable: false, configurable: false, enumerable: true }
 	}) as GuildData;
 	cache.set(id, created);

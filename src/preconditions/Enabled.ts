@@ -62,7 +62,7 @@ export class UserPrecondition extends AllFlowsPrecondition {
 	}
 
 	private checkGuildDisabled(settings: ReadonlyGuildData, channelId: string, command: SkyraCommand) {
-		if (settings.disabledCommands.includes(channelId)) return true;
+		if (settings.disabledChannels.includes(channelId)) return true;
 		if (CommandMatcher.matchAny(settings.disabledCommands, command)) return true;
 
 		const entry = settings.disabledCommandsChannels.find((d) => d.channel === channelId);

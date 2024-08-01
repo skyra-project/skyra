@@ -1,7 +1,7 @@
 import type { ReadonlyGuildData } from '#lib/database/settings/types';
 import { envParseString } from '@skyra/env-utilities';
 
-let cachedDefaultGuildSettings: DefaultGuildData | null;
+let cachedDefaultGuildSettings: DefaultGuildData | null = null;
 
 export function getDefaultGuildSettings() {
 	cachedDefaultGuildSettings ??= Object.assign(Object.create(null), {

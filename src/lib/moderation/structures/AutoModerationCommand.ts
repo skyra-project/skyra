@@ -1,5 +1,5 @@
 import {
-	configurableKeys,
+	getConfigurableKeys,
 	readSettings,
 	readSettingsAdder,
 	writeSettings,
@@ -73,6 +73,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 
 		this.#localizedNameKey = options.localizedNameKey;
 
+		const configurableKeys = getConfigurableKeys();
 		const punishmentDuration = configurableKeys.get(this.keyPunishmentDuration)!;
 		this.#punishmentDurationMinimum = punishmentDuration.minimum!;
 		this.#punishmentDurationMaximum = punishmentDuration.maximum!;
@@ -197,7 +198,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	}
 
 	protected resetGetValue<const Key extends SchemaDataKey>(key: Key): GuildData[Key] {
-		return configurableKeys.get(key)!.default as GuildData[Key];
+		return getConfigurableKeys().get(key)!.default as GuildData[Key];
 	}
 
 	protected async resetGetOnInfractionFlags(guild: Guild, bit: number) {

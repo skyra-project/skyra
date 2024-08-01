@@ -1,4 +1,4 @@
-import { configurableGroups, isSchemaKey, readSettings, remove, reset, SchemaKey, set, writeSettingsTransaction } from '#lib/database';
+import { getConfigurableGroups, isSchemaKey, readSettings, remove, reset, SchemaKey, set, writeSettingsTransaction } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SettingsMenu, SkyraSubcommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -36,7 +36,7 @@ export class UserCommand extends SkyraSubcommand {
 
 	public async show(message: GuildMessage, args: SkyraSubcommand.Args) {
 		const key = args.finished ? '' : await args.pick('string');
-		const schemaValue = configurableGroups.getPathString(key.toLowerCase());
+		const schemaValue = getConfigurableGroups().getPathString(key.toLowerCase());
 		if (schemaValue === null) this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 
 		const settings = await readSettings(message.guild);
@@ -105,7 +105,7 @@ export class UserCommand extends SkyraSubcommand {
 	async #fetchKey(args: SkyraSubcommand.Args) {
 		const key = await args.pick('string');
 
-		const value = configurableGroups.getPathString(key.toLowerCase());
+		const value = getConfigurableGroups().getPathString(key.toLowerCase());
 		if (isNullish(value) || value.dashboardOnly) {
 			this.error(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 		}

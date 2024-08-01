@@ -9,6 +9,7 @@ import { Collection, type GuildResolvable, type Snowflake } from 'discord.js';
 const cache = new Collection<string, GuildData>();
 const queue = new Collection<string, Promise<GuildData>>();
 const locks = new Collection<string, RWLock>();
+const WeakMapNotInitialized = new WeakSet<ReadonlyGuildData>();
 
 export function deleteSettingsCached(guild: GuildResolvable) {
 	const id = resolveGuildId(guild);
@@ -109,11 +110,19 @@ export class Transaction {
 		}
 
 		try {
-			await container.prisma.guild.update({
-				where: { id: this.settings.id },
-				// @ts-expect-error readonly
-				data: this.#changes
-			});
+			if (WeakMapNotInitialized.has(this.settings)) {
+				await container.prisma.guild.create({
+					// @ts-expect-error readonly
+					data: { ...this.settings, ...this.#changes }
+				});
+				WeakMapNotInitialized.delete(this.settings);
+			} else {
+				await container.prisma.guild.update({
+					where: { id: this.settings.id },
+					// @ts-expect-error readonly
+					data: this.#changes
+				});
+			}
 
 			Object.assign(this.settings, this.#changes);
 			this.#hasChanges = false;
@@ -181,10 +190,9 @@ async function fetch(id: string): Promise<GuildData> {
 		return existing;
 	}
 
-	const created = Object.create(getDefaultGuildSettings(), {
-		id: { value: id, writable: false, configurable: false, enumerable: true }
-	}) as GuildData;
+	const created = Object.assign(Object.create(null), getDefaultGuildSettings(), { id }) as GuildData;
 	cache.set(id, created);
+	WeakMapNotInitialized.add(created);
 	return created;
 }
 

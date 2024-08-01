@@ -40,6 +40,8 @@ jobs:
           cache: yarn
       - name: Install Dependencies
         run: yarn --immutable
+      - name: Generate Prisma types
+        run: yarn prisma:generate
       - name: Build code
         run: yarn build
 
@@ -56,6 +58,8 @@ jobs:
           cache: yarn
       - name: Install Dependencies
         run: yarn --immutable
+      - name: Generate Prisma types
+        run: yarn prisma:generate
       - name: Run unit tests
         run: yarn test --coverage
       - name: Codecov Upload

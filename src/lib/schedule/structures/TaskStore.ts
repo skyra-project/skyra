@@ -1,4 +1,4 @@
-import { Task } from '#lib/database/settings/structures/Task';
+import { Task } from '#lib/schedule/structures/Task';
 import { Store } from '@sapphire/framework';
 
 export class TaskStore extends Store<Task, 'tasks'> {

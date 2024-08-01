@@ -1,7 +1,8 @@
+import type { ModerationData } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { ScheduleEntry } from '#lib/schedule';
 import { minutes } from '#utils/common';
-import { SchemaKeys, TypeMetadata, type TypeVariation } from '#utils/moderationConstants';
-import type { Schedule } from '@prisma/client';
+import { TypeMetadata, type TypeVariation } from '#utils/moderationConstants';
 import { UserError, container } from '@sapphire/framework';
 import { isNullishOrZero } from '@sapphire/utilities';
 import type { Guild, Snowflake, User } from 'discord.js';
@@ -272,13 +273,8 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 		};
 	}
 
-	#isMatchingTask(task: Schedule) {
-		return (
-			typeof task.data === 'object' &&
-			task.data !== null &&
-			task.data[SchemaKeys.Case] === this.id &&
-			task.data[SchemaKeys.Guild] === this.guild.id
-		);
+	#isMatchingTask(task: ScheduleEntry) {
+		return task.data !== null && task.data.caseID === this.id && task.data.guildID === this.guild.id;
 	}
 
 	#setDuration(duration: bigint | number | null) {
@@ -292,7 +288,7 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 		}
 	}
 
-	public static from(guild: Guild, entity: ModerationEntity) {
+	public static from(guild: Guild, entity: ModerationData) {
 		if (guild.id !== entity.guildId) {
 			throw new UserError({ identifier: LanguageKeys.Arguments.CaseNotInThisGuild, context: { parameter: entity.caseId } });
 		}

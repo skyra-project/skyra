@@ -1,19 +1,20 @@
-import { Task, readSettings } from '#lib/database';
+import { readSettings } from '#lib/database';
 import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
+import { ResponseType, Task, type PartialResponseValue } from '#lib/schedule';
 import { getModeration } from '#utils/functions';
 import type { SchemaKeys } from '#utils/moderationConstants';
 import { isNullish } from '@sapphire/utilities';
 import type { Guild, Snowflake } from 'discord.js';
 
 export abstract class ModerationTask<T = unknown> extends Task {
-	public async run(data: ModerationData<T>): Promise<Task.PartialResponseValue> {
+	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
 		const guild = this.container.client.guilds.cache.get(data.guildID);
 		// If the guild is not available, cancel the task.
-		if (isNullish(guild)) return { type: Task.ResponseType.Ignore };
+		if (isNullish(guild)) return { type: ResponseType.Ignore };
 
 		// If the guild is not available, re-schedule the task by creating
 		// another with the same data but happening 20 seconds later.
-		if (!guild.available) return { type: Task.ResponseType.Delay, value: 20000 };
+		if (!guild.available) return { type: ResponseType.Delay, value: 20000 };
 
 		// Run the abstract handle function.
 		try {
@@ -25,7 +26,7 @@ export abstract class ModerationTask<T = unknown> extends Task {
 		// Mark the moderation entry as complete.
 		await getModeration(guild).complete(data.caseID);
 
-		return { type: Task.ResponseType.Finished };
+		return { type: ResponseType.Finished };
 	}
 
 	protected async getActionData<ContextType = never>(

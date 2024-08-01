@@ -181,7 +181,7 @@ model GuildSubscription {
   channelId      String             @map("channel_id") @db.VarChar(19)
   message        String?            @db.VarChar(200)
   subscriptionId Int                @map("subscription_id")
-  subscriptions  TwitchSubscription @relation(fields: [subscriptionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_d88983e3c607b940f0c6e621dcf")
+  subscription   TwitchSubscription @relation(fields: [subscriptionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_d88983e3c607b940f0c6e621dcf")
 
   @@id([guildId, channelId, subscriptionId], map: "PK_6fafe0fb6984c17b483ccd1a823")
   @@map("guild_subscription")

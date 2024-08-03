@@ -64,7 +64,7 @@ export abstract class ModerationListener<V extends unknown[], T = unknown> exten
 			ModerationActions.timeout.apply(guild, {
 				user: userId,
 				reason: '[Auto-Moderation] Threshold Reached.',
-				duration: Math.min(duration, days(28))
+				duration: Math.min(Number(duration), days(28))
 			})
 		);
 	}

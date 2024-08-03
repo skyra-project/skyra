@@ -2,7 +2,7 @@ import {
 	readSettingsWordFilterRegExp,
 	writeSettingsTransaction,
 	type GuildDataValue,
-	type ReadonlyGuildEntity,
+	type ReadonlyGuildData,
 	type SchemaDataKey
 } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
@@ -82,7 +82,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		return interaction.reply({ content: t(Root.EditSuccess), ephemeral: true });
 	}
 
-	protected override showEnabled(t: TFunction, settings: ReadonlyGuildEntity) {
+	protected override showEnabled(t: TFunction, settings: ReadonlyGuildData) {
 		const embed = super.showEnabled(t, settings);
 
 		const words = settings.selfmodFilterRaw;
@@ -128,7 +128,7 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		return removeConfusables(interaction.options.getString('word', true).toLowerCase());
 	}
 
-	async #hasWord(settings: ReadonlyGuildEntity, word: string) {
+	async #hasWord(settings: ReadonlyGuildData, word: string) {
 		const words = settings.selfmodFilterRaw;
 		if (words.includes(word)) return true;
 

@@ -21,6 +21,7 @@
 		"#lib/moderation/managers": "./dist/lib/moderation/managers/index.js",
 		"#lib/moderation/workers": "./dist/lib/moderation/workers/index.js",
 		"#lib/moderation": "./dist/lib/moderation/index.js",
+		"#lib/schedule": "./dist/lib/schedule/index.js",
 		"#lib/structures/data": "./dist/lib/structures/data/index.js",
 		"#lib/structures/managers": "./dist/lib/structures/managers/index.js",
 		"#lib/structures": "./dist/lib/structures/index.js",
@@ -37,6 +38,7 @@
 		"dev": "yarn build && yarn start",
 		"watch": "tsc -b src -w",
 		"watch:start": "tsc-watch -b src --onSuccess \"yarn start\"",
+		"prisma:generate": "yarn prisma generate",
 		"clean": "node scripts/build/clean.mjs",
 		"start": "node --enable-source-maps dist/Skyra.js",
 		"start:profiler:0x": "0x --collect-only dist/Skyra.js",
@@ -46,10 +48,6 @@
 		"scripts:tlds": "node scripts/tlds.mjs",
 		"scripts:migration": "node scripts/migrations.mjs",
 		"dockerps": "pwsh -NoLogo ./.docker/control.ps1",
-		"typeorm:schema:sync": "yarn build && yarn typeorm schema:sync -d ormconfig.js",
-		"typeorm:schema:resync": "docker container rm -f postgres && docker compose up -d postgres && sleep 3 && yarn typeorm:schema:sync",
-		"typeorm:migration:up": "yarn build && yarn typeorm migration:run -d ormconfig.js",
-		"typeorm:migration:down": "yarn build && yarn typeorm migration:revert -d ormconfig.js",
 		"update": "yarn upgrade-interactive"
 	},
 	"dependencies": {
@@ -58,6 +56,7 @@
 		"@discordjs/core": "^1.2.0",
 		"@influxdata/influxdb-client": "^1.34.0",
 		"@influxdata/influxdb-client-apis": "^1.34.0",
+		"@prisma/client": "^5.17.0",
 		"@sapphire/async-queue": "^1.5.3",
 		"@sapphire/bitfield": "^1.2.2",
 		"@sapphire/decorators": "^6.1.0",
@@ -89,9 +88,6 @@
 		"discord-api-types": "^0.37.93",
 		"discord.js": "^14.15.3",
 		"he": "^1.2.0",
-		"pg": "^8.12.0",
-		"typeorm": "0.3.20",
-		"typeorm-naming-strategies": "^4.1.0",
 		"zlib-sync": "^0.1.9"
 	},
 	"devDependencies": {
@@ -116,6 +112,8 @@
 		"eslint-plugin-prettier": "^5.2.1",
 		"lint-staged": "^15.2.7",
 		"prettier": "^3.3.3",
+		"prisma": "^5.17.0",
+		"prisma-json-types-generator": "^3.0.4",
 		"tsc-watch": "^6.2.0",
 		"typescript": "^5.4.5",
 		"vitest": "^1.6.0"

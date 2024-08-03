@@ -1,4 +1,4 @@
-import { readSettingsWordFilterRegExp, Serializer, type ReadonlyGuildEntity } from '#lib/database';
+import { readSettingsWordFilterRegExp, Serializer, type ReadonlyGuildData } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { IncomingType, OutgoingType } from '#lib/moderation/workers';
 import type { Awaitable } from '@sapphire/utilities';
@@ -19,7 +19,7 @@ export class UserSerializer extends Serializer<string> {
 		return value === word && this.minOrMax(value, value.length, context).isOk();
 	}
 
-	private async hasWord(settings: ReadonlyGuildEntity, content: string) {
+	private async hasWord(settings: ReadonlyGuildData, content: string) {
 		const words = settings.selfmodFilterRaw;
 		if (words.includes(content)) return true;
 

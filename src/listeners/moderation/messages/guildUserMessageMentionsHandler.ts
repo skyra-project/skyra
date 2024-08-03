@@ -13,7 +13,7 @@ export class UserListener extends Listener {
 
 		const settings = await readSettings(message.guild);
 		if (!settings.noMentionSpamEnabled) return;
-		if (settings.selfmodIgnoreChannels.includes(message.channel.id)) return;
+		if (settings.selfmodIgnoredChannels.includes(message.channel.id)) return;
 
 		const mentions =
 			message.mentions.users.reduce((acc, user) => (user.bot || user === message.author ? acc : acc + 1), 0) +

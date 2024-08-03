@@ -27,14 +27,12 @@ export class UserListener extends Listener<Events.TwitchStreamOnline> {
 	private readonly kTwitchImageReplacerRegex = /({width}|{height})/gi;
 
 	public async run(data: TwitchEventSubOnlineEvent) {
-		const { twitchSubscriptions } = this.container.db;
-
-		const twitchSubscription = await twitchSubscriptions.findOne({
-			relations: ['guildSubscription'],
+		const twitchSubscription = await this.container.prisma.twitchSubscription.findFirst({
 			where: {
 				streamerId: data.broadcaster_user_id,
-				subscriptionType: TwitchEventSubTypes.StreamOnline
-			}
+				subscriptionType: 'StreamOnline'
+			},
+			include: { guildSubscription: true }
 		});
 
 		if (twitchSubscription) {

@@ -1,4 +1,6 @@
-import { GuildEntity, PermissionNodeAction, PermissionNodeManager, type PermissionsNode } from '#lib/database';
+import { PermissionNodeAction, PermissionNodeManager, type PermissionsNode } from '#lib/database';
+import { GuildData } from '#lib/database/settings';
+import { getDefaultGuildSettings } from '#lib/database/settings/constants';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { UserError } from '@sapphire/framework';
 import type { Guild, GuildMember, Role, User } from 'discord.js';
@@ -7,13 +9,12 @@ import { createGuild, createGuildMember, createRole, createUser, roleData } from
 
 describe('PermissionNodeManager', () => {
 	let guild: Guild;
-	let entity: GuildEntity;
+	let entity: GuildData;
 	let ctx: PermissionNodeManager | null;
 
 	beforeEach(() => {
 		guild = createGuild();
-		entity = new GuildEntity();
-		entity.id = guild.id;
+		entity = Object.assign(Object.create(null), getDefaultGuildSettings(), { id: guild.id });
 		ctx = null;
 	});
 
@@ -185,7 +186,7 @@ describe('PermissionNodeManager', () => {
 			];
 
 			const ctx = readSettingsPermissionNodes();
-			entity.permissionsRoles = ctx.refresh(entity);
+			entity.permissionsRoles = ctx.refresh(entity) as PermissionsNode[];
 
 			const sorted = [...getSorted().entries()];
 			expect(sorted.length).toBe(4);

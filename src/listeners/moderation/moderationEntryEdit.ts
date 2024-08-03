@@ -1,10 +1,10 @@
-import { ScheduleEntity, writeSettings } from '#lib/database';
+import { writeSettings } from '#lib/database';
 import type { ModerationManager } from '#lib/moderation';
 import { getEmbed, getUndoTaskName } from '#lib/moderation/common';
+import type { ScheduleEntry } from '#lib/schedule';
 import type { GuildMessage } from '#lib/types';
 import { resolveOnErrorCodes } from '#utils/common';
 import { getModeration } from '#utils/functions';
-import { SchemaKeys } from '#utils/moderationConstants';
 import { isUserSelf } from '#utils/util';
 import { canSendEmbeds, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
@@ -84,7 +84,7 @@ export class UserListener extends Listener {
 		return !old.isCompleted() && entry.isCompleted();
 	}
 
-	async #tryDeleteTask(task: ScheduleEntity | null) {
+	async #tryDeleteTask(task: ScheduleEntry | null) {
 		if (!isNullish(task) && !task.running) await task.delete();
 	}
 
@@ -135,12 +135,13 @@ export class UserListener extends Listener {
 		await this.container.schedule.add(taskName, entry.expiresTimestamp!, {
 			catchUp: true,
 			data: {
-				[SchemaKeys.Case]: entry.id,
-				[SchemaKeys.User]: entry.userId,
-				[SchemaKeys.Guild]: entry.guild.id,
-				[SchemaKeys.Type]: entry.type,
-				[SchemaKeys.Duration]: entry.duration,
-				[SchemaKeys.ExtraData]: entry.extraData
+				caseID: entry.id,
+				userID: entry.userId,
+				guildID: entry.guild.id,
+				// @ts-expect-error complex types
+				type: entry.type,
+				duration: entry.duration,
+				extraData: entry.extraData
 			}
 		});
 	}

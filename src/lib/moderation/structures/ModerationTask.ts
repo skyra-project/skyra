@@ -1,5 +1,6 @@
-import { ResponseType, Task, readSettings, type PartialResponseValue } from '#lib/database';
+import { readSettings } from '#lib/database';
 import type { ModerationAction } from '#lib/moderation/actions/base/ModerationAction';
+import { ResponseType, Task, type PartialResponseValue } from '#lib/schedule';
 import { getModeration } from '#utils/functions';
 import type { SchemaKeys } from '#utils/moderationConstants';
 import { isNullish } from '@sapphire/utilities';
@@ -36,7 +37,7 @@ export abstract class ModerationTask<T = unknown> extends Task {
 		const settings = await readSettings(guild);
 		return {
 			moderator: null,
-			sendDirectMessage: settings.messagesModerationDm && (await this.container.db.fetchModerationDirectMessageEnabled(targetId)),
+			sendDirectMessage: settings.messagesModerationDm && (await this.container.prisma.user.fetchModerationDirectMessageEnabled(targetId)),
 			context
 		};
 	}

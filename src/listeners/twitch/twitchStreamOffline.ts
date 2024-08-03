@@ -17,15 +17,14 @@ import { TwitchEventSubTypes, type TwitchEventSubEvent } from '@skyra/twitch-hel
 })
 export class UserListener extends Listener<Events.TwitchStreamOffline> {
 	public async run(data: TwitchEventSubEvent) {
-		const { twitchSubscriptions } = this.container.db;
 		const date = new Date();
 
-		const twitchSubscription = await twitchSubscriptions.findOne({
-			relations: ['guildSubscription'],
+		const twitchSubscription = await this.container.prisma.twitchSubscription.findFirst({
 			where: {
 				streamerId: data.broadcaster_user_id,
-				subscriptionType: TwitchEventSubTypes.StreamOffline
-			}
+				subscriptionType: 'StreamOffline'
+			},
+			include: { guildSubscription: true }
 		});
 
 		if (twitchSubscription) {

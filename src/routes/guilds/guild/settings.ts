@@ -1,12 +1,11 @@
 import { authenticated, canManage, ratelimit } from '#lib/api/utils';
 import {
-	configurableKeys,
+	getConfigurableKeys,
 	isSchemaKey,
 	readSettings,
 	writeSettingsTransaction,
 	type GuildDataValue,
 	type ReadonlyGuildData,
-	type ReadonlyGuildEntity,
 	type SchemaDataKey,
 	type Serializer
 } from '#lib/database';
@@ -66,7 +65,7 @@ export class UserRoute extends Route {
 	}
 
 	private async validate(key: SchemaDataKey, value: unknown, context: PartialSerializerUpdateContext) {
-		const entry = configurableKeys.get(key);
+		const entry = getConfigurableKeys().get(key);
 		if (!entry || !isSchemaKey(entry)) throw `${key}: The key ${key} does not exist in the current schema.`;
 		try {
 			// If null is passed, reset to default:
@@ -90,7 +89,7 @@ export class UserRoute extends Route {
 		return Promise.all(value.map((value) => serializer.isValid(value, ctx)));
 	}
 
-	private async validateAll(entity: ReadonlyGuildEntity, guild: Guild, pairs: readonly [SchemaDataKey, GuildDataValue][]) {
+	private async validateAll(entity: ReadonlyGuildData, guild: Guild, pairs: readonly [SchemaDataKey, GuildDataValue][]) {
 		const context: PartialSerializerUpdateContext = {
 			entity,
 			guild,

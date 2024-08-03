@@ -1,4 +1,3 @@
-import { UserEntity } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { SkyraCommand } from '#lib/structures';
 import type { GuildMessage } from '#lib/types';
@@ -12,19 +11,9 @@ import { send } from '@sapphire/plugin-editable-commands';
 })
 export class UserCommand extends SkyraCommand {
 	public override async messageRun(message: GuildMessage, args: SkyraCommand.Args) {
-		const { users } = this.container.db;
-		let user = await users.findOne({ where: { id: message.author.id } });
-		if (user) {
-			user.moderationDM = !user.moderationDM;
-		} else {
-			user = new UserEntity();
-			user.id = message.author.id;
-			user.moderationDM = false;
-		}
-		await user.save();
-
+		const enabled = await this.container.prisma.user.toggleModerationDirectMessageEnabled(message.author.id);
 		const content = args.t(
-			user.moderationDM
+			enabled
 				? LanguageKeys.Commands.Moderation.ToggleModerationDmToggledEnabled
 				: LanguageKeys.Commands.Moderation.ToggleModerationDmToggledDisabled
 		);

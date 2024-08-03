@@ -55,7 +55,7 @@ export class ModerationManager {
 	readonly #locks: ReferredPromise<void>[] = [];
 
 	private get db() {
-		return container.db;
+		return container.prisma;
 	}
 
 	public constructor(guild: Guild) {
@@ -169,7 +169,7 @@ export class ModerationManager {
 		if (task) await task.delete();
 
 		// Delete the entry from the DB and the cache
-		await this.db.moderations.delete({ caseId: entry.id, guildId: entry.guild.id });
+		await this.db.moderation.delete({ where: { caseId_guildId: { caseId: entry.id, guildId: entry.guild.id } } });
 		this.#cache.delete(entry.id);
 
 		return entry;
@@ -217,19 +217,10 @@ export class ModerationManager {
 
 	public async getCurrentId(): Promise<number> {
 		if (this.#latest === null) {
-			const { moderations } = this.db;
+			const result = await this.db.moderation.getGuildModerationMetadata(this.guild.id);
 
-			const [{ max, count }] = (await moderations.query(
-				/* sql */ `
-					SELECT max(case_id), count(*)
-					FROM "${moderations.metadata.tableName}"
-					WHERE guild_id = $1;
-			`,
-				[this.guild.id]
-			)) as [MaxQuery];
-
-			this.#count = Number(count);
-			this.#latest = max ?? 0;
+			this.#count = result.count;
+			this.#latest = result.latest;
 		}
 
 		return this.#latest;
@@ -343,7 +334,7 @@ export class ModerationManager {
 	}
 
 	async #fetchSingle(id: number): Promise<ModerationManagerEntry | null> {
-		const entity = await this.db.moderations.findOne({ where: { guildId: this.guild.id, caseId: id } });
+		const entity = await this.db.moderation.findUnique({ where: { caseId_guildId: { guildId: this.guild.id, caseId: id } } });
 		return entity && ModerationManagerEntry.from(this.guild, entity);
 	}
 
@@ -357,7 +348,7 @@ export class ModerationManager {
 	}
 
 	async #fetchMany(options: ModerationManager.FetchOptions): Promise<ModerationManagerEntry[]> {
-		const entities = await this.db.moderations.find({
+		const entities = await this.db.moderation.findMany({
 			where: {
 				guildId: this.guild.id,
 				moderatorId: options.moderatorId,
@@ -368,23 +359,25 @@ export class ModerationManager {
 	}
 
 	async #fetchAll(): Promise<ModerationManagerEntry[]> {
-		const entities = await this.db.moderations.find({ where: { guildId: this.guild.id } });
+		const entities = await this.db.moderation.findMany({ where: { guildId: this.guild.id } });
 		return entities.map((entity) => ModerationManagerEntry.from(this.guild, entity));
 	}
 
 	async #performInsert(entry: ModerationManager.Entry) {
-		await this.db.moderations.insert({
-			caseId: entry.id,
-			createdAt: new Date(entry.createdAt),
-			duration: entry.duration,
-			extraData: entry.extraData,
-			guildId: entry.guild.id,
-			moderatorId: entry.moderatorId,
-			userId: entry.userId,
-			reason: entry.reason,
-			imageURL: entry.imageURL,
-			type: entry.type,
-			metadata: entry.metadata
+		await this.db.moderation.create({
+			data: {
+				caseId: entry.id,
+				createdAt: new Date(entry.createdAt),
+				duration: entry.duration,
+				extraData: entry.extraData,
+				guildId: entry.guild.id,
+				moderatorId: entry.moderatorId,
+				userId: entry.userId,
+				reason: entry.reason,
+				imageURL: entry.imageURL,
+				type: entry.type,
+				metadata: entry.metadata
+			}
 		});
 
 		container.client.emit(Events.ModerationEntryAdd, entry);
@@ -392,8 +385,8 @@ export class ModerationManager {
 	}
 
 	async #performUpdate(entry: ModerationManager.Entry, data: ModerationManager.UpdateData) {
-		const result = await this.db.moderations.update({ caseId: entry.id, guildId: entry.guild.id }, data);
-		if (result.affected === 0) return entry;
+		const result = await this.db.moderation.updateMany({ where: { caseId: entry.id, guildId: entry.guild.id }, data });
+		if (result.count === 0) return entry;
 
 		const clone = entry.clone();
 		entry.patch(data);
@@ -415,9 +408,4 @@ export namespace ModerationManager {
 	export type UpdateData<Type extends TypeVariation = TypeVariation> = ModerationManagerEntry.UpdateData<Type>;
 
 	export type ExtraData<Type extends TypeVariation = TypeVariation> = ModerationManagerEntry.ExtraData<Type>;
-}
-
-interface MaxQuery {
-	max: number | null;
-	count: `${bigint}`;
 }

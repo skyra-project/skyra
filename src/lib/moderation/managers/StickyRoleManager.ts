@@ -1,5 +1,4 @@
-import type { StickyRole } from '#lib/database/entities';
-import { readSettings, writeSettingsTransaction } from '#lib/database/settings';
+import { readSettings, writeSettingsTransaction, type StickyRole } from '#lib/database/settings';
 import { isNullish } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 

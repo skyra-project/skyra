@@ -1,5 +1,5 @@
 import {
-	configurableKeys,
+	getConfigurableKeys,
 	readSettings,
 	readSettingsAdder,
 	writeSettings,
@@ -7,7 +7,7 @@ import {
 	type GuildData,
 	type GuildDataValue,
 	type GuildSettingsOfType,
-	type ReadonlyGuildEntity,
+	type ReadonlyGuildData,
 	type SchemaDataKey
 } from '#lib/database';
 import type { Adder } from '#lib/database/utils/Adder';
@@ -34,7 +34,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	protected readonly keyEnabled: GuildSettingsOfType<boolean>;
 	protected readonly keyOnInfraction: GuildSettingsOfType<number>;
 	protected readonly keyPunishment: GuildSettingsOfType<number | null>;
-	protected readonly keyPunishmentDuration: GuildSettingsOfType<number | null>;
+	protected readonly keyPunishmentDuration: GuildSettingsOfType<bigint | number | null>;
 	protected readonly keyPunishmentThreshold: GuildSettingsOfType<number | null>;
 	protected readonly keyPunishmentThresholdPeriod: GuildSettingsOfType<number | null>;
 
@@ -73,6 +73,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 
 		this.#localizedNameKey = options.localizedNameKey;
 
+		const configurableKeys = getConfigurableKeys();
 		const punishmentDuration = configurableKeys.get(this.keyPunishmentDuration)!;
 		this.#punishmentDurationMinimum = punishmentDuration.minimum!;
 		this.#punishmentDurationMaximum = punishmentDuration.maximum!;
@@ -197,7 +198,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	}
 
 	protected resetGetValue<const Key extends SchemaDataKey>(key: Key): GuildData[Key] {
-		return configurableKeys.get(key)!.default as GuildData[Key];
+		return getConfigurableKeys().get(key)!.default as GuildData[Key];
 	}
 
 	protected async resetGetOnInfractionFlags(guild: Guild, bit: number) {
@@ -212,7 +213,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			.setTitle(t(Root.ShowDisabled));
 	}
 
-	protected showEnabled(t: TFunction, settings: ReadonlyGuildEntity) {
+	protected showEnabled(t: TFunction, settings: ReadonlyGuildData) {
 		const embed = new EmbedBuilder() //
 			.setColor(Colors.Green)
 			.setTitle(t(Root.ShowEnabled))
@@ -251,7 +252,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	protected showEnabledOnPunishment(
 		t: TFunction,
 		punishment: AutoModerationPunishment,
-		punishmentDuration: number | null,
+		punishmentDuration: bigint | number | null,
 		adder: Adder<string> | null
 	): string {
 		const { key, emoji } = this.showEnabledOnPunishmentNameKey(punishment);
@@ -262,7 +263,11 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			// Add strikethrough if the punishment is a timeout and the duration is not set:
 			if (punishment === AutoModerationPunishment.Timeout) line = strikethrough(line);
 		} else {
-			line = t(Root.ShowPunishmentTemporary, { name, emoji, duration: t(LanguageKeys.Globals.DurationValue, { value: punishmentDuration }) });
+			line = t(Root.ShowPunishmentTemporary, {
+				name,
+				emoji,
+				duration: t(LanguageKeys.Globals.DurationValue, { value: Number(punishmentDuration) })
+			});
 		}
 
 		return isNullish(adder) ? line : `${line}\n${this.showEnabledOnPunishmentThreshold(t, adder)}`;
@@ -405,7 +410,7 @@ export namespace AutoModerationCommand {
 		keyEnabled: GuildSettingsOfType<boolean>;
 		keyOnInfraction: GuildSettingsOfType<number>;
 		keyPunishment: GuildSettingsOfType<number | null>;
-		keyPunishmentDuration: GuildSettingsOfType<number | null>;
+		keyPunishmentDuration: GuildSettingsOfType<bigint | number | null>;
 		keyPunishmentThreshold: GuildSettingsOfType<number | null>;
 		keyPunishmentThresholdPeriod: GuildSettingsOfType<number | null>;
 		resetKeys?: readonly OptionsResetKey[];

@@ -1,4 +1,4 @@
-import { ResponseType, Task, type PartialResponseValue } from '#lib/database';
+import { ResponseType, Task, type PartialResponseValue } from '#lib/schedule';
 import { Events } from '#lib/types';
 import { FetchResultTypes, QueryError, fetch } from '@sapphire/fetch';
 import { MimeTypes } from '@sapphire/plugin-api';

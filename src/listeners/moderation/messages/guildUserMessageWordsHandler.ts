@@ -41,7 +41,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: FilterResults) {
 		floatPromise(deleteMessage(message));
-		if (message.content.length > 25 && (await this.container.db.fetchModerationDirectMessageEnabled(message.author.id))) {
+		if (message.content.length > 25 && (await this.container.prisma.user.fetchModerationDirectMessageEnabled(message.author.id))) {
 			await message.author.send(
 				t(LanguageKeys.Events.Moderation.Messages.WordFilterDm, { filtered: codeBlock('md', cutText(value.filtered, 1900)) })
 			);

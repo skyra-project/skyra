@@ -1,5 +1,5 @@
 import {
-	configurableGroups,
+	getConfigurableGroups,
 	isSchemaGroup,
 	readSettings,
 	remove,
@@ -49,7 +49,7 @@ export class SettingsMenu {
 	public constructor(message: GuildMessage, language: TFunction) {
 		this.message = message;
 		this.t = language;
-		this.schema = configurableGroups;
+		this.schema = getConfigurableGroups();
 		this.embed = new EmbedBuilder().setAuthor(getFullEmbedAuthor(this.message.author));
 	}
 

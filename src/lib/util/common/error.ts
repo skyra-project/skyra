@@ -30,6 +30,11 @@ function stringifyErrorObject(t: TFunction, error: object | null): string {
 	return error instanceof Error ? stringifyErrorException(t, error) : String(error);
 }
 
+const isSuppressedError =
+	typeof SuppressedError === 'undefined'
+		? (error: Error): error is SuppressedError => 'error' in error && 'suppressed' in error
+		: (error: Error): error is SuppressedError => error instanceof SuppressedError;
+
 function stringifyErrorException(t: TFunction, error: Error): string {
 	if (error.name === 'AbortError') return t(LanguageKeys.System.DiscordAbortError);
 	if (error instanceof UserError) return t(error.identifier, error.context as any) as string;
@@ -37,7 +42,7 @@ function stringifyErrorException(t: TFunction, error: Error): string {
 	if (error instanceof DiscordAPIError) return stringifyDiscordAPIError(t, error);
 	if (error instanceof HTTPError) return stringifyHTTPError(t, error);
 	if (error instanceof AggregateError) return error.errors.map((value) => stringifyError(t, value)).join('\n');
-	if (error instanceof SuppressedError) return stringifyError(t, error.suppressed);
+	if (isSuppressedError(error)) return stringifyError(t, error.suppressed);
 	return error.message;
 }
 

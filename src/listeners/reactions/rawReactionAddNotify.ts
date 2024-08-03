@@ -48,7 +48,7 @@ export class UserListener extends Listener {
 		const allowedEmojis = settings.selfmodReactionsAllowed;
 
 		const emojiId = getEmojiId(emoji);
-		if (allowedEmojis.some((allowedEmoji) => getEmojiId(allowedEmoji) === emojiId)) return;
+		if (allowedEmojis.some((allowedEmoji) => getEmojiId(allowedEmoji as SerializedEmoji) === emojiId)) return;
 
 		const targetChannelId = settings.channelsLogsReaction;
 
@@ -56,7 +56,7 @@ export class UserListener extends Listener {
 		if (isNullish(targetChannelId) || (!settings.eventsTwemojiReactions && data.emoji.id === null)) return;
 
 		if (settings.messagesIgnoreChannels.includes(data.channel.id)) return;
-		if (settings.channelsIgnoreReactionAdds.some((id) => id === data.channel.id || data.channel.parentId === id)) return;
+		if (settings.channelsIgnoreReactionAdd.some((id) => id === data.channel.id || data.channel.parentId === id)) return;
 		if (settings.channelsIgnoreAll.some((id) => id === data.channel.id || data.channel.parentId === id)) return;
 
 		const count = await this.#retrieveCount(data, emoji);

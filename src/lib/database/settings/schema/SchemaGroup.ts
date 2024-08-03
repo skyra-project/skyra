@@ -1,7 +1,7 @@
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
 import { AliasedCollection } from '#lib/database/settings/structures/collections/AliasedCollection';
-import type { ReadonlyGuildEntity } from '#lib/database/settings/types';
+import type { ReadonlyGuildData } from '#lib/database/settings/types';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { codeBlock, isNullish, toTitleCase } from '@sapphire/utilities';
 
@@ -78,7 +78,7 @@ export class SchemaGroup extends AliasedCollection<string, SchemaGroup | SchemaK
 		return this.getPathArray(key.split('.') as NonEmptyArray<string>);
 	}
 
-	public display(settings: ReadonlyGuildEntity, language: TFunction) {
+	public display(settings: ReadonlyGuildData, language: TFunction) {
 		const folders: string[] = [];
 		const sections = new Map<string, string[]>();
 		let longest = 0;

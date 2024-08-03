@@ -1,7 +1,8 @@
-import type { ModerationEntity, ScheduleEntity } from '#lib/database';
+import type { ModerationData } from '#lib/database';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { ScheduleEntry } from '#lib/schedule';
 import { minutes } from '#utils/common';
-import { SchemaKeys, TypeMetadata, type TypeVariation } from '#utils/moderationConstants';
+import { TypeMetadata, type TypeVariation } from '#utils/moderationConstants';
 import { UserError, container } from '@sapphire/framework';
 import { isNullishOrZero } from '@sapphire/utilities';
 import type { Guild, Snowflake, User } from 'discord.js';
@@ -272,16 +273,12 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 		};
 	}
 
-	#isMatchingTask(task: ScheduleEntity) {
-		return (
-			typeof task.data === 'object' &&
-			task.data !== null &&
-			task.data[SchemaKeys.Case] === this.id &&
-			task.data[SchemaKeys.Guild] === this.guild.id
-		);
+	#isMatchingTask(task: ScheduleEntry) {
+		return task.data !== null && task.data.caseID === this.id && task.data.guildID === this.guild.id;
 	}
 
-	#setDuration(duration: number | null) {
+	#setDuration(duration: bigint | number | null) {
+		if (typeof duration === 'bigint') duration = Number(duration);
 		if (isNullishOrZero(duration)) {
 			this.duration = null;
 			this.metadata &= ~TypeMetadata.Temporary;
@@ -291,7 +288,7 @@ export class ModerationManagerEntry<Type extends TypeVariation = TypeVariation> 
 		}
 	}
 
-	public static from(guild: Guild, entity: ModerationEntity) {
+	public static from(guild: Guild, entity: ModerationData) {
 		if (guild.id !== entity.guildId) {
 			throw new UserError({ identifier: LanguageKeys.Arguments.CaseNotInThisGuild, context: { parameter: entity.caseId } });
 		}
@@ -316,7 +313,7 @@ export namespace ModerationManagerEntry {
 	export interface Data<Type extends TypeVariation = TypeVariation> {
 		id: number;
 		createdAt: number;
-		duration: number | null;
+		duration: bigint | number | null;
 		extraData: ExtraData<Type>;
 		guild: Guild;
 		moderator: User | Snowflake;

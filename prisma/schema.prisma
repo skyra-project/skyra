@@ -1,0 +1,249 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Guild {
+  id                                   String   @id(map: "PK_b9b5166d213705956363efc912e") @db.VarChar(19)
+  prefix                               String   @db.VarChar(10)
+  language                             String   @default("en-US") @db.VarChar
+  disableNaturalPrefix                 Boolean  @default(false) @map("disable-natural-prefix")
+  disabledCommands                     String[] @default([]) @map("disabled-commands") @db.VarChar(32)
+  /// [PermissionNodeEntries]
+  permissionsUsers                     Json     @default("[]") @map("permissions.users")
+  /// [PermissionNodeEntries]
+  permissionsRoles                     Json     @default("[]") @map("permissions.roles")
+  channelsMediaOnly                    String[] @default([]) @map("channels.media-only") @db.VarChar(19)
+  channelsLogsModeration               String?  @map("channels.logs.moderation") @db.VarChar(19)
+  channelsLogsImage                    String?  @map("channels.logs.image") @db.VarChar(19)
+  channelsLogsMemberAdd                String?  @map("channels.logs.member-add") @db.VarChar(19)
+  channelsLogsMemberRemove             String?  @map("channels.logs.member-remove") @db.VarChar(19)
+  channelsLogsMemberNicknameUpdate     String?  @map("channels.logs.member-nickname-update") @db.VarChar(19)
+  channelsLogsMemberUsernameUpdate     String?  @map("channels.logs.member-username-update") @db.VarChar(19)
+  channelsLogsMemberRolesUpdate        String?  @map("channels.logs.member-roles-update") @db.VarChar(19)
+  channelsLogsMessageDelete            String?  @map("channels.logs.message-delete") @db.VarChar(19)
+  channelsLogsMessageDeleteNsfw        String?  @map("channels.logs.message-delete-nsfw") @db.VarChar(19)
+  channelsLogsMessageUpdate            String?  @map("channels.logs.message-update") @db.VarChar(19)
+  channelsLogsMessageUpdateNsfw        String?  @map("channels.logs.message-update-nsfw") @db.VarChar(19)
+  channelsLogsPrune                    String?  @map("channels.logs.prune") @db.VarChar(19)
+  channelsLogsReaction                 String?  @map("channels.logs.reaction") @db.VarChar(19)
+  channelsLogsRoleCreate               String?  @map("channels.logs.role-create") @db.VarChar(19)
+  channelsLogsRoleUpdate               String?  @map("channels.logs.role-update") @db.VarChar(19)
+  channelsLogsRoleDelete               String?  @map("channels.logs.role-delete") @db.VarChar(19)
+  channelsLogsChannelCreate            String?  @map("channels.logs.channel-create") @db.VarChar(19)
+  channelsLogsChannelUpdate            String?  @map("channels.logs.channel-update") @db.VarChar(19)
+  channelsLogsChannelDelete            String?  @map("channels.logs.channel-delete") @db.VarChar(19)
+  channelsLogsEmojiCreate              String?  @map("channels.logs.emoji-create") @db.VarChar(19)
+  channelsLogsEmojiUpdate              String?  @map("channels.logs.emoji-update") @db.VarChar(19)
+  channelsLogsEmojiDelete              String?  @map("channels.logs.emoji-delete") @db.VarChar(19)
+  channelsLogsServerUpdate             String?  @map("channels.logs.server-update") @db.VarChar(19)
+  channelsLogsVoiceChannel             String?  @map("channels.logs.voice-activity") @db.VarChar(19)
+  channelsIgnoreAll                    String[] @default([]) @map("channels.ignore.all") @db.VarChar(19)
+  channelsIgnoreMessageEdit            String[] @default([]) @map("channels.ignore.message-edit") @db.VarChar(19)
+  channelsIgnoreMessageDelete          String[] @default([]) @map("channels.ignore.message-delete") @db.VarChar(19)
+  channelsIgnoreReactionAdd            String[] @default([]) @map("channels.ignore.reaction-add") @db.VarChar(19)
+  /// [CommandAutoDeleteEntries]
+  commandAutoDelete                    Json     @default("[]") @map("command-auto-delete")
+  disabledChannels                     String[] @default([]) @map("disabled-channels") @db.VarChar(19)
+  /// [DisabledCommandChannelEntries]
+  disabledCommandsChannels             Json     @default("[]") @map("disabled-commands-channels")
+  eventsBanAdd                         Boolean  @default(false) @map("events.ban-add")
+  eventsBanRemove                      Boolean  @default(false) @map("events.ban-remove")
+  eventsTwemojiReactions               Boolean  @default(false) @map("events.twemoji-reactions")
+  messagesIgnoreChannels               String[] @default([]) @map("messages.ignore-channels") @db.VarChar(19)
+  messagesModerationDm                 Boolean  @default(false) @map("messages.moderation-dm")
+  messagesModerationReasonDisplay      Boolean  @default(true) @map("messages.moderation-reason-display")
+  messagesModerationMessageDisplay     Boolean  @default(true) @map("messages.moderation-message-display")
+  messagesModerationAutoDelete         Boolean  @default(false) @map("messages.moderation-auto-delete")
+  messagesModeratorNameDisplay         Boolean  @default(true) @map("messages.moderator-name-display")
+  messagesAutoDeleteIgnoredAll         Boolean  @default(false) @map("messages.auto-delete.ignored-all")
+  messagesAutoDeleteIgnoredRoles       String[] @default([]) @map("messages.auto-delete.ignored-roles") @db.VarChar(19)
+  messagesAutoDeleteIgnoredChannels    String[] @default([]) @map("messages.auto-delete.ignored-channels") @db.VarChar(19)
+  messagesAutoDeleteIgnoredCommands    String[] @default([]) @map("messages.auto-delete.ignored-commands") @db.VarChar(32)
+  /// [StickyRoleEntries]
+  stickyRoles                          Json     @default("[]") @map("sticky-roles")
+  /// [ReactionRoleEntries]
+  reactionRoles                        Json     @default("[]") @map("reaction-roles")
+  rolesAdmin                           String[] @default([]) @map("roles.admin") @db.VarChar(19)
+  rolesInitial                         String?  @map("roles.initial") @db.VarChar(19)
+  rolesInitialHumans                   String?  @map("roles.initial-humans") @db.VarChar(19)
+  rolesInitialBots                     String?  @map("roles.initial-bots") @db.VarChar(19)
+  rolesModerator                       String[] @default([]) @map("roles.moderator") @db.VarChar(19)
+  rolesMuted                           String?  @map("roles.muted") @db.VarChar(19)
+  rolesRestrictedReaction              String?  @map("roles.restricted-reaction") @db.VarChar(19)
+  rolesRestrictedEmbed                 String?  @map("roles.restricted-embed") @db.VarChar(19)
+  rolesRestrictedEmoji                 String?  @map("roles.restricted-emoji") @db.VarChar(19)
+  rolesRestrictedAttachment            String?  @map("roles.restricted-attachment") @db.VarChar(19)
+  rolesRestrictedVoice                 String?  @map("roles.restricted-voice") @db.VarChar(19)
+  rolesPublic                          String[] @default([]) @map("roles.public") @db.VarChar(19)
+  rolesRemoveInitial                   Boolean  @default(false) @map("roles.remove-initial")
+  /// [UniqueRoleSetEntries]
+  rolesUniqueRoleSets                  Json     @default("[]") @map("roles.unique-role-sets")
+  selfmodAttachmentsEnabled            Boolean  @default(false) @map("selfmod.attachments.enabled")
+  selfmodAttachmentsIgnoredRoles       String[] @default([]) @map("selfmod.attachments.ignored-roles") @db.VarChar(19)
+  selfmodAttachmentsIgnoredChannels    String[] @default([]) @map("selfmod.attachments.ignored-channels") @db.VarChar(19)
+  selfmodAttachmentsSoftAction         Int      @default(0) @map("selfmod.attachments.soft-action") @db.SmallInt
+  selfmodAttachmentsHardAction         Int      @default(0) @map("selfmod.attachments.hard-action") @db.SmallInt
+  selfmodAttachmentsHardActionDuration BigInt?  @map("selfmod.attachments.hard-action-duration")
+  selfmodAttachmentsThresholdMaximum   Int      @default(10) @map("selfmod.attachments.threshold-maximum") @db.SmallInt
+  selfmodAttachmentsThresholdDuration  Int      @default(60000) @map("selfmod.attachments.threshold-duration")
+  selfmodCapitalsEnabled               Boolean  @default(false) @map("selfmod.capitals.enabled")
+  selfmodCapitalsIgnoredRoles          String[] @default([]) @map("selfmod.capitals.ignored-roles") @db.VarChar(19)
+  selfmodCapitalsIgnoredChannels       String[] @default([]) @map("selfmod.capitals.ignored-channels") @db.VarChar(19)
+  selfmodCapitalsMinimum               Int      @default(15) @map("selfmod.capitals.minimum") @db.SmallInt
+  selfmodCapitalsMaximum               Int      @default(50) @map("selfmod.capitals.maximum") @db.SmallInt
+  selfmodCapitalsSoftAction            Int      @default(0) @map("selfmod.capitals.soft-action") @db.SmallInt
+  selfmodCapitalsHardAction            Int      @default(0) @map("selfmod.capitals.hard-action") @db.SmallInt
+  selfmodCapitalsHardActionDuration    BigInt?  @map("selfmod.capitals.hard-action-duration")
+  selfmodCapitalsThresholdMaximum      Int      @default(10) @map("selfmod.capitals.threshold-maximum") @db.SmallInt
+  selfmodCapitalsThresholdDuration     Int      @default(60000) @map("selfmod.capitals.threshold-duration")
+  selfmodLinksEnabled                  Boolean  @default(false) @map("selfmod.links.enabled")
+  selfmodLinksAllowed                  String[] @default([]) @map("selfmod.links.allowed") @db.VarChar(128)
+  selfmodLinksIgnoredRoles             String[] @default([]) @map("selfmod.links.ignored-roles") @db.VarChar(19)
+  selfmodLinksIgnoredChannels          String[] @default([]) @map("selfmod.links.ignored-channels") @db.VarChar(19)
+  selfmodLinksSoftAction               Int      @default(0) @map("selfmod.links.soft-action") @db.SmallInt
+  selfmodLinksHardAction               Int      @default(0) @map("selfmod.links.hard-action") @db.SmallInt
+  selfmodLinksHardActionDuration       BigInt?  @map("selfmod.links.hard-action-duration")
+  selfmodLinksThresholdMaximum         Int      @default(10) @map("selfmod.links.threshold-maximum") @db.SmallInt
+  selfmodLinksThresholdDuration        Int      @default(60000) @map("selfmod.links.threshold-duration")
+  selfmodMessagesEnabled               Boolean  @default(false) @map("selfmod.messages.enabled")
+  selfmodMessagesIgnoredRoles          String[] @default([]) @map("selfmod.messages.ignored-roles") @db.VarChar(19)
+  selfmodMessagesIgnoredChannels       String[] @default([]) @map("selfmod.messages.ignored-channels") @db.VarChar(19)
+  selfmodMessagesMaximum               Int      @default(5) @map("selfmod.messages.maximum") @db.SmallInt
+  selfmodMessagesQueueSize             Int      @default(50) @map("selfmod.messages.queue-size") @db.SmallInt
+  selfmodMessagesSoftAction            Int      @default(0) @map("selfmod.messages.soft-action") @db.SmallInt
+  selfmodMessagesHardAction            Int      @default(0) @map("selfmod.messages.hard-action") @db.SmallInt
+  selfmodMessagesHardActionDuration    BigInt?  @map("selfmod.messages.hard-action-duration")
+  selfmodMessagesThresholdMaximum      Int      @default(10) @map("selfmod.messages.threshold-maximum") @db.SmallInt
+  selfmodMessagesThresholdDuration     Int      @default(60000) @map("selfmod.messages.threshold-duration")
+  selfmodNewlinesEnabled               Boolean  @default(false) @map("selfmod.newlines.enabled")
+  selfmodNewlinesIgnoredRoles          String[] @default([]) @map("selfmod.newlines.ignored-roles") @db.VarChar(19)
+  selfmodNewlinesIgnoredChannels       String[] @default([]) @map("selfmod.newlines.ignored-channels") @db.VarChar(19)
+  selfmodNewlinesMaximum               Int      @default(20) @map("selfmod.newlines.maximum") @db.SmallInt
+  selfmodNewlinesSoftAction            Int      @default(0) @map("selfmod.newlines.soft-action") @db.SmallInt
+  selfmodNewlinesHardAction            Int      @default(0) @map("selfmod.newlines.hard-action") @db.SmallInt
+  selfmodNewlinesHardActionDuration    BigInt?  @map("selfmod.newlines.hard-action-duration")
+  selfmodNewlinesThresholdMaximum      Int      @default(10) @map("selfmod.newlines.threshold-maximum") @db.SmallInt
+  selfmodNewlinesThresholdDuration     Int      @default(60000) @map("selfmod.newlines.threshold-duration")
+  selfmodInvitesEnabled                Boolean  @default(false) @map("selfmod.invites.enabled")
+  selfmodInvitesIgnoredCodes           String[] @default([]) @map("selfmod.invites.ignored-codes") @db.VarChar
+  selfmodInvitesIgnoredGuilds          String[] @default([]) @map("selfmod.invites.ignored-guilds") @db.VarChar(19)
+  selfmodInvitesIgnoredRoles           String[] @default([]) @map("selfmod.invites.ignored-roles") @db.VarChar(19)
+  selfmodInvitesIgnoredChannels        String[] @default([]) @map("selfmod.invites.ignored-channels") @db.VarChar(19)
+  selfmodInvitesSoftAction             Int      @default(0) @map("selfmod.invites.soft-action") @db.SmallInt
+  selfmodInvitesHardAction             Int      @default(0) @map("selfmod.invites.hard-action") @db.SmallInt
+  selfmodInvitesHardActionDuration     BigInt?  @map("selfmod.invites.hard-action-duration")
+  selfmodInvitesThresholdMaximum       Int      @default(10) @map("selfmod.invites.threshold-maximum") @db.SmallInt
+  selfmodInvitesThresholdDuration      Int      @default(60000) @map("selfmod.invites.threshold-duration")
+  selfmodFilterEnabled                 Boolean  @default(false) @map("selfmod.filter.enabled")
+  selfmodFilterRaw                     String[] @default([]) @map("selfmod.filter.raw") @db.VarChar(32)
+  selfmodFilterIgnoredRoles            String[] @default([]) @map("selfmod.filter.ignored-roles") @db.VarChar(19)
+  selfmodFilterIgnoredChannels         String[] @default([]) @map("selfmod.filter.ignored-channels") @db.VarChar(19)
+  selfmodFilterSoftAction              Int      @default(0) @map("selfmod.filter.soft-action") @db.SmallInt
+  selfmodFilterHardAction              Int      @default(0) @map("selfmod.filter.hard-action") @db.SmallInt
+  selfmodFilterHardActionDuration      BigInt?  @map("selfmod.filter.hard-action-duration")
+  selfmodFilterThresholdMaximum        Int      @default(10) @map("selfmod.filter.threshold-maximum") @db.SmallInt
+  selfmodFilterThresholdDuration       Int      @default(60000) @map("selfmod.filter.threshold-duration")
+  selfmodReactionsEnabled              Boolean  @default(false) @map("selfmod.reactions.enabled")
+  selfmodReactionsIgnoredRoles         String[] @default([]) @map("selfmod.reactions.ignored-roles") @db.VarChar(19)
+  selfmodReactionsIgnoredChannels      String[] @default([]) @map("selfmod.reactions.ignored-channels") @db.VarChar(19)
+  selfmodReactionsMaximum              Int      @default(10) @map("selfmod.reactions.maximum") @db.SmallInt
+  selfmodReactionsAllowed              String[] @default([]) @map("selfmod.reactions.allowed") @db.VarChar(128)
+  selfmodReactionsBlocked              String[] @default([]) @map("selfmod.reactions.blocked") @db.VarChar(128)
+  selfmodReactionsSoftAction           Int      @default(0) @map("selfmod.reactions.soft-action") @db.SmallInt
+  selfmodReactionsHardAction           Int      @default(0) @map("selfmod.reactions.hard-action") @db.SmallInt
+  selfmodReactionsHardActionDuration   BigInt?  @map("selfmod.reactions.hard-action-duration")
+  selfmodReactionsThresholdMaximum     Int      @default(10) @map("selfmod.reactions.threshold-maximum") @db.SmallInt
+  selfmodReactionsThresholdDuration    Int      @default(60000) @map("selfmod.reactions.threshold-duration")
+  selfmodIgnoredChannels               String[] @default([]) @map("selfmod.ignored-channels") @db.VarChar(19)
+  noMentionSpamEnabled                 Boolean  @default(false) @map("no-mention-spam.enabled")
+  noMentionSpamAlerts                  Boolean  @default(false) @map("no-mention-spam.alerts")
+  noMentionSpamMentionsAllowed         Int      @default(20) @map("no-mention-spam.mentions-allowed") @db.SmallInt
+  noMentionSpamTimePeriod              Int      @default(8) @map("no-mention-spam.time-period")
+  eventsUnknownMessages                Boolean  @default(false) @map("events.unknown-messages")
+  eventsIncludeBots                    Boolean  @default(false) @map("events.include-bots")
+  channelsIgnoreVoiceActivity          String[] @default([]) @map("channels.ignore.voice-activity") @db.VarChar(19)
+  eventsTimeout                        Boolean  @default(false) @map("events.timeout")
+
+  @@map("guilds")
+}
+
+model GuildSubscription {
+  guildId        String             @map("guild_id") @db.VarChar(19)
+  channelId      String             @map("channel_id") @db.VarChar(19)
+  message        String?            @db.VarChar(200)
+  subscriptionId Int                @map("subscription_id")
+  subscription   TwitchSubscription @relation(fields: [subscriptionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_d88983e3c607b940f0c6e621dcf")
+
+  @@id([guildId, channelId, subscriptionId], map: "PK_6fafe0fb6984c17b483ccd1a823")
+  @@map("guild_subscription")
+}
+
+model Migration {
+  id        Int    @id(map: "PK_Migrations") @default(autoincrement())
+  timestamp BigInt
+  name      String @db.VarChar
+
+  @@map("migrations")
+}
+
+model Moderation {
+  caseId      Int       @map("case_id")
+  createdAt   DateTime? @map("created_at") @db.Timestamp(6)
+  duration    BigInt?
+  extraData   Json?     @map("extra_data") @db.Json
+  guildId     String    @map("guild_id") @db.VarChar(19)
+  moderatorId String    @map("moderator_id") @db.VarChar(19)
+  reason      String?   @db.VarChar(2000)
+  imageURL    String?   @map("image_url") @db.VarChar(2000)
+  userId      String?   @map("user_id") @db.VarChar(19)
+  type        Int       @db.SmallInt
+  metadata    Int       @default(0) @db.SmallInt
+
+  @@id([caseId, guildId], map: "PK_e9ec6c684894a7067a45b7ae4f6")
+  @@map("moderation")
+}
+
+model Schedule {
+  id        Int      @id(map: "PK_7ae10507a97b3a77d13d1a2bdd2") @default(autoincrement())
+  taskId    String   @map("task_id") @db.VarChar
+  time      DateTime @db.Timestamp(6)
+  recurring String?  @db.VarChar
+  catchUp   Boolean  @default(true) @map("catch_up")
+  data      Json
+
+  @@map("schedule")
+}
+
+model TwitchSubscription {
+  id                Int                    @id(map: "PK_0fd0f6c050ee4ccdce479c2b0e6") @default(autoincrement())
+  streamerId        String                 @map("streamer_id") @db.VarChar(10)
+  subscriptionId    String                 @map("subscription_id") @db.VarChar(36)
+  subscriptionType  TwitchSubscriptionType
+  guildSubscription GuildSubscription[]
+
+  @@unique([streamerId, subscriptionType], map: "IDX_690cc82abbfa67fc18db1c44e7")
+  @@map("twitch_subscriptions")
+}
+
+model User {
+  id           String  @id(map: "PK_03b91d2b8321aa7ba32257dc321") @db.VarChar(19)
+  moderationDM Boolean @default(true) @map("moderation_dm")
+
+  @@map("user")
+}
+
+enum TwitchSubscriptionType {
+  StreamOnline  @map("stream.online")
+  StreamOffline @map("stream.offline")
+
+  @@map("twitch_subscriptions_subscription_type_enum")
+}

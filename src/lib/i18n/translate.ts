@@ -120,7 +120,7 @@ export function resolveT(t: TResolvable): TFunction {
  * @param locale The locale to get the translation function for.
  * @returns The translation function for the specified locale.
  */
-export function getT(locale?: LocaleString | Nullish) {
+export function getT(locale?: LocaleString | string | Nullish) {
 	return container.i18n.getT(locale ?? 'en-US');
 }
 

@@ -28,14 +28,14 @@ export class UserListener extends Listener {
 	private async initPostStatsTask() {
 		const { queue } = this.container.schedule;
 		if (!queue.some((task) => task.taskId === Schedules.Poststats)) {
-			await this.container.schedule.add(Schedules.Poststats, '*/10 * * * *', {});
+			await this.container.schedule.add(Schedules.Poststats, '*/10 * * * *', { data: null });
 		}
 	}
 
 	private async initSyncResourceAnalyticsTask() {
 		const { queue } = this.container.schedule;
 		if (!queue.some((task) => task.taskId === Schedules.SyncResourceAnalytics)) {
-			await this.container.schedule.add(Schedules.SyncResourceAnalytics, '*/1 * * * *');
+			await this.container.schedule.add(Schedules.SyncResourceAnalytics, '*/1 * * * *', { data: null });
 		}
 	}
 

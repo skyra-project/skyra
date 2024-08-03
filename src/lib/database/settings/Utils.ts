@@ -1,7 +1,7 @@
 import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import type { SchemaGroup } from '#lib/database/settings/schema/SchemaGroup';
 import type { SchemaKey } from '#lib/database/settings/schema/SchemaKey';
-import type { GuildData, ReadonlyGuildEntity } from '#lib/database/settings/types';
+import type { GuildData, ReadonlyGuildData } from '#lib/database/settings/types';
 import { LanguageKeys } from '#lib/i18n/languageKeys';
 import type { SkyraArgs } from '#lib/structures';
 import { UserError } from '@sapphire/framework';
@@ -14,7 +14,7 @@ export function isSchemaKey(groupOrKey: ISchemaValue): groupOrKey is SchemaKey {
 	return groupOrKey.type !== 'Group';
 }
 
-export async function set(settings: ReadonlyGuildEntity, key: SchemaKey, args: SkyraArgs): Promise<Partial<GuildData>> {
+export async function set(settings: ReadonlyGuildData, key: SchemaKey, args: SkyraArgs): Promise<Partial<GuildData>> {
 	const parsed = await key.parse(settings, args);
 	const { serializer } = key;
 
@@ -40,7 +40,7 @@ export async function set(settings: ReadonlyGuildEntity, key: SchemaKey, args: S
 	return { [key.property]: parsed };
 }
 
-export async function remove(settings: ReadonlyGuildEntity, key: SchemaKey, args: SkyraArgs): Promise<Partial<GuildData>> {
+export async function remove(settings: ReadonlyGuildData, key: SchemaKey, args: SkyraArgs): Promise<Partial<GuildData>> {
 	const parsed = await key.parse(settings, args);
 	if (key.array) {
 		const { serializer } = key;

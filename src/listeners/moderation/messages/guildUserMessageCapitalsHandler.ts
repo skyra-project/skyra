@@ -48,7 +48,7 @@ export class UserModerationMessageListener extends ModerationMessageListener {
 
 	protected async onDelete(message: GuildMessage, t: TFunction, value: number) {
 		floatPromise(deleteMessage(message));
-		if (value > 25 && (await this.container.db.fetchModerationDirectMessageEnabled(message.author.id))) {
+		if (value > 25 && (await this.container.prisma.user.fetchModerationDirectMessageEnabled(message.author.id))) {
 			await message.author.send(
 				t(LanguageKeys.Events.Moderation.Messages.CapsFilterDm, { message: codeBlock('md', cutText(message.content, 1900)) })
 			);

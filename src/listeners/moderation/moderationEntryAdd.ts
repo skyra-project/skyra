@@ -3,7 +3,6 @@ import type { ModerationManager } from '#lib/moderation';
 import { getEmbed, getUndoTaskName } from '#lib/moderation/common';
 import { resolveOnErrorCodes } from '#utils/common';
 import { getModeration } from '#utils/functions';
-import { SchemaKeys } from '#utils/moderationConstants';
 import { canSendEmbeds } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
@@ -39,12 +38,13 @@ export class UserListener extends Listener {
 			.add(taskName, entry.expiresTimestamp!, {
 				catchUp: true,
 				data: {
-					[SchemaKeys.Case]: entry.id,
-					[SchemaKeys.User]: entry.userId,
-					[SchemaKeys.Guild]: entry.guild.id,
-					[SchemaKeys.Type]: entry.type,
-					[SchemaKeys.Duration]: entry.duration,
-					[SchemaKeys.ExtraData]: entry.extraData
+					caseID: entry.id,
+					userID: entry.userId,
+					guildID: entry.guild.id,
+					// @ts-expect-error complex types
+					type: entry.type,
+					duration: entry.duration,
+					extraData: entry.extraData
 				}
 			})
 			.catch((error) => this.container.logger.fatal(error));

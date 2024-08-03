@@ -1,8 +1,9 @@
-import { SerializerStore, TaskStore } from '#lib/database';
+import { SerializerStore } from '#lib/database';
 import { readSettings } from '#lib/database/settings/functions';
 import { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import { WorkerManager } from '#lib/moderation/workers/WorkerManager';
-import { AnalyticsData, InviteStore, ScheduleManager } from '#lib/structures';
+import { ScheduleManager, TaskStore } from '#lib/schedule';
+import { AnalyticsData, InviteStore } from '#lib/structures';
 import type { LongLivingReactionCollector } from '#lib/util/LongLivingReactionCollector';
 import { CLIENT_OPTIONS, WEBHOOK_ERROR } from '#root/config';
 import { isGuildMessage } from '#utils/common';

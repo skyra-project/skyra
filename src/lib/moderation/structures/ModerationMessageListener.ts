@@ -1,4 +1,4 @@
-import { readSettings, readSettingsAdder, type AdderKey, type GuildSettingsOfType, type ReadonlyGuildEntity } from '#lib/database';
+import { readSettings, readSettingsAdder, type AdderKey, type GuildSettingsOfType, type ReadonlyGuildData } from '#lib/database';
 import type { AdderError } from '#lib/database/utils/Adder';
 import { getT } from '#lib/i18n';
 import { ModerationActions } from '#lib/moderation/actions/index';
@@ -103,7 +103,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		}
 	}
 
-	protected async onWarning(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
+	protected async onWarning(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: bigint | null) {
 		await this.createActionAndSend(message, () =>
 			ModerationActions.warning.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
@@ -115,14 +115,14 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		);
 	}
 
-	protected async onTimeout(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
+	protected async onTimeout(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: bigint | null) {
 		if (isNullishOrZero(duration)) return;
 		await this.createActionAndSend(message, () =>
 			ModerationActions.timeout.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
 	}
 
-	protected async onMute(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
+	protected async onMute(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: bigint | null) {
 		await this.createActionAndSend(message, () =>
 			ModerationActions.mute.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
@@ -138,7 +138,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		);
 	}
 
-	protected async onBan(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
+	protected async onBan(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: bigint | number | null) {
 		await this.createActionAndSend(message, () =>
 			ModerationActions.ban.apply(message.guild, { user: message.author, reason: this.#getReason(t, points, maximum), duration })
 		);
@@ -170,8 +170,8 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		return settings[this.keyEnabled] && this.checkMessageChannel(settings, message.channel) && this.checkMemberRoles(settings, message.member);
 	}
 
-	private checkMessageChannel(settings: ReadonlyGuildEntity, channel: GuildTextBasedChannelTypes) {
-		const globalIgnore = settings.selfmodIgnoreChannels;
+	private checkMessageChannel(settings: ReadonlyGuildData, channel: GuildTextBasedChannelTypes) {
+		const globalIgnore = settings.selfmodIgnoredChannels;
 		if (globalIgnore.includes(channel.id)) return false;
 
 		const localIgnore = settings[this.ignoredChannelsPath] as readonly string[];
@@ -180,7 +180,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 		return true;
 	}
 
-	private checkMemberRoles(settings: ReadonlyGuildEntity, member: GuildMember | null) {
+	private checkMemberRoles(settings: ReadonlyGuildData, member: GuildMember | null) {
 		if (member === null) return false;
 
 		const ignoredRoles = settings[this.ignoredRolesPath];
@@ -197,7 +197,7 @@ export abstract class ModerationMessageListener<T = unknown> extends Listener {
 
 export interface HardPunishment {
 	action: GuildSettingsOfType<number>;
-	actionDuration: GuildSettingsOfType<number | null>;
+	actionDuration: GuildSettingsOfType<bigint | null>;
 	adder: AdderKey;
 }
 

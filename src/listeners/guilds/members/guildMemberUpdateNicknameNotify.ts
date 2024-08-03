@@ -15,7 +15,7 @@ import type { GuildMember } from 'discord.js';
 export class UserListener extends Listener {
 	public async run(previous: GuildMember, next: GuildMember) {
 		const settings = await readSettings(next);
-		const logChannelId = settings.channelsLogsMemberNickNameUpdate;
+		const logChannelId = settings.channelsLogsMemberNicknameUpdate;
 		if (isNullish(logChannelId)) return;
 
 		// Send the Nickname log
@@ -24,7 +24,7 @@ export class UserListener extends Listener {
 		const { user } = next;
 		if (prevNickname !== nextNickname) {
 			const t = getT(settings.language);
-			this.container.client.emit(Events.GuildMessageLog, next.guild, logChannelId, 'channelsLogsMemberNickNameUpdate', () =>
+			this.container.client.emit(Events.GuildMessageLog, next.guild, logChannelId, 'channelsLogsMemberNicknameUpdate', () =>
 				new EmbedBuilder()
 					.setColor(Colors.Yellow)
 					.setAuthor(getFullEmbedAuthor(user))

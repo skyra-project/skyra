@@ -16,7 +16,7 @@ export class ModerationActionRoleRemove extends ModerationAction<Role, TypeVaria
 
 	public override async isActive(guild: Guild, userId: string, context: Role) {
 		const member = await resolveOnErrorCodes(guild.members.fetch(userId), RESTJSONErrorCodes.UnknownMember);
-		return !isNullish(member) && member.roles.cache.has(context.id);
+		return !isNullish(member) && !member.roles.cache.has(context.id);
 	}
 
 	protected override async handleApplyPre(guild: Guild, entry: ModerationAction.Entry, data: ModerationAction.Data<Role>) {

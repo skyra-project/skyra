@@ -1,4 +1,3 @@
-import type { UserData } from '#lib/database';
 import { PrismaClient } from '@prisma/client';
 import { container } from '@sapphire/framework';
 
@@ -10,15 +9,15 @@ const prisma = new PrismaClient().$extends({
 				const entry = await prisma.user.findUnique({ where: { id: userId }, select: { moderationDM: true } });
 				return entry?.moderationDM ?? true;
 			},
-			async toggleModerationDirectMessageEnabled(userId: string): Promise<UserData> {
-				const [entry] = await prisma.$queryRaw<UserData[]>`
+			async toggleModerationDirectMessageEnabled(userId: string): Promise<boolean> {
+				const [entry] = await prisma.$queryRaw<{ moderation_dm: boolean }[]>`
 					INSERT INTO public.user (id, moderation_dm)
 					VALUES (${userId}, false)
 					ON CONFLICT (id)
 					DO UPDATE SET moderation_dm = NOT public.user.moderation_dm
-					RETURNING *;
+					RETURNING "moderation_dm";
 				`;
-				return entry;
+				return entry.moderation_dm;
 			}
 		},
 		moderation: {

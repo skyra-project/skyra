@@ -20,7 +20,7 @@ if (envIsDefined('SENTRY_URL')) {
 			Sentry.onUncaughtExceptionIntegration(),
 			Sentry.onUnhandledRejectionIntegration(),
 			Sentry.httpIntegration({ breadcrumbs: true }),
-			Sentry.postgresIntegration(),
+			Sentry.prismaIntegration(),
 			Sentry.rewriteFramesIntegration({ root: rootFolder })
 		]
 	});

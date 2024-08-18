@@ -2372,13 +2372,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async-rwlock@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "async-rwlock@npm:1.1.1"
-  checksum: 10/b0b7630defe06ce4abe1cab5082ab457e07a706a872eadd143d37a0e5ff549fe616717216d5fed9801f956eaf1a076c370c1bc84f7ec42c6833272500526e3a5
-  languageName: node
-  linkType: hard
-
 "at-least-node@npm:^1.0.0":
   version: 1.0.0
   resolution: "at-least-node@npm:1.0.0"
@@ -7415,7 +7408,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.13.0"
     "@typescript-eslint/parser": "npm:^7.13.0"
     "@vitest/coverage-v8": "npm:^1.6.0"
-    async-rwlock: "npm:^1.1.1"
     bufferutil: "npm:^4.0.8"
     colorette: "npm:^2.0.20"
     confusables: "npm:^1.1.1"

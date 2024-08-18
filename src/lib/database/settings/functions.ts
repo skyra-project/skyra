@@ -2,13 +2,13 @@ import { getDefaultGuildSettings } from '#lib/database/settings/constants';
 import { deleteSettingsContext, getSettingsContext, updateSettingsContext } from '#lib/database/settings/context/functions';
 import type { AdderKey } from '#lib/database/settings/structures/AdderManager';
 import type { GuildData, ReadonlyGuildData } from '#lib/database/settings/types';
+import { AsyncQueue } from '@sapphire/async-queue';
 import { container, type Awaitable } from '@sapphire/framework';
-import { RWLock } from 'async-rwlock';
 import { Collection, type GuildResolvable, type Snowflake } from 'discord.js';
 
 const cache = new Collection<string, GuildData>();
 const queue = new Collection<string, Promise<GuildData>>();
-const locks = new Collection<string, RWLock>();
+const locks = new Collection<string, AsyncQueue>();
 const WeakMapNotInitialized = new WeakSet<ReadonlyGuildData>();
 
 export function deleteSettingsCached(guild: GuildResolvable) {
@@ -18,20 +18,10 @@ export function deleteSettingsCached(guild: GuildResolvable) {
 	deleteSettingsContext(id);
 }
 
-export async function readSettings(guild: GuildResolvable): Promise<ReadonlyGuildData> {
+export function readSettings(guild: GuildResolvable): Awaitable<ReadonlyGuildData> {
 	const id = resolveGuildId(guild);
 
-	const lock = locks.ensure(id, () => new RWLock());
-	try {
-		// Acquire a read lock:
-		await lock.readLock();
-
-		// Fetch the entry:
-		return cache.get(id) ?? (await processFetch(id));
-	} finally {
-		// Unlock the lock:
-		lock.unlock();
-	}
+	return cache.get(id) ?? processFetch(id);
 }
 
 export function readSettingsAdder(settings: ReadonlyGuildData, key: AdderKey) {
@@ -69,15 +59,15 @@ export async function writeSettings(
 
 export async function writeSettingsTransaction(guild: GuildResolvable) {
 	const id = resolveGuildId(guild);
-	const lock = locks.ensure(id, () => new RWLock());
+	const queue = locks.ensure(id, () => new AsyncQueue());
 
 	// Acquire a write lock:
-	await lock.writeLock();
+	await queue.wait();
 
 	// Fetch the entry:
-	const settings = cache.get(id) ?? (await unlockOnThrow(processFetch(id), lock));
+	const settings = cache.get(id) ?? (await unlockOnThrow(processFetch(id), queue));
 
-	return new Transaction(settings, lock);
+	return new Transaction(settings, queue);
 }
 
 export class Transaction {
@@ -87,7 +77,7 @@ export class Transaction {
 
 	public constructor(
 		public readonly settings: ReadonlyGuildData,
-		private readonly lock: RWLock
+		private readonly queue: AsyncQueue
 	) {}
 
 	public get hasChanges() {
@@ -106,7 +96,7 @@ export class Transaction {
 
 	public async submit() {
 		if (!this.#hasChanges) {
-			throw new Error('Cannot submit a transaction without changes');
+			return;
 		}
 
 		try {
@@ -127,13 +117,11 @@ export class Transaction {
 			Object.assign(this.settings, this.#changes);
 			this.#hasChanges = false;
 			updateSettingsContext(this.settings, this.#changes);
-		} catch (error) {
-			throw error;
 		} finally {
 			this.#changes = Object.create(null);
 
 			if (this.#locking) {
-				this.lock.unlock();
+				this.queue.shift();
 				this.#locking = false;
 			}
 		}
@@ -141,14 +129,14 @@ export class Transaction {
 
 	public abort() {
 		if (this.#locking) {
-			this.lock.unlock();
+			this.queue.shift();
 			this.#locking = false;
 		}
 	}
 
 	public dispose() {
 		if (this.#locking) {
-			this.lock.unlock();
+			this.queue.shift();
 			this.#locking = false;
 		}
 	}
@@ -158,11 +146,11 @@ export class Transaction {
 	}
 }
 
-async function unlockOnThrow(promise: Promise<ReadonlyGuildData>, lock: RWLock) {
+async function unlockOnThrow(promise: Promise<ReadonlyGuildData>, lock: AsyncQueue) {
 	try {
 		return await promise;
 	} catch (error) {
-		lock.unlock();
+		lock.shift();
 		throw error;
 	}
 }

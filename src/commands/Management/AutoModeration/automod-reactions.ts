@@ -14,6 +14,9 @@ const Root = LanguageKeys.Commands.AutoModeration;
 	keyPunishment: 'selfmodReactionsHardAction',
 	keyPunishmentDuration: 'selfmodReactionsHardActionDuration',
 	keyPunishmentThreshold: 'selfmodReactionsThresholdMaximum',
-	keyPunishmentThresholdPeriod: 'selfmodReactionsThresholdDuration'
+	keyPunishmentThresholdPeriod: 'selfmodReactionsThresholdDuration',
+	idHints: [
+		'1277288820399669309' // skyra-beta production
+	]
 })
 export class UserAutoModerationCommand extends AutoModerationCommand {}

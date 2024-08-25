@@ -46,6 +46,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	readonly #punishmentThresholdMaximum: number;
 	readonly #punishmentThresholdDurationMinimum: number;
 	readonly #punishmentThresholdDurationMaximum: number;
+	readonly #idHints: string[];
 
 	protected constructor(context: AutoModerationCommand.LoaderContext, options: AutoModerationCommand.Options) {
 		super(context, {
@@ -70,6 +71,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		this.keyPunishmentDuration = options.keyPunishmentDuration;
 		this.keyPunishmentThreshold = options.keyPunishmentThreshold;
 		this.keyPunishmentThresholdPeriod = options.keyPunishmentThresholdPeriod;
+		this.#idHints = options.idHints ?? [];
 
 		this.#localizedNameKey = options.localizedNameKey;
 
@@ -88,12 +90,16 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			this.registerSubcommands(
-				builder //
-					.setDMPermission(false)
-					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-			)
+		registry.registerChatInputCommand(
+			(builder) =>
+				this.registerSubcommands(
+					builder //
+						.setDMPermission(false)
+						.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+				),
+			{
+				idHints: this.#idHints
+			}
 		);
 	}
 
@@ -414,6 +420,7 @@ export namespace AutoModerationCommand {
 		keyPunishmentThreshold: GuildSettingsOfType<number | null>;
 		keyPunishmentThresholdPeriod: GuildSettingsOfType<number | null>;
 		resetKeys?: readonly OptionsResetKey[];
+		idHints?: string[];
 	}
 
 	export interface OptionsResetKey {

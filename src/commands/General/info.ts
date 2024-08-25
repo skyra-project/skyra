@@ -30,7 +30,11 @@ const Root = LanguageKeys.Commands.Info;
 })
 export class UserCommand extends SkyraCommand {
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((command) => applyLocalizedBuilder(command, Root.Name, Root.Description));
+		registry.registerChatInputCommand((command) => applyLocalizedBuilder(command, Root.Name, Root.Description), {
+			idHints: [
+				'1277288996011245578' // skyra-beta production
+			]
+		});
 	}
 
 	public override messageRun(message: Message, args: SkyraCommand.Args) {

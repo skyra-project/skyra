@@ -50,56 +50,62 @@ const OverviewColors = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe53
 })
 export class UserCommand extends SkyraSubcommand {
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			applyLocalizedBuilder(builder, Root.Name, Root.Description)
-				.setDMPermission(false)
-				.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-				.addSubcommand((subcommand) =>
-					applyLocalizedBuilder(subcommand, Root.View) //
-						.addIntegerOption((option) => applyLocalizedBuilder(option, Root.OptionsCase).setMinValue(1).setRequired(true))
-						.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsShow))
-				)
-				.addSubcommand((subcommand) =>
-					applyLocalizedBuilder(subcommand, Root.List) //
-						.addUserOption((option) => applyLocalizedBuilder(option, Root.OptionsUser))
-						.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsOverview))
-						.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsShow))
-						.addIntegerOption((option) =>
-							applyLocalizedBuilder(option, Root.OptionsType) //
-								.addChoices(
-									createLocalizedChoice(RootModeration.TypeRoleAdd, { value: TypeVariation.RoleAdd }),
-									createLocalizedChoice(RootModeration.TypeBan, { value: TypeVariation.Ban }),
-									createLocalizedChoice(RootModeration.TypeKick, { value: TypeVariation.Kick }),
-									createLocalizedChoice(RootModeration.TypeMute, { value: TypeVariation.Mute }),
-									createLocalizedChoice(RootModeration.TypeRoleRemove, { value: TypeVariation.RoleRemove }),
-									createLocalizedChoice(RootModeration.TypeRestrictedAttachment, { value: TypeVariation.RestrictedAttachment }),
-									createLocalizedChoice(RootModeration.TypeRestrictedEmbed, { value: TypeVariation.RestrictedEmbed }),
-									createLocalizedChoice(RootModeration.TypeRestrictedEmoji, { value: TypeVariation.RestrictedEmoji }),
-									createLocalizedChoice(RootModeration.TypeRestrictedReaction, { value: TypeVariation.RestrictedReaction }),
-									createLocalizedChoice(RootModeration.TypeRestrictedVoice, { value: TypeVariation.RestrictedVoice }),
-									createLocalizedChoice(RootModeration.TypeSetNickname, { value: TypeVariation.SetNickname }),
-									createLocalizedChoice(RootModeration.TypeSoftban, { value: TypeVariation.Softban }),
-									createLocalizedChoice(RootModeration.TypeVoiceKick, { value: TypeVariation.VoiceKick }),
-									createLocalizedChoice(RootModeration.TypeVoiceMute, { value: TypeVariation.VoiceMute }),
-									createLocalizedChoice(RootModeration.TypeWarning, { value: TypeVariation.Warning })
-								)
-						)
-						.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsPendingOnly))
-				)
-				.addSubcommand((subcommand) =>
-					applyLocalizedBuilder(subcommand, Root.Edit) //
-						.addIntegerOption((option) => applyLocalizedBuilder(option, Root.OptionsCase).setMinValue(1).setRequired(true))
-						.addStringOption((option) => applyLocalizedBuilder(option, Root.OptionsReason).setMaxLength(200))
-						.addStringOption((option) => applyLocalizedBuilder(option, Root.OptionsDuration).setMaxLength(50))
-				)
-				.addSubcommand((subcommand) =>
-					applyLocalizedBuilder(subcommand, Root.Archive) //
-						.addIntegerOption((option) => applyLocalizedBuilder(option, Root.OptionsCase).setMinValue(1).setRequired(true))
-				)
-				.addSubcommand((subcommand) =>
-					applyLocalizedBuilder(subcommand, Root.Delete) //
-						.addIntegerOption((option) => applyLocalizedBuilder(option, Root.OptionsCase).setMinValue(1).setRequired(true))
-				)
+		registry.registerChatInputCommand(
+			(builder) =>
+				applyLocalizedBuilder(builder, Root.Name, Root.Description)
+					.setDMPermission(false)
+					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+					.addSubcommand((subcommand) =>
+						applyLocalizedBuilder(subcommand, Root.View) //
+							.addIntegerOption((option) => applyLocalizedBuilder(option, Root.OptionsCase).setMinValue(1).setRequired(true))
+							.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsShow))
+					)
+					.addSubcommand((subcommand) =>
+						applyLocalizedBuilder(subcommand, Root.List) //
+							.addUserOption((option) => applyLocalizedBuilder(option, Root.OptionsUser))
+							.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsOverview))
+							.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsShow))
+							.addIntegerOption((option) =>
+								applyLocalizedBuilder(option, Root.OptionsType) //
+									.addChoices(
+										createLocalizedChoice(RootModeration.TypeRoleAdd, { value: TypeVariation.RoleAdd }),
+										createLocalizedChoice(RootModeration.TypeBan, { value: TypeVariation.Ban }),
+										createLocalizedChoice(RootModeration.TypeKick, { value: TypeVariation.Kick }),
+										createLocalizedChoice(RootModeration.TypeMute, { value: TypeVariation.Mute }),
+										createLocalizedChoice(RootModeration.TypeRoleRemove, { value: TypeVariation.RoleRemove }),
+										createLocalizedChoice(RootModeration.TypeRestrictedAttachment, { value: TypeVariation.RestrictedAttachment }),
+										createLocalizedChoice(RootModeration.TypeRestrictedEmbed, { value: TypeVariation.RestrictedEmbed }),
+										createLocalizedChoice(RootModeration.TypeRestrictedEmoji, { value: TypeVariation.RestrictedEmoji }),
+										createLocalizedChoice(RootModeration.TypeRestrictedReaction, { value: TypeVariation.RestrictedReaction }),
+										createLocalizedChoice(RootModeration.TypeRestrictedVoice, { value: TypeVariation.RestrictedVoice }),
+										createLocalizedChoice(RootModeration.TypeSetNickname, { value: TypeVariation.SetNickname }),
+										createLocalizedChoice(RootModeration.TypeSoftban, { value: TypeVariation.Softban }),
+										createLocalizedChoice(RootModeration.TypeVoiceKick, { value: TypeVariation.VoiceKick }),
+										createLocalizedChoice(RootModeration.TypeVoiceMute, { value: TypeVariation.VoiceMute }),
+										createLocalizedChoice(RootModeration.TypeWarning, { value: TypeVariation.Warning })
+									)
+							)
+							.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsPendingOnly))
+					)
+					.addSubcommand((subcommand) =>
+						applyLocalizedBuilder(subcommand, Root.Edit) //
+							.addIntegerOption((option) => applyLocalizedBuilder(option, Root.OptionsCase).setMinValue(1).setRequired(true))
+							.addStringOption((option) => applyLocalizedBuilder(option, Root.OptionsReason).setMaxLength(200))
+							.addStringOption((option) => applyLocalizedBuilder(option, Root.OptionsDuration).setMaxLength(50))
+					)
+					.addSubcommand((subcommand) =>
+						applyLocalizedBuilder(subcommand, Root.Archive) //
+							.addIntegerOption((option) => applyLocalizedBuilder(option, Root.OptionsCase).setMinValue(1).setRequired(true))
+					)
+					.addSubcommand((subcommand) =>
+						applyLocalizedBuilder(subcommand, Root.Delete) //
+							.addIntegerOption((option) => applyLocalizedBuilder(option, Root.OptionsCase).setMinValue(1).setRequired(true))
+					),
+			{
+				idHints: [
+					'1277288915748913245' // skyra-beta production
+				]
+			}
 		);
 	}
 

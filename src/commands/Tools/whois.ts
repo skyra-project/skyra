@@ -93,16 +93,28 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			applyLocalizedBuilder(builder, Root.Name, Root.Description) //
-				.addUserOption((option) => applyLocalizedBuilder(option, Root.User).setRequired(true))
-				.setDMPermission(false)
+		registry.registerChatInputCommand(
+			(builder) =>
+				applyLocalizedBuilder(builder, Root.Name, Root.Description) //
+					.addUserOption((option) => applyLocalizedBuilder(option, Root.User).setRequired(true))
+					.setDMPermission(false),
+			{
+				idHints: [
+					'1277288918756233298' // skyra-beta production
+				]
+			}
 		);
 
-		registry.registerContextMenuCommand((builder) =>
-			applyNameLocalizedBuilder(builder, Root.ContextMenuName) //
-				.setType(ApplicationCommandType.User)
-				.setDMPermission(false)
+		registry.registerContextMenuCommand(
+			(builder) =>
+				applyNameLocalizedBuilder(builder, Root.ContextMenuName) //
+					.setType(ApplicationCommandType.User)
+					.setDMPermission(false),
+			{
+				idHints: [
+					'1277288994077409370' // skyra-beta production
+				]
+			}
 		);
 	}
 

@@ -53,7 +53,7 @@
 	"dependencies": {
 		"@discordjs/builders": "^1.8.2",
 		"@discordjs/collection": "^2.1.0",
-		"@discordjs/core": "^1.2.0",
+		"@discordjs/core": "^2.0.0",
 		"@influxdata/influxdb-client": "^1.35.0",
 		"@influxdata/influxdb-client-apis": "^1.35.0",
 		"@prisma/client": "^5.19.0",

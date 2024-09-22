@@ -100,6 +100,7 @@ export class UserCommand extends SkyraCommand {
 					.setDMPermission(false),
 			{
 				idHints: [
+					'1205923078627000381', // skyra production
 					'1277288918756233298' // skyra-beta production
 				]
 			}
@@ -112,6 +113,7 @@ export class UserCommand extends SkyraCommand {
 					.setDMPermission(false),
 			{
 				idHints: [
+					'1205923078627000382', // skyra production
 					'1277288994077409370' // skyra-beta production
 				]
 			}

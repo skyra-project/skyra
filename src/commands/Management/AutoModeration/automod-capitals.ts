@@ -16,6 +16,7 @@ const Root = LanguageKeys.Commands.AutoModeration;
 	keyPunishmentThreshold: 'selfmodCapitalsThresholdMaximum',
 	keyPunishmentThresholdPeriod: 'selfmodCapitalsThresholdDuration',
 	idHints: [
+		'1226164940847583324', // skyra production
 		'1277288912808575109' // skyra-beta production
 	]
 })

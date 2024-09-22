@@ -1,4 +1,5 @@
 export * as Admin from '#lib/i18n/languageKeys/keys/commands/Admin';
+export * as Permissions from '#lib/i18n/languageKeys/keys/commands/Permissions';
 export * as AutoModeration from '#lib/i18n/languageKeys/keys/commands/AutoModeration';
 export * as Case from '#lib/i18n/languageKeys/keys/commands/Case';
 export * as Fun from '#lib/i18n/languageKeys/keys/commands/Fun';

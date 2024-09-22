@@ -9,6 +9,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { isNullishOrEmpty, tryParseURL, type Nullish } from '@sapphire/utilities';
 import {
+	GuildMember,
 	PermissionFlagsBits,
 	StickerFormatType,
 	type APIUser,
@@ -329,7 +330,7 @@ export const sendLoadingMessage = <T extends GuildMessage | Message>(message: T,
 	return send(message, { embeds: [embed] }) as Promise<T>;
 };
 
-export function getColor(message: Message) {
+export function getColor(message: { member?: GuildMember | Nullish }) {
 	return message.member?.displayColor ?? BrandingColors.Primary;
 }
 

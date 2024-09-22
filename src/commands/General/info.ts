@@ -45,7 +45,7 @@ export class UserCommand extends SkyraCommand {
 		return send(message, { content });
 	}
 
-	public override async chatInputRun(interaction: SkyraCommand.Interaction) {
+	public override async chatInputRun(interaction: SkyraCommand.ChatInputInteraction) {
 		const t = getSupportedUserLanguageT(interaction);
 		const embed = new EmbedBuilder()
 			.setDescription(t(Root.EmbedDescription))

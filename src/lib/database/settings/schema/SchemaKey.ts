@@ -42,7 +42,7 @@ export class SchemaKey<K extends GuildDataKey = GuildDataKey> implements ISchema
 	public readonly name: string;
 
 	/**
-	 * The property from the TypeORM entity.
+	 * The property from the Prisma entity.
 	 */
 	public readonly property: K;
 

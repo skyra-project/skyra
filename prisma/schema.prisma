@@ -228,7 +228,7 @@ model TwitchSubscription {
   id                Int                    @id(map: "PK_0fd0f6c050ee4ccdce479c2b0e6") @default(autoincrement())
   streamerId        String                 @map("streamer_id") @db.VarChar(10)
   subscriptionId    String                 @map("subscription_id") @db.VarChar(36)
-  subscriptionType  TwitchSubscriptionType
+  subscriptionType  TwitchSubscriptionType @map("subscription_type")
   guildSubscription GuildSubscription[]
 
   @@unique([streamerId, subscriptionType], map: "IDX_690cc82abbfa67fc18db1c44e7")

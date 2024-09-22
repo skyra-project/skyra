@@ -103,6 +103,7 @@ export class UserCommand extends SkyraSubcommand {
 					),
 			{
 				idHints: [
+					'1226164940847583325', // skyra production
 					'1277288915748913245' // skyra-beta production
 				]
 			}

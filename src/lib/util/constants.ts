@@ -1,4 +1,5 @@
 import { getRootData } from '@sapphire/pieces';
+import { PermissionFlagsBits } from 'discord.js';
 import { join } from 'node:path';
 
 export const mainFolder = getRootData().root;
@@ -12,6 +13,26 @@ export const EmojiData = {
 	IntegrationIcon: { id: '1200230554440843264', name: 'IntegrationIcon', animated: false },
 	MembersIcon: { id: '1200212636441260103', name: 'MembersIcon', animated: false }
 } as const;
+
+export const ModeratorPermissionsList = [
+	['ManageChannels', PermissionFlagsBits.ManageChannels],
+	['ManageRoles', PermissionFlagsBits.ManageRoles],
+	['CreateGuildExpressions', PermissionFlagsBits.CreateGuildExpressions],
+	['ManageGuildExpressions', PermissionFlagsBits.ManageGuildExpressions],
+	['ManageWebhooks', PermissionFlagsBits.ManageWebhooks],
+	['ManageGuild', PermissionFlagsBits.ManageGuild],
+	['KickMembers', PermissionFlagsBits.KickMembers],
+	['BanMembers', PermissionFlagsBits.BanMembers],
+	['ModerateMembers', PermissionFlagsBits.ModerateMembers],
+	['MentionEveryone', PermissionFlagsBits.MentionEveryone],
+	['ManageMessages', PermissionFlagsBits.ManageMessages],
+	['ManageThreads', PermissionFlagsBits.ManageThreads],
+	['CreateEvents', PermissionFlagsBits.CreateEvents],
+	['ManageEvents', PermissionFlagsBits.ManageEvents],
+	['Administrator', PermissionFlagsBits.Administrator]
+] as const;
+
+export const ModeratorPermissionsBits = ModeratorPermissionsList.reduce((acc, [, bit]) => acc | bit, 0n);
 
 export const enum Emojis {
 	ArrowB = '<:ArrowB:694594285269680179>',

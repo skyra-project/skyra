@@ -47,5 +47,6 @@
 	"ViewAuditLog": "View Audit Log",
 	"ViewChannel": "View Channels",
 	"ViewCreatorMonetizationAnalytics": "View Creator Monetization Analytics",
-	"ViewGuildInsights": "View Server Insights"
+	"ViewGuildInsights": "View Server Insights",
+	"UseExternalApps": "Use External Apps"
 }

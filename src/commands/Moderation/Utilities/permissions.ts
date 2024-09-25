@@ -24,21 +24,33 @@ const Root = LanguageKeys.Commands.Permissions;
 })
 export class UserCommand extends SkyraCommand {
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((builder) =>
-			applyLocalizedBuilder(builder, Root.Name, Root.Description)
-				.setDMPermission(false)
-				.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-				.addUserOption((option) => applyLocalizedBuilder(option, Root.OptionsUser))
-				.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsListAll))
-				.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsListMissing))
-				.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsShow))
+		registry.registerChatInputCommand(
+			(builder) =>
+				applyLocalizedBuilder(builder, Root.Name, Root.Description)
+					.setDMPermission(false)
+					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+					.addUserOption((option) => applyLocalizedBuilder(option, Root.OptionsUser))
+					.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsListAll))
+					.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsListMissing))
+					.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsShow)),
+			{
+				idHints: [
+					'1288416734960943135' // skyra-beta production
+				]
+			}
 		);
 
-		registry.registerContextMenuCommand((builder) =>
-			applyNameLocalizedBuilder(builder, Root.ContextMenuName)
-				.setType(ApplicationCommandType.User)
-				.setDMPermission(false)
-				.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+		registry.registerContextMenuCommand(
+			(builder) =>
+				applyNameLocalizedBuilder(builder, Root.ContextMenuName)
+					.setType(ApplicationCommandType.User)
+					.setDMPermission(false)
+					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+			{
+				idHints: [
+					'1288416736751648820' // skyra-beta production
+				]
+			}
 		);
 	}
 

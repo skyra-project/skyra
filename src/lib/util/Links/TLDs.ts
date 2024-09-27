@@ -300,7 +300,6 @@ export const TLDs = [
 	'cymru',
 	'cyou',
 	'cz',
-	'dabur',
 	'dad',
 	'dance',
 	'data',

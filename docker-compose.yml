@@ -18,7 +18,7 @@ services:
 
   postgres:
     container_name: postgres
-    image: 'postgres:15-alpine'
+    image: 'postgres:17-alpine'
     networks:
       - skyra
     ports:

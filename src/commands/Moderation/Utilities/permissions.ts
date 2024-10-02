@@ -35,6 +35,7 @@ export class UserCommand extends SkyraCommand {
 					.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsShow)),
 			{
 				idHints: [
+					'1291068970761322597', // skyra production
 					'1288416734960943135' // skyra-beta production
 				]
 			}
@@ -48,6 +49,7 @@ export class UserCommand extends SkyraCommand {
 					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 			{
 				idHints: [
+					'1291068980647166052', // skyra production
 					'1288416736751648820' // skyra-beta production
 				]
 			}

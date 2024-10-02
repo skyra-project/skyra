@@ -2,14 +2,31 @@ import { getDefaultGuildSettings } from '#lib/database/settings/constants';
 import { deleteSettingsContext, getSettingsContext, updateSettingsContext } from '#lib/database/settings/context/functions';
 import type { AdderKey } from '#lib/database/settings/structures/AdderManager';
 import type { GuildData, ReadonlyGuildData } from '#lib/database/settings/types';
+import { maybeParseNumber } from '#utils/common';
 import { AsyncQueue } from '@sapphire/async-queue';
 import { container, type Awaitable } from '@sapphire/framework';
+import type { PickByValue } from '@sapphire/utilities';
 import { Collection, type GuildResolvable, type Snowflake } from 'discord.js';
 
 const cache = new Collection<string, GuildData>();
 const queue = new Collection<string, Promise<GuildData>>();
 const locks = new Collection<string, AsyncQueue>();
 const WeakMapNotInitialized = new WeakSet<ReadonlyGuildData>();
+
+const transformers = {
+	selfmodAttachmentsHardActionDuration: maybeParseNumber,
+	selfmodCapitalsHardActionDuration: maybeParseNumber,
+	selfmodFilterHardActionDuration: maybeParseNumber,
+	selfmodInvitesHardActionDuration: maybeParseNumber,
+	selfmodLinksHardActionDuration: maybeParseNumber,
+	selfmodMessagesHardActionDuration: maybeParseNumber,
+	selfmodNewlinesHardActionDuration: maybeParseNumber,
+	selfmodReactionsHardActionDuration: maybeParseNumber
+} satisfies Record<PickByValue<ReadonlyGuildData, bigint | null>, typeof maybeParseNumber>;
+
+export function serializeSettings(data: ReadonlyGuildData, space?: string | number) {
+	return JSON.stringify(data, (key, value) => (key in transformers ? transformers[key as keyof typeof transformers](value) : value), space);
+}
 
 export function deleteSettingsCached(guild: GuildResolvable) {
 	const id = resolveGuildId(guild);

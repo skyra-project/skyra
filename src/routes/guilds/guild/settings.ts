@@ -3,6 +3,7 @@ import {
 	getConfigurableKeys,
 	isSchemaKey,
 	readSettings,
+	serializeSettings,
 	writeSettingsTransaction,
 	type GuildDataValue,
 	type ReadonlyGuildData,
@@ -13,7 +14,7 @@ import { getT } from '#lib/i18n';
 import { seconds } from '#utils/common';
 import { cast } from '#utils/util';
 import { ApplyOptions } from '@sapphire/decorators';
-import { HttpCodes, Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
+import { HttpCodes, MimeTypes, Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 import type { Guild } from 'discord.js';
 
 @ApplyOptions<Route.Options>({ name: 'guildSettings', route: 'guilds/:guild/settings' })
@@ -32,7 +33,7 @@ export class UserRoute extends Route {
 		if (!(await canManage(guild, member))) return response.error(HttpCodes.Forbidden);
 
 		const settings = await readSettings(guild);
-		return response.json(settings);
+		return this.sendSettings(response, settings);
 	}
 
 	@authenticated()
@@ -58,10 +59,14 @@ export class UserRoute extends Route {
 			const data = await this.validateAll(trx.settings, guild, entries);
 			await trx.write(Object.fromEntries(data)).submit();
 
-			return response.status(HttpCodes.OK).json(trx.settings satisfies ReadonlyGuildData);
+			return this.sendSettings(response, trx.settings);
 		} catch (errors) {
 			return response.status(HttpCodes.BadRequest).json(errors);
 		}
+	}
+
+	private sendSettings(response: ApiResponse, settings: ReadonlyGuildData) {
+		return response.status(HttpCodes.OK).setContentType(MimeTypes.ApplicationJson).end(serializeSettings(settings));
 	}
 
 	private async validate(key: SchemaDataKey, value: unknown, context: PartialSerializerUpdateContext) {

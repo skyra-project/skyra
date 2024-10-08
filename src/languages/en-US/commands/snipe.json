@@ -1,0 +1,6 @@
+{
+	"name": "snipe",
+	"description": "Retrieve the last recently deleted message from a channel",
+	"messageEmpty": "There are no sniped messages in this channel.",
+	"embedTitle": "Sniped Message"
+}

@@ -1,8 +1,0 @@
-{
-	"snipeEmpty": "There are no sniped messages in this channel.",
-	"snipeTitle": "Sniped Message",
-	"snipeDescription": "Retrieve the last deleted message from a channel",
-	"snipeExtended": {
-		"extendedHelp": "This just sends the last deleted message from this channel, somebody is misbehaving? This will catch them."
-	}
-}

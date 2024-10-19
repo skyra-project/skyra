@@ -57,12 +57,13 @@ export class UserListener extends Listener<Events.TwitchStreamOnline> {
 
 					// Retrieve the channel to send the message to
 					const channel = guild.channels.cache.get(guildSubscription.channelId) as TextBasedChannelTypes;
-					if (isNullish(channel) || !canSendMessages(channel)) {
+					if (isNullish(channel) || !canSendMessages(channel) || channel.isDMBased()) {
 						continue;
 					}
 
 					// Construct a message embed and send it.
 					const detailedMentions = extractDetailedMentions(guildSubscription.message);
+
 					floatPromise(
 						channel.send({
 							content: guildSubscription.message || undefined,

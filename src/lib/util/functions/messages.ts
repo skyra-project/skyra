@@ -166,6 +166,8 @@ async function promptConfirmationReaction(message: Message, response: Message, o
 
 const promptConfirmationMessageRegExp = /^y|yes?|yeah?$/i;
 async function promptConfirmationMessage(message: Message, response: Message, options: PromptConfirmationMessageOptions) {
+	if (response.channel.isDMBased()) return null;
+
 	const target = container.client.users.resolveId(options.target ?? message.author)!;
 	const messages = await response.channel.awaitMessages({ filter: (message) => message.author.id === target, time: minutes(1), max: 1 });
 
@@ -189,6 +191,8 @@ export async function promptConfirmation(message: Message, options: string | Pro
 }
 
 export async function promptForMessage(message: Message, sendOptions: string | MessageCreateOptions, time = minutes(1)): Promise<string | null> {
+	if (message.channel.isDMBased()) return null;
+
 	const response = await message.channel.send(sendOptions);
 	const responses = await message.channel.awaitMessages({ filter: (msg) => msg.author === message.author, time, max: 1 });
 	floatPromise(deleteMessage(response));

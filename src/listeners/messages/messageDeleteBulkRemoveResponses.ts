@@ -7,7 +7,7 @@ import { get } from '@sapphire/plugin-editable-commands';
 import { hasAtLeastOneKeyInMap } from '@sapphire/utilities';
 import { Collection, type Message, type Snowflake } from 'discord.js';
 
-type MessageCollection = Collection<Snowflake, Message>;
+type MessageCollection = Collection<Snowflake, Message<true>>;
 
 @ApplyOptions<Listener.Options>({ event: Events.MessageDeleteBulk })
 export class UserListener extends Listener<Events.MessageDeleteBulk> {

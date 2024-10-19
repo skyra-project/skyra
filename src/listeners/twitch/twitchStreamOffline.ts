@@ -43,7 +43,7 @@ export class UserListener extends Listener<Events.TwitchStreamOffline> {
 
 				// Retrieve the channel to send the message to
 				const channel = guild.channels.cache.get(guildSubscription.channelId) as TextBasedChannelTypes;
-				if (isNullish(channel) || !canSendMessages(channel)) {
+				if (isNullish(channel) || !canSendMessages(channel) || channel.isDMBased()) {
 					continue;
 				}
 

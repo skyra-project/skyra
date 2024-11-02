@@ -99,7 +99,7 @@
 		"@types/backoff": "^2.5.5",
 		"@types/diff": "^5.2.2",
 		"@types/he": "^1.2.3",
-		"@types/node": "^20.11.17",
+		"@types/node": "^22.8.6",
 		"@types/pg": "^8.11.8",
 		"@types/ws": "^8.5.12",
 		"@typescript-eslint/eslint-plugin": "^7.13.0",
@@ -118,14 +118,12 @@
 		"vitest": "^2.1.1"
 	},
 	"resolutions": {
-		"@types/node": "20.11.5",
 		"ansi-regex": "^5.0.1",
 		"discord-api-types": "^0.37.98",
 		"minimist": "^1.2.8"
 	},
 	"engines": {
-		"node": "^20",
-		"npm": "^10.0.0"
+		"node": "^22.11.0"
 	},
 	"repository": {
 		"type": "git",
@@ -148,6 +146,6 @@
 	"prettier": "@sapphire/prettier-config",
 	"packageManager": "yarn@4.4.1",
 	"volta": {
-		"node": "20.17.0"
+		"node": "22.11.0"
 	}
 }

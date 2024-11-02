@@ -51,8 +51,8 @@
 		"update": "yarn upgrade-interactive"
 	},
 	"dependencies": {
-		"@discordjs/builders": "^1.8.2",
-		"@discordjs/collection": "^2.1.0",
+		"@discordjs/builders": "^1.9.0",
+		"@discordjs/collection": "^2.1.1",
 		"@discordjs/core": "^1.2.0",
 		"@influxdata/influxdb-client": "^1.35.0",
 		"@influxdata/influxdb-client-apis": "^1.35.0",
@@ -85,7 +85,7 @@
 		"confusables": "^1.1.1",
 		"diff": "^7.0.0",
 		"discord-api-types": "0.37.98",
-		"discord.js": "~14.15.3",
+		"discord.js": "~14.16.3",
 		"he": "^1.2.0",
 		"zlib-sync": "^0.1.9"
 	},

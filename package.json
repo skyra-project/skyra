@@ -51,8 +51,8 @@
 		"update": "yarn upgrade-interactive"
 	},
 	"dependencies": {
-		"@discordjs/builders": "^1.9.0",
-		"@discordjs/collection": "^2.1.1",
+		"@discordjs/builders": "^1.8.2",
+		"@discordjs/collection": "^2.1.0",
 		"@discordjs/core": "^1.2.0",
 		"@influxdata/influxdb-client": "^1.35.0",
 		"@influxdata/influxdb-client-apis": "^1.35.0",

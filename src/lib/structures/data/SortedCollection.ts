@@ -192,7 +192,7 @@ export class SortedCollection<K extends number | string | bigint, V> implements 
 	/**
 	 * Returns an iterator that contains all the keys in the collection.
 	 */
-	public *keys() {
+	public *keys(): IterableIterator<K> {
 		for (const [key] of this.#entries) {
 			yield key;
 		}
@@ -201,7 +201,7 @@ export class SortedCollection<K extends number | string | bigint, V> implements 
 	/**
 	 * Returns an iterator that yields all the values in the collection.
 	 */
-	public *values() {
+	public *values(): IterableIterator<V> {
 		for (const [, value] of this.#entries) {
 			yield value;
 		}
@@ -210,7 +210,7 @@ export class SortedCollection<K extends number | string | bigint, V> implements 
 	/**
 	 * Returns an iterator that yields all the entries in the collection.
 	 */
-	public *entries() {
+	public *entries(): IterableIterator<[K, V]> {
 		yield* this.#entries;
 	}
 

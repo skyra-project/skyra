@@ -1651,13 +1651,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/plugin-subcommands@npm:^6.0.3":
-  version: 6.0.3
-  resolution: "@sapphire/plugin-subcommands@npm:6.0.3"
+"@sapphire/plugin-subcommands@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@sapphire/plugin-subcommands@npm:7.0.0"
   dependencies:
-    "@sapphire/utilities": "npm:^3.15.3"
-    tslib: "npm:^2.6.2"
-  checksum: 10/1cb5e991152e7f4bac424a44e72e7a3a829cd93edd78d00a0ac079d4ffd3f4a77279f9aa41e2f8cee635950d6a19e089d8fd77d4f14c97db53e37473f837326b
+    "@sapphire/utilities": "npm:^3.17.0"
+  checksum: 10/55dcd8d1ed0be2d9f486619fbbb1967ca24f1580692a719b4ebc3a44e3d6b219a097d17aa32cf79641cffdb1ab51d4f74502c32ea18e62bed245b1c6bc03ede8
   languageName: node
   linkType: hard
 
@@ -7414,7 +7413,7 @@ __metadata:
     "@sapphire/plugin-editable-commands": "npm:^4.0.2"
     "@sapphire/plugin-i18next": "npm:^7.1.2"
     "@sapphire/plugin-logger": "npm:^4.0.2"
-    "@sapphire/plugin-subcommands": "npm:^6.0.3"
+    "@sapphire/plugin-subcommands": "npm:^7.0.0"
     "@sapphire/prettier-config": "npm:^2.0.0"
     "@sapphire/ratelimits": "npm:^2.4.9"
     "@sapphire/snowflake": "npm:^3.5.3"

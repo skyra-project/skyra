@@ -96,7 +96,10 @@ export class UserCommand extends SkyraCommand {
 	}
 
 	private async getFilters(args: SkyraCommand.Args) {
-		const fns: BooleanFn<[GuildMessage]>[] = [];
+		const fns: BooleanFn<[GuildMessage]>[] = [
+			// Sanity check, only filter those that can be deleted:
+			(message) => message.deletable
+		];
 
 		const user = args.finished ? null : await args.pick('user').catch(() => null);
 		if (user !== null) fns.push((mes: GuildMessage) => mes.author.id === user.id);

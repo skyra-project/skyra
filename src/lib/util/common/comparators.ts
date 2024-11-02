@@ -84,30 +84,12 @@ export function bidirectionalReplace<T>(regex: RegExp, content: string, options:
 	return results;
 }
 
-export type BooleanFn<ArgumentTypes extends readonly unknown[], ReturnType extends boolean = boolean> = (...args: ArgumentTypes) => ReturnType;
+export type BooleanFn<ArgumentTypes extends readonly unknown[]> = (...args: ArgumentTypes) => boolean;
 
-export function andMix<T extends readonly unknown[], R extends boolean>(...fns: readonly BooleanFn<T, R>[]): BooleanFn<T, R> {
-	if (fns.length === 0) throw new Error('You must input at least one function.');
-	return (...args) => {
-		let ret!: R;
-		for (const fn of fns) {
-			if (!(ret = fn(...args))) break;
-		}
-
-		return ret;
-	};
+export function andMix<ArgumentTypes extends readonly unknown[]>(...fns: readonly BooleanFn<ArgumentTypes>[]): BooleanFn<ArgumentTypes> {
+	return (...args) => fns.every((fn) => fn(...args));
 }
 
-export function orMix<ArgumentTypes extends readonly unknown[], ReturnType extends boolean>(
-	...fns: readonly BooleanFn<ArgumentTypes, ReturnType>[]
-): BooleanFn<ArgumentTypes, ReturnType> {
-	if (fns.length === 0) throw new Error('You must input at least one function.');
-	return (...args) => {
-		let ret!: ReturnType;
-		for (const fn of fns) {
-			if ((ret = fn(...args))) break;
-		}
-
-		return ret;
-	};
+export function orMix<ArgumentTypes extends readonly unknown[]>(...fns: readonly BooleanFn<ArgumentTypes>[]): BooleanFn<ArgumentTypes> {
+	return (...args) => fns.some((fn) => fn(...args));
 }

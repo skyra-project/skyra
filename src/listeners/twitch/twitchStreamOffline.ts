@@ -5,7 +5,7 @@ import { streamNotificationDrip } from '#utils/twitch';
 import { extractDetailedMentions } from '#utils/util';
 import { TimestampStyles, time } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
-import { canSendMessages, type TextBasedChannelTypes } from '@sapphire/discord.js-utilities';
+import { canSendMessages, type GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities';
 import { Listener } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { fetchT } from '@sapphire/plugin-i18next';
@@ -42,7 +42,7 @@ export class UserListener extends Listener<Events.TwitchStreamOffline> {
 				const t = await fetchT(guild);
 
 				// Retrieve the channel to send the message to
-				const channel = guild.channels.cache.get(guildSubscription.channelId) as TextBasedChannelTypes;
+				const channel = guild.channels.cache.get(guildSubscription.channelId) as GuildTextBasedChannelTypes;
 				if (isNullish(channel) || !canSendMessages(channel)) {
 					continue;
 				}

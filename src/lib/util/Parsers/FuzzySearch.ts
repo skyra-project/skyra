@@ -1,10 +1,10 @@
 import { LanguageKeys } from '#lib/i18n/languageKeys';
+import type { NonGroupMessage } from '#lib/types';
 import { promptForMessage } from '#utils/functions';
 import { UserError } from '@sapphire/framework';
 import { fetchT } from '@sapphire/plugin-i18next';
 import { codeBlock } from '@sapphire/utilities';
 import { decodeUtf8, jaroWinkler } from '@skyra/jaro-winkler';
-import type { Message } from 'discord.js';
 
 type FuzzySearchAccess<V> = (value: V) => string;
 type FuzzySearchFilter<V> = (value: V) => boolean;
@@ -20,7 +20,7 @@ export class FuzzySearch<K extends string, V> {
 		this.kFilter = filter;
 	}
 
-	public run(message: Message, query: string, threshold?: number) {
+	public run(message: NonGroupMessage, query: string, threshold?: number) {
 		const lowerCaseQuery = query.toLowerCase();
 		const decodedLowerCaseQuery = decodeUtf8(lowerCaseQuery);
 		const results: [K, V, number][] = [];
@@ -75,7 +75,7 @@ export class FuzzySearch<K extends string, V> {
 		return this.select(message, sorted);
 	}
 
-	private async select(message: Message, results: [K, V, number][]) {
+	private async select(message: NonGroupMessage, results: [K, V, number][]) {
 		if (results.length === 1) return results[0];
 		if (results.length > 10) results.length = 10;
 

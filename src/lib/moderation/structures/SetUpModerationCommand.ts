@@ -44,7 +44,7 @@ export abstract class SetUpModerationCommand<Type extends RoleTypeVariation, Val
 		if (role) return undefined;
 
 		// If there
-		if (!(await isAdmin(message.member!))) {
+		if (!(await isAdmin(message.member))) {
 			this.error(LanguageKeys.Commands.Moderation.RestrictLowlevel);
 		}
 

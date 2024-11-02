@@ -1,5 +1,5 @@
 import type { SkyraCommand } from '#lib/structures';
-import type { TypedFT, TypedT } from '#lib/types';
+import type { NonGroupMessage, TypedFT, TypedT } from '#lib/types';
 import { floatPromise, minutes, resolveOnErrorCodes } from '#utils/common';
 import { canReact, canRemoveAllReactions } from '@sapphire/discord.js-utilities';
 import { container } from '@sapphire/framework';
@@ -149,11 +149,11 @@ const enum PromptConfirmationReactions {
 	No = '🇳'
 }
 
-async function promptConfirmationReaction(message: Message, response: Message, options: PromptConfirmationMessageOptions) {
+async function promptConfirmationReaction(message: NonGroupMessage, response: NonGroupMessage, options: PromptConfirmationMessageOptions) {
 	await response.react(PromptConfirmationReactions.Yes);
 	await response.react(PromptConfirmationReactions.No);
 
-	const target = container.client.users.resolveId(options.target ?? message.author)!;
+	const target = container.client.users.resolveId(options.target ?? message.author);
 	const reactions = await response.awaitReactions({ filter: (__, user) => user.id === target, time: minutes(1), max: 1 });
 
 	// Remove all reactions if the user has permissions to do so
@@ -165,8 +165,8 @@ async function promptConfirmationReaction(message: Message, response: Message, o
 }
 
 const promptConfirmationMessageRegExp = /^y|yes?|yeah?$/i;
-async function promptConfirmationMessage(message: Message, response: Message, options: PromptConfirmationMessageOptions) {
-	const target = container.client.users.resolveId(options.target ?? message.author)!;
+async function promptConfirmationMessage(message: NonGroupMessage, response: NonGroupMessage, options: PromptConfirmationMessageOptions) {
+	const target = container.client.users.resolveId(options.target ?? message.author);
 	const messages = await response.channel.awaitMessages({ filter: (message) => message.author.id === target, time: minutes(1), max: 1 });
 
 	return messages.size === 0 ? null : promptConfirmationMessageRegExp.test(messages.first()!.content);
@@ -178,17 +178,21 @@ async function promptConfirmationMessage(message: Message, response: Message, op
  * @param options The options for the message to be sent, alongside the prompt options.
  * @returns `null` if no response was given within the requested time, `boolean` otherwise.
  */
-export async function promptConfirmation(message: Message, options: string | PromptConfirmationMessageOptions) {
+export async function promptConfirmation(message: NonGroupMessage, options: string | PromptConfirmationMessageOptions) {
 	if (typeof options === 'string') options = { content: options };
 
 	// TODO: v13 | Switch to buttons only when available.
-	const response = await send(message, options);
+	const response = (await send(message, options)) as NonGroupMessage;
 	return canReact(response.channel)
 		? promptConfirmationReaction(message, response, options)
 		: promptConfirmationMessage(message, response, options);
 }
 
-export async function promptForMessage(message: Message, sendOptions: string | MessageCreateOptions, time = minutes(1)): Promise<string | null> {
+export async function promptForMessage(
+	message: NonGroupMessage,
+	sendOptions: string | MessageCreateOptions,
+	time = minutes(1)
+): Promise<string | null> {
 	const response = await message.channel.send(sendOptions);
 	const responses = await message.channel.awaitMessages({ filter: (msg) => msg.author === message.author, time, max: 1 });
 	floatPromise(deleteMessage(response));

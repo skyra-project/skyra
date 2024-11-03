@@ -1,22 +1,21 @@
 import { ratelimit } from '#lib/api/utils';
 import { getT } from '#lib/i18n/translate';
 import type { SkyraCommand } from '#lib/structures';
+import { PermissionLevels } from '#lib/types';
 import { seconds } from '#utils/common';
-import { ApplyOptions } from '@sapphire/decorators';
 import type { Command } from '@sapphire/framework';
-import { Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
+import { Route } from '@sapphire/plugin-api';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import type { LocaleString } from 'discord.js';
 
-@ApplyOptions<Route.Options>({ route: 'commands' })
 export class UserRoute extends Route {
 	@ratelimit(seconds(2), 2)
-	public [methods.GET](request: ApiRequest, response: ApiResponse) {
+	public run(request: Route.Request, response: Route.Response) {
 		const { lang, category } = request.query;
 		const commands = this.container.stores.get('commands');
 		const language = getT(lang as LocaleString);
 		const filtered = (category ? commands.filter((cmd) => cmd.category === category) : commands).filter(
-			(cmd) => (cmd as SkyraCommand).permissionLevel < 9
+			(cmd) => (cmd as SkyraCommand).permissionLevel < PermissionLevels.BotOwner
 		);
 
 		return response.json(filtered.map(UserRoute.process.bind(null, language)));

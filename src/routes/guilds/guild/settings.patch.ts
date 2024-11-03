@@ -2,7 +2,6 @@ import { authenticated, canManage, ratelimit } from '#lib/api/utils';
 import {
 	getConfigurableKeys,
 	isSchemaKey,
-	readSettings,
 	serializeSettings,
 	writeSettingsTransaction,
 	type GuildDataValue,
@@ -13,33 +12,14 @@ import {
 import { getT } from '#lib/i18n';
 import { seconds } from '#utils/common';
 import { cast } from '#utils/util';
-import { ApplyOptions } from '@sapphire/decorators';
-import { HttpCodes, MimeTypes, Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
+import { HttpCodes, Route, type MimeType } from '@sapphire/plugin-api';
 import type { Guild } from 'discord.js';
 
-@ApplyOptions<Route.Options>({ name: 'guildSettings', route: 'guilds/:guild/settings' })
 export class UserRoute extends Route {
 	@authenticated()
-	@ratelimit(seconds(5), 2, true)
-	public async [methods.GET](request: ApiRequest, response: ApiResponse) {
-		const guildId = request.params.guild;
-
-		const guild = this.container.client.guilds.cache.get(guildId);
-		if (!guild) return response.error(HttpCodes.BadRequest);
-
-		const member = await guild.members.fetch(request.auth!.id).catch(() => null);
-		if (!member) return response.error(HttpCodes.BadRequest);
-
-		if (!(await canManage(guild, member))) return response.error(HttpCodes.Forbidden);
-
-		const settings = await readSettings(guild);
-		return this.sendSettings(response, settings);
-	}
-
-	@authenticated()
 	@ratelimit(seconds(1), 2, true)
-	public async [methods.PATCH](request: ApiRequest, response: ApiResponse) {
-		const requestBody = request.body as { guild_id: string; data: [SchemaDataKey, GuildDataValue][] | undefined };
+	public async run(request: Route.Request, response: Route.Response) {
+		const requestBody = (await request.readBodyJson()) as { guild_id: string; data: [SchemaDataKey, GuildDataValue][] | undefined };
 
 		if (!requestBody.guild_id || !Array.isArray(requestBody.data) || requestBody.guild_id !== request.params.guild) {
 			return response.status(HttpCodes.BadRequest).json(['Invalid body.']);
@@ -65,8 +45,11 @@ export class UserRoute extends Route {
 		}
 	}
 
-	private sendSettings(response: ApiResponse, settings: ReadonlyGuildData) {
-		return response.status(HttpCodes.OK).setContentType(MimeTypes.ApplicationJson).end(serializeSettings(settings));
+	private sendSettings(response: Route.Response, settings: ReadonlyGuildData) {
+		return response
+			.status(HttpCodes.OK)
+			.setContentType('application/json' satisfies MimeType)
+			.end(serializeSettings(settings));
 	}
 
 	private async validate(key: SchemaDataKey, value: unknown, context: PartialSerializerUpdateContext) {

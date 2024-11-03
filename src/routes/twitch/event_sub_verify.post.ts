@@ -1,16 +1,14 @@
 import { Events, TwitchStreamStatus } from '#lib/types';
 import { cast } from '#utils/util';
-import { ApplyOptions } from '@sapphire/decorators';
-import { methods, Route, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
+import { Route } from '@sapphire/plugin-api';
 import { isObject } from '@sapphire/utilities';
-import { checkSignature, TwitchEventSubTypes, type TwitchEventSubVerificationMessage } from '@skyra/twitch-helpers';
+import { TwitchEventSubTypes, checkSignature, type TwitchEventSubVerificationMessage } from '@skyra/twitch-helpers';
 
-@ApplyOptions<Route.Options>({ route: 'twitch/event_sub_verify' })
 export class UserRoute extends Route {
 	private lastNotificationId: string | null = null;
 
 	// Stream Changed
-	public [methods.POST](request: ApiRequest, response: ApiResponse) {
+	public async run(request: Route.Request, response: Route.Response) {
 		// Grab the headers that we need to use for verification
 		const twitchEventSubMessageSignature = cast<string>(request.headers['twitch-eventsub-message-signature']);
 		const twitchEventSubMessageId = cast<string>(request.headers['twitch-eventsub-message-id']);
@@ -19,8 +17,11 @@ export class UserRoute extends Route {
 		// If this notification is the same as before, then send ok back
 		if (this.lastNotificationId && this.lastNotificationId === twitchEventSubMessageId) return response.ok();
 
+		const text = await request.readBodyText();
+		const body = JSON.parse(text);
+
 		// If there is no body then tell Twitch they are sending malformed data
-		if (!isObject(request.body)) return response.badRequest('Malformed data received');
+		if (!isObject(body)) return response.badRequest('Malformed data received');
 
 		// If any of the headers is missing tell Twitch they are sending invalid data
 		if (!twitchEventSubMessageSignature || !twitchEventSubMessageId || !twitchEventSubMessageTimestamp) {
@@ -28,7 +29,7 @@ export class UserRoute extends Route {
 		}
 
 		// Construct the verification signature
-		const twitchEventSubMessage = twitchEventSubMessageId + twitchEventSubMessageTimestamp + JSON.stringify(request.body);
+		const twitchEventSubMessage = twitchEventSubMessageId + twitchEventSubMessageTimestamp + text;
 
 		// Split the algorithm from the signature
 		const [algorithm, signature] = twitchEventSubMessageSignature.toString().split('=', 2);
@@ -43,7 +44,7 @@ export class UserRoute extends Route {
 			challenge,
 			subscription: { type },
 			event
-		} = request.body as TwitchEventSubVerificationMessage;
+		} = body as TwitchEventSubVerificationMessage;
 
 		// Tell the Twitch API this response was OK, then continue processing the request
 		response.text(challenge);

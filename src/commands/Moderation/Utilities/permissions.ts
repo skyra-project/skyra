@@ -5,12 +5,12 @@ import { PermissionLevels, type GuildMessage } from '#lib/types';
 import { PermissionsBits, PermissionsBitsList } from '#utils/bits';
 import { ModeratorPermissionsBits, ModeratorPermissionsList } from '#utils/constants';
 import { getColor, getTag } from '#utils/util';
-import { bold, chatInputApplicationCommandMention, EmbedBuilder } from '@discordjs/builders';
+import { EmbedBuilder, bold, chatInputApplicationCommandMention } from '@discordjs/builders';
 import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, applyNameLocalizedBuilder, type TFunction } from '@sapphire/plugin-i18next';
-import { ApplicationCommandType, GuildMember, PermissionFlagsBits } from 'discord.js';
+import { ApplicationCommandType, GuildMember, InteractionContextType, PermissionFlagsBits } from 'discord.js';
 
 const Root = LanguageKeys.Commands.Permissions;
 
@@ -27,7 +27,7 @@ export class UserCommand extends SkyraCommand {
 		registry.registerChatInputCommand(
 			(builder) =>
 				applyLocalizedBuilder(builder, Root.Name, Root.Description)
-					.setDMPermission(false)
+					.setContexts(InteractionContextType.Guild)
 					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 					.addUserOption((option) => applyLocalizedBuilder(option, Root.OptionsUser))
 					.addBooleanOption((option) => applyLocalizedBuilder(option, Root.OptionsListAll))
@@ -45,7 +45,7 @@ export class UserCommand extends SkyraCommand {
 			(builder) =>
 				applyNameLocalizedBuilder(builder, Root.ContextMenuName)
 					.setType(ApplicationCommandType.User)
-					.setDMPermission(false)
+					.setContexts(InteractionContextType.Guild)
 					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 			{
 				idHints: [

@@ -9,6 +9,7 @@ import { applyLocalizedBuilder, type TFunction } from '@sapphire/plugin-i18next'
 import {
 	ButtonStyle,
 	ComponentType,
+	InteractionContextType,
 	OAuth2Scopes,
 	PermissionFlagsBits,
 	chatInputApplicationCommandMention,
@@ -30,12 +31,17 @@ const Root = LanguageKeys.Commands.Info;
 })
 export class UserCommand extends SkyraCommand {
 	public override registerApplicationCommands(registry: ApplicationCommandRegistry) {
-		registry.registerChatInputCommand((command) => applyLocalizedBuilder(command, Root.Name, Root.Description), {
-			idHints: [
-				'1287399107224273059', // skyra production
-				'1277288996011245578' // skyra-beta production
-			]
-		});
+		registry.registerChatInputCommand(
+			(command) =>
+				applyLocalizedBuilder(command, Root.Name, Root.Description) //
+					.setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel),
+			{
+				idHints: [
+					'1287399107224273059', // skyra production
+					'1277288996011245578' // skyra-beta production
+				]
+			}
+		);
 	}
 
 	public override messageRun(message: Message, args: SkyraCommand.Args) {

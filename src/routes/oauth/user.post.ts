@@ -1,18 +1,16 @@
 import { authenticated, ratelimit } from '#lib/api/utils';
 import { minutes } from '#utils/common';
-import { ApplyOptions } from '@sapphire/decorators';
 import { FetchResultTypes, fetch } from '@sapphire/fetch';
-import { HttpCodes, MimeTypes, Route, methods, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
+import { HttpCodes, Route, type MimeType } from '@sapphire/plugin-api';
 import { Time } from '@sapphire/time-utilities';
 import { OAuth2Routes, type RESTPostOAuth2AccessTokenResult } from 'discord.js';
 import { stringify } from 'node:querystring';
 
-@ApplyOptions<Route.Options>({ route: 'oauth/user' })
 export class UserRoute extends Route {
 	@authenticated()
 	@ratelimit(minutes(5), 2, true)
-	public async [methods.POST](request: ApiRequest, response: ApiResponse) {
-		const requestBody = request.body as Record<string, string>;
+	public async run(request: Route.Request, response: Route.Response) {
+		const requestBody = (await request.readBodyJson()) as Record<string, string>;
 		if (typeof requestBody.action !== 'string') {
 			return response.badRequest();
 		}
@@ -67,7 +65,7 @@ export class UserRoute extends Route {
 						scope: server.auth!.scopes
 					}),
 					headers: {
-						'Content-Type': MimeTypes.ApplicationFormUrlEncoded
+						'Content-Type': 'application/x-www-form-urlencoded' satisfies MimeType
 					}
 				},
 				FetchResultTypes.JSON

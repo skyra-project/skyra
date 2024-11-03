@@ -1,7 +1,7 @@
 import { ResponseType, Task, type PartialResponseValue } from '#lib/schedule';
 import { Events } from '#lib/types';
 import { FetchResultTypes, QueryError, fetch } from '@sapphire/fetch';
-import { MimeTypes } from '@sapphire/plugin-api';
+import type { MimeType } from '@sapphire/plugin-api';
 import { blueBright, green, red } from 'colorette';
 import { Status } from 'discord.js';
 
@@ -85,7 +85,7 @@ export class UserTask extends Task {
 				url,
 				{
 					body,
-					headers: { 'content-type': MimeTypes.ApplicationJson, authorization: token },
+					headers: { 'content-type': 'application/json' satisfies MimeType, authorization: token },
 					method: 'POST'
 				},
 				FetchResultTypes.Result

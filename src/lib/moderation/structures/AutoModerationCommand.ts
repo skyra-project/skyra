@@ -23,7 +23,7 @@ import { CommandOptionsRunTypeEnum, type ApplicationCommandRegistry } from '@sap
 import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, type Awaitable } from '@sapphire/utilities';
-import { chatInputApplicationCommandMention, PermissionFlagsBits, strikethrough, type Guild } from 'discord.js';
+import { InteractionContextType, PermissionFlagsBits, chatInputApplicationCommandMention, strikethrough, type Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.AutoModeration;
 const RootModeration = LanguageKeys.Moderation;
@@ -94,7 +94,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 			(builder) =>
 				this.registerSubcommands(
 					builder //
-						.setDMPermission(false)
+						.setContexts(InteractionContextType.Guild)
 						.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 				),
 			{

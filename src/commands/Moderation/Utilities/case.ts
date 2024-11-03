@@ -18,6 +18,7 @@ import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@s
 import { cutText, isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire/utilities';
 import {
 	EmbedBuilder,
+	InteractionContextType,
 	PermissionFlagsBits,
 	TimestampStyles,
 	User,
@@ -53,7 +54,7 @@ export class UserCommand extends SkyraSubcommand {
 		registry.registerChatInputCommand(
 			(builder) =>
 				applyLocalizedBuilder(builder, Root.Name, Root.Description)
-					.setDMPermission(false)
+					.setContexts(InteractionContextType.Guild)
 					.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 					.addSubcommand((subcommand) =>
 						applyLocalizedBuilder(subcommand, Root.View) //

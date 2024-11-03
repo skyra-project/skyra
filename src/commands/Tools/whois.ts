@@ -19,6 +19,7 @@ import {
 	ButtonStyle,
 	ChatInputCommandInteraction,
 	GuildMember,
+	InteractionContextType,
 	PermissionFlagsBits,
 	UserContextMenuCommandInteraction,
 	bold,
@@ -96,8 +97,8 @@ export class UserCommand extends SkyraCommand {
 		registry.registerChatInputCommand(
 			(builder) =>
 				applyLocalizedBuilder(builder, Root.Name, Root.Description) //
-					.addUserOption((option) => applyLocalizedBuilder(option, Root.User).setRequired(true))
-					.setDMPermission(false),
+					.setContexts(InteractionContextType.Guild)
+					.addUserOption((option) => applyLocalizedBuilder(option, Root.User).setRequired(true)),
 			{
 				idHints: [
 					'1205923078627000381', // skyra production
@@ -110,7 +111,7 @@ export class UserCommand extends SkyraCommand {
 			(builder) =>
 				applyNameLocalizedBuilder(builder, Root.ContextMenuName) //
 					.setType(ApplicationCommandType.User)
-					.setDMPermission(false),
+					.setContexts(InteractionContextType.Guild),
 			{
 				idHints: [
 					'1205923078627000382', // skyra production

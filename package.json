@@ -63,7 +63,7 @@
 		"@sapphire/discord.js-utilities": "7.3.1",
 		"@sapphire/fetch": "^3.0.4",
 		"@sapphire/framework": "5.3.0",
-		"@sapphire/iterator-utilities": "^1.0.2",
+		"@sapphire/iterator-utilities": "^2.0.0",
 		"@sapphire/plugin-api": "^6.1.1",
 		"@sapphire/plugin-editable-commands": "^4.0.3",
 		"@sapphire/plugin-i18next": "^7.1.3",

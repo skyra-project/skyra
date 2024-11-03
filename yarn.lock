@@ -1581,10 +1581,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/iterator-utilities@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "@sapphire/iterator-utilities@npm:1.0.2"
-  checksum: 10/0482afb10e946caa70bdf74edd76f8ed40a7cf44ccab7155e59e14dbeb3b0c910bf18d561635d44c29f5dcf1608c4643f742786f816a780b0eb9f2340c1dbc2d
+"@sapphire/iterator-utilities@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@sapphire/iterator-utilities@npm:2.0.0"
+  checksum: 10/b8ae0c7b454f8d9e06c5c421791ffc1933071c542c6d39e96d8bda5dd535e3e9fc68430d5004310425da562842a191a2888a149567d5ba8b01b9c39282c7af0d
   languageName: node
   linkType: hard
 
@@ -7370,7 +7370,7 @@ __metadata:
     "@sapphire/eslint-config": "npm:^5.0.5"
     "@sapphire/fetch": "npm:^3.0.4"
     "@sapphire/framework": "npm:5.3.0"
-    "@sapphire/iterator-utilities": "npm:^1.0.2"
+    "@sapphire/iterator-utilities": "npm:^2.0.0"
     "@sapphire/plugin-api": "npm:^6.1.1"
     "@sapphire/plugin-editable-commands": "npm:^4.0.3"
     "@sapphire/plugin-i18next": "npm:^7.1.3"

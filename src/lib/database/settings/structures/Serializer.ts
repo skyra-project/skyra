@@ -6,7 +6,7 @@ import type { SkyraArgs } from '#lib/structures';
 import { AliasPiece, ArgumentError, UserError } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import { Result } from '@sapphire/result';
-import type { Awaitable, NonNullObject } from '@sapphire/utilities';
+import type { Awaitable } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 
 export type SerializerResult<T> = Result<T, Error>;
@@ -80,7 +80,7 @@ export abstract class Serializer<T> extends AliasPiece {
 	protected errorFromArgument<E>(args: Serializer.Args, error: UserError | ArgumentError<E>): SerializerResult<T> {
 		const argument = error instanceof ArgumentError ? error.argument.name : 'Unknown';
 		const identifier = translate(error.identifier);
-		return this.error(args.t(identifier, { ...error, ...(error.context as NonNullObject), argument }));
+		return this.error(args.t(identifier, { ...error, ...(error.context as object), argument }));
 	}
 
 	/**

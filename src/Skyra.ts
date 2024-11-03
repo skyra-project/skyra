@@ -16,7 +16,6 @@ if (envIsDefined('SENTRY_URL')) {
 			Sentry.consoleIntegration(),
 			Sentry.functionToStringIntegration(),
 			Sentry.linkedErrorsIntegration(),
-			Sentry.modulesIntegration(),
 			Sentry.onUncaughtExceptionIntegration(),
 			Sentry.onUnhandledRejectionIntegration(),
 			Sentry.httpIntegration({ breadcrumbs: true }),

@@ -66,7 +66,7 @@ export async function deleteMessage(message: Message, time = 0): Promise<Message
 export async function sendTemporaryMessage(message: Message, options: string | MessageCreateOptions, timer = minutes(1)): Promise<Message> {
 	if (typeof options === 'string') options = { content: options };
 
-	const response = (await send(message, options)) as Message;
+	const response = await send(message, options);
 	floatPromise(deleteMessage(response, timer));
 	return response;
 }

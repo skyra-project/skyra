@@ -17,7 +17,7 @@ export function resolveError(t: TFunction, error: UserError | string) {
 }
 
 function resolveStringError(t: TFunction, error: string) {
-	return exists(error) ? (t(error) as string) : error;
+	return exists(error) ? t(error) : error;
 }
 
 function resolveUserError(t: TFunction, error: UserError) {

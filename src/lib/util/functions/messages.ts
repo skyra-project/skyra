@@ -5,7 +5,6 @@ import { canReact, canRemoveAllReactions } from '@sapphire/discord.js-utilities'
 import { container } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { resolveKey, type TOptions } from '@sapphire/plugin-i18next';
-import type { NonNullObject } from '@sapphire/utilities';
 import { RESTJSONErrorCodes, type Message, type MessageCreateOptions, type UserResolvable } from 'discord.js';
 import { setTimeout as sleep } from 'node:timers/promises';
 
@@ -115,7 +114,7 @@ export async function sendLocalizedMessage(message: Message, options: LocalizedS
 }
 
 type LocalizedSimpleKey = TypedT<string>;
-type LocalizedMessageOptions<TArgs extends object = NonNullObject> = Omit<MessageCreateOptions, 'content'> &
+type LocalizedMessageOptions<TArgs extends object = object> = Omit<MessageCreateOptions, 'content'> &
 	(
 		| {
 				key: LocalizedSimpleKey;

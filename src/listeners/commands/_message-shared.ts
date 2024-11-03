@@ -7,7 +7,7 @@ import { EmbedBuilder } from '@discordjs/builders';
 import { ArgumentError, Command, Events, UserError, container, type MessageCommandErrorPayload } from '@sapphire/framework';
 import type { TFunction } from '@sapphire/plugin-i18next';
 import type { MessageSubcommandErrorPayload } from '@sapphire/plugin-subcommands';
-import { codeBlock, cutText, type NonNullObject } from '@sapphire/utilities';
+import { codeBlock, cutText } from '@sapphire/utilities';
 import { DiscordAPIError, HTTPError, RESTJSONErrorCodes, Routes, type Message } from 'discord.js';
 import { generateUnexpectedErrorMessage } from './_shared.js';
 
@@ -87,7 +87,7 @@ function argumentError(message: Message, t: TFunction, error: ArgumentError<unkn
 	const argument = error.argument.name;
 	const identifier = translate(error.identifier);
 	const parameter = error.parameter.replaceAll('`', '῾');
-	return alert(message, t(identifier, { ...error, ...(error.context as NonNullObject), argument, parameter: cutText(parameter, 50) }));
+	return alert(message, t(identifier, { ...error, ...(error.context as object), argument, parameter: cutText(parameter, 50) }));
 }
 
 function userError(message: Message, t: TFunction, error: UserError) {

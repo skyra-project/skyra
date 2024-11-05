@@ -1608,16 +1608,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/plugin-api@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@sapphire/plugin-api@npm:7.0.0"
+"@sapphire/plugin-api@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@sapphire/plugin-api@npm:7.0.1"
   dependencies:
     "@types/ws": "npm:^8.5.13"
     "@vladfrangu/async_event_emitter": "npm:2.4.6"
     cookie-es: "npm:^1.2.2"
     tldts: "npm:^6.1.58"
     undici: "npm:^6.20.1"
-  checksum: 10/d05bb12cb512601c0a08806e68e00f81dfbb2a986b20fac53e3ecdc51138f50c9432d5d7702a5af8739d107a9f504955455d131978dd271110c7876d8dee0418
+  checksum: 10/4dc3ab926ac8319a0ec69e67773ce8af5599dae71494271bb43450015009963cc4044b2cf9b36d8e5d7d76cc986878ce1a5ab70f6e1841be5475ae8f6dd0f8b2
   languageName: node
   linkType: hard
 
@@ -7379,7 +7379,7 @@ __metadata:
     "@sapphire/fetch": "npm:^3.0.4"
     "@sapphire/framework": "npm:5.3.0"
     "@sapphire/iterator-utilities": "npm:^2.0.0"
-    "@sapphire/plugin-api": "npm:^7.0.0"
+    "@sapphire/plugin-api": "npm:^7.0.1"
     "@sapphire/plugin-editable-commands": "npm:^4.0.3"
     "@sapphire/plugin-i18next": "npm:^7.1.3"
     "@sapphire/plugin-logger": "npm:^4.0.2"

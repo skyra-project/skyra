@@ -104,7 +104,7 @@
 		"@types/ws": "^8.5.13",
 		"@typescript-eslint/eslint-plugin": "^7.18.0",
 		"@typescript-eslint/parser": "^7.18.0",
-		"@vitest/coverage-v8": "^2.1.4",
+		"@vitest/coverage-v8": "^2.1.5",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^8.57.1",
 		"eslint-config-prettier": "^9.1.0",
@@ -113,9 +113,9 @@
 		"prettier": "^3.3.3",
 		"prisma": "^5.22.0",
 		"prisma-json-types-generator": "^3.1.1",
-		"tsc-watch": "^6.2.0",
+		"tsc-watch": "^6.2.1",
 		"typescript": "~5.4.5",
-		"vitest": "^2.1.4"
+		"vitest": "^2.1.5"
 	},
 	"resolutions": {
 		"ansi-regex": "^5.0.1",

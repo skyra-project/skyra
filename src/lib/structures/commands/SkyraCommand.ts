@@ -27,8 +27,8 @@ export abstract class SkyraCommand extends Command<SkyraCommand.Args, SkyraComma
 	public readonly guarded: boolean;
 	public readonly hidden: boolean;
 	public readonly permissionLevel: PermissionLevels;
-	public declare readonly detailedDescription: TypedT<LanguageHelpDisplayOptions>;
-	public declare readonly description: TypedT<string>;
+	declare public readonly detailedDescription: TypedT<LanguageHelpDisplayOptions>;
+	declare public readonly description: TypedT<string>;
 
 	public constructor(context: Command.LoaderContext, options: SkyraCommand.Options) {
 		super(context, { ...SkyraCommandConstructorDefaults, ...options });

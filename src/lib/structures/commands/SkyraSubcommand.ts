@@ -22,7 +22,7 @@ export class SkyraSubcommand extends Subcommand<SkyraSubcommand.Args, SkyraSubco
 	public readonly guarded: boolean;
 	public readonly hidden: boolean;
 	public readonly permissionLevel: PermissionLevels;
-	public declare readonly detailedDescription: TypedT<LanguageHelpDisplayOptions>;
+	declare public readonly detailedDescription: TypedT<LanguageHelpDisplayOptions>;
 	public override readonly description: TypedT<string>;
 
 	public constructor(context: SkyraSubcommand.LoaderContext, options: SkyraSubcommand.Options) {

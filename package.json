@@ -64,7 +64,7 @@
 		"@sapphire/fetch": "^3.0.5",
 		"@sapphire/framework": "5.3.1",
 		"@sapphire/iterator-utilities": "^2.0.1",
-		"@sapphire/plugin-api": "^7.0.3",
+		"@sapphire/plugin-api": "^8.0.0",
 		"@sapphire/plugin-editable-commands": "^4.0.3",
 		"@sapphire/plugin-i18next": "^7.1.3",
 		"@sapphire/plugin-logger": "^4.0.2",

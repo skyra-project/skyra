@@ -5,7 +5,8 @@
 		"outDir": "../dist",
 		"rootDir": ".",
 		"baseUrl": ".",
-		"resolvePackageJsonImports": true
+		"resolvePackageJsonImports": true,
+		"skipLibCheck": true
 	},
 	"include": [".", "./**/*.json"],
 	"exclude": ["./tsconfig.json"]

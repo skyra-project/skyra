@@ -192,7 +192,7 @@ export class SortedCollection<K extends number | string | bigint, V> implements 
 	/**
 	 * Returns an iterator that contains all the keys in the collection.
 	 */
-	public *keys(): IterableIterator<K> {
+	public *keys(): MapIterator<K> {
 		for (const [key] of this.#entries) {
 			yield key;
 		}
@@ -201,7 +201,7 @@ export class SortedCollection<K extends number | string | bigint, V> implements 
 	/**
 	 * Returns an iterator that yields all the values in the collection.
 	 */
-	public *values(): IterableIterator<V> {
+	public *values(): MapIterator<V> {
 		for (const [, value] of this.#entries) {
 			yield value;
 		}
@@ -210,14 +210,14 @@ export class SortedCollection<K extends number | string | bigint, V> implements 
 	/**
 	 * Returns an iterator that yields all the entries in the collection.
 	 */
-	public *entries(): IterableIterator<[K, V]> {
+	public *entries(): MapIterator<[K, V]> {
 		yield* this.#entries;
 	}
 
 	/**
 	 * Returns an iterator that yields all the entries in the collection.
 	 */
-	public *[Symbol.iterator](): IterableIterator<[K, V]> {
+	public *[Symbol.iterator](): MapIterator<[K, V]> {
 		yield* this.#entries;
 	}
 

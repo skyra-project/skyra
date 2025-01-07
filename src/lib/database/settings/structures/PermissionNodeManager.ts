@@ -11,6 +11,8 @@ export const enum PermissionNodeAction {
 	Deny
 }
 
+type PermissionNodeValueResolvable = Role | GuildMember | User;
+
 export class PermissionNodeManager {
 	private sorted = new Collection<string, PermissionsManagerNode>();
 	#cachedRawPermissionRoles: readonly PermissionsNode[] = [];
@@ -20,7 +22,7 @@ export class PermissionNodeManager {
 		this.refresh(settings);
 	}
 
-	public settingsPropertyFor(target: Role | GuildMember | User) {
+	public settingsPropertyFor(target: PermissionNodeValueResolvable) {
 		return (target instanceof Role ? 'permissionsRoles' : 'permissionsUsers') satisfies keyof ReadonlyGuildData;
 	}
 
@@ -32,7 +34,7 @@ export class PermissionNodeManager {
 		return this.sorted.has(roleId);
 	}
 
-	public add(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): readonly PermissionsNode[] {
+	public add(target: PermissionNodeValueResolvable, command: string, action: PermissionNodeAction): readonly PermissionsNode[] {
 		const nodes = this.#getPermissionNodes(target);
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
@@ -63,7 +65,7 @@ export class PermissionNodeManager {
 		return nodes.with(nodeIndex, node);
 	}
 
-	public remove(target: Role | GuildMember | User, command: string, action: PermissionNodeAction): readonly PermissionsNode[] {
+	public remove(target: PermissionNodeValueResolvable, command: string, action: PermissionNodeAction): readonly PermissionsNode[] {
 		const nodes = this.#getPermissionNodes(target);
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
@@ -80,8 +82,8 @@ export class PermissionNodeManager {
 
 		const node: PermissionsNode = {
 			id: target.id,
-			allow: 'allow' ? previous.allow.toSpliced(commandIndex, 1) : previous.allow,
-			deny: 'deny' ? previous.deny.toSpliced(commandIndex, 1) : previous.deny
+			allow: action === PermissionNodeAction.Allow ? previous.allow.toSpliced(commandIndex, 1) : previous.allow,
+			deny: action === PermissionNodeAction.Deny ? previous.deny.toSpliced(commandIndex, 1) : previous.deny
 		};
 
 		return node.allow.length === 0 && node.deny.length === 0 //
@@ -89,7 +91,7 @@ export class PermissionNodeManager {
 			: nodes.with(nodeIndex, node);
 	}
 
-	public reset(target: Role | GuildMember | User): readonly PermissionsNode[] {
+	public reset(target: PermissionNodeValueResolvable): readonly PermissionsNode[] {
 		const nodes = this.#getPermissionNodes(target);
 
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
@@ -226,7 +228,7 @@ export class PermissionNodeManager {
 		}
 	}
 
-	#getPermissionNodes(target: Role | GuildMember | User): readonly PermissionsNode[] {
+	#getPermissionNodes(target: PermissionNodeValueResolvable): readonly PermissionsNode[] {
 		return target instanceof Role ? this.#cachedRawPermissionRoles : this.#cachedRawPermissionUsers;
 	}
 }

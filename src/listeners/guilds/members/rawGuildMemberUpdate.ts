@@ -62,7 +62,7 @@ export class UserListener extends Listener {
 			action_type: AuditLogEvent.MemberRoleUpdate
 		});
 
-		const updatedRoleId = this.getChange(auditLogs, data.user!.id);
+		const updatedRoleId = this.getChange(auditLogs, data.user.id);
 		if (updatedRoleId === null) return;
 
 		let memberRoles = data.roles;

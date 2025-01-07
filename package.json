@@ -84,7 +84,7 @@
 		"colorette": "^2.0.20",
 		"confusables": "^1.1.1",
 		"diff": "^7.0.0",
-		"discord-api-types": "0.37.98",
+		"discord-api-types": "^0.37.115",
 		"discord.js": "~14.17.2",
 		"he": "^1.2.0",
 		"zlib-sync": "^0.1.9"
@@ -99,7 +99,7 @@
 		"@types/backoff": "^2.5.5",
 		"@types/diff": "^6.0.0",
 		"@types/he": "^1.2.3",
-		"@types/node": "^22.9.0",
+		"@types/node": "^22.10.5",
 		"@types/pg": "^8.11.10",
 		"@types/ws": "^8.5.13",
 		"@typescript-eslint/eslint-plugin": "^7.18.0",
@@ -113,13 +113,13 @@
 		"prettier": "^3.4.2",
 		"prisma": "^6.2.0",
 		"prisma-json-types-generator": "^3.2.2",
-		"tsc-watch": "^6.2.1",
-		"typescript": "~5.4.5",
+		"tsc-watch": "^6.3.0",
+		"typescript": "~5.7.2",
 		"vitest": "^2.1.8"
 	},
 	"resolutions": {
 		"ansi-regex": "^5.0.1",
-		"discord-api-types": "0.37.98",
+		"discord-api-types": "^0.37.115",
 		"minimist": "^1.2.8"
 	},
 	"engines": {

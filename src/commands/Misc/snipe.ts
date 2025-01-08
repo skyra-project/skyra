@@ -10,7 +10,7 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { ApplicationCommandRegistry, CommandOptionsRunTypeEnum } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder } from '@sapphire/plugin-i18next';
-import { InteractionContextType, PermissionFlagsBits, type GuildTextBasedChannel } from 'discord.js';
+import { InteractionContextType, MessageFlags, PermissionFlagsBits, type GuildTextBasedChannel } from 'discord.js';
 
 const Root = LanguageKeys.Commands.Snipe;
 
@@ -51,7 +51,7 @@ export class UserCommand extends SkyraCommand {
 		const sniped = getSnipedMessage(interaction.channel as GuildTextBasedChannel);
 		if (sniped === null) {
 			const content = t(Root.MessageEmpty);
-			return interaction.reply({ content, ephemeral: true });
+			return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 		}
 
 		const embed = new EmbedBuilder()
@@ -65,6 +65,6 @@ export class UserCommand extends SkyraCommand {
 		if (content !== null) embed.setDescription(content);
 
 		const embeds = setMultipleEmbedImages(embed, getImages(sniped));
-		return interaction.reply({ embeds, ephemeral: true });
+		return interaction.reply({ embeds, flags: MessageFlags.Ephemeral });
 	}
 }

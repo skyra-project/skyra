@@ -2,6 +2,7 @@ import { LanguageKeys } from '#lib/i18n/languageKeys';
 import { fetchT } from '#lib/i18n/translate';
 import { userMention } from '@discordjs/builders';
 import { PaginatedMessage } from '@sapphire/discord.js-utilities';
+import { MessageFlags } from 'discord.js';
 
 PaginatedMessage.selectMenuOptions = async (pageIndex, internationalizationContext) => {
 	const t = await fetchT(internationalizationContext);
@@ -16,7 +17,7 @@ PaginatedMessage.wrongUserInteractionReply = async (targetUser, _, international
 
 	return {
 		content: t(LanguageKeys.Globals.PaginatedMessageWrongUserInteractionReply, { user: userMention(targetUser.id) }),
-		ephemeral: true,
-		allowedMentions: { users: [], roles: [] }
+		allowedMentions: { users: [], roles: [] },
+		flags: MessageFlags.Ephemeral
 	};
 };

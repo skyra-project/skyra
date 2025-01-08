@@ -18,7 +18,7 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, type TFunction } from '@sapphire/plugin-i18next';
 import { isNullishOrEmpty, type Awaitable } from '@sapphire/utilities';
 import { remove as removeConfusables } from 'confusables';
-import { inlineCode, type Guild } from 'discord.js';
+import { inlineCode, MessageFlags, type Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.AutoModeration;
 
@@ -63,11 +63,11 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 		const t = getSupportedUserLanguageT(interaction);
 		using trx = await writeSettingsTransaction(guild);
 		if (await this.#hasWord(trx.settings, word)) {
-			return interaction.reply({ content: t(Root.WordAddFiltered, { word }), ephemeral: true });
+			return interaction.reply({ content: t(Root.WordAddFiltered, { word }), flags: MessageFlags.Ephemeral });
 		}
 
 		await trx.write({ selfmodFilterRaw: trx.settings.selfmodFilterRaw.concat(word) }).submit();
-		return interaction.reply({ content: t(Root.EditSuccess), ephemeral: true });
+		return interaction.reply({ content: t(Root.EditSuccess), flags: MessageFlags.Ephemeral });
 	}
 
 	public async chatInputRunRemove(interaction: AutoModerationCommand.Interaction) {
@@ -79,11 +79,11 @@ export class UserAutoModerationCommand extends AutoModerationCommand {
 
 		const index = trx.settings.selfmodFilterRaw.indexOf(word);
 		if (index === -1) {
-			return interaction.reply({ content: t(Root.WordRemoveNotFiltered, { word }), ephemeral: true });
+			return interaction.reply({ content: t(Root.WordRemoveNotFiltered, { word }), flags: MessageFlags.Ephemeral });
 		}
 
 		await trx.write({ selfmodFilterRaw: trx.settings.selfmodFilterRaw.toSpliced(index, 1) }).submit();
-		return interaction.reply({ content: t(Root.EditSuccess), ephemeral: true });
+		return interaction.reply({ content: t(Root.EditSuccess), flags: MessageFlags.Ephemeral });
 	}
 
 	protected override showEnabled(t: TFunction, settings: ReadonlyGuildData) {

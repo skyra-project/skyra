@@ -23,7 +23,7 @@ import { CommandOptionsRunTypeEnum, type ApplicationCommandRegistry } from '@sap
 import { send } from '@sapphire/plugin-editable-commands';
 import { applyLocalizedBuilder, createLocalizedChoice, type TFunction } from '@sapphire/plugin-i18next';
 import { isNullish, isNullishOrEmpty, isNullishOrZero, type Awaitable } from '@sapphire/utilities';
-import { InteractionContextType, PermissionFlagsBits, chatInputApplicationCommandMention, strikethrough, type Guild } from 'discord.js';
+import { InteractionContextType, MessageFlags, PermissionFlagsBits, chatInputApplicationCommandMention, strikethrough, type Guild } from 'discord.js';
 
 const Root = LanguageKeys.Commands.AutoModeration;
 const RootModeration = LanguageKeys.Moderation;
@@ -128,7 +128,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 		const embed = settings[this.keyEnabled] //
 			? this.showEnabled(t, settings)
 			: this.showDisabled(t);
-		return interaction.reply({ embeds: [embed], ephemeral: true });
+		return interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
 	}
 
 	public async chatInputRunEdit(interaction: AutoModerationCommand.Interaction) {
@@ -163,7 +163,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 
 		const t = getSupportedUserLanguageT(interaction);
 		const content = t(Root.EditSuccess);
-		return interaction.reply({ content, ephemeral: true });
+		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 	}
 
 	public async chatInputRunReset(interaction: AutoModerationCommand.Interaction) {
@@ -172,7 +172,7 @@ export abstract class AutoModerationCommand extends SkyraSubcommand {
 
 		const t = getSupportedUserLanguageT(interaction);
 		const content = t(Root.EditSuccess);
-		return interaction.reply({ content, ephemeral: true });
+		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 	}
 
 	protected async resetGetKeyValuePair(guild: Guild, key: ResetKey): Promise<readonly [SchemaDataKey, GuildDataValue]> {

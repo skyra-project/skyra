@@ -19,6 +19,7 @@ import { cutText, isNullish, isNullishOrEmpty, isNullishOrZero } from '@sapphire
 import {
 	EmbedBuilder,
 	InteractionContextType,
+	MessageFlags,
 	PermissionFlagsBits,
 	TimestampStyles,
 	User,
@@ -147,12 +148,12 @@ export class UserCommand extends SkyraSubcommand {
 			const action = getAction(entry.type);
 			if (!action.isUndoActionAvailable) {
 				const content = t(Root.TimeNotAllowed, { type: t(getTranslationKey(entry.type)) });
-				return interaction.reply({ content, ephemeral: true });
+				return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 			}
 
 			if (entry.isCompleted()) {
 				const content = t(Root.TimeNotAllowedInCompletedEntries, { caseId: entry.id });
-				return interaction.reply({ content, ephemeral: true });
+				return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 			}
 
 			if (duration !== 0) {
@@ -162,7 +163,7 @@ export class UserCommand extends SkyraSubcommand {
 						start: time(seconds.fromMilliseconds(entry.createdAt), TimestampStyles.LongDateTime),
 						time: time(seconds.fromMilliseconds(next), TimestampStyles.RelativeTime)
 					});
-					return interaction.reply({ content, ephemeral: true });
+					return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 				}
 			}
 		}
@@ -173,7 +174,7 @@ export class UserCommand extends SkyraSubcommand {
 		});
 
 		const content = t(Root.EditSuccess, { caseId: entry.id });
-		return interaction.reply({ content, ephemeral: true });
+		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 	}
 
 	public async chatInputRunArchive(interaction: SkyraSubcommand.Interaction) {
@@ -181,7 +182,7 @@ export class UserCommand extends SkyraSubcommand {
 		await getModeration(interaction.guild).archive(entry);
 
 		const content = getSupportedUserLanguageT(interaction)(Root.ArchiveSuccess, { caseId: entry.id });
-		return interaction.reply({ content, ephemeral: true });
+		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 	}
 
 	public async chatInputRunDelete(interaction: SkyraSubcommand.Interaction) {
@@ -189,7 +190,7 @@ export class UserCommand extends SkyraSubcommand {
 		await getModeration(interaction.guild).delete(entry);
 
 		const content = getSupportedUserLanguageT(interaction)(Root.DeleteSuccess, { caseId: entry.id });
-		return interaction.reply({ content, ephemeral: true });
+		return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 	}
 
 	public async viewMessageRun(message: GuildMessage, args: SkyraSubcommand.Args) {
@@ -217,7 +218,7 @@ export class UserCommand extends SkyraSubcommand {
 	) {
 		if (entries.length === 0) {
 			const content = getSupportedUserLanguageT(interaction)(Root.ListEmpty);
-			return interaction.reply({ content, ephemeral: true });
+			return interaction.reply({ content, flags: MessageFlags.Ephemeral });
 		}
 
 		await interaction.deferReply({ ephemeral: !show });

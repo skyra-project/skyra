@@ -10,6 +10,7 @@ import {
 	ButtonStyle,
 	ComponentType,
 	InteractionContextType,
+	MessageFlags,
 	OAuth2Scopes,
 	PermissionFlagsBits,
 	chatInputApplicationCommandMention,
@@ -58,7 +59,7 @@ export class UserCommand extends SkyraCommand {
 			.addFields(this.getApplicationStatistics(t), this.getUptimeStatistics(t), this.getServerUsageStatistics(t));
 		const components = this.getComponents(t);
 
-		return interaction.reply({ embeds: [embed], components, ephemeral: true });
+		return interaction.reply({ embeds: [embed], components, flags: MessageFlags.Ephemeral });
 	}
 
 	private getApplicationStatistics(t: TFunction): APIEmbedField {

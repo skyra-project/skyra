@@ -56,7 +56,7 @@
 		"@discordjs/core": "^1.2.0",
 		"@influxdata/influxdb-client": "^1.35.0",
 		"@influxdata/influxdb-client-apis": "^1.35.0",
-		"@prisma/client": "^6.2.0",
+		"@prisma/client": "^6.2.1",
 		"@sapphire/async-queue": "^1.5.5",
 		"@sapphire/bitfield": "^1.2.4",
 		"@sapphire/decorators": "^6.1.1",
@@ -85,7 +85,7 @@
 		"confusables": "^1.1.1",
 		"diff": "^7.0.0",
 		"discord-api-types": "^0.37.115",
-		"discord.js": "~14.17.2",
+		"discord.js": "~14.17.3",
 		"he": "^1.2.0",
 		"zlib-sync": "^0.1.9"
 	},
@@ -111,7 +111,7 @@
 		"eslint-plugin-prettier": "^5.2.1",
 		"lint-staged": "^15.3.0",
 		"prettier": "^3.4.2",
-		"prisma": "^6.2.0",
+		"prisma": "^6.2.1",
 		"prisma-json-types-generator": "^3.2.2",
 		"tsc-watch": "^6.3.0",
 		"typescript": "~5.7.2",
@@ -146,6 +146,6 @@
 	"prettier": "@sapphire/prettier-config",
 	"packageManager": "yarn@4.6.0",
 	"volta": {
-		"node": "22.12.0"
+		"node": "22.13.0"
 	}
 }

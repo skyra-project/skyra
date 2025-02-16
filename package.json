@@ -110,7 +110,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-prettier": "^5.2.3",
 		"lint-staged": "^15.4.3",
-		"prettier": "^3.5.0",
+		"prettier": "^3.5.1",
 		"prisma": "^6.3.1",
 		"prisma-json-types-generator": "^3.2.2",
 		"tsc-watch": "^6.3.0",

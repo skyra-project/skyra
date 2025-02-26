@@ -15,6 +15,7 @@ import {
 	GuildDefaultMessageNotifications,
 	GuildExplicitContentFilter,
 	GuildVerificationLevel,
+	Locale,
 	Options,
 	Partials,
 	PermissionFlagsBits,
@@ -22,7 +23,6 @@ import {
 	time,
 	type ActivitiesOptions,
 	type ClientOptions,
-	type LocaleString,
 	type OAuth2Scopes,
 	type WebhookClientData
 } from 'discord.js';
@@ -137,7 +137,7 @@ function parseInternationalizationFormatters(): I18nextFormatter[] {
 		{
 			name: LanguageFormatters.Duration,
 			format: (lng, options) => {
-				const formatter = getHandler((lng ?? 'en-US') as LocaleString).duration;
+				const formatter = getHandler((lng ?? 'en-US') as Locale).duration;
 				const precision = (options?.precision as number) ?? 2;
 				return (value) => formatter.format(value, precision);
 			},
@@ -214,7 +214,7 @@ export const CLIENT_OPTIONS: ClientOptions = {
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildModeration,
-		GatewayIntentBits.GuildEmojisAndStickers,
+		GatewayIntentBits.GuildExpressions,
 		GatewayIntentBits.GuildVoiceStates,
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.GuildMessageReactions,
@@ -222,6 +222,7 @@ export const CLIENT_OPTIONS: ClientOptions = {
 		GatewayIntentBits.DirectMessageReactions,
 		GatewayIntentBits.MessageContent
 	],
+	enforceNonce: true,
 	loadDefaultErrorListeners: false,
 	loadMessageCommandListeners: true,
 	makeCache: Options.cacheEverything(),

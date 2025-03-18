@@ -15,7 +15,6 @@ import {
 	GuildDefaultMessageNotifications,
 	GuildExplicitContentFilter,
 	GuildVerificationLevel,
-	Locale,
 	Options,
 	Partials,
 	PermissionFlagsBits,
@@ -23,6 +22,7 @@ import {
 	time,
 	type ActivitiesOptions,
 	type ClientOptions,
+	type Locale,
 	type OAuth2Scopes,
 	type WebhookClientData
 } from 'discord.js';

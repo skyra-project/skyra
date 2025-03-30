@@ -108,11 +108,11 @@
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^8.57.1",
 		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-prettier": "^5.2.3",
+		"eslint-plugin-prettier": "^5.2.5",
 		"lint-staged": "^15.5.0",
 		"prettier": "^3.5.3",
 		"prisma": "^6.5.0",
-		"prisma-json-types-generator": "^3.2.2",
+		"prisma-json-types-generator": "^3.2.3",
 		"tsc-watch": "^6.3.0",
 		"typescript": "~5.7.2",
 		"vitest": "^2.1.9"
@@ -144,7 +144,7 @@
 		}
 	},
 	"prettier": "@sapphire/prettier-config",
-	"packageManager": "yarn@4.7.0",
+	"packageManager": "yarn@4.8.0",
 	"volta": {
 		"node": "22.14.0"
 	}

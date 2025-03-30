@@ -1393,10 +1393,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pkgr/core@npm:^0.1.0":
-  version: 0.1.1
-  resolution: "@pkgr/core@npm:0.1.1"
-  checksum: 10/6f25fd2e3008f259c77207ac9915b02f1628420403b2630c92a07ff963129238c9262afc9e84344c7a23b5cc1f3965e2cd17e3798219f5fd78a63d144d3cceba
+"@pkgr/core@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@pkgr/core@npm:0.2.0"
+  checksum: 10/b7e126161ecf59ceaa0a95ba4b937cc57bf29c42bd72dc129391e4c9ab06aac31e37379dde4f523a736aab9765b18c2494096eedcbe1f494df415998eef2b949
   languageName: node
   linkType: hard
 
@@ -1422,13 +1422,6 @@ __metadata:
     esbuild: "npm:>=0.12 <1"
     esbuild-register: "npm:3.6.0"
   checksum: 10/ee443d6d8a556cd30061157bae9b17353c03323050c1d91a5e80fb1fb993656608f6077b69376664f4e85deb728af6dca0744069a50a20ab6fe703bda754d233
-  languageName: node
-  linkType: hard
-
-"@prisma/debug@npm:6.0.0":
-  version: 6.0.0
-  resolution: "@prisma/debug@npm:6.0.0"
-  checksum: 10/c9e61289ea30b553dc263f972dd701d6269e6c09d9dbe76805d25ce2ff2a7dff87a0b7bdc48e3a869d5fc6191c6441624488e80c9cb36f613b251fa8ab74f1b5
   languageName: node
   linkType: hard
 
@@ -1469,12 +1462,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/generator-helper@npm:6.0.0":
-  version: 6.0.0
-  resolution: "@prisma/generator-helper@npm:6.0.0"
+"@prisma/generator-helper@npm:6.5.0":
+  version: 6.5.0
+  resolution: "@prisma/generator-helper@npm:6.5.0"
   dependencies:
-    "@prisma/debug": "npm:6.0.0"
-  checksum: 10/bf4a6028e740dd18cc12b9c249e80594c5b763b99b3c7ba27f45012607ab9c13c92652385f9d5978ccc0017e5406b4d5cb540a968fd3187d12b6d79d7dc23d1c
+    "@prisma/debug": "npm:6.5.0"
+  checksum: 10/4229875b0adb865c6a1be9cd38858578a3f06ff8e71d0e5575debeefd6361a2d24fda3c51780051a21ea88a0cdf002f54f41a5b4901abdac49a7c8435ed49ecf
   languageName: node
   linkType: hard
 
@@ -4260,23 +4253,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^5.1.3, eslint-plugin-prettier@npm:^5.2.3":
-  version: 5.2.3
-  resolution: "eslint-plugin-prettier@npm:5.2.3"
+"eslint-plugin-prettier@npm:^5.1.3, eslint-plugin-prettier@npm:^5.2.5":
+  version: 5.2.5
+  resolution: "eslint-plugin-prettier@npm:5.2.5"
   dependencies:
     prettier-linter-helpers: "npm:^1.0.0"
-    synckit: "npm:^0.9.1"
+    synckit: "npm:^0.10.2"
   peerDependencies:
     "@types/eslint": ">=8.0.0"
     eslint: ">=8.0.0"
-    eslint-config-prettier: "*"
+    eslint-config-prettier: ">= 7.0.0 <10.0.0 || >=10.1.0"
     prettier: ">=3.0.0"
   peerDependenciesMeta:
     "@types/eslint":
       optional: true
     eslint-config-prettier:
       optional: true
-  checksum: 10/6444a0b89f3e2a6b38adce69761133f8539487d797f1655b3fa24f93a398be132c4f68f87041a14740b79202368d5782aa1dffd2bd7a3ea659f263d6796acf15
+  checksum: 10/b211c2e71e20bd8c5953ce0383d389dff74f223126e24009cc0633e1ad2592a9a05653725d8bd41a136bc40684f1a0f61f68c622c94301761c26e5c6956f8046
   languageName: node
   linkType: hard
 
@@ -7006,18 +6999,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prisma-json-types-generator@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "prisma-json-types-generator@npm:3.2.2"
+"prisma-json-types-generator@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "prisma-json-types-generator@npm:3.2.3"
   dependencies:
-    "@prisma/generator-helper": "npm:6.0.0"
+    "@prisma/generator-helper": "npm:6.5.0"
     tslib: "npm:2.8.1"
   peerDependencies:
     prisma: ^5 || ^6
     typescript: ^5.6.2
   bin:
     prisma-json-types-generator: index.js
-  checksum: 10/6571fd5a27ef86f478642822705a4148e9f120be42e7b00ba304d47288e87637e2ab997c77e1565c86dbfd567f4fafc7a707182dd682dd7422a665750f1b6769
+  checksum: 10/6eb2f6605519df3da2ff2cb588591cf1094028f9be2a43d5f5d587cb78414dbdfbcca23edab70d36e93ed084e79a0daa91c8486d0f74aeacc1c9d0df71e2daa7
   languageName: node
   linkType: hard
 
@@ -7673,12 +7666,12 @@ __metadata:
     discord.js: "npm:~14.18.0"
     eslint: "npm:^8.57.1"
     eslint-config-prettier: "npm:^9.1.0"
-    eslint-plugin-prettier: "npm:^5.2.3"
+    eslint-plugin-prettier: "npm:^5.2.5"
     he: "npm:^1.2.0"
     lint-staged: "npm:^15.5.0"
     prettier: "npm:^3.5.3"
     prisma: "npm:^6.5.0"
-    prisma-json-types-generator: "npm:^3.2.2"
+    prisma-json-types-generator: "npm:^3.2.3"
     tsc-watch: "npm:^6.3.0"
     typescript: "npm:~5.7.2"
     vitest: "npm:^2.1.9"
@@ -8017,13 +8010,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"synckit@npm:^0.9.1":
-  version: 0.9.1
-  resolution: "synckit@npm:0.9.1"
+"synckit@npm:^0.10.2":
+  version: 0.10.3
+  resolution: "synckit@npm:0.10.3"
   dependencies:
-    "@pkgr/core": "npm:^0.1.0"
-    tslib: "npm:^2.6.2"
-  checksum: 10/bff3903976baf8b699b5483228116d70223781a93b17c70e685c277ee960cdfd1a09cb5a741e6a9ec35e2428f14f4664baec41ccc99a598f267608b2a54f529b
+    "@pkgr/core": "npm:^0.2.0"
+    tslib: "npm:^2.8.1"
+  checksum: 10/bab2193585139f972b3725a9db8fedb6a93fe50bb5db06c0e8d3c93dbf83157e1eeba9fbd9c4922a1a41e9912b754ffe3906a3a7fa639ed502105de67d888207
   languageName: node
   linkType: hard
 

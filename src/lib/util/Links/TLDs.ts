@@ -121,7 +121,6 @@ export const TLDs = [
 	'beats',
 	'beauty',
 	'beer',
-	'bentley',
 	'berlin',
 	'best',
 	'bestbuy',

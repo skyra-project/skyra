@@ -660,7 +660,6 @@ export const TLDs = [
 	'lacaixa',
 	'lamborghini',
 	'lamer',
-	'lancaster',
 	'land',
 	'landrover',
 	'lanxess',

@@ -915,7 +915,6 @@ export const TLDs = [
 	'porn',
 	'post',
 	'pr',
-	'pramerica',
 	'praxi',
 	'press',
 	'prime',

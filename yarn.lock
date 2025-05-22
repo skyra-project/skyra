@@ -2011,6 +2011,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@skyra/env-utilities@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@skyra/env-utilities@npm:2.0.1"
+  dependencies:
+    dotenv: "npm:^16.5.0"
+    dotenv-expand: "npm:^12.0.2"
+  checksum: 10/1575fc2cf12a17fc835dc8b6437176df58f91d78cddd7387c76917f49378830003dbaba04324c3689927ec2d9a71c1982e761aa2e1c9cbd14f1fde180c7a215c
+  languageName: node
+  linkType: hard
+
 "@skyra/i18next-backend@npm:^2.0.5":
   version: 2.0.5
   resolution: "@skyra/i18next-backend@npm:2.0.5"
@@ -3911,10 +3921,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.3.1":
-  version: 16.4.1
-  resolution: "dotenv@npm:16.4.1"
-  checksum: 10/8da20250633703686961004df3ea81b1f81e16fbe873372050676f54ca4053172d0589aae902e683eb575884d56b6bc89fe48bbac5e1e0bef606a061389ca33c
+"dotenv-expand@npm:^12.0.2":
+  version: 12.0.2
+  resolution: "dotenv-expand@npm:12.0.2"
+  dependencies:
+    dotenv: "npm:^16.4.5"
+  checksum: 10/c956c8ff62ae4da7dd320f032da49f383cce5578a890ad4a432e882e8f0966d54fbcc6b94058cf07dd48773916b9843fe65958d1567cb5d7ee7a3ffad4739ba1
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.3.1, dotenv@npm:^16.4.5, dotenv@npm:^16.5.0":
+  version: 16.5.0
+  resolution: "dotenv@npm:16.5.0"
+  checksum: 10/e68a16834f1a41cc2dfb01563bc150668ad675e6cd09191211467b5c0806b6ecd6ec438e021aa8e01cd0e72d2b70ef4302bec7cc0fe15b6955f85230b62dc8a9
   languageName: node
   linkType: hard
 
@@ -7652,7 +7671,7 @@ __metadata:
     "@sentry/node": "npm:^8.55.0"
     "@skyra/ai": "npm:^1.2.0"
     "@skyra/char": "npm:^1.0.3"
-    "@skyra/env-utilities": "npm:^1.3.0"
+    "@skyra/env-utilities": "npm:^2.0.1"
     "@skyra/jaro-winkler": "npm:^1.1.1"
     "@skyra/twitch-helpers": "npm:^2.0.1"
     "@types/backoff": "npm:^2.5.5"

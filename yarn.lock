@@ -2074,10 +2074,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/diff@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@types/diff@npm:6.0.0"
-  checksum: 10/ad2dc8ca9e7594c7d06b60832ef1a51c717e39fd92434043be35a5a5a038f61ee7e1b9e89d1e2a49b8c4fa0f020166d1d41f7ccbd62f6cadc9ca1bd3e5df4e5b
+"@types/diff@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@types/diff@npm:8.0.0"
+  dependencies:
+    diff: "npm:*"
+  checksum: 10/9a7210d664898457db83d463f2586b2b4883013772a84879dfd6a9e2d3c8dc3b087d90e552d28adf982ca6e8635e5a9b47c8dc21507643a01af6b0797a8cec68
   languageName: node
   linkType: hard
 
@@ -3825,10 +3827,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diff@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "diff@npm:7.0.0"
-  checksum: 10/e9b8e48d054c9c0c093c65ce8e2637af94b35f2427001607b14e5e0589e534ea3413a7f91ebe6d7c5a1494ace49cb7c7c3972f442ddd96a4767ff091999a082e
+"diff@npm:*, diff@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "diff@npm:8.0.2"
+  checksum: 10/82a2120d3418f97822e17a6044ccd4b99a91e26e145e8698353673d7146bd2d092bbebb79c112aae7badc7b9c526f9098cbe342f96174feb6beabdd2587b3c42
   languageName: node
   linkType: hard
 
@@ -7656,7 +7658,7 @@ __metadata:
     "@skyra/jaro-winkler": "npm:^1.1.1"
     "@skyra/twitch-helpers": "npm:^2.0.1"
     "@types/backoff": "npm:^2.5.5"
-    "@types/diff": "npm:^6.0.0"
+    "@types/diff": "npm:^8.0.0"
     "@types/he": "npm:^1.2.3"
     "@types/node": "npm:^22.10.5"
     "@types/pg": "npm:^8.11.12"
@@ -7668,7 +7670,7 @@ __metadata:
     colorette: "npm:^2.0.20"
     confusables: "npm:^1.1.1"
     cz-conventional-changelog: "npm:^3.3.0"
-    diff: "npm:^7.0.0"
+    diff: "npm:^8.0.2"
     discord-api-types: "npm:^0.37.115"
     discord.js: "npm:~14.18.0"
     eslint: "npm:^8.57.1"

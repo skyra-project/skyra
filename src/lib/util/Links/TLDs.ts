@@ -948,7 +948,6 @@ export const TLDs = [
 	'realty',
 	'recipes',
 	'red',
-	'redstone',
 	'redumbrella',
 	'rehab',
 	'reise',

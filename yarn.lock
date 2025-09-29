@@ -3466,7 +3466,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
+"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.6":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
   dependencies:
@@ -7679,7 +7679,7 @@ __metadata:
     prettier: "npm:^3.5.3"
     prisma: "npm:^6.6.0"
     prisma-json-types-generator: "npm:^3.2.3"
-    tsc-watch: "npm:^6.3.0"
+    tsc-watch: "npm:^7.2.0"
     typescript: "npm:~5.7.2"
     vitest: "npm:^2.1.9"
     zlib-sync: "npm:^0.1.9"
@@ -7859,7 +7859,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string-argv@npm:^0.3.1, string-argv@npm:^0.3.2":
+"string-argv@npm:^0.3.2":
   version: 0.3.2
   resolution: "string-argv@npm:0.3.2"
   checksum: 10/f9d3addf887026b4b5f997a271149e93bf71efc8692e7dc0816e8807f960b18bcb9787b45beedf0f97ff459575ee389af3f189d8b649834cac602f2e857e75af
@@ -8236,19 +8236,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsc-watch@npm:^6.3.0":
-  version: 6.3.0
-  resolution: "tsc-watch@npm:6.3.0"
+"tsc-watch@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "tsc-watch@npm:7.2.0"
   dependencies:
-    cross-spawn: "npm:^7.0.3"
+    cross-spawn: "npm:^7.0.6"
     node-cleanup: "npm:^2.1.2"
     ps-tree: "npm:^1.2.0"
-    string-argv: "npm:^0.3.1"
+    string-argv: "npm:^0.3.2"
   peerDependencies:
     typescript: "*"
   bin:
     tsc-watch: dist/lib/tsc-watch.js
-  checksum: 10/4146e1229c56370e9d881efecb9f451e65908cba454000ce8de4b87e0f6e726e8f595737d65be56b6401f078b516a1607870ab7ec9c1ebbaebbe21667535c567
+  checksum: 10/988b4d0385f354423dba46b84699d1653c1e1e5af375c1745013ac4d6b4f6cacdc8c38b79774b676eef7a57ab9b6214aaea4a043b0d6eebfd1837224faeeace5
   languageName: node
   linkType: hard
 

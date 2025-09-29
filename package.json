@@ -113,7 +113,7 @@
 		"prettier": "^3.5.3",
 		"prisma": "^6.6.0",
 		"prisma-json-types-generator": "^3.2.3",
-		"tsc-watch": "^6.3.0",
+		"tsc-watch": "^7.2.0",
 		"typescript": "~5.7.2",
 		"vitest": "^2.1.9"
 	},

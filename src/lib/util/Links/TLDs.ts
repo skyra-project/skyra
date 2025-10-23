@@ -347,7 +347,6 @@ export const TLDs = [
 	'drive',
 	'dtv',
 	'dubai',
-	'dunlop',
 	'dupont',
 	'durban',
 	'dvag',

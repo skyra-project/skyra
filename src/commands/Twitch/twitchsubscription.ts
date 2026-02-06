@@ -22,7 +22,7 @@ import {
 import { EmbedBuilder, PermissionFlagsBits, type Guild } from 'discord.js';
 
 @ApplyOptions<SkyraSubcommand.Options>({
-	enabled: envIsDefined('TWITCH_CALLBACK', 'TWITCH_CLIENT_ID', 'TWITCH_TOKEN', 'TWITCH_EVENTSUB_SECRET'),
+	enabled: envIsDefined('TWITCH_CLIENT_ID', 'TWITCH_CLIENT_SECRET', 'TWITCH_EVENT_SUB_SECRET', 'TWITCH_EVENT_SUB_CALLBACK'),
 	aliases: ['twitch-subscription', 't-subscription', 't-sub'],
 	description: LanguageKeys.Commands.Twitch.TwitchSubscriptionDescription,
 	detailedDescription: LanguageKeys.Commands.Twitch.TwitchSubscriptionExtended,
@@ -257,7 +257,7 @@ export class UserCommand extends SkyraSubcommand {
 
 		// Get all the streamer IDs for this guild, put into a Set to remove duplicates
 		// (i.e. different channels, different subscription types)
-		const streamerIds = new Set([...guildSubscriptions.map((guildSubscription) => guildSubscription.subscription.streamerId)]);
+		const streamerIds = new Set(guildSubscriptions.map((guildSubscription) => guildSubscription.subscription.streamerId));
 
 		const profiles = (await fetchUsers({ ids: streamerIds })).unwrapRaw();
 		const names = new Map<string, string>();
@@ -294,7 +294,7 @@ export class UserCommand extends SkyraSubcommand {
 		if (subscription.guildSubscription.length === 0) {
 			await Promise.all([
 				removeEventSubscription(subscription.subscriptionId), //
-				await this.container.prisma.twitchSubscription.delete({ where: { id: subscription.id } })
+				this.container.prisma.twitchSubscription.delete({ where: { id: subscription.id } })
 			]);
 		}
 	}
@@ -317,7 +317,7 @@ export class UserCommand extends SkyraSubcommand {
 			if (subscription.guildSubscription.length === 0) {
 				await Promise.all([
 					removeEventSubscription(subscription.subscriptionId), //
-					await this.container.prisma.twitchSubscription.delete({ where: { id: subscription.id } })
+					this.container.prisma.twitchSubscription.delete({ where: { id: subscription.id } })
 				]);
 			}
 		}
@@ -354,7 +354,7 @@ export class UserCommand extends SkyraSubcommand {
 		});
 	}
 
-	private static streamer = Args.make<TwitchHelixUsersSearchResult>(async (parameter, { argument }) => {
+	private static readonly streamer = Args.make<TwitchHelixUsersSearchResult>(async (parameter, { argument }) => {
 		try {
 			const { data } = (await fetchUsers({ logins: [parameter] })).unwrapRaw();
 			if (data.length > 0) return Args.ok(data[0]);
@@ -364,7 +364,7 @@ export class UserCommand extends SkyraSubcommand {
 		}
 	});
 
-	private static status = Args.make<TwitchSubscriptionType>((parameter, { args, argument }) => {
+	private static readonly status = Args.make<TwitchSubscriptionType>((parameter, { args, argument }) => {
 		const index = args.t(LanguageKeys.Commands.Twitch.TwitchSubscriptionStatusValues).indexOf(parameter.toLowerCase());
 		if (index === -1) return Args.error({ parameter, argument, identifier: LanguageKeys.Commands.Twitch.TwitchSubscriptionInvalidStatus });
 		if (index === 0) return Args.ok('StreamOnline');

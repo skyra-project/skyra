@@ -162,7 +162,10 @@ declare module '@skyra/env-utilities' {
 		OAUTH_SCOPE: ArrayString;
 		OAUTH_SECRET: string;
 
-		TWITCH_CALLBACK: string;
+		TWITCH_CLIENT_ID: string;
+		TWITCH_CLIENT_SECRET: string;
+		TWITCH_EVENT_SUB_SECRET: string;
+		TWITCH_EVENT_SUB_CALLBACK: string;
 
 		INFLUX_ENABLED: BooleanString;
 		INFLUX_URL: string;
@@ -183,9 +186,6 @@ declare module '@skyra/env-utilities' {
 		DISCORD_BOTS_TOKEN: string;
 		SENTRY_URL: string;
 		TOP_GG_TOKEN: string;
-		TWITCH_CLIENT_ID: string;
-		TWITCH_EVENTSUB_SECRET: string;
-		TWITCH_TOKEN: string;
 
 		DATABASE_URL: string;
 	}

@@ -744,6 +744,7 @@ export const TLDs = [
 	'memorial',
 	'men',
 	'menu',
+	'merck',
 	'merckmsd',
 	'mg',
 	'mh',

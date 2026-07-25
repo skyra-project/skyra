@@ -1236,6 +1236,7 @@ export const TLDs = [
 	'watches',
 	'weather',
 	'weatherchannel',
+	'web',
 	'webcam',
 	'weber',
 	'website',

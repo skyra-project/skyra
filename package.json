@@ -90,7 +90,7 @@
 		"zlib-sync": "^0.1.9"
 	},
 	"devDependencies": {
-		"0x": "^5.8.0",
+		"0x": "^6.0.0",
 		"@commitlint/cli": "^19.8.0",
 		"@commitlint/config-conventional": "^19.8.0",
 		"@sapphire/eslint-config": "^5.0.5",

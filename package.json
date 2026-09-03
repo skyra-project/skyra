@@ -115,7 +115,7 @@
 		"prisma-json-types-generator": "^3.2.3",
 		"tsc-watch": "^6.3.0",
 		"typescript": "~5.7.2",
-		"vitest": "^2.1.9"
+		"vitest": "^3.0.0"
 	},
 	"resolutions": {
 		"ansi-regex": "^5.0.1",

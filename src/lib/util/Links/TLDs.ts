@@ -622,7 +622,6 @@ export const TLDs = [
 	'jpmorgan',
 	'jprs',
 	'juegos',
-	'juniper',
 	'kaufen',
 	'kddi',
 	'ke',

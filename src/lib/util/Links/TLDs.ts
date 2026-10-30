@@ -525,7 +525,6 @@ export const TLDs = [
 	'health',
 	'healthcare',
 	'help',
-	'helsinki',
 	'here',
 	'hermes',
 	'hiphop',

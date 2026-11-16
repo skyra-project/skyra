@@ -4249,6 +4249,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-config-prettier@npm:^10.1.8":
+  version: 10.1.8
+  resolution: "eslint-config-prettier@npm:10.1.8"
+  peerDependencies:
+    eslint: ">=7.0.0"
+  bin:
+    eslint-config-prettier: bin/cli.js
+  checksum: 10/03f8e6ea1a6a9b8f9eeaf7c8c52a96499ec4b275b9ded33331a6cc738ed1d56de734097dbd0091f136f0e84bc197388bd8ec22a52a4658105883f8c8b7d8921a
+  languageName: node
+  linkType: hard
+
 "eslint-config-prettier@npm:^9.1.0":
   version: 9.1.0
   resolution: "eslint-config-prettier@npm:9.1.0"
@@ -7672,7 +7683,7 @@ __metadata:
     discord-api-types: "npm:^0.37.115"
     discord.js: "npm:~14.18.0"
     eslint: "npm:^8.57.1"
-    eslint-config-prettier: "npm:^9.1.0"
+    eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-prettier: "npm:^5.2.6"
     he: "npm:^1.2.0"
     lint-staged: "npm:^15.5.1"

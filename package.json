@@ -107,7 +107,7 @@
 		"@vitest/coverage-v8": "^2.1.9",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^8.57.1",
-		"eslint-config-prettier": "^9.1.0",
+		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-prettier": "^5.2.6",
 		"lint-staged": "^15.5.1",
 		"prettier": "^3.5.3",

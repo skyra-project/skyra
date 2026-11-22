@@ -1262,7 +1262,6 @@ export const TLDs = [
 	'wtf',
 	'xbox',
 	'xerox',
-	'xihuan',
 	'xin',
 	'कॉम', // xn--11b4c3d
 	'セール', // xn--1ck2e1b

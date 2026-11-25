@@ -5,9 +5,9 @@ __metadata:
   version: 8
   cacheKey: 10
 
-"0x@npm:^5.8.0":
-  version: 5.8.0
-  resolution: "0x@npm:5.8.0"
+"0x@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "0x@npm:6.0.0"
   dependencies:
     ajv: "npm:^8.8.2"
     browserify: "npm:^17.0.0"
@@ -39,7 +39,7 @@ __metadata:
     which: "npm:^2.0.2"
   bin:
     0x: cmd.js
-  checksum: 10/b9ef585723811858c341d73b2bfa6ef3513cfe5e7822a74ee5f4a51c4553004ea12733fe65133e2a9714c512dddf9446e58554b819502b7762a1a7ef96e21c65
+  checksum: 10/ef0971be6cdb8d4efc8fb43e8d8876049609a6ee2933429fa262ca05a88e6ee6f70c3014226a3d67a4f9a6f58032dacdc682a4674147d265bb65766315ef9f22
   languageName: node
   linkType: hard
 
@@ -7620,7 +7620,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "skyra@workspace:."
   dependencies:
-    0x: "npm:^5.8.0"
+    0x: "npm:^6.0.0"
     "@commitlint/cli": "npm:^19.8.0"
     "@commitlint/config-conventional": "npm:^19.8.0"
     "@discordjs/builders": "npm:^1.10.1"
